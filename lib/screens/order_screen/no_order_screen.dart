@@ -21,13 +21,13 @@ class NoOrderWidget extends StatelessWidget {
         child: Column(
           children: [
             const Image(
-              image: AssetImage('assets/no_message.png'),
+              image: AssetImage('assets/order.png'),
               width: SpaceHelper.space256,
               fit: BoxFit.cover,
             ),
             const SizedBox(height: SpaceHelper.space24),
             const Text(
-              'No messages yet',
+              'No order yet',
               style: TextStyle(
                 fontSize: SpaceHelper.fontSize18,
                 fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class NoOrderWidget extends StatelessWidget {
             ),
             const SizedBox(height: SpaceHelper.space24),
             const Text(
-              'You have no messages yet. When you have a message, you will see it here',
+              'You have no order yet. When you have a message, you will see it here',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: SpaceHelper.fontSize16,

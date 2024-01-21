@@ -18,6 +18,7 @@ dependencies:
   uuid:
   open_filex:
   path_provider:
+  zego_uikit_prebuilt_video_conference: ^2.6.9
 
 dev_dependencies:
   flutter_test:
