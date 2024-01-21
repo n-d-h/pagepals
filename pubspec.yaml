@@ -19,6 +19,7 @@ dependencies:
   open_filex:
   path_provider:
   zego_uikit_prebuilt_video_conference: ^2.6.9
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -29,3 +30,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - .env

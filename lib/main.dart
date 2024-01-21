@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future main() async {
   runApp(const MyApp());
+  await dotenv.load(fileName: ".env");
 }
 
 class MyApp extends StatelessWidget {
