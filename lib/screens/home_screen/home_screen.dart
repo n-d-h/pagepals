@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/constant.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/home_screen/explore_screen.dart';
+import 'package:pagepals/screens/home_screen/notification_screen.dart';
 import 'package:pagepals/screens/home_screen/welcome_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,7 +30,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                PageTransition(
+                  child: const NotificationScreen(),
+                  type: PageTransitionType.bottomToTop,
+                  duration: const Duration(milliseconds: 300),
+                ),
+              );
+            },
             icon: const Icon(
               Icons.notifications_none_outlined,
               color: Colors.black,
