@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,13 +14,39 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    setupPageTransition();
+  }
+
+  setupPageTransition() async {
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.push(
+        context,
+        PageTransition(
+          type: PageTransitionType.fade,
+          child: const DashBoardScreen(),
+        ),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Splash Screen'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "PAGEPALS.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 50,
+                fontWeight: FontWeight.w900,
+                color: ColorHelper.getColor(ColorHelper.normal),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
