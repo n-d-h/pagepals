@@ -1,3 +1,3 @@
 class Constant {
-  static const String appName = 'Chapterchat.';
+  static const String appName = 'PagePals.';
 }

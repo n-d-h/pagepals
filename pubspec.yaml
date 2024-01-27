@@ -20,6 +20,8 @@ dependencies:
   path_provider:
   zego_uikit_prebuilt_video_conference: ^2.6.9
   flutter_dotenv: ^5.1.0
+  dropdown_button2: ^2.3.8
+  flutter_verification_code_field: ^1.0.0
 
 dev_dependencies:
   flutter_test:

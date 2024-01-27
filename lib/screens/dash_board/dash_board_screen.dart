@@ -5,6 +5,7 @@ import 'package:pagepals/screens/message_screen/message_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/personal_screen/personal_screen.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
+import 'package:pagepals/screens/signin_screen/signin_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});

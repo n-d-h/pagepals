@@ -18,6 +18,10 @@ class ColorHelper {
   static const String transparent = '#00000000';
   static const String white = '#ffffff';
   static const String black = '#000000';
+  static const String green = '#1DBF73';
+  static const String gray = '#DDDDDD';
+  static const String grey = '#CBCBCB';
+  static const String grayActive = '#7D7D7D';
 
   static Color getColor(String colorCode) {
     colorCode = colorCode.substring(1);
