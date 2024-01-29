@@ -48,7 +48,9 @@ class _SigninHomeScreenState extends State<SigninHomeScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   'Reading Services. On\nDemand',
                   style: TextStyle(
@@ -63,9 +65,10 @@ class _SigninHomeScreenState extends State<SigninHomeScreen> {
           Container(
             width: double.infinity,
             height: 290,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
             ),
             child: Container(
               decoration: BoxDecoration(
