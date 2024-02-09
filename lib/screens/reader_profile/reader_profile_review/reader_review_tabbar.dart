@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/reader_profile/reader_profile_review/comment_collection_widget.dart';
 
@@ -123,12 +124,31 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
               ],
             ),
             SizedBox(height: SpaceHelper.space16),
-            Text(
-              "Sorted by",
-              style: TextStyle(
-                fontSize: SpaceHelper.fontSize18,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Sorted by",
+                  style: TextStyle(
+                    fontSize: SpaceHelper.fontSize18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: SpaceHelper.space8),
+                TextButton(
+                  onPressed: () {
+                    showSortByBottomSheetModal(context);
+                  },
+                  child: Text(
+                    'Filter',
+                    style: TextStyle(
+                      fontSize: SpaceHelper.fontSize14,
+                      color: ColorHelper.getColor(ColorHelper.normal),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: SpaceHelper.space16),
             CommentCollectionWidget(),
@@ -137,6 +157,134 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
           ],
         ),
       ),
+    );
+  }
+
+  void showSortByBottomSheetModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.all(SpaceHelper.space16),
+          child: Column(
+            children: [
+              Text(
+                'Sort by',
+                style: TextStyle(
+                  fontSize: SpaceHelper.fontSize18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: SpaceHelper.space16),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.check,
+                    color: Colors.grey,
+                    size: SpaceHelper.fontSize40,
+                  ),
+                  title: Text(
+                    'Most relevant',
+                    style: TextStyle(
+                      fontSize: SpaceHelper.fontSize14,
+                      color: ColorHelper.getColor(ColorHelper.normal),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              SizedBox(height: SpaceHelper.space16),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.punch_clock,
+                    color: Colors.grey,
+                    size: SpaceHelper.fontSize40,
+                  ),
+                  title: Text(
+                    'Most relevant',
+                    style: TextStyle(
+                      fontSize: SpaceHelper.fontSize14,
+                      color: ColorHelper.getColor(ColorHelper.normal),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              SizedBox(height: SpaceHelper.space16),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.thumb_up,
+                    color: Colors.grey,
+                    size: SpaceHelper.fontSize40,
+                  ),
+                  title: Text(
+                    'Most relevant',
+                    style: TextStyle(
+                      fontSize: SpaceHelper.fontSize14,
+                      color: ColorHelper.getColor(ColorHelper.normal),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              SizedBox(height: SpaceHelper.space16),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.thumb_down,
+                    color: Colors.grey,
+                    size: SpaceHelper.fontSize40,
+                  ),
+                  title: Text(
+                    'Most relevant',
+                    style: TextStyle(
+                      fontSize: SpaceHelper.fontSize14,
+                      color: ColorHelper.getColor(ColorHelper.normal),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

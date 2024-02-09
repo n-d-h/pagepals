@@ -28,4 +28,5 @@ class SpaceHelper {
   static const double fontSize16 = 16;
   static const double fontSize18 = 18;
   static const double fontSize20 = 20;
+  static const double fontSize40 = 40;
 }
