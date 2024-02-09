@@ -25,10 +25,10 @@ class _CommentCollectionWidgetState extends State<CommentCollectionWidget> {
         ),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           CircleAvatar(
             radius: 20,
             backgroundImage: AssetImage('assets/image_reader.png'),
