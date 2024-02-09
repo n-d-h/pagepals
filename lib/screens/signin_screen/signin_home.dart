@@ -118,7 +118,7 @@ class _SigninHomeScreenState extends State<SigninHomeScreen> {
                                       const Text(
                                         'Find a Service',
                                         style: TextStyle(
-                                          fontSize: SpaceHelper.fontSize16,
+                                          fontSize: SpaceHelper.fontSize12,
                                           fontWeight: FontWeight.bold,
                                           height: 2.5,
                                         ),
@@ -158,7 +158,7 @@ class _SigninHomeScreenState extends State<SigninHomeScreen> {
                                       const Text(
                                         'Become a Reader',
                                         style: TextStyle(
-                                          fontSize: SpaceHelper.fontSize16,
+                                          fontSize: SpaceHelper.fontSize12,
                                           fontWeight: FontWeight.bold,
                                           height: 2.5,
                                         ),
