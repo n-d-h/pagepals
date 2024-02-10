@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {

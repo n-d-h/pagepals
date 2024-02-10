@@ -22,6 +22,7 @@ class ColorHelper {
   static const String gray = '#DDDDDD';
   static const String grey = '#CBCBCB';
   static const String grayActive = '#7D7D7D';
+  static const String greenActive = '#1DBF73';
 
   static Color getColor(String colorCode) {
     colorCode = colorCode.substring(1);

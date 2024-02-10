@@ -19,9 +19,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     _controller = VideoPlayerController.networkUrl(
       Uri.parse(widget.videoUrl),
     )..initialize().then((_) {
-        _controller.play();
-        setState(() {});
-      });
+      _controller.play();
+      setState(() {});
+    });
   }
 
   @override
@@ -35,12 +35,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     return Center(
       child: _controller.value.isInitialized
           ? AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(_controller),
-            )
+        aspectRatio: _controller.value.aspectRatio,
+        child: VideoPlayer(_controller),
+      )
           : const Center(
-              child: CircularProgressIndicator(),
-            ),
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
