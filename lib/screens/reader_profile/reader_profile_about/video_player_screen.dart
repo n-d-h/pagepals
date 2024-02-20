@@ -1,45 +1,57 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
-  const VideoPlayerScreen({super.key});
-  final String videoUrl = 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4';
+  const VideoPlayerScreen({
+    super.key,
+  });
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  late VideoPlayerController _controller;
+  final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'));
+
+  late ChewieController _chewieController;
 
   @override
   void initState() {
     super.initState();
-
-    _controller = VideoPlayerController.networkUrl(
-      Uri.parse(widget.videoUrl),
-    )..initialize().then((_) {
-      _controller.play();
-      setState(() {});
-    });
+    _chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+      autoInitialize: true,
+      looping: true,
+      errorBuilder: (context, errorMessage) {
+        return Center(
+          child: Text(
+            errorMessage,
+            style: TextStyle(color: Colors.white),
+          ),
+        );
+      },
+    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    videoPlayerController.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: _controller.value.isInitialized
-          ? AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: VideoPlayer(_controller),
-      )
-          : const Center(
-        child: CircularProgressIndicator(),
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      controller: ScrollController(),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Chewie(
+          controller: _chewieController,
+        ),
       ),
     );
   }
