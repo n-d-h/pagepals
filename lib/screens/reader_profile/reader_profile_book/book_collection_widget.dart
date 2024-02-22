@@ -13,8 +13,8 @@ class _BookCollectionWidgetState extends State<BookCollectionWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.all(SpaceHelper.space8),
+      width: MediaQuery.of(context).size.width * 0.9,
+      margin: const EdgeInsets.only(bottom: 10),
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -22,17 +22,18 @@ class _BookCollectionWidgetState extends State<BookCollectionWidget> {
           Image(
             image: AssetImage('assets/image_rabbit.png'),
             fit: BoxFit.cover,
-            width: 100,
+            width: 80,
           ),
           SizedBox(
             width: SpaceHelper.space8,
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               TextWidget(
-                length: 230,
+                length: 220,
+                height: 45,
                 content: 'Thỏ Bảy Màu Và Những Người Nghĩ Nó Là Bạn',
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
@@ -40,22 +41,13 @@ class _BookCollectionWidgetState extends State<BookCollectionWidget> {
                 fontWeight: FontWeight.bold,
               ),
               TextWidget(
-                length: 230,
-                height: 70,
+                length: 220,
+                height: 50,
                 content: 'Author Name',
                 overflow: TextOverflow.ellipsis,
                 fontSize: SpaceHelper.space14,
                 maxLines: 1,
                 softWrap: false,
-              ),
-              TextWidget(
-                length: 230,
-                content: '15000VND',
-                overflow: TextOverflow.ellipsis,
-                fontSize: SpaceHelper.space14,
-                maxLines: 1,
-                softWrap: false,
-                fontWeight: FontWeight.bold,
               ),
             ],
           ),

@@ -11,6 +11,8 @@ class CommentCollectionWidget extends StatefulWidget {
 }
 
 class _CommentCollectionWidgetState extends State<CommentCollectionWidget> {
+  bool showFullComment = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,28 +27,28 @@ class _CommentCollectionWidgetState extends State<CommentCollectionWidget> {
         ),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 20,
             backgroundImage: AssetImage('assets/image_reader.png'),
           ),
-          SizedBox(width: SpaceHelper.space10),
+          const SizedBox(width: SpaceHelper.space10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 '@builevanminh',
                 style: TextStyle(
                   fontSize: SpaceHelper.fontSize10,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: SpaceHelper.space8),
-              Row(children: [
+              const SizedBox(height: SpaceHelper.space8),
+              const Row(children: [
                 Image(image: AssetImage('assets/image_vn.png')),
                 SizedBox(width: SpaceHelper.space4),
                 Text(
@@ -57,24 +59,40 @@ class _CommentCollectionWidgetState extends State<CommentCollectionWidget> {
                 ),
               ]),
               SizedBox(height: SpaceHelper.space8),
-              Text(
+              const Text(
                 '2 months ago',
                 style: TextStyle(
                   fontSize: SpaceHelper.fontSize10,
                 ),
               ),
-              SizedBox(height: SpaceHelper.space8),
+              const SizedBox(height: SpaceHelper.space8),
               TextWidget(
-                length: 240,
+                length: 200,
+                height: showFullComment ? 160 : 50,
                 content: 'Giọng đọc hay, lôi cuốn, nghe không biết chán, đẹp trai, có múi, da ngăm giọng trầm đeo kính cận, lịch sự, take care tốt khách hàng',
                 overflow: TextOverflow.ellipsis,
-                maxLines: 4,
-                softWrap: false,
+                maxLines: showFullComment ? 10 : 2,
+                softWrap: true,
                 fontSize: SpaceHelper.fontSize12,
-              )
+              ),
+              const SizedBox(height: SpaceHelper.space4),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showFullComment = !showFullComment;
+                  });
+                },
+                child: Text(
+                  showFullComment ? 'Less' : 'More',
+                  style: const TextStyle(
+                    fontSize: SpaceHelper.fontSize10,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
             ],
           ),
-          Row(
+          const Row(
             children: [
               Icon(
                 Icons.star,

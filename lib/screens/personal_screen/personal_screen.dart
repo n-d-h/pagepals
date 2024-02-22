@@ -15,9 +15,9 @@ class _PersonalScreenState extends State<PersonalScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: 140,
+        toolbarHeight: 200,
         flexibleSpace: Container(
-          height: 500,
+          height: 600,
           decoration: BoxDecoration(
             color: ColorHelper.getColor(ColorHelper.greenActive),
           ),
@@ -48,8 +48,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 12),
-              Text(
+              const SizedBox(height: 12),
+              const Text(
                 'MinMin',
                 style: TextStyle(
                   fontSize: 24,
@@ -138,7 +138,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     () {},
               ),
               // logout button
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               Container(
                 margin: const EdgeInsets.only(
                   left: 16,

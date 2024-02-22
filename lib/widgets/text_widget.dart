@@ -27,11 +27,11 @@ class TextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: length ?? 200.0,
-      height: height ?? 50.0,
+      height: height ?? 40.0,
       child: Text(
         content ?? '',
         style: TextStyle(
-          fontSize: fontSize ?? SpaceHelper.space16,
+          fontSize: fontSize ?? SpaceHelper.space14,
           fontWeight: fontWeight ?? FontWeight.normal,
         ),
         overflow: overflow ?? TextOverflow.visible,

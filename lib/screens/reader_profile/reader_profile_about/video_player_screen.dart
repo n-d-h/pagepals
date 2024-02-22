@@ -20,19 +20,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
-    _chewieController = ChewieController(
-      videoPlayerController: videoPlayerController,
-      autoInitialize: true,
-      looping: true,
-      errorBuilder: (context, errorMessage) {
-        return Center(
-          child: Text(
-            errorMessage,
-            style: TextStyle(color: Colors.white),
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -50,7 +37,19 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       child: AspectRatio(
         aspectRatio: 16 / 9,
         child: Chewie(
-          controller: _chewieController,
+          controller: ChewieController(
+            videoPlayerController: videoPlayerController,
+            autoInitialize: true,
+            looping: true,
+            errorBuilder: (context, errorMessage) {
+              return Center(
+                child: Text(
+                  errorMessage,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

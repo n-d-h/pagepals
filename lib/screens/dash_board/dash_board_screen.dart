@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
 import 'package:pagepals/screens/message_screen/message_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/personal_screen/personal_screen.dart';
+import 'package:pagepals/screens/reader_screen/reader_screen.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
-import 'package:pagepals/screens/signin_screen/signin_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -26,7 +27,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   List<Widget> listScreens() {
     return [
       const HomeScreen(),
-      const MessageScreen(),
+      const ReaderScreen(),
       const SearchScreen(),
       const OrderScreen(),
       const PersonalScreen(),
@@ -39,12 +40,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       label: "Home",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.message),
-      label: "Message",
+      icon: Icon(Icons.search_rounded),
+      label: "Readers",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.search_rounded),
-      label: "Search",
+      icon: Icon(FontAwesomeIcons.book),
+      label: "Books",
     ),
     const BottomNavigationBarItem(
       icon: Icon(Icons.task),

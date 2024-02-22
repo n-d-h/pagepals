@@ -165,7 +165,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
       context: context,
       builder: (context) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.9,
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(SpaceHelper.space16),
           child: Column(

@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:pagepals/models/book_model.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:pagepals/models/book_model.dart';
 
 class BookService {
-
   static const String baseUrl = 'https://pagepals.azurewebsites.net/graphql';
 
   static Future<List<BookModel>> getAllBooks() async {
@@ -16,28 +16,28 @@ class BookService {
           }
         ) {
           list {
-          id,
-              title,
-              longTitle,
-              author,
-              publisher,
-              pages,
-              language,
-              overview,
-              imageUrl,
-              edition,
-              status,
-              createdAt,
-              category { 
-                  id,
-                  name,
-                  description
-              },
-              chapters {
-                  id,
-                  chapterNumber,
-                  pages
-              }
+            id,
+            title,
+            longTitle,
+            author,
+            publisher,
+            pages,
+            language,
+            overview,
+            imageUrl,
+            edition,
+            status,
+            createdAt,
+            category { 
+                id,
+                name,
+                description
+            },
+            chapters {
+                id,
+                chapterNumber,
+                pages
+            }
           },
           pagination {
               totalOfPages,
@@ -58,9 +58,10 @@ class BookService {
     );
 
     if (response.statusCode == 200) {
-      var data = response.body;
-      var dataJsonParam = json.decode(data);
-      var dataJson = json.decode(data)['data']['getListBook']['list'].map((x) => BookModel.fromJson(x)).toList();
+      var responseData = json.decode(response.body);
+      var dataJson = responseData['data']['getListBook']['list']
+          .map((x) => BookModel.fromJson(x))
+          .toList();
       return List<BookModel>.from(dataJson);
     } else {
       throw Exception('Failed to load books');

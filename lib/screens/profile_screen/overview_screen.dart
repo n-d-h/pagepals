@@ -234,7 +234,9 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                               child: const Text(
                                 '5.0',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 15),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                ),
                               ),
                             )
                           ],
@@ -246,8 +248,9 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                           const Text(
                             'Reader communication level',
                             style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: SpaceHelper.fontSize14),
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
                           ),
                           Row(
                             children: [
@@ -277,8 +280,9 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                             const Text(
                               'Clear and easy to understand explanation',
                               style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: SpaceHelper.fontSize14),
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
                             ),
                             Row(
                               children: [
@@ -309,8 +313,9 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                             const Text(
                               'Service as described',
                               style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: SpaceHelper.fontSize14),
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
                             ),
                             Row(
                               children: [
@@ -569,8 +574,10 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
                                   width: 300,
-                                  margin: const EdgeInsets.fromLTRB(2, 10, 25, 10),
-                                  padding: const EdgeInsets.only(top: 0, bottom: 14),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(2, 10, 25, 10),
+                                  padding:
+                                      const EdgeInsets.only(top: 0, bottom: 14),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(12),
@@ -585,9 +592,12 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                       onTap: () {
                                         Navigator.of(context).push(
                                           PageTransition(
-                                            child: const ProfileOverviewScreen(),
-                                            type: PageTransitionType.bottomToTop,
-                                            duration: const Duration(milliseconds: 300),
+                                            child:
+                                                const ProfileOverviewScreen(),
+                                            type:
+                                                PageTransitionType.bottomToTop,
+                                            duration: const Duration(
+                                                milliseconds: 300),
                                           ),
                                         );
                                       },
@@ -599,46 +609,57 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                             decoration: const BoxDecoration(
                                                 color: Colors.green,
                                                 borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(12),
-                                                    topRight: Radius.circular(12))),
+                                                    topLeft:
+                                                        Radius.circular(12),
+                                                    topRight:
+                                                        Radius.circular(12))),
                                           ),
                                           Container(
                                             alignment: Alignment.topLeft,
-                                            margin:
-                                            const EdgeInsets.fromLTRB(0, 159, 16, 0),
+                                            margin: const EdgeInsets.fromLTRB(
+                                                0, 159, 16, 0),
                                             child: Column(
                                               // crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Row(
                                                       children: [
                                                         Container(
-                                                          margin: const EdgeInsets.only(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
                                                             left: 16,
                                                             right: 8,
                                                           ),
                                                           width: 35,
                                                           height: 35,
-                                                          decoration: const BoxDecoration(
-                                                            shape: BoxShape.circle,
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
                                                             image: DecorationImage(
                                                                 image: AssetImage(
                                                                     'assets/google.png'),
-                                                                fit: BoxFit.fitHeight),
+                                                                fit: BoxFit
+                                                                    .fitHeight),
                                                           ),
                                                         ),
                                                         const Column(
                                                           crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
                                                             Text(
                                                               'User name',
                                                               style: TextStyle(
                                                                 fontSize: 12,
-                                                                fontWeight: FontWeight.bold,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
                                                               ),
                                                             ),
                                                             Text(
@@ -646,8 +667,10 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                                               style: TextStyle(
                                                                   fontSize: 10,
                                                                   fontWeight:
-                                                                  FontWeight.w500,
-                                                                  color: Colors.grey),
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .grey),
                                                             ),
                                                           ],
                                                         ),
@@ -656,34 +679,42 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                                     IconButton(
                                                         onPressed: () {
                                                           setState(() {
-                                                            _clicked = !_clicked;
+                                                            _clicked =
+                                                                !_clicked;
                                                           });
                                                         },
                                                         icon: Icon(
                                                           _clicked
                                                               ? Icons.favorite
-                                                              : Icons.favorite_border_sharp,
+                                                              : Icons
+                                                                  .favorite_border_sharp,
                                                           size: 25,
-                                                          color: _clicked ? Colors.red : Colors.black12,
+                                                          color: _clicked
+                                                              ? Colors.red
+                                                              : Colors.black12,
                                                         ))
                                                   ],
                                                 ),
                                                 Container(
-                                                  margin: const EdgeInsets.symmetric(
-                                                      horizontal: 16, vertical: 0),
+                                                  margin: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 0),
                                                   child: const Text(
                                                     'Đẹp trai, 6 múi, giọng trầm ấm, '
-                                                        'với chất giọng miền Bắc cực chảy nước, '
-                                                        'đọc được nhiều thể loại sách khác nhau. '
-                                                        'Có thể đáp ứng mọi yêu cầu của User',
+                                                    'với chất giọng miền Bắc cực chảy nước, '
+                                                    'đọc được nhiều thể loại sách khác nhau. '
+                                                    'Có thể đáp ứng mọi yêu cầu của User',
                                                     textAlign: TextAlign.start,
                                                     maxLines: 3,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       // wordSpacing: 1,
                                                       height: 1.4,
                                                       fontSize: 12,
-                                                      fontWeight: FontWeight.normal,
+                                                      fontWeight:
+                                                          FontWeight.normal,
                                                     ),
                                                   ),
                                                 )
@@ -692,32 +723,37 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                           ),
                                           Container(
                                             alignment: Alignment.bottomCenter,
-                                            padding:
-                                            const EdgeInsets.symmetric(horizontal: 16),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Icon(
                                                       Icons.star_rounded,
                                                       color:
-                                                      ColorHelper.getColor('#FFA800'),
+                                                          ColorHelper.getColor(
+                                                              '#FFA800'),
                                                       size: 20,
                                                     ),
                                                     Container(
                                                       margin:
-                                                      const EdgeInsets.only(left: 2),
+                                                          const EdgeInsets.only(
+                                                              left: 2),
                                                       child: Text(
                                                         '5.0',
                                                         style: TextStyle(
-                                                          fontWeight: FontWeight.w900,
+                                                          fontWeight:
+                                                              FontWeight.w900,
                                                           fontSize: 12,
-                                                          color: ColorHelper.getColor(
-                                                              '#FFA800'),
+                                                          color: ColorHelper
+                                                              .getColor(
+                                                                  '#FFA800'),
                                                         ),
                                                       ),
                                                     )
@@ -727,17 +763,23 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                                     text: const TextSpan(
                                                         text: 'From   ',
                                                         style: TextStyle(
-                                                            color: Colors.black26,
+                                                            color:
+                                                                Colors.black26,
                                                             fontSize: 9,
-                                                            fontWeight: FontWeight.w500),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
                                                         children: [
-                                                          TextSpan(
-                                                              text: "15000 VND",
-                                                              style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 12,
-                                                                  fontWeight: FontWeight.w600))
-                                                        ]))
+                                                      TextSpan(
+                                                          text: "15000 VND",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600))
+                                                    ]))
                                               ],
                                             ),
                                           )

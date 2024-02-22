@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pagepals/screens/search_screen/book_tab_screen.dart';
+import 'package:pagepals/screens/search_screen/reader_tab_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -39,14 +41,10 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ],
         ),
-        body: const TabBarView(
-          children: <Widget>[
-            Center(
-              child: Text("Reader tab"),
-            ),
-            Center(
-              child: Text("Books tab"),
-            ),
+        body: TabBarView(
+          children: [
+            ReaderTabScreen(),
+            BookTabScreen()
           ],
         ),
       ),
