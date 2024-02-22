@@ -5,6 +5,7 @@ import 'package:pagepals/helpers/constant.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/home_screen/explore_screen.dart';
 import 'package:pagepals/screens/home_screen/notification_screen.dart';
+import 'package:pagepals/screens/home_screen/popular_reader_widget.dart';
 import 'package:pagepals/screens/home_screen/welcome_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               WelcomeWidget(),
+              PopularReaderWidget(),
               ExploreScreen(),
             ],
           ),

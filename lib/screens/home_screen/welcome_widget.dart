@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 
 class WelcomeWidget extends StatelessWidget {
@@ -27,22 +28,32 @@ class WelcomeWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.person,
+          const Icon(
+            Icons.account_circle_outlined,
             size: 80.0,
-            color: Colors.black,
+            color: Colors.black54,
           ),
-          SizedBox(height: SpaceHelper.space24),
-          Text(
-            'Welcome back, Guest!',
-            style: TextStyle(
-              fontSize: SpaceHelper.fontSize18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          const SizedBox(height: SpaceHelper.space8),
+          RichText(
+            text: TextSpan(
+                text: 'Welcome back, ',
+                style: const TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+                ),
+                children: [
+                  TextSpan(
+                      text: 'Guest',
+                      style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                          color: ColorHelper.getColor(ColorHelper.green)))
+                ]),
+          )
         ],
       ),
     );
