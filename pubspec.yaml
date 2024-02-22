@@ -15,6 +15,7 @@ dependencies:
   flutter_chat_ui:
   file_picker:
   image_picker:
+  http: ^1.2.0
   uuid:
   open_filex:
   path_provider:

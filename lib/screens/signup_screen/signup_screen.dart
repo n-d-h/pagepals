@@ -98,7 +98,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               child: Text(
                                 'Continue with Facebook',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -137,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               child: Text(
                                 'Continue with Google',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -173,7 +173,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           'Create PagePals account',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: FontWeight.w600,
                           ),
                         )),

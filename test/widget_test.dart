@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pagepals/main.dart';
+import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/services/book_service.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -26,5 +28,10 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+  });
+
+  test("test call api", () async {
+    List<BookModel> books = await BookService.getAllBooks();
+    expect(books.length, 0);
   });
 }
