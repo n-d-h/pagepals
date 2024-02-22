@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/screens/reader_profile/reader_profile_about/reader_about_tabbar.dart';
-import 'package:pagepals/screens/reader_profile/reader_profile_book/reader_book_tabbar.dart';
-import 'package:pagepals/screens/reader_profile/reader_profile_review/reader_review_tabbar.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_about/reader_about_tabbar.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_book/reader_book_tabbar.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_review/reader_review_tabbar.dart';
 
 class ReaderProfile extends StatefulWidget {
   const ReaderProfile({super.key});

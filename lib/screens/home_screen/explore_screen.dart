@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/screens/profile_screen/overview_screen.dart';
-import 'package:pagepals/screens/reader_profile/reader_profile_about/reader_about_tabbar.dart';
-import 'package:pagepals/screens/reader_profile/reader_profile.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -78,17 +75,15 @@ class ExploreScreen extends StatelessWidget {
           const SizedBox(height: SpaceHelper.space24),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(
-                PageTransition(
-                //   child: const ProfileOverviewScreen(),
-                //   type: PageTransitionType.bottomToTop,
-                //   duration: const Duration(milliseconds: 300)
-                // )
-                  child: const ReaderProfile(),
-                  type: PageTransitionType.rightToLeft,
-                  duration: const Duration(milliseconds: 300),
-                ),
-              );
+              // TODO: Navigate to list of readers
+              // Navigator.of(context).push(
+              //   PageTransition(
+              //   //   child: const ProfileOverviewScreen(),
+              //   //   type: PageTransitionType.bottomToTop,
+              //   //   duration: const Duration(milliseconds: 300)
+              //   // )
+              //   ),
+              // );
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: ColorHelper.getColor(ColorHelper.white),

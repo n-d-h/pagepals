@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/screens/reader_profile/reader_profile_review/comment_collection_widget.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_review/comment_collection_widget.dart';
 
 class ReaderReviewTabbar extends StatefulWidget {
   const ReaderReviewTabbar({super.key});

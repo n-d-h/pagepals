@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile.dart';
+import 'package:pagepals/screens/reader_screen/reader_widget.dart';
 
 class ReaderScreen extends StatefulWidget {
   const ReaderScreen({super.key});
@@ -16,8 +19,35 @@ class _ReaderScreenState extends State<ReaderScreen> {
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text('Reader'),
+      body: SingleChildScrollView(
+        controller: ScrollController(),
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            ReaderWidget(
+              onTap: () {
+                Navigator.of(context).push(
+                  PageTransition(
+                    type: PageTransitionType.bottomToTop,
+                    child: const ReaderProfile(),
+                    duration: const Duration(milliseconds: 500),
+                  ),
+                );
+              },
+            ),
+            ReaderWidget(
+              onTap: () {
+                Navigator.of(context).push(
+                  PageTransition(
+                    type: PageTransitionType.bottomToTop,
+                    child: const ReaderProfile(),
+                    duration: const Duration(milliseconds: 500),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

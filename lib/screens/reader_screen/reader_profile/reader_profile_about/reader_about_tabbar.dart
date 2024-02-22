@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/screens/reader_profile/reader_profile_about/video_player_screen.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_about/video_player_screen.dart';
 
 class ReaderAboutTabbar extends StatelessWidget {
   const ReaderAboutTabbar({super.key});

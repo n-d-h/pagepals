@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/screens/reader_profile/reader_profile_book/book_collection_widget.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_book/book_collection_widget.dart';
 
 class ReaderBookTabbar extends StatefulWidget {
   const ReaderBookTabbar({super.key});
