@@ -1,0 +1,86 @@
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:pagepals/main.dart';
+import 'package:pagepals/models/popular_reader_model.dart';
+
+class ReaderService {
+  static GraphQLClient graphQLClient = client!.value;
+  static Future<List<PopularReader>> getPopularReaders() async {
+    var query = '''
+    query {
+       getListPopularReaders {
+          language
+          rating
+          countryAccent
+          description
+          experience
+          genre
+          id
+          nickname
+          services {
+            price
+            totalOfReview
+          } 
+          introductionVideoUrl
+          totalOfReviews
+          account {
+            customer {
+              imageUrl
+            }         
+          }
+       }
+    }
+  ''';
+    return _fetchPopularReader(query);
+  }
+
+  static Future<List<PopularReader>> _fetchPopularReader(String query) async {
+    final QueryResult result =
+        await graphQLClient.query(QueryOptions(document: gql(query)));
+
+    if (result.hasException) {
+      throw Exception('Failed to load readers');
+    }
+
+    final List<dynamic>? readersData = result.data?['getListPopularReaders'];
+    if (readersData != null) {
+      return readersData
+          .map((readerJson) => PopularReader.fromJson(readerJson))
+          .toList();
+    } else {
+      throw Exception('Failed to load read Data');
+    }
+  }
+
+  // static Future<void> getReaderProfile(String id) {
+  //     String query = '''
+  //         query {
+  //           getReaderProfile(id: "8bd6001e-c19d-4e89-8be0-7f89e7cdaba8") {
+  //             profile {
+  //               audioDescriptionUrl
+  //               countryAccent
+  //               description
+  //               experience
+  //               genre
+  //               id
+  //               introductionVideoUrl
+  //               language
+  //               nickname
+  //               rating
+  //               tags
+  //               totalOfBookings
+  //               totalOfReviews
+  //             }
+  //             workingTimeList {
+  //               workingDates {
+  //                 date
+  //                 timeSlots {
+  //                   startTime
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //     ''';
+  //      // return null;
+  // }
+}

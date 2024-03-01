@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/screens/signin_screen/signin_intro/signin_home.dart';
 
 class PersonalScreen extends StatefulWidget {
   const PersonalScreen({super.key});
@@ -169,7 +171,15 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     Icons.arrow_forward_ios,
                     color: ColorHelper.getColor(ColorHelper.black),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        child: const SigninHomeScreen(),
+                        type: PageTransitionType.bottomToTop,
+                        duration: const Duration(milliseconds: 300),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

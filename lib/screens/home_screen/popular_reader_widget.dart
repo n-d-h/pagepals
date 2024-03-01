@@ -3,6 +3,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/profile_screen/overview_screen.dart';
+import 'package:pagepals/models/popular_reader_model.dart';
+import 'package:pagepals/services/reader_service.dart';
 
 class PopularReaderWidget extends StatefulWidget {
   const PopularReaderWidget({super.key});
@@ -12,7 +14,23 @@ class PopularReaderWidget extends StatefulWidget {
 }
 
 class _PopularReaderWidgetState extends State<PopularReaderWidget> {
-  bool _clicked = false;
+  late List<bool> _clickedList;
+  List<PopularReader> readers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _clickedList = [];
+    getListPopularReaders();
+  }
+
+  Future<void> getListPopularReaders() async {
+    var list = await ReaderService.getPopularReaders();
+    setState(() {
+      readers = list;
+      _clickedList = List.generate(readers.length, (index) => false);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +64,20 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
           ),
           SizedBox(
             height: 320,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                      width: 300,
-                      margin: const EdgeInsets.fromLTRB(2, 10, 25, 10),
-                      padding: const EdgeInsets.only(top: 0, bottom: 14),
-                      decoration: BoxDecoration(
+            child: readers.isEmpty
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: readers.length,
+                    itemBuilder: (context, index) {
+                      var reader = readers[index];
+                      return Container(
+                        width: 300,
+                        margin: const EdgeInsets.fromLTRB(2, 10, 25, 10),
+                        padding: const EdgeInsets.only(top: 0, bottom: 14),
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: const [
@@ -63,12 +86,13 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                               blurRadius: 8,
                               offset: Offset(0, 5),
                             )
-                          ]),
-                      child: InkWell(
+                          ],
+                        ),
+                        child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(
                               PageTransition(
-                                child: const ProfileOverviewScreen(),
+                                child: ProfileOverviewScreen(readerId: reader.id!,),
                                 type: PageTransitionType.bottomToTop,
                                 duration: const Duration(milliseconds: 300),
                               ),
@@ -80,17 +104,18 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                 alignment: Alignment.topCenter,
                                 height: 160,
                                 decoration: const BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(12),
-                                        topRight: Radius.circular(12))),
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    topRight: Radius.circular(12),
+                                  ),
+                                ),
                               ),
                               Container(
                                 alignment: Alignment.topLeft,
                                 margin:
                                     const EdgeInsets.fromLTRB(0, 159, 16, 0),
                                 child: Column(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       mainAxisAlignment:
@@ -108,52 +133,60 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                               decoration: const BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/google.png'),
-                                                    fit: BoxFit.fitHeight),
+                                                  image: AssetImage(
+                                                    'assets/google.png',
+                                                  ),
+                                                  fit: BoxFit.fitHeight,
+                                                ),
                                               ),
                                             ),
-                                            const Column(
+                                            Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  'User name',
-                                                  style: TextStyle(
+                                                  reader.nickname!,
+                                                  style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                                 Text(
-                                                  'Northern dialect Vietnamese',
-                                                  style: TextStyle(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.grey),
+                                                  reader.countryAccent!,
+                                                  style: const TextStyle(
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ],
                                         ),
                                         IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                _clicked = !_clicked;
-                                              });
-                                            },
-                                            icon: Icon(
-                                              _clicked
-                                                  ? Icons.favorite
-                                                  : Icons.favorite_border_sharp,
-                                              size: 25,
-                                              color: _clicked ? Colors.red : Colors.black12,
-                                            ))
+                                          onPressed: () {
+                                            setState(() {
+                                              _clickedList[index] =
+                                                  !_clickedList[index];
+                                            });
+                                          },
+                                          icon: Icon(
+                                            _clickedList[index]
+                                                ? Icons.favorite
+                                                : Icons.favorite_border_sharp,
+                                            size: 25,
+                                            color: _clickedList[index]
+                                                ? Colors.red
+                                                : Colors.black12,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     Container(
                                       margin: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 0),
+                                        horizontal: 16,
+                                        vertical: 0,
+                                      ),
                                       child: const Text(
                                         'Đẹp trai, 6 múi, giọng trầm ấm, '
                                         'với chất giọng miền Bắc cực chảy nước, '
@@ -163,7 +196,6 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          // wordSpacing: 1,
                                           height: 1.4,
                                           fontSize: 12,
                                           fontWeight: FontWeight.normal,
@@ -175,8 +207,9 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                               ),
                               Container(
                                 alignment: Alignment.bottomCenter,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -184,6 +217,8 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.star_rounded,
@@ -195,7 +230,7 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                           margin:
                                               const EdgeInsets.only(left: 2),
                                           child: Text(
-                                            '5.0',
+                                            '${reader.rating!}.0',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w900,
                                               fontSize: 12,
@@ -203,31 +238,51 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                                   '#FFA800'),
                                             ),
                                           ),
-                                        )
+                                        ),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 1),
+                                          child: Text(
+                                            ' (${reader.totalOfReviews})',
+                                            style: const TextStyle(
+                                              color: Colors.black26,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     RichText(
-                                        text: const TextSpan(
-                                            text: 'From   ',
-                                            style: TextStyle(
-                                                color: Colors.black26,
-                                                fontSize: 9,
-                                                fontWeight: FontWeight.w500),
-                                            children: [
+                                      text: const TextSpan(
+                                        text: 'From   ',
+                                        style: TextStyle(
+                                          color: Colors.black26,
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        children: [
                                           TextSpan(
-                                              text: "15000 VND",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600))
-                                        ]))
+                                            text: "15000 VND",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
-                          )));
-                }),
-          )
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+          ),
         ],
       ),
     );

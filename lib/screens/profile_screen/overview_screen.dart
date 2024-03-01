@@ -5,14 +5,24 @@ import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
 
 class ProfileOverviewScreen extends StatefulWidget {
-  const ProfileOverviewScreen({super.key});
+  final String readerId;
+
+  const ProfileOverviewScreen({super.key, required this.readerId});
 
   @override
   State<ProfileOverviewScreen> createState() => _ProfileOverviewScreenState();
 }
 
 class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
-  bool _clicked = false;
+  final List<bool> _clickedList = List.generate(5, (index) => false);
+  late String readerId;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readerId = widget.readerId;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -593,7 +603,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                         Navigator.of(context).push(
                                           PageTransition(
                                             child:
-                                                const ProfileOverviewScreen(),
+                                                const ProfileOverviewScreen(readerId: '',),
                                             type:
                                                 PageTransitionType.bottomToTop,
                                             duration: const Duration(
@@ -677,22 +687,26 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                                       ],
                                                     ),
                                                     IconButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            _clicked =
-                                                                !_clicked;
-                                                          });
-                                                        },
-                                                        icon: Icon(
-                                                          _clicked
-                                                              ? Icons.favorite
-                                                              : Icons
-                                                                  .favorite_border_sharp,
-                                                          size: 25,
-                                                          color: _clicked
-                                                              ? Colors.red
-                                                              : Colors.black12,
-                                                        ))
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _clickedList[index] =
+                                                              !_clickedList[
+                                                                  index];
+                                                        });
+                                                      },
+                                                      icon: Icon(
+                                                        _clickedList[index]
+                                                            ? Icons.favorite
+                                                            : Icons
+                                                                .favorite_border_sharp,
+                                                        size: 25,
+                                                        color:
+                                                            _clickedList[index]
+                                                                ? Colors.red
+                                                                : Colors
+                                                                    .black12,
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
                                                 Container(
@@ -755,6 +769,21 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                                               .getColor(
                                                                   '#FFA800'),
                                                         ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 1),
+                                                      child: const Text(
+                                                        ' (158)',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black26,
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
                                                     )
                                                   ],

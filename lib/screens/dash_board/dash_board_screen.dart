@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
-import 'package:pagepals/screens/message_screen/message_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/personal_screen/personal_screen.dart';
 import 'package:pagepals/screens/reader_screen/reader_screen.dart';
@@ -63,18 +62,28 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     final bottomNavigationBarItems = navigatorItems;
 
     return Scaffold(
-      body: screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() {
-          _currentIndex = index;
-        }),
-        items: bottomNavigationBarItems,
-        selectedItemColor: ColorHelper.getColor(ColorHelper.normal),
-        unselectedItemColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-      ),
-    );
+        body: screens[_currentIndex],
+        bottomNavigationBar: Container(
+            margin: const EdgeInsets.fromLTRB(12, 0, 12, 15),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12, spreadRadius: 2, blurRadius: 3),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              child: BottomNavigationBar(
+                currentIndex: _currentIndex,
+                onTap: (index) => setState(() {
+                  _currentIndex = index;
+                }),
+                items: bottomNavigationBarItems,
+                selectedItemColor: ColorHelper.getColor(ColorHelper.green),
+                unselectedItemColor: Colors.grey,
+                type: BottomNavigationBarType.fixed,
+              ),
+            )));
   }
 }

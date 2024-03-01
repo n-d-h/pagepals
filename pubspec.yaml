@@ -25,6 +25,11 @@ dependencies:
   flutter_verification_code_field: ^1.0.4
   video_player: ^2.8.2
   chewie: ^1.7.4
+  graphql_flutter: ^5.2.0-beta.6
+  quickalert: ^1.0.2
+  google_sign_in: ^6.2.1
+  firebase_auth: ^4.17.6
+  firebase_core: ^2.25.5
 
 dev_dependencies:
   flutter_test:

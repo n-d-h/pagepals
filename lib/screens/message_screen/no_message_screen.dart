@@ -3,7 +3,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/message_screen/message_chat_screen.dart';
-import 'package:pagepals/screens/message_screen/message_filter.dart';
 
 class NoMessageWidget extends StatelessWidget {
   const NoMessageWidget({super.key});

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "71921906796",
+    "project_id": "authen-6cf1b",
+    "storage_bucket": "authen-6cf1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71921906796:android:e7a8ac41e42b4db8e65449",
+        "android_client_info": {
+          "package_name": "com.paypals.pagepals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71921906796-gi3gf7um88pb59t6qbmvstbgk7mb7knq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.paypals.pagepals",
+            "certificate_hash": "554ed5c2231035b26d0eafadddb489c94cb6bf24"
+          }
+        },
+        {
+          "client_id": "71921906796-sjn75qrbjdh23kjtb8e9s6jkjvvlufi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADJzynOfE9h31Tyv3Bc9pq_mUruyq_pVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71921906796-sjn75qrbjdh23kjtb8e9s6jkjvvlufi3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "71921906796-00tb2nnrmm094cb96b7hkfklatiom9dt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.paypals.pagepals"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

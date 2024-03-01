@@ -3,7 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
-import 'package:pagepals/screens/signin_screen/signin_screen.dart';
+import 'package:pagepals/screens/signin_screen/signin_main/signin_screen.dart';
 import 'package:pagepals/screens/signup_screen/verify_code.dart';
 import 'package:pagepals/screens/signup_screen/verify_email.dart';
 
