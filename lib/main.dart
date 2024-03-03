@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pagepals/firebase_options.dart';
+import 'package:pagepals/providers/cart_provider.dart';
+import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 // Declare client as a global variable
 ValueNotifier<GraphQLClient>? client;
@@ -27,7 +30,10 @@ Future<void> main() async {
     ),
   );
 
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => GoogleSignInProvider()),
+    ChangeNotifierProvider(create: (_) => CartProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
