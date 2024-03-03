@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/screens/signup_screen/profile_screen.dart';
-import 'package:pagepals/screens/signup_screen/signup_screen.dart';
 import 'package:pagepals/screens/signup_screen/verify_code.dart';
 
 class VerifyEmailScreen extends StatefulWidget {

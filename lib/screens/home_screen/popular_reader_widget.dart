@@ -3,7 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/profile_screen/overview_screen.dart';
-import 'package:pagepals/models/popular_reader_model.dart';
+import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/services/reader_service.dart';
 
 class PopularReaderWidget extends StatefulWidget {
