@@ -1,9 +1,11 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
-import 'package:pagepals/models/popular_reader_model.dart';
+import 'package:pagepals/models/reader_models/popular_reader_model.dart';
+import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 
 class ReaderService {
   static GraphQLClient graphQLClient = client!.value;
+
   static Future<List<PopularReader>> getPopularReaders() async {
     var query = '''
     query {
@@ -51,36 +53,74 @@ class ReaderService {
     }
   }
 
-  // static Future<void> getReaderProfile(String id) {
-  //     String query = '''
-  //         query {
-  //           getReaderProfile(id: "8bd6001e-c19d-4e89-8be0-7f89e7cdaba8") {
-  //             profile {
-  //               audioDescriptionUrl
-  //               countryAccent
-  //               description
-  //               experience
-  //               genre
-  //               id
-  //               introductionVideoUrl
-  //               language
-  //               nickname
-  //               rating
-  //               tags
-  //               totalOfBookings
-  //               totalOfReviews
-  //             }
-  //             workingTimeList {
-  //               workingDates {
-  //                 date
-  //                 timeSlots {
-  //                   startTime
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //     ''';
-  //      // return null;
-  // }
+  static Future<ReaderProfile?> getReaderProfile(String id) async{
+    String query = '''
+        query{
+          getReaderProfile(id: "$id") {
+            profile {
+              account {
+                username
+              }
+              nickname
+              audioDescriptionUrl
+              countryAccent
+              description
+              experience
+              genre
+              id
+              introductionVideoUrl
+              language
+              rating
+              tags
+              totalOfBookings
+              totalOfReviews
+              services {
+                bookingDetails {
+                  rating
+                  review
+                  description
+                  booking {
+                    customer {
+                      account {
+                        username
+                      }
+                    }
+                  }
+                }
+                chapter {
+                  book {
+                    title
+                  }
+                }
+              }
+            }
+            workingTimeList {
+              workingDates {
+                date
+                timeSlots {
+                  startTime
+                }
+              }
+            }
+          }
+        }
+    ''';
+    return _fetchReaderProfile(query);
+  }
+
+  static Future<ReaderProfile?> _fetchReaderProfile(String query) async {
+    final QueryResult result =
+    await graphQLClient.query(QueryOptions(document: gql(query)));
+
+    if (result.hasException) {
+      throw Exception('Failed to load readers');
+    }
+
+    final readersData = result.data?['getReaderProfile'];
+    if (readersData != null) {
+      return ReaderProfile.fromJson(readersData);
+    } else {
+      throw Exception('Failed to load read Data');
+    }
+  }
 }

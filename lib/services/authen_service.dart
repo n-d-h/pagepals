@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
-import 'package:pagepals/models/account_tokens.dart';
-import 'package:pagepals/models/login_model.dart';
+import 'package:pagepals/models/authen_models/account_tokens.dart';
+import 'package:pagepals/models/authen_models/login_model.dart';
 
 class AuthenService {
   static const String baseUrl = 'https://pagepals.azurewebsites.net/graphql';
