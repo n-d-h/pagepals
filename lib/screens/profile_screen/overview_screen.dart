@@ -3,7 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
-import 'package:pagepals/screens/booking_screen/booking_time.dart';
+import 'package:pagepals/screens/booking_screen/booking_time_screen.dart';
 import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
 import 'package:pagepals/screens/profile_screen/profile_widgets/rating_line.dart';
 import 'package:pagepals/services/reader_service.dart';
@@ -480,7 +480,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                             onPressed: () {
                               Navigator.of(context).push(
                                 PageTransition(
-                                  child: BookingTime(reader: reader,),
+                                  child: BookingTimeScreen(reader: reader,),
                                   type: PageTransitionType.rightToLeft,
                                   duration: const Duration(milliseconds: 200),
                                 ),
