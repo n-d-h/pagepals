@@ -6,6 +6,7 @@ import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/personal_screen/personal_screen.dart';
 import 'package:pagepals/screens/reader_screen/reader_screen.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
+import 'package:unicons/unicons.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -35,23 +36,23 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   final navigatorItems = [
     const BottomNavigationBarItem(
-      icon: Icon(Icons.home),
+      icon: Icon(UniconsLine.home_alt),
       label: "Home",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.search_rounded),
+      icon: Icon(UniconsLine.search),
       label: "Readers",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(FontAwesomeIcons.book),
+      icon: Icon(UniconsLine.book_alt),
       label: "Books",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.task),
-      label: "Order",
+      icon: Icon(UniconsLine.schedule),
+      label: "Booking",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.person_2_rounded),
+      icon: Icon(UniconsLine.user),
       label: "Profile",
     ),
   ];

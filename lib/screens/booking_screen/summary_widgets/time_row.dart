@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 class TimeRowWidget extends StatelessWidget {
   final DateTime time;
+
   const TimeRowWidget({super.key, required this.time});
 
   @override
@@ -12,17 +13,19 @@ class TimeRowWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 15,),
+        const SizedBox(
+          height: 30,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Date & Hour',
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87.withOpacity(0.5),
               ),
             ),
             RichText(

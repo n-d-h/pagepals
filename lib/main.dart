@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/firebase_options.dart';
 import 'package:pagepals/providers/cart_provider.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
@@ -47,7 +48,8 @@ class MyApp extends StatelessWidget {
         title: 'Page Pals',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          fontFamily: GoogleFonts.lexend().fontFamily,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
           useMaterial3: true,
         ),
         home: const SplashScreen(),

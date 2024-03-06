@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/screens/booking_screen/booking_success_screen.dart';
 import 'package:pagepals/screens/booking_screen/booking_widgets/bottom_nav_button.dart';
+import 'package:pagepals/screens/booking_screen/summary_widgets/book_row.dart';
+import 'package:pagepals/screens/booking_screen/summary_widgets/chapter_row.dart';
+import 'package:pagepals/screens/booking_screen/summary_widgets/service_row.dart';
 import 'package:pagepals/screens/booking_screen/summary_widgets/time_row.dart';
+import 'package:pagepals/screens/booking_screen/summary_widgets/wallet_widget.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
+import 'package:pagepals/widgets/space_between_row_widget.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ReviewSummaryScreen extends StatelessWidget {
   final ReaderProfile? reader;
@@ -44,7 +51,16 @@ class ReviewSummaryScreen extends StatelessWidget {
               ReaderInfoWidget(
                 reader: reader,
               ),
-              TimeRowWidget(time: time)
+              TimeRowWidget(time: time),
+              ServiceRowWidget(service: serviceType!),
+              BookRowWidget(book: book!),
+              ChapterRowWidget(chapter: chapter!),
+              const SizedBox(height: 15),
+              const SpaceBetweenRowWidget(start: 'Amount', end: '15.000 VND'),
+              const SpaceBetweenRowWidget(
+                  start: 'Service fees', end: '3.000 VND'),
+              const SpaceBetweenRowWidget(start: 'Total', end: '18.000 VND'),
+              const WalletWidget(),
             ],
           ),
         ),
@@ -52,6 +68,20 @@ class ReviewSummaryScreen extends StatelessWidget {
       bottomNavigationBar: BottomButton(
         onPressed: () {
           // Handle button press action here
+          Navigator.of(context).push(
+            PageTransition(
+              child: BookingSuccessScreen(reader: reader),
+              type: PageTransitionType.rightToLeft,
+              duration: const Duration(milliseconds: 300),
+            ),
+          );
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Success Booking',
+            text: 'Thank you for booking!',
+            autoCloseDuration: const Duration(seconds: 3),
+          );
         }, // Disable button if fields are not selected
         title: 'Pay Now',
         isEnabled: true,
