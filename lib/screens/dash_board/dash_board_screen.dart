@@ -60,31 +60,38 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   Widget build(BuildContext context) {
     final screens = listScreens();
+
     final bottomNavigationBarItems = navigatorItems;
 
     return Scaffold(
         body: screens[_currentIndex],
-        bottomNavigationBar: Container(
-            margin: const EdgeInsets.fromLTRB(12, 0, 12, 15),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black12, spreadRadius: 2, blurRadius: 3),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              child: BottomNavigationBar(
-                currentIndex: _currentIndex,
-                onTap: (index) => setState(() {
-                  _currentIndex = index;
-                }),
-                items: bottomNavigationBarItems,
-                selectedItemColor: ColorHelper.getColor(ColorHelper.green),
-                unselectedItemColor: Colors.grey,
-                type: BottomNavigationBarType.fixed,
+        bottomNavigationBar: Theme(
+          data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: Container(
+              margin: const EdgeInsets.fromLTRB(12, 0, 12, 15),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12, spreadRadius: 2, blurRadius: 3),
+                ],
               ),
-            )));
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                child: BottomNavigationBar(
+                  currentIndex: _currentIndex,
+                  onTap: (index) => setState(() {
+                    _currentIndex = index;
+                  }),
+                  items: bottomNavigationBarItems,
+                  selectedItemColor: ColorHelper.getColor(ColorHelper.green),
+                  unselectedItemColor: Colors.grey,
+                  type: BottomNavigationBarType.fixed,
+                ),
+              )),
+        ));
   }
 }
