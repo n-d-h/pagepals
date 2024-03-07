@@ -30,6 +30,7 @@ class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: true,
       body: GestureDetector(
         onTap: () {
           // Handle tap on screen to dismiss keyboard

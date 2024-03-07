@@ -75,13 +75,15 @@ class ReviewSummaryScreen extends StatelessWidget {
               duration: const Duration(milliseconds: 300),
             ),
           );
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            title: 'Success Booking',
-            text: 'Thank you for booking!',
-            autoCloseDuration: const Duration(seconds: 3),
-          );
+          Future.delayed(const Duration(milliseconds: 300), () {
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.success,
+              title: 'Success Booking',
+              text: 'Thank you for booking!',
+              autoCloseDuration: const Duration(seconds: 3),
+            );
+          });
         }, // Disable button if fields are not selected
         title: 'Pay Now',
         isEnabled: true,

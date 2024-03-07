@@ -12,6 +12,7 @@ class TextWidget extends StatelessWidget {
     this.maxLines,
     this.softWrap,
     this.height,
+    this.color,
   });
 
   final double? length;
@@ -22,6 +23,7 @@ class TextWidget extends StatelessWidget {
   final String? content;
   final int? maxLines;
   final bool? softWrap;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class TextWidget extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize ?? SpaceHelper.space14,
           fontWeight: fontWeight ?? FontWeight.normal,
+          color: color ?? Colors.black,
         ),
         overflow: overflow ?? TextOverflow.visible,
         maxLines: maxLines ?? 1,

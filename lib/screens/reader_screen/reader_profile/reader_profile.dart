@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_about/reader_about_tabbar.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_book/reader_book_tabbar.dart';
@@ -21,6 +23,7 @@ class _ReaderProfileState extends State<ReaderProfile> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               SliverAppBar(
+                backgroundColor: Colors.white,
                 leading: IconButton(
                   onPressed: () {
                     Navigator.of(context).pop(context);
@@ -43,86 +46,100 @@ class _ReaderProfileState extends State<ReaderProfile> {
                   ],
                   background: Container(
                     padding: const EdgeInsets.only(
-                      top: SpaceHelper.space64,
+                      top: 50,
                       bottom: SpaceHelper.space16,
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage('assets/image_reader.png'),
+                        const CircleAvatar(
+                          radius: 45,
+                          backgroundImage:
+                              AssetImage('assets/image_reader.png'),
                         ),
-                        SizedBox(
-                          height: SpaceHelper.space12,
-                        ),
-                        Text(
-                          'Min Min',
+                        const SizedBox(height: SpaceHelper.space12),
+                        const Text(
+                          'Bùi Lễ Văn Minh',
                           style: TextStyle(
                             fontSize: SpaceHelper.fontSize14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
-                          height: SpaceHelper.space4,
-                        ),
-                        Text(
-                          '@builevanminnh',
+                        const Text(
+                          '@minmin',
                           style: TextStyle(
+                            color: Colors.grey,
                             fontSize: SpaceHelper.fontSize12,
                           ),
                         ),
-                        SizedBox(
-                          height: SpaceHelper.space16,
-                        ),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             // star rating
                             Icon(
-                              Icons.star,
-                              color: Colors.yellow,
+                              Icons.star_rounded,
+                              color: ColorHelper.getColor('#FFA800'),
+                              size: 18,
                             ),
+                            const SizedBox(width: 3),
                             Text(
                               '4.5',
                               style: TextStyle(
+                                color: ColorHelper.getColor('#FFA800'),
                                 fontSize: SpaceHelper.fontSize14,
+                                fontWeight: FontWeight.w600
                               ),
                             ),
+                            const SizedBox(width: 3),
                             Text(
                               '(100)',
                               style: TextStyle(
+                                color: Colors.grey.withOpacity(0.5),
                                 fontSize: SpaceHelper.fontSize14,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: SpaceHelper.space8,
                             ),
                             Text(
                               'Northern dialect Vietnamese',
                               style: TextStyle(
+                                color: Colors.black.withOpacity(0.7),
                                 fontSize: SpaceHelper.fontSize14,
                               ),
                             ),
                           ],
-                        )
+                        ),
+                        const SizedBox(height: 12),
                       ],
                     ),
                   ),
                 ),
-                bottom: const MyTabBar(
+                bottom: MyTabBar(
+                  elevation: 0.5,
                   color: Colors.white,
                   tabBar: TabBar(
-                    tabs: [
+                    indicatorColor: ColorHelper.getColor(ColorHelper.green),
+                    labelColor: ColorHelper.getColor(ColorHelper.green),
+                    dividerColor: Colors.white,
+                    labelStyle: GoogleFonts.openSans(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    unselectedLabelColor: Colors.grey.shade400,
+                    // padding: EdgeInsets.symmetric(vertical: 10),
+                    tabs: const [
                       Tab(text: 'About'),
                       Tab(text: 'Book'),
-                      Tab(text: 'Review'),
+                      Tab(text: 'Reviews'),
                     ],
                   ),
                 ),
-                expandedHeight: 260.0,
+                expandedHeight: 265.0,
+                // collapsedHeight: 0,
               ),
             ];
           },
@@ -147,7 +164,8 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
   const MyTabBar({
     Key? key,
     required this.color,
-    required this.tabBar, this.elevation,
+    required this.tabBar,
+    this.elevation,
   }) : super(key: key);
 
   @override

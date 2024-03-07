@@ -43,7 +43,7 @@ class _OrderScreenState extends State<OrderScreen> {
             tabs: const [
               Tab(text: 'Upcoming'),
               Tab(text: 'Completed'),
-              Tab(text: 'Canceled')
+              Tab(text: 'Cancelled')
             ],
           ),
           actions: [
