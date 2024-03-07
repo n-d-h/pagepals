@@ -6,6 +6,7 @@ import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/personal_screen/personal_screen.dart';
 import 'package:pagepals/screens/reader_screen/reader_screen.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
+import 'package:unicons/unicons.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -35,23 +36,23 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   final navigatorItems = [
     const BottomNavigationBarItem(
-      icon: Icon(Icons.home),
+      icon: Icon(UniconsLine.home_alt),
       label: "Home",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.search_rounded),
+      icon: Icon(UniconsLine.search),
       label: "Readers",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(FontAwesomeIcons.book),
+      icon: Icon(UniconsLine.book_alt),
       label: "Books",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.task),
-      label: "Order",
+      icon: Icon(UniconsLine.schedule),
+      label: "Booking",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.person_2_rounded),
+      icon: Icon(UniconsLine.user),
       label: "Profile",
     ),
   ];
@@ -59,31 +60,38 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   Widget build(BuildContext context) {
     final screens = listScreens();
+
     final bottomNavigationBarItems = navigatorItems;
 
     return Scaffold(
         body: screens[_currentIndex],
-        bottomNavigationBar: Container(
-            margin: const EdgeInsets.fromLTRB(12, 0, 12, 15),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black12, spreadRadius: 2, blurRadius: 3),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              child: BottomNavigationBar(
-                currentIndex: _currentIndex,
-                onTap: (index) => setState(() {
-                  _currentIndex = index;
-                }),
-                items: bottomNavigationBarItems,
-                selectedItemColor: ColorHelper.getColor(ColorHelper.green),
-                unselectedItemColor: Colors.grey,
-                type: BottomNavigationBarType.fixed,
+        bottomNavigationBar: Theme(
+          data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: Container(
+              margin: const EdgeInsets.fromLTRB(12, 0, 12, 15),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12, spreadRadius: 2, blurRadius: 3),
+                ],
               ),
-            )));
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                child: BottomNavigationBar(
+                  currentIndex: _currentIndex,
+                  onTap: (index) => setState(() {
+                    _currentIndex = index;
+                  }),
+                  items: bottomNavigationBarItems,
+                  selectedItemColor: ColorHelper.getColor(ColorHelper.green),
+                  unselectedItemColor: Colors.grey,
+                  type: BottomNavigationBarType.fixed,
+                ),
+              )),
+        ));
   }
 }

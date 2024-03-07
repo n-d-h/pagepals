@@ -113,12 +113,6 @@ class _BookingTimeState extends State<BookingTimeScreen> {
               // Pass the updated selectedDate to the TimeSlotPicker widget
               TimeSlotPicker(
                 selectedDate: selectedDate,
-                // onTimeSlotSelected: (DateTime selectedTime) {
-                //   // Handle the selected time slot here
-                //
-                //   debugPrint(
-                //       'selected date + time: ${selectedTime.toString()}');
-                // },
                 onTimeSlotSelected: handleDateSelected,
               ),
               const RequestScheduleWidget(),

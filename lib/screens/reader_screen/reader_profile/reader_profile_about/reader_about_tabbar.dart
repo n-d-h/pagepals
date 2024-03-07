@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_about/reader_info_line.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_about/video_player_screen.dart';
+import 'package:unicons/unicons.dart';
 
 class ReaderAboutTabbar extends StatelessWidget {
   const ReaderAboutTabbar({super.key});
@@ -12,26 +14,41 @@ class ReaderAboutTabbar extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
-        padding: const EdgeInsets.all(SpaceHelper.space8),
-        child: const Column(
+        padding: const EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 15,
+        ),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            VideoPlayerScreen(),
-            SizedBox(height: SpaceHelper.space16),
-            Padding(
-              padding: EdgeInsets.all(5.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 25,
+              ),
               child: Text(
-                'Reader Introduction',
+                'Self Introduction',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            SizedBox(height: SpaceHelper.space12),
+            const VideoPlayerScreen(),
+            const SizedBox(height: SpaceHelper.space16),
+            const Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Text(
+                'Reader Introduction',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: SpaceHelper.space12),
             Padding(
-              padding: EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(10, 0, 5, 7),
               child: Text(
                 'My name is Minh, I’m 22 years old and I’m currently live '
                 'in Ho Chi Minh City, Viet Nam \n\n'
@@ -45,55 +62,47 @@ class ReaderAboutTabbar extends StatelessWidget {
                 'love to meet you too! :) ',
                 style: TextStyle(
                   fontSize: 13,
+                  color: Colors.black.withOpacity(0.6),
                 ),
               ),
             ),
-            SizedBox(height: SpaceHelper.space12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.location_on),
-                SizedBox(width: SpaceHelper.space8),
-                Text(
-                  'Ho Chi Minh City, Viet Nam',
-                  style: TextStyle(
-                    fontSize: 13,
-                  ),
-                ),
-              ],
+            const SizedBox(height: SpaceHelper.space12),
+            const ReaderInfoLine(
+              iconData: UniconsLine.map_marker,
+              title: 'From',
+              content: 'Ho Chi Minh city, Vietnam',
             ),
-            SizedBox(height: SpaceHelper.space12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.cake),
-                SizedBox(width: SpaceHelper.space8),
-                Text('June 10, 1999')
-              ],
+            const ReaderInfoLine(
+              iconData: UniconsLine.user_circle,
+              title: 'Member since',
+              content: 'March 14, 2023',
             ),
-            SizedBox(height: SpaceHelper.space12),
-            Padding(
-              padding: EdgeInsets.all(5.0),
+            const ReaderInfoLine(
+              iconData: UniconsLine.notes,
+              title: 'Genre',
+              content: 'Horror',
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 5),
               child: Text(
                 'Languages',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            SizedBox(height: SpaceHelper.space12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.language),
-                SizedBox(width: SpaceHelper.space8),
-                Text('Vietnamese, English')
-              ],
+            const SizedBox(height: SpaceHelper.space12),
+            const ReaderInfoLine(
+              iconData: UniconsLine.selfie,
+              title: 'gender',
+              content: 'Male',
             ),
+            const ReaderInfoLine(
+              iconData: UniconsLine.globe,
+              title: 'Accent',
+              content: 'Northern Spanish',
+            )
           ],
         ),
       ),

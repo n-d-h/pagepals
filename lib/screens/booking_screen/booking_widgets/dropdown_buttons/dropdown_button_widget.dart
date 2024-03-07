@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:unicons/unicons.dart';
 
 class DropdownButtonWidget extends StatefulWidget {
   final String title;
@@ -63,12 +64,12 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
           decoration: InputDecoration(
             prefixIcon: opt == 1
                 ? Icon(
-                    FontAwesomeIcons.book,
+                    UniconsLine.books,
                     color: ColorHelper.getColor(ColorHelper.green),
                   )
                 : opt == 2
                     ? Icon(
-                        FontAwesomeIcons.bookOpen,
+                        UniconsLine.book_alt,
                         color: ColorHelper.getColor(ColorHelper.green),
                       )
                     : null,

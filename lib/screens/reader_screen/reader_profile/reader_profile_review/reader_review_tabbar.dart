@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/screens/profile_screen/profile_widgets/rating_line.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_review/comment_collection_widget.dart';
 
 class ReaderReviewTabbar extends StatefulWidget {
@@ -23,23 +24,27 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              "Overall Rating",
-              style: TextStyle(
-                fontSize: SpaceHelper.fontSize18,
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: const Text(
+                "Overall Rating",
+                style: TextStyle(
+                  fontSize: SpaceHelper.fontSize18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            SizedBox(height: SpaceHelper.space16),
+            const SizedBox(height: SpaceHelper.space8),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.star, color: Colors.orange),
-                Icon(Icons.star, color: Colors.orange),
-                Icon(Icons.star, color: Colors.orange),
-                Icon(Icons.star, color: Colors.orange),
-                Icon(Icons.star, color: Colors.orange),
-                SizedBox(width: SpaceHelper.space8),
-                Text(
+                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
+                const SizedBox(width: SpaceHelper.space8),
+                const Text(
                   '5.0',
                   style: TextStyle(
                     fontSize: SpaceHelper.fontSize16,
@@ -48,94 +53,25 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                 ),
               ],
             ),
-            SizedBox(height: SpaceHelper.space16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Reader communitation level',
-                  style: TextStyle(
-                    fontSize: SpaceHelper.fontSize16,
-                    color: Colors.grey,
-                  ),
-                ),
-                SizedBox(width: SpaceHelper.space8),
-                Row(children: [
-                  Text(
-                    '5.0',
-                    style: TextStyle(
-                      fontSize: SpaceHelper.fontSize14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Icon(Icons.star, color: Colors.orange),
-                ]),
-              ],
-            ),
-            SizedBox(height: SpaceHelper.space16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Reader communitation level',
-                  style: TextStyle(
-                    fontSize: SpaceHelper.fontSize16,
-                    color: Colors.grey,
-                  ),
-                ),
-                SizedBox(width: SpaceHelper.space8),
-                Row(children: [
-                  Text(
-                    '5.0',
-                    style: TextStyle(
-                      fontSize: SpaceHelper.fontSize14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Icon(Icons.star, color: Colors.orange),
-                ]),
-              ],
-            ),
-            SizedBox(height: SpaceHelper.space16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Reader communitation level',
-                  style: TextStyle(
-                    fontSize: SpaceHelper.fontSize16,
-                    color: Colors.grey,
-                  ),
-                ),
-                SizedBox(width: SpaceHelper.space8),
-                Row(children: [
-                  Text(
-                    '5.0',
-                    style: TextStyle(
-                      fontSize: SpaceHelper.fontSize14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Icon(Icons.star, color: Colors.orange),
-                ]),
-              ],
-            ),
-            SizedBox(height: SpaceHelper.space16),
+            const SizedBox(height: SpaceHelper.space16),
+            const RatingLine(detail: 'Reader communication level', rating: 5, fontSize: 16, ratingIconSize: 25,),
+            const SizedBox(height: SpaceHelper.space8),
+            const RatingLine(detail: 'Reader communication level', rating: 5, fontSize: 16, ratingIconSize: 25,),
+            const SizedBox(height: SpaceHelper.space8),
+            const RatingLine(detail: 'Reader communication level', rating: 5, fontSize: 16, ratingIconSize: 25,),
+            const SizedBox(height: SpaceHelper.space8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Sorted by",
                   style: TextStyle(
                     fontSize: SpaceHelper.fontSize18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: SpaceHelper.space8),
+                const SizedBox(width: SpaceHelper.space8),
                 TextButton(
                   onPressed: () {
                     showSortByBottomSheetModal(context);
@@ -150,10 +86,10 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                 ),
               ],
             ),
-            SizedBox(height: SpaceHelper.space16),
-            CommentCollectionWidget(),
-            CommentCollectionWidget(),
-            CommentCollectionWidget(),
+            const SizedBox(height: SpaceHelper.space16),
+            const CommentCollectionWidget(),
+            const CommentCollectionWidget(),
+            const CommentCollectionWidget(),
           ],
         ),
       ),
@@ -170,14 +106,14 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
           padding: const EdgeInsets.all(SpaceHelper.space16),
           child: Column(
             children: [
-              Text(
+              const Text(
                 'Sort by',
                 style: TextStyle(
                   fontSize: SpaceHelper.fontSize18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: SpaceHelper.space16),
+              const SizedBox(height: SpaceHelper.space16),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -186,7 +122,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.check,
                     color: Colors.grey,
                     size: SpaceHelper.fontSize40,
@@ -203,7 +139,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                   },
                 ),
               ),
-              SizedBox(height: SpaceHelper.space16),
+              const SizedBox(height: SpaceHelper.space16),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -212,7 +148,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.punch_clock,
                     color: Colors.grey,
                     size: SpaceHelper.fontSize40,
@@ -229,7 +165,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                   },
                 ),
               ),
-              SizedBox(height: SpaceHelper.space16),
+              const SizedBox(height: SpaceHelper.space16),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -238,7 +174,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.thumb_up,
                     color: Colors.grey,
                     size: SpaceHelper.fontSize40,
@@ -255,7 +191,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                   },
                 ),
               ),
-              SizedBox(height: SpaceHelper.space16),
+              const SizedBox(height: SpaceHelper.space16),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -264,7 +200,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.thumb_down,
                     color: Colors.grey,
                     size: SpaceHelper.fontSize40,

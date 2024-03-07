@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
@@ -42,11 +43,11 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
               "PAGEPALS.",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 fontSize: 50,
                 fontWeight: FontWeight.w900,
                 color: ColorHelper.getColor(ColorHelper.normal),
-              ),
+              )
             ),
           ],
         ),

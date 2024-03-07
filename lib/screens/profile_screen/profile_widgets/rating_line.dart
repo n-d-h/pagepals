@@ -4,9 +4,15 @@ import 'package:pagepals/helpers/color_helper.dart';
 class RatingLine extends StatelessWidget {
   final String detail;
   final int rating;
+  final double? fontSize;
+  final double? ratingIconSize;
 
-  const RatingLine({Key? key, required this.detail, required this.rating})
-      : super(key: key);
+  const RatingLine({super.key,
+    required this.detail,
+    required this.rating,
+    this.ratingIconSize,
+    this.fontSize,});
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +23,9 @@ class RatingLine extends StatelessWidget {
         children: [
           Text(
             detail,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.grey,
-              fontSize: 12,
+              fontSize: fontSize ?? 12,
             ),
           ),
           Row(
@@ -27,15 +33,15 @@ class RatingLine extends StatelessWidget {
               Icon(
                 Icons.star_rounded,
                 color: ColorHelper.getColor('#FFA800'),
-                size: 16,
+                size: ratingIconSize ?? 16,
               ),
               Container(
                 margin: const EdgeInsets.only(left: 2),
                 child: Text(
                   '$rating.0',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontSize: fontSize ?? 12,
                   ),
                 ),
               ),

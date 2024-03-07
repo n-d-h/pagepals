@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 
 class SignInIntroText extends StatelessWidget {
@@ -16,7 +17,7 @@ class SignInIntroText extends StatelessWidget {
             // Align the text inside RichText
             text: TextSpan(
               text: 'pagepals',
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 fontSize: 37,
                 fontWeight: FontWeight.w900,
                 color: ColorHelper.getColor(ColorHelper.white),
@@ -24,7 +25,7 @@ class SignInIntroText extends StatelessWidget {
               children: [
                 TextSpan(
                   text: '.',
-                  style: TextStyle(
+                  style: GoogleFonts.openSans(
                     fontSize: 42,
                     fontWeight: FontWeight.bold,
                     color: ColorHelper.getColor(ColorHelper.green),
@@ -38,12 +39,12 @@ class SignInIntroText extends StatelessWidget {
           ),
           Text(
             'Reading Services. On\nDemand',
-            style: TextStyle(
+            style: GoogleFonts.openSans(
               fontSize: 24,
               fontWeight: FontWeight.w500,
               color: ColorHelper.getColor(ColorHelper.white),
             ),
-          )
+          ),
         ],
       ),
     );
