@@ -11,22 +11,23 @@ class CanceledBottom extends StatelessWidget {
       padding: const EdgeInsets.only(top: 14),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          OutlinedButton(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              backgroundColor: ColorHelper.getColor(ColorHelper.green),
-              side: const BorderSide(color: Colors.transparent),
-              fixedSize: const Size.fromWidth(315),
-            ),
-            child: Text(
-              'Re-book this Reader',
-              style: GoogleFonts.lexend(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                backgroundColor: ColorHelper.getColor(ColorHelper.green),
+                side: const BorderSide(color: Colors.transparent),
+                fixedSize: const Size.fromWidth(double.infinity),
+              ),
+              child: Text(
+                'Re-book this Reader',
+                style: GoogleFonts.lexend(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

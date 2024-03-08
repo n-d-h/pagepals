@@ -28,7 +28,7 @@ class ExploreScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Row(
+          Row(
             children: [
               Expanded(
                 flex: 9,
@@ -36,13 +36,14 @@ class ExploreScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Find your favor',
                       style: TextStyle(
                         fontSize: SpaceHelper.fontSize10,
+                        color: Colors.grey,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'View readers and explore '
                       'new point of view to your '
                       'favorite books',
@@ -57,12 +58,13 @@ class ExploreScreen extends StatelessWidget {
                       'own meeting 1 on 1 with readers',
                       style: TextStyle(
                         fontSize: SpaceHelper.fontSize14,
+                        color: Colors.black.withOpacity(0.6),
                       ),
                     ),
                   ],
                 ),
               ),
-              Expanded(
+              const Expanded(
                 flex: 3,
                 child: Image(
                   image: AssetImage('assets/book_reader.png'),

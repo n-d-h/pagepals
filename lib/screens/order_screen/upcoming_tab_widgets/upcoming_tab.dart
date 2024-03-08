@@ -18,7 +18,7 @@ class UpcomingTab extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 PageTransition(
-                  child: const VideoConferencePage(conferenceID: '2147'),
+                  child: const VideoConferencePage(conferenceID: '8992'),
                   type: PageTransitionType.fade,
                   duration: const Duration(milliseconds: 300),
                 ),
