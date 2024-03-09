@@ -123,4 +123,50 @@ class ReaderService {
       throw Exception('Failed to load read Data');
     }
   }
+
+  static Future<List<PopularReader>> getListActiveReader()  async {
+    String query = '''
+    query {
+      getReadersActive {
+        audioDescriptionUrl
+        countryAccent
+        createdAt
+        deletedAt
+        description
+        experience
+        genre
+        id
+        introductionVideoUrl
+        language
+        nickname
+        rating
+        status
+        tags
+        totalOfBookings
+        totalOfReviews
+        updatedAt
+      }
+    }
+    ''';
+
+    return _fetchActiveReader(query);
+  }
+
+  static Future<List<PopularReader>> _fetchActiveReader(String query) async {
+    final QueryResult result =
+    await graphQLClient.query(QueryOptions(document: gql(query)));
+
+    if (result.hasException) {
+      throw Exception('Failed to load readers');
+    }
+
+    final List<dynamic>? readersData = result.data?['getReadersActive'];
+    if (readersData != null) {
+      return readersData
+          .map((readerJson) => PopularReader.fromJson(readerJson))
+          .toList();
+    } else {
+      throw Exception('Failed to load read Data');
+    }
+  }
 }
