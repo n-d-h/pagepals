@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-class ReaderWidget extends StatelessWidget {
+class ReaderWidget extends StatefulWidget {
   ReaderWidget({super.key, required this.onTap});
 
+  Function() onTap;
   final String teacherImage = 'assets/image_reader.png';
   final String teacherName = 'John Doe';
   final String dateOfBirth = 'January 1, 1980';
@@ -10,12 +11,17 @@ class ReaderWidget extends StatelessWidget {
   final int numberOfLikes = 100;
   final String language = 'English, Vietnamese';
 
-  Function() onTap;
+  @override
+  State<ReaderWidget> createState() => _ReaderWidgetState();
+}
+
+class _ReaderWidgetState extends State<ReaderWidget> {
+
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         padding: const EdgeInsets.all(10.0),
         margin: const EdgeInsets.all(15.0),
@@ -31,65 +37,71 @@ class ReaderWidget extends StatelessWidget {
           ],
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
               radius: 60,
-              backgroundImage: AssetImage(teacherImage),
+              backgroundImage: AssetImage(widget.teacherImage),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Name: $teacherName',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Date of Birth: $dateOfBirth',
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Voice: $voiceDescription',
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.thumb_up,
-                  color: Colors.blue,
-                ),
-                const SizedBox(width: 4),
                 Text(
-                  'Likes: $numberOfLikes',
+                  'Name: ${widget.teacherName}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Date of Birth: ${widget.dateOfBirth}',
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Colors.blue,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Voice: ${widget.voiceDescription}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.thumb_up,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Likes: ${widget.numberOfLikes}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Language: ${widget.language}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Language: $language',
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-              ),
-            ),
+            )
           ],
         ),
       ),
