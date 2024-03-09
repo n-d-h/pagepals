@@ -13,6 +13,7 @@ class ExploreScreen extends StatelessWidget {
         horizontal: SpaceHelper.space24,
         vertical: SpaceHelper.space24,
       ),
+      margin: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(SpaceHelper.space16),

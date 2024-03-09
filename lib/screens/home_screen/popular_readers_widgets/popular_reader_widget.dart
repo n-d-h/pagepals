@@ -138,6 +138,8 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                     ],
                                   ),
                                   IconButton(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
                                     onPressed: () {
                                       setState(() {
                                         _clickedList[index] =

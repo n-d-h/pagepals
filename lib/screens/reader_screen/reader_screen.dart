@@ -29,7 +29,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
                 Navigator.of(context).push(
                   PageTransition(
                     type: PageTransitionType.bottomToTop,
-                    child: const ReaderProfile(),
+                    child: const ReaderProfileScreen(),
                     duration: const Duration(milliseconds: 500),
                   ),
                 );
@@ -40,7 +40,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
                 Navigator.of(context).push(
                   PageTransition(
                     type: PageTransitionType.bottomToTop,
-                    child: const ReaderProfile(),
+                    child: const ReaderProfileScreen(),
                     duration: const Duration(milliseconds: 500),
                   ),
                 );
