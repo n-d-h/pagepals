@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CardLeading extends StatelessWidget {
   final String title;
@@ -23,7 +24,7 @@ class CardLeading extends StatelessWidget {
           TextButton(
             onPressed: () {},
             child: Text(
-              'See All',
+              AppLocalizations.of(context)!.appSeeAll,
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: ColorHelper.getColor(ColorHelper.green),
