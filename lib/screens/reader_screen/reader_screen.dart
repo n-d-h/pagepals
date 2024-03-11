@@ -131,6 +131,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
                   }
                 },
               ),
+              const SizedBox(height: 70,)
             ],
           ),
         ),

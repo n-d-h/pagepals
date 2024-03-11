@@ -47,7 +47,7 @@ class _ReaderWidgetState extends State<ReaderWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
-              radius: 60,
+              radius: 55,
               backgroundImage:
                   AssetImage(widget.teacherImage ?? 'assets/image_reader.png'),
             ),

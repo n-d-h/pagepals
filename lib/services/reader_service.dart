@@ -36,8 +36,12 @@ class ReaderService {
   }
 
   static Future<List<PopularReader>> _fetchPopularReader(String query) async {
-    final QueryResult result =
-        await graphQLClient.query(QueryOptions(document: gql(query)));
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
 
     if (result.hasException) {
       throw Exception('Failed to load readers');
@@ -53,7 +57,7 @@ class ReaderService {
     }
   }
 
-  static Future<ReaderProfile?> getReaderProfile(String id) async{
+  static Future<ReaderProfile?> getReaderProfile(String id) async {
     String query = '''
         query{
           getReaderProfile(id: "$id") {
@@ -110,7 +114,7 @@ class ReaderService {
 
   static Future<ReaderProfile?> _fetchReaderProfile(String query) async {
     final QueryResult result =
-    await graphQLClient.query(QueryOptions(document: gql(query)));
+        await graphQLClient.query(QueryOptions(document: gql(query)));
 
     if (result.hasException) {
       throw Exception('Failed to load readers');
@@ -124,7 +128,7 @@ class ReaderService {
     }
   }
 
-  static Future<List<PopularReader>> getListActiveReader()  async {
+  static Future<List<PopularReader>> getListActiveReader() async {
     String query = '''
     query {
       getReadersActive {
@@ -154,7 +158,7 @@ class ReaderService {
 
   static Future<List<PopularReader>> _fetchActiveReader(String query) async {
     final QueryResult result =
-    await graphQLClient.query(QueryOptions(document: gql(query)));
+        await graphQLClient.query(QueryOptions(document: gql(query)));
 
     if (result.hasException) {
       throw Exception('Failed to load readers');

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/screens/order_screen/canceled_tab_widgets/cancel_bottom.dart';
-import 'package:pagepals/screens/order_screen/completed_tab_widgets/complete_bottom.dart';
 import 'package:pagepals/screens/order_screen/completed_tab_widgets/completed_leading.dart';
 
 import '../upcoming_tab_widgets/upcoming_body.dart';
@@ -11,7 +10,7 @@ class CanceledTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 25, 20, 10),
+      margin: const EdgeInsets.fromLTRB(20, 25, 20, 70),
       child: Column(
         children: [
           Container(

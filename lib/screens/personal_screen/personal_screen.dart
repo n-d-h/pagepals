@@ -69,6 +69,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
         controller: ScrollController(),
         physics: const BouncingScrollPhysics(),
         child: Container(
+          margin: const EdgeInsets.only(bottom: 70),
           padding: const EdgeInsets.only(
             top: 16,
             bottom: 16,
