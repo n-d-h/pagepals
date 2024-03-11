@@ -88,7 +88,7 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          margin: const EdgeInsets.fromLTRB(0, 159, 16, 0),
+                          margin: const EdgeInsets.fromLTRB(0, 159, 5, 0),
                           child: Column(
                             children: [
                               Row(
@@ -108,7 +108,7 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             image: AssetImage(
-                                              'assets/google.png',
+                                              'assets/image_reader.png',
                                             ),
                                             fit: BoxFit.fitHeight,
                                           ),
@@ -138,6 +138,8 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                                     ],
                                   ),
                                   IconButton(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
                                     onPressed: () {
                                       setState(() {
                                         _clickedList[index] =

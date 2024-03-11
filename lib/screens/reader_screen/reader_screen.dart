@@ -117,7 +117,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
                               context,
                               PageTransition(
                                 type: PageTransitionType.rightToLeft,
-                                child: const ReaderProfile(),
+                                child: const ReaderProfileScreen(),
                               ),
                             );
                           },
@@ -131,6 +131,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
                   }
                 },
               ),
+              const SizedBox(height: 70,)
             ],
           ),
         ),

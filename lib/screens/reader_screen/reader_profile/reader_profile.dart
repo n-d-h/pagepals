@@ -6,14 +6,14 @@ import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_abo
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_book/reader_book_tabbar.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_review/reader_review_tabbar.dart';
 
-class ReaderProfile extends StatefulWidget {
-  const ReaderProfile({super.key});
+class ReaderProfileScreen extends StatefulWidget {
+  const ReaderProfileScreen({super.key});
 
   @override
-  State<ReaderProfile> createState() => _ReaderProfileState();
+  State<ReaderProfileScreen> createState() => _ReaderProfileState();
 }
 
-class _ReaderProfileState extends State<ReaderProfile> {
+class _ReaderProfileState extends State<ReaderProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

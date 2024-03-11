@@ -24,70 +24,70 @@ class _SearchScreenState extends State<SearchScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          surfaceTintColor: Colors.white,
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          toolbarHeight: 70,
           backgroundColor: Colors.white,
-          title: Row(
-            children: [
-              SearchBar(
-                onChanged: (value) {
-                  print('Searching for: $value');
-                },
-                onSubmitted: (value) {
-                  print('Submit Searching for: $value');
-                },
-                controller: searchController,
-                leading: IconButton(
-                  icon: const Icon(UniconsLine.search),
-                  onPressed: () {
-                    print('Searching for: ${searchController.text}');
+          surfaceTintColor: Colors.white,
+          flexibleSpace: Container(
+            margin: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                SearchBar(
+                  onChanged: (value) {
+                    print('Searching for: $value');
                   },
-                ),
-                trailing: [
-                  IconButton(
-                    icon: const Icon(Icons.clear),
+                  onSubmitted: (value) {
+                    print('Submit Searching for: $value');
+                  },
+                  controller: searchController,
+                  leading: IconButton(
+                    icon: const Icon(UniconsLine.search),
                     onPressed: () {
-                      searchController.clear();
+                      print('Searching for: ${searchController.text}');
                     },
                   ),
-                ],
-                constraints: const BoxConstraints(
-                  maxHeight: 50,
-                  maxWidth: 310,
+                  trailing: [
+                    IconButton(
+                      icon: const Icon(UniconsLine.multiply),
+                      onPressed: () {
+                        searchController.clear();
+                      },
+                    ),
+                  ],
+                  constraints: const BoxConstraints(
+                    maxHeight: 50,
+                    maxWidth: 310,
+                  ),
+                  shadowColor:
+                  MaterialStateProperty.all(Colors.grey.withOpacity(0)),
+                  textStyle: MaterialStateProperty.all(
+                    const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  hintText: 'Search for a reader',
                 ),
-                shadowColor:
-                MaterialStateProperty.all(Colors.grey.withOpacity(0)),
-                textStyle: MaterialStateProperty.all(
-                  const TextStyle(
-                    color: Colors.black,
+                const SizedBox(width: 15),
+                InkWell(
+                  onTap: () {
+                    print('Filter button pressed');
+                  },
+                  borderRadius: BorderRadius.circular(10),
+                  child: const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Icon(UniconsLine.filter),
                   ),
                 ),
-                hintText: 'Search for a reader',
-              ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: () {
-                  print('Filter button pressed');
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(UniconsLine.filter),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
         ),
-        resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           controller: ScrollController(),
           physics: const BouncingScrollPhysics(),
           child: Container(
-            margin: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.fromLTRB(10, 15, 10, 70),
             padding: const EdgeInsets.all(10.0),
             height: MediaQuery.of(context).size.height,
             child: FutureBuilder<List<CategoryModel>>(

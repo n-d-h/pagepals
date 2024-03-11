@@ -4,9 +4,9 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/booking_screen/booking_time_screen.dart';
-import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
 import 'package:pagepals/screens/home_screen/popular_readers_widgets/popular_reader_widget.dart';
 import 'package:pagepals/screens/profile_screen/profile_widgets/rating_line.dart';
+import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile.dart';
 import 'package:pagepals/services/reader_service.dart';
 
 class ProfileOverviewScreen extends StatefulWidget {
@@ -117,7 +117,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                 Navigator.push(
                                   context,
                                   PageTransition(
-                                    child: const DashBoardScreen(),
+                                    child: const ReaderProfileScreen(),
                                     type: PageTransitionType.bottomToTop,
                                     duration: const Duration(milliseconds: 200),
                                   ),
@@ -481,7 +481,9 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                             onPressed: () {
                               Navigator.of(context).push(
                                 PageTransition(
-                                  child: BookingTimeScreen(reader: reader,),
+                                  child: BookingTimeScreen(
+                                    reader: reader,
+                                  ),
                                   type: PageTransitionType.rightToLeft,
                                   duration: const Duration(milliseconds: 300),
                                 ),

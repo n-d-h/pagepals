@@ -10,7 +10,7 @@ class CompletedTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 25, 20, 10),
+      margin: const EdgeInsets.fromLTRB(20, 25, 20, 70),
       child: Column(
         children: [
           Container(
