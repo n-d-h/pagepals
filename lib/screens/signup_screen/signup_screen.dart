@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
+import 'package:pagepals/screens/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/signin_screen/signin_main/signin_screen.dart';
 import 'package:pagepals/screens/signup_screen/verify_email.dart';
 
@@ -70,7 +70,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           onPressed: () {
                             Navigator.of(context).push(
                               PageTransition(
-                                  child: const DashBoardScreen(),
+                                  child: const MenuItemScreen(),
                                   type: PageTransitionType.fade,
                                   duration: const Duration(milliseconds: 300)),
                             );
@@ -285,7 +285,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     onPressed: () {
                       Navigator.of(context).push(
                         PageTransition(
-                          child: const DashBoardScreen(),
+                          child: const MenuItemScreen(),
                           type: PageTransitionType.fade,
                           duration: const Duration(seconds: 1),
                         ),

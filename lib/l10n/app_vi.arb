@@ -7,5 +7,15 @@
   "appSignInTitle": "Tham gia PagePals",
   "appCreateAccount": "Tạo tài khoản",
   "appPopularReader": "Người đọc phổ biến",
-  "appSeeAll": "Xem"
+  "appSeeAll": "Xem",
+  "appWhatAreYouThinking": "Bạn đang nghĩ gì?",
+  "appCreatePost": "Tạo bài viết",
+  "appPost": "Đăng",
+  "appPhoto": "Ảnh",
+  "appVideo": "Video",
+  "appLikes": "Thích",
+  "appComments": "Bình luận",
+  "appReadMore": "Xem thêm",
+  "appHoursAgo": "giờ trước",
+  "appAddComment": "Thêm bình luận"
 }

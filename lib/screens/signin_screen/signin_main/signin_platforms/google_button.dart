@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/models/authen_models/account_tokens.dart';
-import 'package:pagepals/models/authen_models/login_google_model.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
-import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
+import 'package:pagepals/screens/menu_item/menu_item_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -58,7 +56,7 @@ class GoogleSignIn extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.of(context).push(
                     PageTransition(
-                      child: const DashBoardScreen(),
+                      child: const MenuItemScreen(),
                       type: PageTransitionType.bottomToTop,
                       duration: const Duration(milliseconds: 400),
                     ),

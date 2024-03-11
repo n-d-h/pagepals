@@ -20,7 +20,6 @@ class _SignInTextWidgetState extends State<SignInTextWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     switch (widget.opt) {
       case 0:
@@ -42,12 +41,13 @@ class _SignInTextWidgetState extends State<SignInTextWidget> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.of(context).push(
+        Navigator.of(context).pushAndRemoveUntil(
           PageTransition(
             child: widgetOpt,
             type: PageTransitionType.bottomToTop,
             duration: const Duration(milliseconds: 400),
           ),
+          (route) => false,
         );
       },
       child: Text(

@@ -7,5 +7,15 @@
   "appSignInTitle": "Join Pagepals",
   "appCreateAccount": "Create PagePals account",
   "appPopularReader": "Popular Reader",
-  "appSeeAll": "See All"
+  "appSeeAll": "See All",
+  "appWhatAreYouThinking": "What are you thinking?",
+  "appCreatePost": "Create Post",
+  "appPost": "Post",
+  "appPhoto": "Photo",
+  "appVideo": "Video",
+  "appLikes": "Likes",
+  "appComments": "Comments",
+  "appReadMore": "Read More",
+  "appHoursAgo": "hours ago",
+  "appAddComment": "Add Comment"
 }

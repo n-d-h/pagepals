@@ -10,8 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -240,15 +238,7 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                PageTransition(
-                  child: const OrderScreen(),
-                  type: PageTransitionType.rightToLeft,
-                  duration: const Duration(milliseconds: 300),
-                ),
-              );
-            },
+            onPressed: () {},
             icon: const Icon(
               Icons.more_vert,
               color: Colors.black,
