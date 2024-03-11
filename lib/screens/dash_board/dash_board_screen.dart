@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/screens/dash_board/bottom_nav_bar.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/personal_screen/personal_screen.dart';
@@ -16,6 +17,7 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   int _currentIndex = 0;
+  bool isDrawerOpen = false;
 
   @override
   void initState() {
@@ -24,8 +26,14 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   List<Widget> listScreens() {
-    return const [
-      HomeScreen(),
+    return [
+      HomeScreen(
+        onDrawerChange: (bool isOpen) {
+          setState(() {
+            isDrawerOpen = isOpen;
+          });
+        },
+      ),
       ReaderScreen(),
       SearchScreen(),
       OrderScreen(),
@@ -64,47 +72,25 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       body: Stack(
         children: [
           screens[_currentIndex],
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Theme(
-              data: ThemeData(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-              ),
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(12, 0, 12, 15),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      spreadRadius: 2,
-                      blurRadius: 3,
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  child: BottomNavigationBar(
-                    backgroundColor: Colors.white,
-                    currentIndex: _currentIndex,
-                    onTap: (index) => setState(() {
+          if (!isDrawerOpen)
+            BottomNavBar(
+              bottomBar: BottomNavigationBar(
+                backgroundColor: Colors.white,
+                currentIndex: _currentIndex,
+                onTap: (index) =>
+                    setState(() {
                       _currentIndex = index;
                     }),
-                    items: navigatorItems,
-                    selectedItemColor: ColorHelper.getColor(ColorHelper.green),
-                    unselectedItemColor: Colors.grey,
-                    type: BottomNavigationBarType.fixed,
-                  ),
-                ),
+                items: navigatorItems,
+                selectedItemColor: ColorHelper.getColor(ColorHelper.green),
+                unselectedItemColor: Colors.grey,
+                type: BottomNavigationBarType.fixed,
               ),
             ),
-          ),
         ],
       ),
     );
   }
 }
+
+

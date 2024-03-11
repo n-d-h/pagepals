@@ -4,13 +4,19 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/constant.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/home_screen/explore_screen.dart';
+import 'package:pagepals/screens/home_screen/home_screen_drawer.dart';
 import 'package:pagepals/screens/home_screen/notification_screen.dart';
 import 'package:pagepals/screens/home_screen/popular_readers_widgets/popular_readers_column.dart';
 import 'package:pagepals/screens/home_screen/welcome_widget.dart';
 import 'package:unicons/unicons.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Function(bool) onDrawerChange;
+
+  const HomeScreen({
+    super.key,
+    required this.onDrawerChange,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -23,76 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey, // Assign key to Scaffold
-      drawer: Drawer(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.zero),
-        ),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            SizedBox(
-              height: 250,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  color: ColorHelper.getColor(ColorHelper.green),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Stack(
-                      children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundImage:
-                              AssetImage('assets/image_reader.png'),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.add_a_photo_outlined,
-                              color: ColorHelper.getColor(ColorHelper.normal),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'MinMin',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      key: _scaffoldKey,
+      // Assign key to Scaffold
+      drawer: const HomeScreenDrawer(),
+      onDrawerChanged: widget.onDrawerChange,
       appBar: AppBar(
         backgroundColor: ColorHelper.getColor(ColorHelper.lightActive),
         title: const Text(
