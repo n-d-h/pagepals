@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:provider/provider.dart';
@@ -51,9 +52,13 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             ),
           ),
           ListTile(
-            leading: Icon(
-              Icons.person_rounded,
-              color: ColorHelper.getColor(ColorHelper.green),
+            leading: SvgPicture.asset(
+              'assets/icons/user.svg',
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                ColorHelper.getColor(ColorHelper.green).withOpacity(0.7),
+                BlendMode.srcIn,
+              ),
             ),
             title: const Text('Profile'),
             onTap: () {
@@ -138,9 +143,13 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(
-              Icons.settings,
-              color: Colors.grey,
+            leading: SvgPicture.asset(
+              'assets/icons/bell.svg',
+              height: 24,
+              colorFilter: const ColorFilter.mode(
+                Colors.brown,
+                BlendMode.srcIn,
+              ),
             ),
             title: const Text('Notifications'),
             onTap: () {

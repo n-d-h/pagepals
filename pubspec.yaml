@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   font_awesome_flutter:
   page_transition:
   flutter_chat_ui:
@@ -39,6 +38,7 @@ dependencies:
   shared_preferences:
   flutter_localizations:
     sdk: flutter
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -50,4 +50,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/icons/
     - .env

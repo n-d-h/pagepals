@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
     return GraphQLProvider(
       client: client!,
       child: MaterialApp(
-        title: 'Page Pals',
+        title: 'PagePals',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: GoogleFonts.lexend().fontFamily,
