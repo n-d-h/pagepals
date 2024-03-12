@@ -38,11 +38,16 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
-                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
-                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
-                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
-                Icon(Icons.star_rounded, color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded,
+                    color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded,
+                    color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded,
+                    color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded,
+                    color: ColorHelper.getColor('#FFA800')),
+                Icon(Icons.star_rounded,
+                    color: ColorHelper.getColor('#FFA800')),
                 const SizedBox(width: SpaceHelper.space8),
                 const Text(
                   '5.0',
@@ -54,11 +59,26 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
               ],
             ),
             const SizedBox(height: SpaceHelper.space16),
-            const RatingLine(detail: 'Reader communication level', rating: 5, fontSize: 16, ratingIconSize: 25,),
+            const RatingLine(
+              detail: 'Reader communication level',
+              rating: 5,
+              fontSize: 16,
+              ratingIconSize: 25,
+            ),
             const SizedBox(height: SpaceHelper.space8),
-            const RatingLine(detail: 'Reader communication level', rating: 5, fontSize: 16, ratingIconSize: 25,),
+            const RatingLine(
+              detail: 'Reader communication level',
+              rating: 5,
+              fontSize: 16,
+              ratingIconSize: 25,
+            ),
             const SizedBox(height: SpaceHelper.space8),
-            const RatingLine(detail: 'Reader communication level', rating: 5, fontSize: 16, ratingIconSize: 25,),
+            const RatingLine(
+              detail: 'Reader communication level',
+              rating: 5,
+              fontSize: 16,
+              ratingIconSize: 25,
+            ),
             const SizedBox(height: SpaceHelper.space8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,9 +107,18 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
               ],
             ),
             const SizedBox(height: SpaceHelper.space16),
-            const CommentCollectionWidget(),
-            const CommentCollectionWidget(),
-            const CommentCollectionWidget(),
+            const CommentCollectionWidget(
+              text:
+                  'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.sakfjdhlddldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldl ádlkfhjffjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjf',
+            ),
+            const CommentCollectionWidget(
+              text:
+                  'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
+            ),
+            const CommentCollectionWidget(
+              text:
+                  'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
+            ),
           ],
         ),
       ),

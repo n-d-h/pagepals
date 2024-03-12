@@ -6,7 +6,9 @@ import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/widgets/text_widget.dart';
 
 class CommentCollectionWidget extends StatefulWidget {
-  const CommentCollectionWidget({super.key});
+  const CommentCollectionWidget({super.key, required this.text});
+
+  final String text;
 
   @override
   State<CommentCollectionWidget> createState() =>
@@ -15,6 +17,7 @@ class CommentCollectionWidget extends StatefulWidget {
 
 class _CommentCollectionWidgetState extends State<CommentCollectionWidget> {
   bool showFullComment = false;
+  int maxLines = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -107,12 +110,15 @@ class _CommentCollectionWidgetState extends State<CommentCollectionWidget> {
                 const SizedBox(height: SpaceHelper.space8),
                 TextWidget(
                   length: double.infinity,
-                  height: showFullComment ? 155 : 50,
-                  content: 'Giọng đọc hay, lôi cuốn, nghe không biết chán, '
-                      'đẹp trai, có múi, da ngăm giọng trầm đeo kính cận, '
-                      'lịch sự, take care tốt khách hàng',
+                  height: showFullComment
+                      ? ((widget.text.length.toDouble() * 2.2 ~/ 95.0) * 20)
+                          .toDouble()
+                      : 50,
+                  content: widget.text,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: showFullComment ? 10 : 2,
+                  maxLines: showFullComment
+                      ? (widget.text.length.toDouble() * 2.2 ~/ 95.0)
+                      : 2,
                   softWrap: true,
                   fontSize: SpaceHelper.fontSize12,
                 ),

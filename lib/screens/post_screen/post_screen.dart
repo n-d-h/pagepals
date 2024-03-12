@@ -1,10 +1,16 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/post_screen/message_screen/message_screen.dart';
+import 'package:pagepals/screens/post_screen/post_tab/new_feed_tabbar.dart';
 import 'package:pagepals/screens/post_screen/post_item.dart';
 import 'package:pagepals/screens/post_screen/post_status_screen.dart';
+import 'package:pagepals/screens/post_screen/post_tab/seminar_tabbar.dart';
 import 'package:unicons/unicons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -18,6 +24,8 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int selectedIndex = 0;
+
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
@@ -28,7 +36,7 @@ class _PostScreenState extends State<PostScreen> {
               title: const Text(
                 'PagePals and Friends',
                 style: TextStyle(
-                  color: Colors.greenAccent,
+                  color: Colors.blueAccent,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -1.2,
@@ -62,102 +70,41 @@ class _PostScreenState extends State<PostScreen> {
                 ),
               ],
             ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 24,
-                          backgroundImage:
-                              AssetImage('assets/image_reader.png'),
+            SliverToBoxAdapter(
+              child: DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    TabBar(
+                      labelColor: ColorHelper.getColor(ColorHelper.green),
+                      indicatorColor: ColorHelper.getColor(ColorHelper.green),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      labelStyle: GoogleFonts.lexend(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                      unselectedLabelColor: Colors.grey.shade400,
+                      tabs: [
+                        Tab(
+                          text: AppLocalizations.of(context)!.appNewFeed,
                         ),
-                        const SizedBox(width: 20),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            onTap: () {
-                              Navigator.of(context).push(
-                                PageTransition(
-                                  child: const PostStatusScreen(),
-                                  type: PageTransitionType.fade,
-                                  duration: const Duration(milliseconds: 300),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(9),
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .appWhatAreYouThinking,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
+                        Tab(
+                          text: AppLocalizations.of(context)!.appSeminar,
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        PostItem(
-                          username: 'John Doe',
-                          timeAgo:
-                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                          postText:
-                              'This is a post text sdklfjhskdjhffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdklfjhgsdlgdgggggggggggdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgd',
-                          imageUrl:
-                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        ),
-                        PostItem(
-                          username: 'John Doe',
-                          timeAgo:
-                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                          postText: 'This is a post text',
-                          imageUrl:
-                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        ),
-                        PostItem(
-                          username: 'John Doe',
-                          timeAgo:
-                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                          postText: 'This is a post text',
-                          imageUrl:
-                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        ),
-                        PostItem(
-                          username: 'John Doe',
-                          timeAgo:
-                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                          postText: 'This is a post text',
-                          imageUrl:
-                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        ),
-                        PostItem(
-                          username: 'John Doe',
-                          timeAgo:
-                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                          postText: 'This is a post text',
-                          imageUrl:
-                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        ),
-                        const SizedBox(
-                          height: 75,
-                        )
-                      ],
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      width: double.infinity,
+                      child: const TabBarView(
+                        children: [
+                          NewFeedTabbar(),
+                          SeminarTabbar(),
+                        ],
+                      ),
                     ),
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
           ],

@@ -39,7 +39,11 @@ class _OrderScreenState extends State<OrderScreen> {
             indicatorColor: ColorHelper.getColor(ColorHelper.green),
             indicatorSize: TabBarIndicatorSize.tab,
             labelColor: ColorHelper.getColor(ColorHelper.green),
-            labelStyle: GoogleFonts.lexend(),
+            labelStyle: GoogleFonts.lexend(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+            unselectedLabelColor: Colors.grey.shade400,
             tabs: const [
               Tab(text: 'Upcoming'),
               Tab(text: 'Completed'),

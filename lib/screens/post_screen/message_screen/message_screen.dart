@@ -5,6 +5,7 @@ import 'package:pagepals/screens/post_screen/message_screen/message_filter.dart'
 import 'package:pagepals/screens/post_screen/message_screen/message_item.dart';
 import 'package:pagepals/screens/post_screen/message_screen/no_message_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:unicons/unicons.dart';
 
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
@@ -23,7 +24,7 @@ class _MessageScreenState extends State<MessageScreen> {
             Navigator.pop(context);
           },
           icon: const Icon(
-            Icons.close,
+            UniconsLine.multiply,
             color: Colors.black,
           ),
         ),
@@ -48,7 +49,7 @@ class _MessageScreenState extends State<MessageScreen> {
               );
             },
             icon: const Icon(
-              Icons.filter_alt_outlined,
+              UniconsLine.filter,
               color: Colors.black,
             ),
           ),
@@ -95,7 +96,7 @@ class _MessageScreenState extends State<MessageScreen> {
               vertical: 20,
             ),
             child: const Icon(
-              Icons.close,
+              UniconsLine.multiply,
               color: Colors.black,
             ),
           ),

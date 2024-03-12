@@ -18,5 +18,7 @@
   "appReadMore": "Read More",
   "appHoursAgo": "hours ago",
   "appAddComment": "Add Comment",
-  "appMessageType": "Message Type"
+  "appMessageType": "Message Type",
+  "appNewFeed": "New Feed",
+  "appSeminar": "Seminar"
 }
