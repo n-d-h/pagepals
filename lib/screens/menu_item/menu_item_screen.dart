@@ -3,19 +3,19 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/dash_board/bottom_nav_bar.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
-import 'package:pagepals/screens/personal_screen/personal_screen.dart';
+import 'package:pagepals/screens/post_screen/post_screen.dart';
 import 'package:pagepals/screens/reader_screen/reader_screen.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
 import 'package:unicons/unicons.dart';
 
-class DashBoardScreen extends StatefulWidget {
-  const DashBoardScreen({Key? key}) : super(key: key);
+class MenuItemScreen extends StatefulWidget {
+  const MenuItemScreen({Key? key}) : super(key: key);
 
   @override
-  State<DashBoardScreen> createState() => _DashBoardScreenState();
+  State<MenuItemScreen> createState() => _MenuItemScreenState();
 }
 
-class _DashBoardScreenState extends State<DashBoardScreen> {
+class _MenuItemScreenState extends State<MenuItemScreen> {
   int _currentIndex = 0;
   bool isDrawerOpen = false;
 
@@ -37,7 +37,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       ReaderScreen(),
       SearchScreen(),
       OrderScreen(),
-      PersonalScreen(),
+      PostScreen(),
     ];
   }
 
@@ -59,8 +59,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       label: "Booking",
     ),
     BottomNavigationBarItem(
-      icon: Icon(UniconsLine.user),
-      label: "Profile",
+      icon: Icon(UniconsLine.users_alt),
+      label: "PagePals",
     ),
   ];
 

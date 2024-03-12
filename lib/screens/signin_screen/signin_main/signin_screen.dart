@@ -4,8 +4,7 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/models/authen_models/account_tokens.dart';
 import 'package:pagepals/models/authen_models/login_model.dart';
-import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
-import 'package:pagepals/screens/signin_screen/signin_intro/signin_home.dart';
+import 'package:pagepals/screens/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/signin_screen/signin_main/signin_account/signin_account_leading.dart';
 import 'package:pagepals/screens/signin_screen/signin_main/signin_buttons/forgot_password_button.dart';
 import 'package:pagepals/screens/signin_screen/signin_main/signin_leading.dart';
@@ -224,7 +223,7 @@ class _SigninScreenState extends State<SigninScreen> {
                                 Navigator.pop(context);
                                 Navigator.of(context).push(
                                   PageTransition(
-                                    child: const DashBoardScreen(),
+                                    child: const MenuItemScreen(),
                                     type: PageTransitionType.bottomToTop,
                                     duration: const Duration(milliseconds: 400),
                                   ),

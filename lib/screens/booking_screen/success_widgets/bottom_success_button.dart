@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/screens/dash_board/dash_board_screen.dart';
+import 'package:pagepals/screens/menu_item/menu_item_screen.dart';
 
 class SuccessBottomButton extends StatelessWidget {
   const SuccessBottomButton({super.key});
@@ -66,7 +66,7 @@ class SuccessBottomButton extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     PageTransition(
-                      child: const DashBoardScreen(),
+                      child: const MenuItemScreen(),
                       type: PageTransitionType.rightToLeft,
                       duration: const Duration(milliseconds: 300),
                     ),
