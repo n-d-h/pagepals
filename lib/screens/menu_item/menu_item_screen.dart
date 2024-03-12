@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/screens/dash_board/bottom_nav_bar.dart';
+import 'package:pagepals/screens/menu_item/bottom_nav_bar.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/post_screen/post_screen.dart';
@@ -34,10 +34,10 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
           });
         },
       ),
-      ReaderScreen(),
-      SearchScreen(),
-      OrderScreen(),
-      PostScreen(),
+      const ReaderScreen(),
+      const SearchScreen(),
+      const OrderScreen(),
+      const PostScreen(),
     ];
   }
 

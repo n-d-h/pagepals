@@ -5,7 +5,6 @@ import 'package:pagepals/screens/message_screen/message_chat_screen.dart';
 import 'package:pagepals/screens/post_screen/post_item.dart';
 import 'package:pagepals/screens/post_screen/post_status_screen.dart';
 import 'package:unicons/unicons.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -113,38 +112,44 @@ class _PostScreenState extends State<PostScreen> {
                       children: [
                         PostItem(
                           username: 'John Doe',
-                          timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                          postText: 'This is a post text sdklfjhskdjhffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdklfjhgsdlgdgggggggggggdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgd',
+                          timeAgo:
+                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
+                          postText:
+                              'This is a post text sdklfjhskdjhffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdklfjhgsdlgdgggggggggggdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgd',
                           imageUrl:
-                          'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
+                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
                         ),
                         PostItem(
                           username: 'John Doe',
-                          timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
+                          timeAgo:
+                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
                           postText: 'This is a post text',
                           imageUrl:
-                          'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
+                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
                         ),
                         PostItem(
                           username: 'John Doe',
-                          timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
+                          timeAgo:
+                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
                           postText: 'This is a post text',
                           imageUrl:
-                          'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
+                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
                         ),
                         PostItem(
                           username: 'John Doe',
-                          timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
+                          timeAgo:
+                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
                           postText: 'This is a post text',
                           imageUrl:
-                          'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
+                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
                         ),
                         PostItem(
                           username: 'John Doe',
-                          timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
+                          timeAgo:
+                              '2 ${AppLocalizations.of(context)!.appHoursAgo}',
                           postText: 'This is a post text',
                           imageUrl:
-                          'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
+                              'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
                         ),
                         const SizedBox(
                           height: 75,

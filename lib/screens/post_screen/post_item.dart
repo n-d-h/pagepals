@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/screens/post_screen/post_detail.dart';
 import 'package:pagepals/widgets/text_widget.dart';
