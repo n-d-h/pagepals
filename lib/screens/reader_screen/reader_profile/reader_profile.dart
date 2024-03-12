@@ -124,13 +124,13 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                   tabBar: TabBar(
                     indicatorColor: ColorHelper.getColor(ColorHelper.green),
                     labelColor: ColorHelper.getColor(ColorHelper.green),
+                    indicatorSize: TabBarIndicatorSize.tab,
                     dividerColor: Colors.white,
-                    labelStyle: GoogleFonts.openSans(
-                      fontWeight: FontWeight.bold,
+                    labelStyle: GoogleFonts.lexend(
+                      fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
                     unselectedLabelColor: Colors.grey.shade400,
-                    // padding: EdgeInsets.symmetric(vertical: 10),
                     tabs: const [
                       Tab(text: 'About'),
                       Tab(text: 'Book'),

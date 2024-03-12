@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/screens/post_screen/post_comment.dart';
+import 'package:unicons/unicons.dart';
 
 class PostDetailScreen extends StatefulWidget {
   final String username;
@@ -140,9 +141,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     },
                     child: Row(
                       children: [
-                        IconButton(
-                          icon: const Icon(Icons.comment_outlined),
-                          onPressed: () {},
+                        Container(
+                          margin: const EdgeInsets.only(left: 8.0),
+                          child: const Icon(UniconsLine.comment),
                         ),
                         const SizedBox(width: 4.0),
                         Text(AppLocalizations.of(context)!.appComments),

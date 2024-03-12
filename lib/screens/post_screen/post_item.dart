@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/screens/post_screen/post_detail.dart';
 import 'package:pagepals/widgets/text_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:unicons/unicons.dart';
 
 class PostItem extends StatefulWidget {
   final String username;
@@ -24,7 +26,7 @@ class PostItem extends StatefulWidget {
 
 class _PostItemState extends State<PostItem> {
   int likesCount = 0;
-  int commentCount = 0;
+  int cmtCount = 0;
   bool showFullComment = false;
   bool liked = false;
 
@@ -161,18 +163,19 @@ class _PostItemState extends State<PostItem> {
                 },
                 child: Row(
                   children: [
-                    IconButton(
-                      icon: liked
+                    Container(
+                      margin: const EdgeInsets.only(left: 8.0),
+                      child: liked
                           ? const Icon(
                               Icons.thumb_up,
                               color: Colors.blue,
                             )
-                          : const Icon(Icons.thumb_up_outlined),
-                      onPressed: () {},
+                          : const Icon(Icons.thumb_up_alt_outlined),
                     ),
                     const SizedBox(width: 4.0),
                     Text(
-                        '$likesCount ${AppLocalizations.of(context)!.appLikes}'),
+                      '$likesCount ${AppLocalizations.of(context)!.appLikes}',
+                    ),
                   ],
                 ),
               ),
@@ -193,13 +196,14 @@ class _PostItemState extends State<PostItem> {
                 },
                 child: Row(
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.comment_outlined),
-                      onPressed: () {},
+                    Container(
+                      margin: const EdgeInsets.only(left: 8.0),
+                      child: const Icon(UniconsLine.comment),
                     ),
                     const SizedBox(width: 4.0),
                     Text(
-                        '$commentCount ${AppLocalizations.of(context)!.appComments}'),
+                      '$cmtCount ${AppLocalizations.of(context)!.appComments}',
+                    ),
                   ],
                 ),
               ),
