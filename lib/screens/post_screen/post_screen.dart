@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/screens/message_screen/message_chat_screen.dart';
+import 'package:pagepals/screens/post_screen/message_screen/message_screen.dart';
 import 'package:pagepals/screens/post_screen/post_item.dart';
 import 'package:pagepals/screens/post_screen/post_status_screen.dart';
 import 'package:unicons/unicons.dart';
@@ -47,8 +47,8 @@ class _PostScreenState extends State<PostScreen> {
                     onPressed: () {
                       Navigator.of(context).push(
                         PageTransition(
-                          child: const MessageChatScreen(),
-                          type: PageTransitionType.rightToLeftWithFade,
+                          child: const MessageScreen(),
+                          type: PageTransitionType.bottomToTop,
                           duration: const Duration(milliseconds: 500),
                         ),
                       );

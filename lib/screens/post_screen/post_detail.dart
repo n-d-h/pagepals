@@ -188,6 +188,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),
+                        suffixIcon: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.send),
+                        ),
                       ),
                     ),
                   ),

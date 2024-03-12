@@ -17,5 +17,6 @@
   "appComments": "Comments",
   "appReadMore": "Read More",
   "appHoursAgo": "hours ago",
-  "appAddComment": "Add Comment"
+  "appAddComment": "Add Comment",
+  "appMessageType": "Message Type"
 }
