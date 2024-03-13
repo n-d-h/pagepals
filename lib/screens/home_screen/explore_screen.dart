@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -37,26 +38,22 @@ class ExploreScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Find your favor',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.appFindYourFavor,
+                      style: const TextStyle(
                         fontSize: SpaceHelper.fontSize10,
                         color: Colors.grey,
                       ),
                     ),
-                    const Text(
-                      'View readers and explore '
-                      'new point of view to your '
-                      'favorite books',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.appExploreText1,
+                      style: const TextStyle(
                         fontSize: SpaceHelper.fontSize16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
-                      'Start explore now, find your favorite '
-                      'book and start record, having your '
-                      'own meeting 1 on 1 with readers',
+                      AppLocalizations.of(context)!.appExploreText2,
                       style: TextStyle(
                         fontSize: SpaceHelper.fontSize14,
                         color: Colors.black.withOpacity(0.6),
@@ -98,9 +95,9 @@ class ExploreScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(SpaceHelper.space16),
               ),
             ),
-            child: const Text(
-              'Explore Now',
-              style: TextStyle(
+            child: Text(
+              AppLocalizations.of(context)!.appExploreNow,
+              style: const TextStyle(
                 fontSize: SpaceHelper.fontSize16,
                 fontWeight: FontWeight.bold,
               ),

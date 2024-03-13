@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({super.key});
@@ -39,7 +40,7 @@ class WelcomeWidget extends StatelessWidget {
           const SizedBox(height: SpaceHelper.space8),
           RichText(
             text: TextSpan(
-                text: 'Welcome back, ',
+                text: '${AppLocalizations.of(context)?.appWelcomeBack}, ',
                 style: const TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
