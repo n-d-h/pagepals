@@ -38,7 +38,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     return [
       HomeScreen(onDrawerChange: _handleDrawerChange),
       const SearchScreen(),
-      NotificationScreen(),
+      const NotificationScreen(),
       const OrderScreen(),
       const PostScreen(),
     ];
@@ -46,9 +46,9 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
 
   List<BottomNavigationBarItem> get _navigatorItems {
     return [
-      const BottomNavigationBarItem(
-        icon: Icon(UniconsLine.home_alt),
-        activeIcon: Icon(CustomIcons.home_alt),
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.home_alt),
+        activeIcon: const Icon(CustomIcons.home_alt),
         label: AppLocalizations.of(context)!.appHome,
       ),
       const BottomNavigationBarItem(
@@ -61,9 +61,9 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         activeIcon: Icon(Icons.notifications),
         label: 'Notification',
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(UniconsLine.schedule),
-        activeIcon: Icon(CustomIcons.schedule),
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.schedule),
+        activeIcon: const Icon(CustomIcons.schedule),
         label: AppLocalizations.of(context)!.appBooking,
       ),
       const BottomNavigationBarItem(
@@ -74,8 +74,6 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     ];
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final screens = _listScreens();
@@ -85,11 +83,11 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         icon: const Icon(UniconsLine.home_alt),
         label: AppLocalizations.of(context)!.appHome,
       ),
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Icon(UniconsLine.search),
         label: "Readers",
       ),
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Icon(UniconsLine.book_alt),
         label: "Books",
       ),
@@ -97,7 +95,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         icon: const Icon(UniconsLine.schedule),
         label: AppLocalizations.of(context)!.appBooking,
       ),
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Icon(UniconsLine.users_alt),
         label: "PagePals",
       ),

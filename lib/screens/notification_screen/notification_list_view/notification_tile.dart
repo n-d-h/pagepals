@@ -17,6 +17,7 @@ class NotificationTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: ListTile(
+        splashColor: Colors.transparent,
         shape: Border(
           bottom: BorderSide(
             color: Colors.grey.shade300,
