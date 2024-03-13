@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:page_transition/page_transition.dart';
@@ -50,7 +49,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               ),
             ),
             accountEmail: Text(
-              email.substring(0, email.indexOf('@') + 1),
+              '@${email.substring(0, email.indexOf('@'))}',
               style: const TextStyle(fontSize: 12),
             ),
             currentAccountPicture: CircleAvatar(

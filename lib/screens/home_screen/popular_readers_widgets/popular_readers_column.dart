@@ -11,14 +11,14 @@ class PopularReadersColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
-      margin: const EdgeInsets.fromLTRB(24, 0, 24, 20),
+      margin: const EdgeInsets.fromLTRB(24, 0, 0, 20),
       child: Column(
         children: [
           CardLeading(
             title: AppLocalizations.of(context)!.appPopularReader,
             seeAll: true,
           ),
-          PopularReaderWidget()
+          const PopularReaderWidget()
         ],
       ),
     );

@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               Navigator.of(context).push(
                 PageTransition(
-                  child: const NotificationScreen(),
+                  child: NotificationScreen(),
                   type: PageTransitionType.bottomToTop,
                   duration: const Duration(milliseconds: 300),
                 ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/screens/home_screen/notification_screen.dart';
 import 'package:pagepals/screens/menu_item/bottom_nav_bar.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/post_screen/post_screen.dart';
-import 'package:pagepals/screens/reader_screen/reader_screen.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
 import 'package:unicons/unicons.dart';
 
@@ -35,8 +35,8 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   List<Widget> _listScreens() {
     return [
       HomeScreen(onDrawerChange: _handleDrawerChange),
-      const ReaderScreen(),
       const SearchScreen(),
+      NotificationScreen(),
       const OrderScreen(),
       const PostScreen(),
     ];

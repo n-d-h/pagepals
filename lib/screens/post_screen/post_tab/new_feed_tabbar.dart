@@ -113,12 +113,12 @@ class _NewFeedTabbarState extends State<NewFeedTabbar> {
                     imageUrl:
                     'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
                   ),
-                  const SizedBox(
-                    height: 75,
-                  )
                 ],
               ),
             ),
+            const SizedBox(
+              height: 75,
+            )
           ],
         ),
       ),
