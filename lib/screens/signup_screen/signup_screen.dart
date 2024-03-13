@@ -1,10 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/models/authen_models/account_tokens.dart';
+import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/screens/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/signin_screen/signin_main/signin_screen.dart';
 import 'package:pagepals/screens/signup_screen/verify_email.dart';
+import 'package:pagepals/services/authen_service.dart';
+import 'package:quickalert/quickalert.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -116,7 +122,64 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: double.infinity, // <-- match_parent
                         height: 50,
                         child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return Center(
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 50,
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                          ColorHelper.getColor(ColorHelper.green),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                              // final SharedPreferences prefs =
+                              // await SharedPreferences.getInstance();
+                              final GoogleSignInProvider googleSignInProvider =
+                              GoogleSignInProvider();
+                              GoogleSignInAccount user = await googleSignInProvider.googleLogin();
+
+                              try {
+                                // Get Google ID token from Firebase user
+                                String? googleIdToken =
+                                await FirebaseAuth.instance.currentUser!.getIdToken();
+
+                                AccountTokens? accountTokens =
+                                await AuthenService.loginWithGoogle(googleIdToken!);
+                                // Handle successful login here
+                                if (accountTokens!.accessToken != null) {
+                                  // Navigate to Dashboard screen on successful login
+                                  Future.delayed(const Duration(seconds: 2), () {
+                                    Navigator.pop(context);
+                                    Navigator.of(context).push(
+                                      PageTransition(
+                                        child: const MenuItemScreen(),
+                                        type: PageTransitionType.bottomToTop,
+                                        duration: const Duration(milliseconds: 400),
+                                      ),
+                                    );
+                                  });
+                                }
+                              } catch (error) {
+                                // Show dialog with error message
+                                Future.delayed(const Duration(milliseconds: 100), () {
+                                  Navigator.pop(context);
+                                  QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.error,
+                                    title: 'Login Failed',
+                                    text: 'Google account not available',
+                                  );
+                                });
+                              }
+                            },
                             style: ElevatedButton.styleFrom(
                               foregroundColor:
                                   ColorHelper.getColor(ColorHelper.black),

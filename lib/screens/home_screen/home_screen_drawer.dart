@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepals/custom_icons.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
+import 'package:pagepals/screens/signin_screen/signin_intro/signin_home.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreenDrawer extends StatefulWidget {
@@ -24,6 +29,11 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+    String photoUrl = user?.photoURL ?? '';
+    String displayName = user?.displayName ?? 'Anonymous';
+    String email = user?.email ?? 'anonymous@gmail.com';
+
     return Drawer(
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
@@ -32,20 +42,20 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: const Text(
-              'Bui Le Van Minh',
-              style: TextStyle(
+            accountName: Text(
+              displayName,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            accountEmail: const Text(
-              '@minmin',
-              style: TextStyle(fontSize: 12),
+            accountEmail: Text(
+              email.substring(0, email.indexOf('@') + 1),
+              style: const TextStyle(fontSize: 12),
             ),
-            currentAccountPicture: const CircleAvatar(
+            currentAccountPicture: CircleAvatar(
               radius: 60,
-              backgroundImage: AssetImage('assets/image_reader.png'),
+              backgroundImage: NetworkImage(photoUrl),
             ),
             decoration: BoxDecoration(
               color: ColorHelper.getColor(ColorHelper.green),
@@ -107,6 +117,26 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 fontSize: 16,
               ),
               onChanged: (String? newValue) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(
+                            ColorHelper.getColor(ColorHelper.green),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+                Future.delayed(const Duration(milliseconds: 1000), () {
+                  Navigator.pop(context);
+                });
                 setState(() {
                   _selectedLanguage = newValue!;
                   var localeProvider =
@@ -156,9 +186,63 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               color: Colors.red,
             ),
             title: const Text('Logout'),
-            onTap: () {
-              Navigator.pop(context);
-              // Perform logout action
+            onTap: () async {
+              if (user == null) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Error'),
+                      content: const Text('You are not logged in.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'OK',
+                            style: TextStyle(
+                              color: ColorHelper.getColor(ColorHelper.green),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                return;
+              }
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(
+                          ColorHelper.getColor(ColorHelper.green),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+              GoogleSignInProvider googleSignInProvider =
+                  GoogleSignInProvider();
+              await googleSignInProvider.googleLogout();
+
+              Future.delayed(const Duration(milliseconds: 100), () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  PageTransition(
+                    child: const SigninHomeScreen(),
+                    type: PageTransitionType.fade,
+                  ),
+                  (route) => false,
+                );
+              });
             },
           ),
         ],
