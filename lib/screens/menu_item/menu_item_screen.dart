@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/screens/home_screen/notification_screen.dart';
+import 'package:pagepals/screens/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/menu_item/bottom_nav_bar.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
@@ -55,8 +55,8 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         label: 'Search',
       ),
       const BottomNavigationBarItem(
-        icon: Icon(UniconsLine.bell),
-        activeIcon: Icon(CustomIcons.bell),
+        icon: Icon(Icons.notifications_none),
+        activeIcon: Icon(Icons.notifications),
         label: 'Notification',
       ),
       const BottomNavigationBarItem(
