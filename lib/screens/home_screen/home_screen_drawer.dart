@@ -116,6 +116,26 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 fontSize: 16,
               ),
               onChanged: (String? newValue) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(
+                            ColorHelper.getColor(ColorHelper.green),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+                Future.delayed(const Duration(milliseconds: 1000), () {
+                  Navigator.pop(context);
+                });
                 setState(() {
                   _selectedLanguage = newValue!;
                   var localeProvider =
@@ -166,6 +186,32 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             ),
             title: const Text('Logout'),
             onTap: () async {
+              if (user == null) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Error'),
+                      content: const Text('You are not logged in.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'OK',
+                            style: TextStyle(
+                              color: ColorHelper.getColor(ColorHelper.green),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                return;
+              }
               showDialog(
                 context: context,
                 barrierDismissible: false,

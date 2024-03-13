@@ -54,12 +54,13 @@ class GoogleSignIn extends StatelessWidget {
                 // Navigate to Dashboard screen on successful login
                 Future.delayed(const Duration(seconds: 2), () {
                   Navigator.pop(context);
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushAndRemoveUntil(
                     PageTransition(
                       child: const MenuItemScreen(),
                       type: PageTransitionType.bottomToTop,
                       duration: const Duration(milliseconds: 400),
                     ),
+                    (route) => false,
                   );
                 });
               }
