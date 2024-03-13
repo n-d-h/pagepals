@@ -7,7 +7,9 @@ import 'package:pagepals/screens/home_screen/home_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/post_screen/post_screen.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
+import 'package:quickalert/utils/images.dart';
 import 'package:unicons/unicons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuItemScreen extends StatefulWidget {
   const MenuItemScreen({Key? key}) : super(key: key);
@@ -47,7 +49,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
       const BottomNavigationBarItem(
         icon: Icon(UniconsLine.home_alt),
         activeIcon: Icon(CustomIcons.home_alt),
-        label: 'Home',
+        label: AppLocalizations.of(context)!.appHome,
       ),
       const BottomNavigationBarItem(
         icon: Icon(UniconsLine.search),
@@ -62,7 +64,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
       const BottomNavigationBarItem(
         icon: Icon(UniconsLine.schedule),
         activeIcon: Icon(CustomIcons.schedule),
-        label: 'Booking',
+        label: AppLocalizations.of(context)!.appBooking,
       ),
       const BottomNavigationBarItem(
         icon: Icon(UniconsLine.users_alt),
@@ -77,6 +79,29 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   @override
   Widget build(BuildContext context) {
     final screens = _listScreens();
+
+    final navigatorItems = [
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.home_alt),
+        label: AppLocalizations.of(context)!.appHome,
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(UniconsLine.search),
+        label: "Readers",
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(UniconsLine.book_alt),
+        label: "Books",
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.schedule),
+        label: AppLocalizations.of(context)!.appBooking,
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(UniconsLine.users_alt),
+        label: "PagePals",
+      ),
+    ];
 
     return Scaffold(
       body: Stack(
