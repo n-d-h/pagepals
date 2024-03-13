@@ -6,11 +6,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/post_screen/message_screen/message_screen.dart';
 import 'package:pagepals/screens/post_screen/post_tab/new_feed_tabbar.dart';
-import 'package:pagepals/screens/post_screen/post_item.dart';
-import 'package:pagepals/screens/post_screen/post_status_screen.dart';
 import 'package:pagepals/screens/post_screen/post_tab/seminar_tabbar.dart';
 import 'package:unicons/unicons.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});

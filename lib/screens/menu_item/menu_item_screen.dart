@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/menu_item/bottom_nav_bar.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
@@ -44,53 +44,35 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
 
   List<BottomNavigationBarItem> get _navigatorItems {
     return [
-      _bottomNavItem(
-        icon: const Icon(UniconsLine.home_alt),
-        activeIconPath: 'assets/icons/home-alt.svg',
-        label: "Home",
+      const BottomNavigationBarItem(
+        icon: Icon(UniconsLine.home_alt),
+        activeIcon: Icon(CustomIcons.home_alt),
+        label: 'Home',
       ),
-      _bottomNavItem(
-        icon: const Icon(UniconsLine.search),
-        activeIconPath: 'assets/icons/search.svg',
-        label: "Readers",
+      const BottomNavigationBarItem(
+        icon: Icon(UniconsLine.search),
+        activeIcon: Icon(CustomIcons.search),
+        label: 'Search',
       ),
-      _bottomNavItem(
-        icon: const Icon(UniconsLine.book_alt),
-        activeIconPath: 'assets/icons/book-alt.svg',
-        label: "Books",
+      const BottomNavigationBarItem(
+        icon: Icon(UniconsLine.bell),
+        activeIcon: Icon(CustomIcons.bell),
+        label: 'Notification',
       ),
-      _bottomNavItem(
-        icon: const Icon(UniconsLine.schedule),
-        activeIconPath: 'assets/icons/schedule.svg',
-        label: "Booking",
+      const BottomNavigationBarItem(
+        icon: Icon(UniconsLine.schedule),
+        activeIcon: Icon(CustomIcons.schedule),
+        label: 'Booking',
       ),
-      _bottomNavItem(
-        icon: const Icon(UniconsLine.users_alt),
-        activeIconPath: 'assets/icons/users-alt.svg',
-        label: "PagePals",
+      const BottomNavigationBarItem(
+        icon: Icon(UniconsLine.users_alt),
+        activeIcon: Icon(CustomIcons.users_alt),
+        label: 'PagePals',
       ),
     ];
   }
 
-  BottomNavigationBarItem _bottomNavItem({
-    required Icon icon,
-    required String activeIconPath,
-    required String label,
-  }) {
-    return BottomNavigationBarItem(
-      icon: icon,
-      activeIcon: SvgPicture.asset(
-        height: 24,
-        activeIconPath,
-        color: ColorHelper.getColor(ColorHelper.green).withOpacity(0.7),
-        // colorFilter: ColorFilter.mode(
-        //   ColorHelper.getColor(ColorHelper.green).withOpacity(0.7),
-        //   BlendMode.srcIn,
-        // ),
-      ),
-      label: label,
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/screens/post_screen/post_detail.dart';
 import 'package:pagepals/widgets/text_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -33,10 +33,7 @@ class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12.0,
-        vertical: 8.0,
-      ),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,7 +147,7 @@ class _PostItemState extends State<PostItem> {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: 16.0),
+          const SizedBox(height: 8.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -161,22 +158,22 @@ class _PostItemState extends State<PostItem> {
                     liked == true ? likesCount++ : likesCount--;
                   });
                 },
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 8.0),
-                      child: liked
+                child: Container(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+                  child: Row(
+                    children: [
+                      liked
                           ? const Icon(
-                              Icons.thumb_up,
+                              CustomIcons.thumbs_up,
                               color: Colors.blue,
                             )
-                          : const Icon(Icons.thumb_up_alt_outlined),
-                    ),
-                    const SizedBox(width: 4.0),
-                    Text(
-                      '$likesCount ${AppLocalizations.of(context)!.appLikes}',
-                    ),
-                  ],
+                          : const Icon(UniconsLine.thumbs_up),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        '$likesCount ${AppLocalizations.of(context)!.appLikes}',
+                      ),
+                    ],
+                  ),
                 ),
               ),
               InkWell(
@@ -194,17 +191,20 @@ class _PostItemState extends State<PostItem> {
                     ),
                   );
                 },
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 8.0),
-                      child: const Icon(UniconsLine.comment),
-                    ),
-                    const SizedBox(width: 4.0),
-                    Text(
-                      '$cmtCount ${AppLocalizations.of(context)!.appComments}',
-                    ),
-                  ],
+                child: Container(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 8.0),
+                        child: const Icon(UniconsLine.comment),
+                      ),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        '$cmtCount ${AppLocalizations.of(context)!.appComments}',
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

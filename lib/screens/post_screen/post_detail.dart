@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/screens/post_screen/post_comment.dart';
 import 'package:unicons/unicons.dart';
 
@@ -113,26 +114,32 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        liked = !liked;
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: liked
-                              ? const Icon(
-                                  Icons.thumb_up,
-                                  color: Colors.blue,
-                                )
-                              : const Icon(Icons.thumb_up_outlined),
-                          onPressed: () {},
-                        ),
-                        const SizedBox(width: 4.0),
-                        Text(AppLocalizations.of(context)!.appLikes),
-                      ],
+                  Theme(
+                    data: ThemeData(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          liked = !liked;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: liked
+                                ? const Icon(
+                                    CustomIcons.thumbs_up,
+                                    color: Colors.blue,
+                                  )
+                                : const Icon(UniconsLine.thumbs_up),
+                            onPressed: () {},
+                          ),
+                          const SizedBox(width: 4.0),
+                          Text(AppLocalizations.of(context)!.appLikes),
+                        ],
+                      ),
                     ),
                   ),
                   InkWell(
