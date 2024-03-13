@@ -6,7 +6,9 @@ import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/post_screen/post_screen.dart';
 import 'package:pagepals/screens/reader_screen/reader_screen.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
+import 'package:quickalert/utils/images.dart';
 import 'package:unicons/unicons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuItemScreen extends StatefulWidget {
   const MenuItemScreen({Key? key}) : super(key: key);
@@ -41,32 +43,32 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     ];
   }
 
-  final navigatorItems = const [
-    BottomNavigationBarItem(
-      icon: Icon(UniconsLine.home_alt),
-      label: "Home",
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(UniconsLine.search),
-      label: "Readers",
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(UniconsLine.book_alt),
-      label: "Books",
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(UniconsLine.schedule),
-      label: "Booking",
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(UniconsLine.users_alt),
-      label: "PagePals",
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final screens = listScreens();
+
+    final navigatorItems = [
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.home_alt),
+        label: AppLocalizations.of(context)!.appHome,
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(UniconsLine.search),
+        label: "Readers",
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(UniconsLine.book_alt),
+        label: "Books",
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.schedule),
+        label: AppLocalizations.of(context)!.appBooking,
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(UniconsLine.users_alt),
+        label: "PagePals",
+      ),
+    ];
 
     return Scaffold(
       body: Stack(

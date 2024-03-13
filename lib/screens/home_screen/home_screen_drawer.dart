@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -7,6 +6,7 @@ import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/signin_screen/signin_intro/signin_home.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreenDrawer extends StatefulWidget {
   const HomeScreenDrawer({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.person_rounded,
               color: ColorHelper.getColor(ColorHelper.green),
             ),
-            title: const Text('Profile'),
+            title: Text(AppLocalizations.of(context)!.appProfile),
             onTap: () {
               Navigator.pop(context);
               // Navigate to profile screen
@@ -76,7 +76,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.favorite,
               color: Colors.red,
             ),
-            title: const Text('My Interests'),
+            title: Text(AppLocalizations.of(context)!.appInterest),
             onTap: () {
               Navigator.pop(context);
               // Navigate to interests screen
@@ -87,17 +87,17 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.star_rounded,
               color: ColorHelper.getColor('#FFA800'),
             ),
-            title: const Text('Favorites'),
+            title: Text(AppLocalizations.of(context)!.appFavorite),
             onTap: () {
               Navigator.pop(context);
               // Navigate to favorites screen
             },
           ),
           const Divider(),
-          const ListTile(
+          ListTile(
             title: Text(
-              'Settings',
-              style: TextStyle(color: Colors.grey),
+              AppLocalizations.of(context)!.appSetting,
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
           ListTile(
@@ -105,7 +105,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.language,
               color: Colors.blueAccent,
             ),
-            title: const Text('Language'),
+            title: Text(AppLocalizations.of(context)!.appLanguage),
             trailing: DropdownButton<String>(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               value: _selectedLanguage,
@@ -161,7 +161,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.settings,
               color: Colors.grey,
             ),
-            title: const Text('General'),
+            title: Text(AppLocalizations.of(context)!.appGeneral),
             onTap: () {
               Navigator.pop(context);
               // Navigate to general settings screen
@@ -172,7 +172,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.settings,
               color: Colors.grey,
             ),
-            title: const Text('Notifications'),
+            title: Text(AppLocalizations.of(context)!.appNotification),
             onTap: () {
               Navigator.pop(context);
               // Navigate to notifications settings screen
@@ -184,7 +184,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.logout,
               color: Colors.red,
             ),
-            title: const Text('Logout'),
+            title: Text(AppLocalizations.of(context)!.appLogout),
             onTap: () async {
               if (user == null) {
                 showDialog(

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/order_screen/canceled_tab_widgets/cancel_tab.dart';
 import 'package:pagepals/screens/order_screen/completed_tab_widgets/completed_tab.dart';
 import 'package:pagepals/screens/order_screen/upcoming_tab_widgets/upcoming_tab.dart';
-import 'package:pagepals/screens/search_screen/book_tab_screen.dart';
-import 'package:pagepals/screens/search_screen/reader_tab_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -44,10 +42,10 @@ class _OrderScreenState extends State<OrderScreen> {
               fontSize: 16,
             ),
             unselectedLabelColor: Colors.grey.shade400,
-            tabs: const [
-              Tab(text: 'Upcoming'),
-              Tab(text: 'Completed'),
-              Tab(text: 'Cancelled')
+            tabs: [
+              Tab(text: AppLocalizations.of(context)!.appUpcoming),
+              Tab(text: AppLocalizations.of(context)!.appCompleted),
+              Tab(text: AppLocalizations.of(context)!.appCanceled),
             ],
           ),
           actions: [
