@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/screens/search_screen/search_screen.dart';
 import 'package:unicons/unicons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({Key? key}) : super(key: key);
@@ -63,7 +64,7 @@ class HomeSearchBar extends StatelessWidget {
                     repeatForever: true,
                     animatedTexts: [
                       TyperAnimatedText(
-                        'Search something ...',
+                        AppLocalizations.of(context)!.appSearchSomething,
                         textStyle: const TextStyle(
                           color: Colors.green,
                           // fontSize: 16,
@@ -71,7 +72,7 @@ class HomeSearchBar extends StatelessWidget {
                         speed: const Duration(milliseconds: 60),
                       ),
                       TyperAnimatedText(
-                        'Books are now at your fingertips',
+                        AppLocalizations.of(context)!.appBookAreNowAtYourFinger,
                         textStyle: const TextStyle(
                           color: Colors.deepOrange,
                           // fontSize: 16,
@@ -79,7 +80,7 @@ class HomeSearchBar extends StatelessWidget {
                         speed: const Duration(milliseconds: 60),
                       ),
                       TypewriterAnimatedText(
-                        'Readers are waiting for you',
+                        AppLocalizations.of(context)!.appReaderAreWaitingForYou,
                         textStyle: const TextStyle(
                           color: Colors.blueAccent,
                           // fontSize: 16,

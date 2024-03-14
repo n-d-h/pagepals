@@ -5,9 +5,11 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
+import 'package:pagepals/screens/reader_request/reader_request_screen.dart';
 import 'package:pagepals/screens/signin_screen/signin_intro/signin_home.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:unicons/unicons.dart';
 
 class HomeScreenDrawer extends StatefulWidget {
   const HomeScreenDrawer({Key? key}) : super(key: key);
@@ -106,7 +108,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.language,
               color: Colors.blueAccent,
             ),
-            title: Text(AppLocalizations.of(context)!.appLanguage),
+            title: Text(AppLocalizations.of(context)!.appLanguages),
             trailing: DropdownButton<String>(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               value: _selectedLanguage,
@@ -182,37 +184,29 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
           const Divider(),
           ListTile(
             leading: const Icon(
+              UniconsLine.icons,
+              color: Colors.deepPurple,
+            ),
+            title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                PageTransition(
+                  child: const ReaderRequestScreen(),
+                  type: PageTransitionType.fade,
+                  duration: const Duration(milliseconds: 300),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(
               Icons.logout,
               color: Colors.red,
             ),
             title: Text(AppLocalizations.of(context)!.appLogout),
             onTap: () async {
-              if (user == null) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Error'),
-                      content: const Text('You are not logged in.'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'OK',
-                            style: TextStyle(
-                              color: ColorHelper.getColor(ColorHelper.green),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-                return;
-              }
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -230,11 +224,13 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                   );
                 },
               );
+
               GoogleSignInProvider googleSignInProvider =
                   GoogleSignInProvider();
               await googleSignInProvider.googleLogout();
 
-              Future.delayed(const Duration(milliseconds: 100), () {
+              Future.delayed(const Duration(milliseconds: 0), () {
+                Navigator.pop(context);
                 Navigator.of(context).pushAndRemoveUntil(
                   PageTransition(
                     child: const SigninHomeScreen(),

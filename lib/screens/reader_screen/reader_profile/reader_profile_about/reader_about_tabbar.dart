@@ -3,6 +3,7 @@ import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_about/reader_info_line.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_about/video_player_screen.dart';
 import 'package:unicons/unicons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReaderAboutTabbar extends StatelessWidget {
   const ReaderAboutTabbar({super.key});
@@ -22,13 +23,13 @@ class ReaderAboutTabbar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(
+            Padding(
+              padding: const EdgeInsets.symmetric(
                 vertical: 25,
               ),
               child: Text(
-                'Self Introduction',
-                style: TextStyle(
+                AppLocalizations.of(context)!.appVideIntroduction,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -36,11 +37,11 @@ class ReaderAboutTabbar extends StatelessWidget {
             ),
             const VideoPlayerScreen(),
             const SizedBox(height: SpaceHelper.space16),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
-                'Reader Introduction',
-                style: TextStyle(
+                AppLocalizations.of(context)!.appReaderIntroduction,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -82,11 +83,11 @@ class ReaderAboutTabbar extends StatelessWidget {
               title: 'Genre',
               content: 'Horror',
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
               child: Text(
-                'Languages',
-                style: TextStyle(
+                AppLocalizations.of(context)!.appLanguages,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

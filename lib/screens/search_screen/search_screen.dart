@@ -1,17 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/models/reader_models/popular_reader_model.dart';
-import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile.dart';
-import 'package:pagepals/screens/reader_screen/reader_widget.dart';
 import 'package:pagepals/screens/search_screen/book_tab_screen.dart';
 import 'package:pagepals/screens/search_screen/reader_tab_screen.dart';
-import 'package:pagepals/services/reader_service.dart';
 import 'package:unicons/unicons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -143,8 +136,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ),
                           hintText: tabIndex == 1
-                              ? 'Search for books'
-                              : 'Search for readers',
+                              ? AppLocalizations.of(context)!.appSearchForBook
+                              : AppLocalizations.of(context)!.appSearchForReader,
                           hintStyle: MaterialStateProperty.all(
                             const TextStyle(
                               color: Colors.grey,
@@ -183,9 +176,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     fontSize: 16,
                   ),
                   unselectedLabelColor: Colors.grey.shade400,
-                  tabs: const [
-                    Tab(text: 'Readers'),
-                    Tab(text: 'Books'),
+                  tabs: [
+                    Tab(text: AppLocalizations.of(context)!.appReaders),
+                    Tab(text: AppLocalizations.of(context)!.appBooks),
                   ],
                 ),
               ),

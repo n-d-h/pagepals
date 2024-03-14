@@ -6,8 +6,7 @@ import 'package:pagepals/screens/menu_item/bottom_nav_bar.dart';
 import 'package:pagepals/screens/home_screen/home_screen.dart';
 import 'package:pagepals/screens/order_screen/order_screen.dart';
 import 'package:pagepals/screens/post_screen/post_screen.dart';
-import 'package:pagepals/screens/search_screen/search_screen.dart';
-import 'package:quickalert/utils/images.dart';
+// import 'package:pagepals/screens/search_screen/search_screen.dart';
 import 'package:unicons/unicons.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -51,25 +50,25 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         activeIcon: const Icon(CustomIcons.home_alt),
         label: AppLocalizations.of(context)!.appHome,
       ),
-      // const BottomNavigationBarItem(
-      //   icon: Icon(UniconsLine.search),
-      //   activeIcon: Icon(CustomIcons.search),
-      //   label: 'Search',
+      // BottomNavigationBarItem(
+      //   icon: const Icon(UniconsLine.search),
+      //   activeIcon: const Icon(CustomIcons.search),
+      //   label: AppLocalizations.of(context)!.appSearch,
       // ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.notifications_none),
-        activeIcon: Icon(Icons.notifications),
-        label: 'Notification',
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.notifications_none),
+        activeIcon: const Icon(Icons.notifications),
+        label: AppLocalizations.of(context)!.appNotification,
       ),
       BottomNavigationBarItem(
         icon: const Icon(UniconsLine.schedule),
         activeIcon: const Icon(CustomIcons.schedule),
         label: AppLocalizations.of(context)!.appBooking,
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(UniconsLine.users_alt),
-        activeIcon: Icon(CustomIcons.users_alt),
-        label: 'PagePals',
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.users_alt),
+        activeIcon: const Icon(CustomIcons.users_alt),
+        label: AppLocalizations.of(context)!.appPagePals,
       ),
     ];
   }

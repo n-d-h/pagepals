@@ -5,6 +5,7 @@ import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_about/reader_about_tabbar.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_book/reader_book_tabbar.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile_review/reader_review_tabbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReaderProfileScreen extends StatefulWidget {
   const ReaderProfileScreen({super.key});
@@ -131,10 +132,10 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                       fontSize: 16,
                     ),
                     unselectedLabelColor: Colors.grey.shade400,
-                    tabs: const [
-                      Tab(text: 'About'),
-                      Tab(text: 'Book'),
-                      Tab(text: 'Reviews'),
+                    tabs: [
+                      Tab(text: AppLocalizations.of(context)!.appAbout),
+                      Tab(text: AppLocalizations.of(context)!.appBooks),
+                      Tab(text: AppLocalizations.of(context)!.appReviews),
                     ],
                   ),
                 ),
