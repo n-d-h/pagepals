@@ -37,7 +37,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   List<Widget> _listScreens() {
     return [
       HomeScreen(onDrawerChange: _handleDrawerChange),
-      const SearchScreen(),
+      // const SearchScreen(),
       const NotificationScreen(),
       const OrderScreen(),
       const PostScreen(),
@@ -51,11 +51,11 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         activeIcon: const Icon(CustomIcons.home_alt),
         label: AppLocalizations.of(context)!.appHome,
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(UniconsLine.search),
-        activeIcon: Icon(CustomIcons.search),
-        label: 'Search',
-      ),
+      // const BottomNavigationBarItem(
+      //   icon: Icon(UniconsLine.search),
+      //   activeIcon: Icon(CustomIcons.search),
+      //   label: 'Search',
+      // ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.notifications_none),
         activeIcon: Icon(Icons.notifications),
@@ -78,29 +78,6 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   Widget build(BuildContext context) {
     final screens = _listScreens();
 
-    final navigatorItems = [
-      BottomNavigationBarItem(
-        icon: const Icon(UniconsLine.home_alt),
-        label: AppLocalizations.of(context)!.appHome,
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(UniconsLine.search),
-        label: "Readers",
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(UniconsLine.book_alt),
-        label: "Books",
-      ),
-      BottomNavigationBarItem(
-        icon: const Icon(UniconsLine.schedule),
-        label: AppLocalizations.of(context)!.appBooking,
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(UniconsLine.users_alt),
-        label: "PagePals",
-      ),
-    ];
-
     return Scaffold(
       body: Stack(
         children: [
@@ -119,6 +96,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
                 unselectedItemColor: Colors.grey,
                 selectedFontSize: 10,
                 unselectedFontSize: 10,
+                iconSize: 24,
                 // showUnselectedLabels: false,
                 // showSelectedLabels: false,
                 type: BottomNavigationBarType.fixed,

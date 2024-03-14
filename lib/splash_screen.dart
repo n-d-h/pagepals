@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,14 +43,19 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "PAGEPALS.",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.openSans(
-                fontSize: 50,
-                fontWeight: FontWeight.w900,
-                color: ColorHelper.getColor(ColorHelper.normal),
-              ),
+            AnimatedTextKit(
+              animatedTexts: [
+                TyperAnimatedText(
+                  "PAGEPALS.",
+                  textStyle: GoogleFonts.openSans(
+                    fontSize: 50,
+                    fontWeight: FontWeight.w900,
+                    color: ColorHelper.getColor(ColorHelper.normal),
+                  ),
+                  speed: const Duration(milliseconds: 70),
+                ),
+              ],
+              totalRepeatCount: 1,
             ),
           ],
         ),

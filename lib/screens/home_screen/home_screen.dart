@@ -5,6 +5,7 @@ import 'package:pagepals/helpers/constant.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/home_screen/explore_screen.dart';
 import 'package:pagepals/screens/home_screen/home_screen_drawer.dart';
+import 'package:pagepals/screens/home_screen/search_bar_widgets/home_search_bar.dart';
 import 'package:pagepals/screens/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/home_screen/popular_readers_widgets/popular_readers_column.dart';
 import 'package:pagepals/screens/home_screen/welcome_widget.dart';
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               Navigator.of(context).push(
                 PageTransition(
-                  child: NotificationScreen(),
+                  child: const NotificationScreen(),
                   type: PageTransitionType.bottomToTop,
                   duration: const Duration(milliseconds: 300),
                 ),
@@ -78,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Center(
           child: Column(
             children: [
+              HomeSearchBar(),
               WelcomeWidget(),
               PopularReadersColumn(),
               ExploreScreen(),

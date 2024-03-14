@@ -25,7 +25,7 @@
   "appBooking": "Booking",
   "appUpcoming": "Upcoming",
   "appCompleted": "Completed",
-  "appCanceled": "Cancel",
+  "appCanceled": "Canceled",
   "appWelcomeBack": "Welcome back",
   "appProfile": "Profile",
   "appInterest": "My Interests",
@@ -36,7 +36,7 @@
   "appLogout": "Logout",
   "appSetting": "Settings",
   "appExploreNow": "Explore Now",
-  "appExploreText1": "View readers and explore \n new point of view to your \n favorite books",
-  "appExploreText2": "Start explore now, find your favorite \n book and start record, having your \n own meeting 1 on 1 with readers",
+  "appExploreText1": "View readers and explore new point of view to your favorite books",
+  "appExploreText2": "Start explore now, find your favorite book and start record, having your own meeting 1 on 1 with readers",
   "appFindYourFavor": "Find your favor"
 }
