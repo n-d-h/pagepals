@@ -172,7 +172,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
           ),
           ListTile(
             leading: const Icon(
-              CustomIcons.bell,
+              Icons.notifications,
               color: Colors.brown,
             ),
             title: Text(AppLocalizations.of(context)!.appNotification),

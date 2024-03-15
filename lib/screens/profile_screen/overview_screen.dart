@@ -1,28 +1,30 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/booking_screen/booking_time_screen.dart';
 import 'package:pagepals/screens/home_screen/popular_readers_widgets/popular_reader_widget.dart';
 import 'package:pagepals/screens/profile_screen/profile_widgets/rating_line.dart';
 import 'package:pagepals/screens/reader_screen/reader_profile/reader_profile.dart';
+import 'package:pagepals/services/book_service.dart';
 import 'package:pagepals/services/reader_service.dart';
 
 class ProfileOverviewScreen extends StatefulWidget {
   final String readerId;
 
-  const ProfileOverviewScreen({super.key, required this.readerId});
+  const ProfileOverviewScreen({super.key, required this.readerId,});
 
   @override
   State<ProfileOverviewScreen> createState() => _ProfileOverviewScreenState();
 }
 
 class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
-  final List<bool> _clickedList = List.generate(5, (index) => false);
-
   // late String readerId;
   ReaderProfile? reader = ReaderProfile();
+  List<BookModel> books = [];
 
   @override
   void initState() {
@@ -30,12 +32,20 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
     super.initState();
     // readerId = widget.readerId;
     getReaderProfile(widget.readerId);
+    getReaderBooks(widget.readerId);
   }
 
   Future<void> getReaderProfile(String id) async {
     var result = await ReaderService.getReaderProfile(id);
     setState(() {
       reader = result;
+    });
+  }
+
+  Future<void> getReaderBooks(String id) async {
+    var result = await BookService.getReaderBooks(id);
+    setState(() {
+      books = result;
     });
   }
 
@@ -57,6 +67,13 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
           //     fontWeight: FontWeight.bold,
           //   ),
           // ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            // iconSize: 30,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
           centerTitle: true,
           actions: [
             Padding(
@@ -83,7 +100,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
         ),
         backgroundColor: ColorHelper.getColor('#F2F2F2'),
         body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             controller: ScrollController(),
             // padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: reader?.profile == null
@@ -131,7 +148,9 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                      image: AssetImage('assets/google.png'),
+                                      image: NetworkImage(
+                                        'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+                                      ),
                                       fit: BoxFit.fitHeight),
                                 ),
                               ),
@@ -146,6 +165,9 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 2,
                                 ),
                                 Text(
                                   reader?.profile?.countryAccent ??
@@ -193,35 +215,50 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                                 )
                               ],
                             ),
-                            SizedBox(
-                              height: 150,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 5,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Container(
-                                        margin:
-                                            const EdgeInsets.only(right: 23),
-                                        // Adjust the right margin as needed
-                                        child: InkWell(
-                                          onTap: () {},
-                                          child: const Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 150,
-                                                width: 100,
-                                                child: Image(
-                                                  image: AssetImage(
-                                                      'assets/thobaymau.png'),
-                                                  fit: BoxFit.fitHeight,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ));
-                                  }),
-                            )
+                            if (books.isEmpty)
+                              Center(
+                                child: Text(
+                                  'No books found',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color:
+                                        ColorHelper.getColor(ColorHelper.green),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              )
+                            else
+                              SizedBox(
+                                height: 150,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: books.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final book = books[index];
+                                      return Container(
+                                          margin:
+                                              const EdgeInsets.only(right: 23),
+                                          // Adjust the right margin as needed
+                                          child: InkWell(
+                                            onTap: () {},
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 150,
+                                                  width: 100,
+                                                  child: Image(
+                                                    image: NetworkImage(book
+                                                            .imageUrl ??
+                                                        'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg'),
+                                                    fit: BoxFit.fitHeight,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ));
+                                    }),
+                              )
                           ],
                         ),
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/constant.dart';
@@ -35,25 +36,39 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const HomeScreenDrawer(),
       onDrawerChanged: widget.onDrawerChange,
       appBar: AppBar(
-        backgroundColor: ColorHelper.getColor(ColorHelper.lightActive),
-        title: const Text(
+        surfaceTintColor: ColorHelper.getColor(ColorHelper.white),
+        backgroundColor: ColorHelper.getColor(ColorHelper.white),
+        title: Text(
           Constant.appName,
-          style: TextStyle(
-            color: Colors.black,
+          style: GoogleFonts.openSans(
+            color: ColorHelper.getColor(ColorHelper.normal),
             fontSize: SpaceHelper.space24,
             fontWeight: FontWeight.bold,
           ),
         ),
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(
-            UniconsSolid.bars,
-            color: Colors.black,
+        leading: Container(
+          margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.all(0),
+              shape: const CircleBorder(),
+              backgroundColor: Colors.green,
+              side: const BorderSide(
+                // color: Colors.grey[200]!,
+                // width: 3,
+                color: Colors.black45,
+              ),
+            ),
+            child: const Icon(
+              UniconsLine.subject,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // Open drawer using GlobalKey
+              _scaffoldKey.currentState?.openDrawer();
+            },
           ),
-          onPressed: () {
-            // Open drawer using GlobalKey
-            _scaffoldKey.currentState?.openDrawer();
-          },
         ),
         actions: [
           IconButton(
@@ -75,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         controller: ScrollController(),
-        physics: const BouncingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         child: const Center(
           child: Column(
             children: [

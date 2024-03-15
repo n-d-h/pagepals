@@ -18,7 +18,7 @@ class PopularReadersColumn extends StatelessWidget {
             title: AppLocalizations.of(context)!.appPopularReader,
             seeAll: true,
           ),
-          const PopularReaderWidget()
+          const PopularReaderWidget(isHomeScreen: true,)
         ],
       ),
     );
