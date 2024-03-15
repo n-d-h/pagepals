@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/screens/post_screen/post_detail.dart';
 import 'package:pagepals/widgets/text_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:unicons/unicons.dart';
 
 class PostItem extends StatefulWidget {
   final String username;
   final String timeAgo;
   final String postText;
-  final String imageUrl;
+  final List<String> imageUrls;
 
   const PostItem({
     super.key,
     required this.username,
     required this.timeAgo,
     required this.postText,
-    required this.imageUrl,
+    required this.imageUrls,
   });
 
   @override
@@ -93,34 +93,42 @@ class _PostItemState extends State<PostItem> {
                 softWrap: true,
               ),
               if (widget.postText.length > 100)
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      PageTransition(
-                        child: PostDetailScreen(
-                          username: widget.username,
-                          timeAgo: widget.timeAgo,
-                          postText: widget.postText,
-                          imageUrl: widget.imageUrl,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
                         ),
-                        type: PageTransitionType.fade,
-                        duration: const Duration(milliseconds: 300),
-                      ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.appReadMore,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            PageTransition(
+                              child: PostDetailScreen(
+                                username: widget.username,
+                                timeAgo: widget.timeAgo,
+                                postText: widget.postText,
+                                imageUrls: widget.imageUrls,
+                              ),
+                              type: PageTransitionType.fade,
+                              duration: const Duration(milliseconds: 300),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.appReadMore,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
             ],
           ),
@@ -133,18 +141,17 @@ class _PostItemState extends State<PostItem> {
                     username: widget.username,
                     timeAgo: widget.timeAgo,
                     postText: widget.postText,
-                    imageUrl: widget.imageUrl,
+                    imageUrls: widget.imageUrls,
                   ),
                   type: PageTransitionType.fade,
                   duration: const Duration(milliseconds: 300),
                 ),
               );
             },
-            child: Image.network(
-              widget.imageUrl,
-              height: 200.0,
+            child: SizedBox(
+              height: 250,
               width: double.infinity,
-              fit: BoxFit.cover,
+              child: _buildMultiImagePost(widget.imageUrls),
             ),
           ),
           const SizedBox(height: 8.0),
@@ -159,7 +166,8 @@ class _PostItemState extends State<PostItem> {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+                  padding:
+                      const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
                   child: Row(
                     children: [
                       liked
@@ -184,7 +192,7 @@ class _PostItemState extends State<PostItem> {
                         username: widget.username,
                         timeAgo: widget.timeAgo,
                         postText: widget.postText,
-                        imageUrl: widget.imageUrl,
+                        imageUrls: widget.imageUrls,
                       ),
                       type: PageTransitionType.fade,
                       duration: const Duration(milliseconds: 300),
@@ -212,5 +220,132 @@ class _PostItemState extends State<PostItem> {
         ],
       ),
     );
+  }
+
+  Widget _buildMultiImagePost(images) {
+    if (images.isEmpty) {
+      return const SizedBox.shrink();
+    } else if (images.length == 1) {
+      return Image.network(images[0]);
+    } else if (images.length == 2) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Image.network(
+              images[0],
+              height: 250,
+              width: double.infinity / 2 - 5.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 5.0),
+          Expanded(
+            child: Image.network(
+              images[1],
+              height: 250,
+              width: double.infinity / 2 - 5.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      );
+    } else if (images.length == 3) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Image.network(
+              images[0],
+              height: 250,
+              width: double.infinity / 2 - 5.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 5.0),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(
+                  images[1],
+                  height: 122.5,
+                  width: double.infinity / 2 - 5.0,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(height: 5.0),
+                Image.network(
+                  images[2],
+                  height: 122.5,
+                  width: double.infinity / 2 - 5.0,
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Image.network(
+                  images[0],
+                  height: 250,
+                  width: double.infinity / 2 - 5.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 5.0),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.network(
+                      images[1],
+                      height: 122.5,
+                      width: double.infinity / 2 - 5.0,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(height: 5.0),
+                    Stack(
+                      children: [
+                        Image.network(
+                          images[2],
+                          height: 121,
+                          width: double.infinity / 2 - 5.0,
+                          fit: BoxFit.cover,
+                        ),
+                        Container(
+                          height: 122.5,
+                          color: Colors.grey.withOpacity(0.8),
+                          alignment: Alignment.center,
+                          child: Text(
+                            '+${images.length - 2}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
   }
 }
