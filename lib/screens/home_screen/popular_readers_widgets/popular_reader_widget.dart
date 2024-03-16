@@ -1,4 +1,3 @@
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -6,12 +5,12 @@ import 'package:pagepals/screens/home_screen/video_player/intro_video.dart';
 import 'package:pagepals/screens/profile_screen/overview_screen.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/services/reader_service.dart';
-import 'package:video_player/video_player.dart';
 
 class PopularReaderWidget extends StatefulWidget {
-  final bool? isHomeScreen;
+  final GlobalKey<IntroVideoState> introVideoKey;
 
-  const PopularReaderWidget({super.key, this.isHomeScreen});
+  const PopularReaderWidget(
+      {super.key, required this.introVideoKey});
 
   @override
   State<PopularReaderWidget> createState() => _PopularReaderWidgetState();
@@ -20,36 +19,12 @@ class PopularReaderWidget extends StatefulWidget {
 class _PopularReaderWidgetState extends State<PopularReaderWidget> {
   late List<bool> _clickedList;
   List<PopularReader> readers = [];
-  late ChewieController _chewieController;
-
-  void _initializeChewieController(String videoUrl) {
-    _chewieController = ChewieController(
-      videoPlayerController:
-          VideoPlayerController.networkUrl(Uri.parse(videoUrl)),
-      autoInitialize: true,
-      autoPlay: false,
-      aspectRatio: 300 / 160,
-      showControlsOnInitialize: false,
-      looping: false,
-      errorBuilder: (context, errorMessage) {
-        return Center(
-          child: Text(
-            errorMessage,
-            style: const TextStyle(color: Colors.white),
-          ),
-        );
-      },
-    );
-  }
 
   @override
   void initState() {
     super.initState();
     _clickedList = [];
     getListPopularReaders();
-    _initializeChewieController(
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-    );
   }
 
   Future<void> getListPopularReaders() async {
@@ -61,13 +36,15 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
   }
 
   @override
-  void dispose() {
-    _chewieController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    void pauseVideo() {
+      final IntroVideoState? introVideoState =
+          widget.introVideoKey.currentState;
+      if (introVideoState != null) {
+        introVideoState.pauseVideo();
+      }
+    }
+
     return SizedBox(
       height: 320,
       child: readers.isEmpty
@@ -96,8 +73,8 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      _chewieController.pause();
                       // _initializeChewieController(reader.introductionVideoUrl!);
+                      pauseVideo();
                       Navigator.of(context).push(
                         PageTransition(
                           child: ProfileOverviewScreen(
@@ -110,21 +87,10 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                     },
                     child: Stack(
                       children: [
-                        widget.isHomeScreen != null
-                            ? IntroVideo(
-                                chewieController: _chewieController,
-                              )
-                            : Container(
-                                alignment: Alignment.topCenter,
-                                height: 160,
-                                decoration: const BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(12),
-                                    topRight: Radius.circular(12),
-                                  ),
-                                ),
-                              ),
+                        IntroVideo(
+                          videoUrl: reader.introductionVideoUrl!,
+                          key: widget.introVideoKey,
+                        ),
                         Container(
                           alignment: Alignment.topLeft,
                           margin: const EdgeInsets.fromLTRB(0, 159, 5, 0),

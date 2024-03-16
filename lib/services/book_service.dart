@@ -109,6 +109,7 @@ class BookService {
       GraphQLClient client, String query) async {
     final QueryResult result = await client.query(QueryOptions(
       document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
     ));
 
     if (result.hasException) {
