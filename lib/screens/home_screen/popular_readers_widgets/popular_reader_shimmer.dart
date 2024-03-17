@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pagepals/helpers/color_helper.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PopularReaderShimmer extends StatelessWidget {
