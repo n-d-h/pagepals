@@ -10,6 +10,10 @@ class MenuItemScreen extends StatefulWidget {
 class _MenuItemScreenState extends State<MenuItemScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: const Center(
+        child: Text('MenuItemScreen'),
+      ),
+    );
   }
 }

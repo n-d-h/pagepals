@@ -48,7 +48,9 @@ class CommentWidget extends StatelessWidget {
             listCommentModels[index].comment,
             listCommentModels[index].replies,
             treeThemeData: TreeThemeData(
-              lineColor: Colors.grey[500]!,
+              lineColor: listCommentModels[index].replies.isNotEmpty
+                  ? Colors.grey[500]!
+                  : Colors.white,
               lineWidth: 1,
             ),
             avatarRoot: (context, data) => const PreferredSize(

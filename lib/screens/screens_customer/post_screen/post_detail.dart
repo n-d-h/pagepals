@@ -141,192 +141,199 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 8.0,
-                    ),
-                    child: Text(
-                      widget.postText,
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        height: 1.5,
+      body: GestureDetector(
+        onTap: () {
+          _commentFocusNode.unfocus();
+          _commentFocusNode.canRequestFocus = false;
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 8.0,
+                      ),
+                      child: Text(
+                        widget.postText,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          height: 1.5,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  FlutterCarousel(
-                    options: CarouselOptions(
-                      height: 400.0,
-                      showIndicator: true,
-                      viewportFraction: 1.0,
-                      slideIndicator: const CircularSlideIndicator(),
+                    const SizedBox(height: 8.0),
+                    FlutterCarousel(
+                      options: CarouselOptions(
+                        height: 400.0,
+                        showIndicator: true,
+                        viewportFraction: 1.0,
+                        slideIndicator: const CircularSlideIndicator(),
+                      ),
+                      items: widget.imageUrls.map((i) {
+                        return Image.network(
+                          i,
+                          fit: BoxFit.cover,
+                        );
+                      }).toList(),
                     ),
-                    items: widget.imageUrls.map((i) {
-                      return Image.network(
-                        i,
-                        fit: BoxFit.cover,
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 8.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 8.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Theme(
-                          data: ThemeData(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
+                    const SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 8.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Theme(
+                            data: ThemeData(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  liked = !liked;
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    icon: liked
+                                        ? const Icon(
+                                            CustomIcons.thumbs_up,
+                                            color: Colors.blue,
+                                          )
+                                        : const Icon(UniconsLine.thumbs_up),
+                                    onPressed: () {},
+                                  ),
+                                  const SizedBox(width: 4.0),
+                                  Text(AppLocalizations.of(context)!.appLikes),
+                                ],
+                              ),
+                            ),
                           ),
-                          child: InkWell(
+                          InkWell(
+                            borderRadius: BorderRadius.circular(12.0),
                             onTap: () {
-                              setState(() {
-                                liked = !liked;
-                              });
+                              _commentFocusNode.canRequestFocus = true;
+                              _commentFocusNode.requestFocus();
                             },
                             child: Row(
                               children: [
-                                IconButton(
-                                  icon: liked
-                                      ? const Icon(
-                                          CustomIcons.thumbs_up,
-                                          color: Colors.blue,
-                                        )
-                                      : const Icon(UniconsLine.thumbs_up),
-                                  onPressed: () {},
+                                Container(
+                                  margin: const EdgeInsets.only(left: 8.0),
+                                  child: const Icon(UniconsLine.comment),
                                 ),
                                 const SizedBox(width: 4.0),
-                                Text(AppLocalizations.of(context)!.appLikes),
+                                Text(AppLocalizations.of(context)!.appComments),
                               ],
                             ),
                           ),
-                        ),
-                        InkWell(
-                          borderRadius: BorderRadius.circular(12.0),
-                          onTap: () {
-                            _commentFocusNode.canRequestFocus = true;
-                            _commentFocusNode.requestFocus();
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 8.0),
-                                child: const Icon(UniconsLine.comment),
-                              ),
-                              const SizedBox(width: 4.0),
-                              Text(AppLocalizations.of(context)!.appComments),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 8.0,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.appComments,
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
+                        ],
                       ),
                     ),
+                    const Divider(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 8.0,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.appComments,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    CommentWidget(
+                      commentFocusNode: _commentFocusNode,
+                      listCommentModels: listCommentModels,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 12.0,
+              ),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 24,
+                    backgroundImage: AssetImage('assets/image_reader.png'),
                   ),
-                  const SizedBox(height: 8.0),
-                  CommentWidget(
-                    commentFocusNode: _commentFocusNode,
-                    listCommentModels: listCommentModels,
+                  const SizedBox(width: 12.0),
+                  Expanded(
+                    child: TextField(
+                      focusNode: _commentFocusNode,
+                      controller: _commentController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(12.0),
+                        hintStyle: const TextStyle(
+                          fontSize: 12.0,
+                        ),
+                        hintText: AppLocalizations.of(context)!.appAddComment,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.send),
+                          onPressed: () {
+                            print('Comment: ${_commentController.text}');
+                            CommentItem commentItem = CommentItem(
+                              id: '1.5',
+                              avatar: 'null',
+                              userName: 'null',
+                              content: _commentController.text,
+                            );
+                            CommentModel commentModel = CommentModel(
+                              comment: commentItem,
+                              replies: [],
+                            );
+                            listCommentModels.add(commentModel);
+                            setState(() {});
+                            _commentController.clear();
+                          },
+                        ),
+                      ),
+                      onSubmitted: (value) {
+                        print('Comment: $value');
+                        CommentItem commentItem = CommentItem(
+                          id: '1.5',
+                          avatar: 'null',
+                          userName: 'null',
+                          content: value,
+                        );
+                        CommentModel commentModel = CommentModel(
+                          comment: commentItem,
+                          replies: [],
+                        );
+                        listCommentModels.add(commentModel);
+                        setState(() {
+                          _commentFocusNode.unfocus();
+                        });
+                        _commentController.clear();
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 8),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 12.0,
-            ),
-            child: Row(
-              children: [
-                const CircleAvatar(
-                  radius: 24,
-                  backgroundImage: AssetImage('assets/image_reader.png'),
-                ),
-                const SizedBox(width: 12.0),
-                Expanded(
-                  child: TextField(
-                    focusNode: _commentFocusNode,
-                    controller: _commentController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(12.0),
-                      hintStyle: const TextStyle(
-                        fontSize: 12.0,
-                      ),
-                      hintText: AppLocalizations.of(context)!.appAddComment,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.send),
-                        onPressed: () {
-                          print('Comment: ${_commentController.text}');
-                          _commentController.clear();
-                          CommentItem commentItem = CommentItem(
-                            id: '1.5',
-                            avatar: 'null',
-                            userName: 'null',
-                            content: _commentController.text,
-                          );
-                          CommentModel commentModel = CommentModel(
-                            comment: commentItem,
-                            replies: [],
-                          );
-                          listCommentModels.add(commentModel);
-                        },
-                      ),
-                    ),
-                    onSubmitted: (value) {
-                      print('Comment: $value');
-                      _commentController.clear();
-                      CommentItem commentItem = CommentItem(
-                        id: '1.5',
-                        avatar: 'null',
-                        userName: 'null',
-                        content: value,
-                      );
-                      CommentModel commentModel = CommentModel(
-                        comment: commentItem,
-                        replies: [],
-                      );
-                      listCommentModels.add(commentModel);
-                      setState(() {
-                        _commentFocusNode.unfocus();
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
