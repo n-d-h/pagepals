@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/screens/menu_item/menu_item_screen.dart';
-import 'package:pagepals/screens/signin_screen/signin_intro/signin_home.dart';
+import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
+import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
