@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/screens/home_screen/popular_readers_widgets/popular_reader_shimmer.dart';
 import 'package:pagepals/screens/home_screen/video_player/intro_video.dart';
 import 'package:pagepals/screens/profile_screen/overview_screen.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
@@ -9,8 +10,7 @@ import 'package:pagepals/services/reader_service.dart';
 class PopularReaderWidget extends StatefulWidget {
   final GlobalKey<IntroVideoState> introVideoKey;
 
-  const PopularReaderWidget(
-      {super.key, required this.introVideoKey});
+  const PopularReaderWidget({super.key, required this.introVideoKey});
 
   @override
   State<PopularReaderWidget> createState() => _PopularReaderWidgetState();
@@ -48,9 +48,7 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
     return SizedBox(
       height: 320,
       child: readers.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const PopularReaderShimmer()
           : ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: readers.length,

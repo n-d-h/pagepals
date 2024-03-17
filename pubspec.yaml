@@ -41,6 +41,7 @@ dependencies:
   flutter_carousel_widget: ^2.2.0
   flutter_localizations:
     sdk: flutter
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

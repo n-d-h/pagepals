@@ -114,38 +114,42 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
         ),
         backgroundColor: ColorHelper.getColor('#F2F2F2'),
         body: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: ScrollController(),
-            // padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: reader?.profile == null
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.height - 100,
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ],
-                    ),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: ScrollController(),
+          // padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: reader?.profile == null
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height - 100,
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      IntroVideo(
-                        key: mainIntroVideoKey,
-                        videoUrl: reader!.profile!.introductionVideoUrl!,
-                        width: MediaQuery.of(context).size.width,
+                      Center(
+                        child: CircularProgressIndicator(),
                       ),
-                      ProfileInfoLine(reader: reader),
-                      ProfileBookCollection(books: books),
-                      ProfileReviewWidget(reader: reader),
-                      ProfileBookingButton(
-                          reader: reader, pauseVideo: pauseVideo, books: books,),
-                      ProfileReaderCollection(introVideoKey: introVideoKey),
                     ],
-                  )),
+                  ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IntroVideo(
+                      key: mainIntroVideoKey,
+                      videoUrl: reader!.profile!.introductionVideoUrl!,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                    ProfileInfoLine(reader: reader),
+                    ProfileBookCollection(books: books),
+                    ProfileReviewWidget(reader: reader),
+                    ProfileBookingButton(
+                      reader: reader,
+                      pauseVideo: pauseVideo,
+                      books: books,
+                    ),
+                    ProfileReaderCollection(introVideoKey: introVideoKey),
+                  ],
+                ),
+        ),
       ),
     );
   }
