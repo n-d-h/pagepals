@@ -190,13 +190,14 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
                 PageTransition(
                   child: const ReaderRequestScreen(),
                   type: PageTransitionType.fade,
                   duration: const Duration(milliseconds: 300),
                 ),
+                (route) => false,
               );
             },
           ),
