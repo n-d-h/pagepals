@@ -44,11 +44,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      controller: ScrollController(),
+    final width = MediaQuery.of(context).size.width * 0.9;
+    final aspectRatio = width / 200;
+
+    return SizedBox(
+      width: width,
+      height: 200,
       child: AspectRatio(
-        aspectRatio: 16 / 9,
+        aspectRatio: aspectRatio,
         child: Chewie(
           controller: _chewieController,
         ),

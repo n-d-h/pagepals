@@ -9,12 +9,18 @@ import 'package:pagepals/screens/booking_screen/booking_widgets/request_schedule
 import 'package:pagepals/screens/booking_screen/review_summary_screen.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 
+import '../../models/book_model.dart';
 import 'booking_widgets/time_slot_picker_widget.dart';
 
 class BookingTimeScreen extends StatefulWidget {
   final ReaderProfile? reader;
+  final List<BookModel> books;
 
-  const BookingTimeScreen({Key? key, required this.reader}) : super(key: key);
+  const BookingTimeScreen({
+    super.key,
+    required this.reader,
+    required this.books,
+  });
 
   @override
   State<BookingTimeScreen> createState() => _BookingTimeState();
@@ -27,11 +33,6 @@ class _BookingTimeState extends State<BookingTimeScreen> {
 
   String? _selectedBook;
   String? _selectedChapter;
-
-  final List<String> books =
-      List.generate(10, (index) => 'This is book num $index');
-  final List<String> chapters =
-      List.generate(10, (index) => 'Chapter $index: The $index');
 
   @override
   void initState() {
@@ -70,9 +71,18 @@ class _BookingTimeState extends State<BookingTimeScreen> {
         _selectedChapter != null &&
         _selectedRadioButtonValue != null;
   }
+    List<String> chapters = [];
+
 
   @override
   Widget build(BuildContext context) {
+    final List<String> books = widget.books.map((e) => e.title!).toList();
+    // final List<String> books =
+    //     List.generate(10, (index) => 'This is book num $index');
+    // final List<String> chapters = bookData
+    //     .map((e) => e.chapters!.map((e) => e.chapterNumber!).toString())
+    //     .toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Book appointment'),

@@ -32,4 +32,5 @@ class CustomIcons {
   static const IconData user = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData users_alt = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData star = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  // static const IconData menu = IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

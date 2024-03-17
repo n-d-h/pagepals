@@ -39,7 +39,7 @@ class ReaderService {
     final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(query),
-        // fetchPolicy: FetchPolicy.networkOnly,
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
@@ -113,8 +113,9 @@ class ReaderService {
   }
 
   static Future<ReaderProfile?> _fetchReaderProfile(String query) async {
-    final QueryResult result =
-        await graphQLClient.query(QueryOptions(document: gql(query)));
+    final QueryResult result = await graphQLClient.query(QueryOptions(
+      document: gql(query),
+    ));
 
     if (result.hasException) {
       throw Exception('Failed to load readers');

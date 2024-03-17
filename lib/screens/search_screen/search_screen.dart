@@ -27,11 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      child: SafeArea(
+    return SafeArea(
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -192,7 +188,6 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

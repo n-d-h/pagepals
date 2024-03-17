@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/screens/home_screen/popular_readers_widgets/popular_reader_shimmer.dart';
+import 'package:pagepals/screens/home_screen/video_player/intro_video.dart';
 import 'package:pagepals/screens/profile_screen/overview_screen.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/services/reader_service.dart';
 
 class PopularReaderWidget extends StatefulWidget {
-  const PopularReaderWidget({super.key});
+  final GlobalKey<IntroVideoState> introVideoKey;
+
+  const PopularReaderWidget({super.key, required this.introVideoKey});
 
   @override
   State<PopularReaderWidget> createState() => _PopularReaderWidgetState();
@@ -33,12 +37,18 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    void pauseVideo() {
+      final IntroVideoState? introVideoState =
+          widget.introVideoKey.currentState;
+      if (introVideoState != null) {
+        introVideoState.pauseVideo();
+      }
+    }
+
     return SizedBox(
       height: 320,
       child: readers.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const PopularReaderShimmer()
           : ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: readers.length,
@@ -61,6 +71,8 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                   ),
                   child: InkWell(
                     onTap: () {
+                      // _initializeChewieController(reader.introductionVideoUrl!);
+                      pauseVideo();
                       Navigator.of(context).push(
                         PageTransition(
                           child: ProfileOverviewScreen(
@@ -73,16 +85,9 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                     },
                     child: Stack(
                       children: [
-                        Container(
-                          alignment: Alignment.topCenter,
-                          height: 160,
-                          decoration: const BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12),
-                            ),
-                          ),
+                        IntroVideo(
+                          videoUrl: reader.introductionVideoUrl!,
+                          key: widget.introVideoKey,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
