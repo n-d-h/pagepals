@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pagepals/custom_icons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_customer/reader_request/reader_request_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:unicons/unicons.dart';
 
 class HomeScreenDrawer extends StatefulWidget {
