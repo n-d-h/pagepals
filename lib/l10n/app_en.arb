@@ -53,5 +53,12 @@
   "appReviews": "Reviews",
   "appVideIntroduction": "Video Introduction",
   "appReaderIntroduction": "Reader Introduction",
-  "appSave": "Save"
+  "appSave": "Save",
+  "appInformation": "Information",
+  "appAnswerQuestion": "Answer Question",
+  "appUploadVideo": "Upload Video",
+  "appReCheckInformation": "Re-check Infor",
+  "appNext": "Next",
+  "appBack": "Back",
+  "appSubmit": "Submit"
 }

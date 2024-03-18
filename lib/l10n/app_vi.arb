@@ -53,5 +53,12 @@
   "appReviews": "Đánh giá",
   "appVideIntroduction": "Video giới thiệu",
   "appReaderIntroduction": "Giới thiệu người đọc",
-  "appSave": "Lưu"
+  "appSave": "Lưu",
+  "appInformation": "Thông tin",
+  "appAnswerQuestion": "Trả lời câu hỏi",
+  "appUploadVideo": "Tải video lên",
+  "appReCheckInformation": "Kiểm tra lại thông tin",
+  "appNext": "Tiếp theo",
+  "appBack": "Quay lại",
+  "appSubmit": "Submit"
 }

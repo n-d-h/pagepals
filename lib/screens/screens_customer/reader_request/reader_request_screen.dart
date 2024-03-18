@@ -1,9 +1,10 @@
-import 'dart:math';
-
+import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_stepindicator/flutter_stepindicator.dart';
-import 'package:quickalert/utils/images.dart';
+import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step1.dart';
+import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step2.dart';
+import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step3.dart';
+import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step4.dart';
 
 class ReaderRequestScreen extends StatefulWidget {
   const ReaderRequestScreen({super.key});
@@ -13,9 +14,24 @@ class ReaderRequestScreen extends StatefulWidget {
 }
 
 class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
-  int page = 1;
-  int counter = 4;
-  List list = [1, 2, 3, 4, 5];
+  late int activeStep = 0;
+  int upperBound = 4;
+  double progress = 0.2;
+
+  List listScreen = [
+    const ReaderRequestStep1(),
+    const ReaderRequestStep2(),
+    const ReaderRequestStep3(),
+    const ReaderRequestStep4(),
+  ];
+
+  void increaseProgress() {
+    if (progress < 1) {
+      setState(() => progress += 0.2);
+    } else {
+      setState(() => progress = 0);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,181 +52,187 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-          )
+          ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _example1(),
-          ],
-        ),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            clipBehavior: Clip.none,
+            child: EasyStepper(
+              activeStep: activeStep,
+              lineStyle: LineStyle(
+                lineLength: 70,
+                lineSpace: 0,
+                lineType: LineType.normal,
+                defaultLineColor: Colors.grey[400],
+                finishedLineColor: Colors.orange,
+                lineThickness: 1.5,
+              ),
+              activeStepTextColor: Colors.black87,
+              finishedStepTextColor: Colors.black87,
+              internalPadding: 0,
+              showLoadingAnimation: false,
+              stepRadius: 8,
+              showStepBorder: false,
+              steps: [
+                EasyStep(
+                  customStep: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[200],
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor:
+                          activeStep >= 0 ? Colors.orange : Colors.grey[200],
+                      child: activeStep >= 0
+                          ? const Icon(
+                              Icons.check,
+                              size: 15,
+                              color: Colors.white,
+                            )
+                          : const SizedBox(),
+                    ),
+                  ),
+                  title: AppLocalizations.of(context)!.appInformation,
+                ),
+                EasyStep(
+                  customStep: CircleAvatar(
+                    radius: 15,
+                    backgroundColor: Colors.grey[200],
+                    child: CircleAvatar(
+                        radius: 15,
+                        backgroundColor:
+                            activeStep >= 1 ? Colors.orange : Colors.grey[200],
+                        child: activeStep >= 1
+                            ? const Icon(
+                                Icons.check,
+                                size: 15,
+                                color: Colors.white,
+                              )
+                            : const SizedBox()),
+                  ),
+                  title: AppLocalizations.of(context)!.appAnswerQuestion,
+                  topTitle: true,
+                ),
+                EasyStep(
+                  customStep: CircleAvatar(
+                    radius: 15,
+                    backgroundColor: Colors.grey[200],
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor:
+                          activeStep >= 2 ? Colors.orange : Colors.grey[200],
+                      child: activeStep >= 2
+                          ? const Icon(
+                              Icons.check,
+                              size: 15,
+                              color: Colors.white,
+                            )
+                          : const SizedBox(),
+                    ),
+                  ),
+                  title: AppLocalizations.of(context)!.appUploadVideo,
+                ),
+                EasyStep(
+                  customStep: CircleAvatar(
+                    radius: 15,
+                    backgroundColor: Colors.grey[200],
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor:
+                          activeStep >= 3 ? Colors.orange : Colors.grey[200],
+                      child: activeStep >= 3
+                          ? const Icon(
+                              Icons.check,
+                              size: 15,
+                              color: Colors.white,
+                            )
+                          : const SizedBox(),
+                    ),
+                  ),
+                  title: AppLocalizations.of(context)!.appReCheckInformation,
+                  topTitle: true,
+                ),
+              ],
+              onStepReached: (index) => setState(() => activeStep = index),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              controller: ScrollController()..addListener(increaseProgress),
+              physics: const BouncingScrollPhysics(),
+              child: listScreen[activeStep],
+            ),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _example1() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-      child: Container(
-        decoration: BoxDecoration(
-            color:
-                Theme.of(context).colorScheme.inversePrimary.withOpacity(0.0)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      bottomNavigationBar: Container(
+        height: 50,
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SizedBox(
-              width: double.maxFinite,
-              height: 120,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.45,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: Colors.grey[300]!,
+                ),
+              ),
+              child: Center(
+                child: InkWell(
+                  onTap: () {
+                    if (activeStep > 0) {
+                      setState(() => --activeStep);
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      AppLocalizations.of(context)!.appBack,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
-                      child: FlutterStepIndicator(
-                        height: 28,
-                        paddingLine: const EdgeInsets.symmetric(horizontal: 0),
-                        positiveColor: const Color(0xFF00B551),
-                        progressColor: const Color(0xFFEA9C00),
-                        negativeColor: const Color(0xFFD5D5D5),
-                        padding: const EdgeInsets.all(4),
-                        list: list,
-                        division: 5,
-                        onChange: (i) {
-                          print(i);
-                        },
-                        page: page,
-                        onClickItem: (p0) {
-                          setState(() {
-                            page = p0;
-                          });
-                        },
-                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 7),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Thông tin \n cá nhân',
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            "Thông tin \n định danh",
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            "Upload \n video",
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            "Text",
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            "Text",
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-            // widgetOption(
-            //     title: "update step ($page)",
-            //     callAdd: () {
-            //       if (page < list.length) {
-            //         setState(() {
-            //           page++;
-            //         });
-            //       }
-            //     },
-            //     callRemove: () {
-            //       if (page > 0) {
-            //         setState(() {
-            //           page--;
-            //         });
-            //       }
-            //     }),
-            // widgetOption(
-            //     title: "add item in list (${list.length})",
-            //     callAdd: () {
-            //       setState(() {
-            //         list.add(Random().nextInt(100));
-            //       });
-            //     },
-            //     callRemove: () {
-            //       setState(() {
-            //         list.removeAt(list.length - 1);
-            //       });
-            //     }),
-            // widgetOption(
-            //     title: "counter show (${counter - 1})",
-            //     callAdd: () {
-            //       setState(() {
-            //         counter++;
-            //       });
-            //     },
-            //     callRemove: () {
-            //       setState(() {
-            //         counter--;
-            //       });
-            //     })
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget widgetOption({
-    required String title,
-    required VoidCallback callAdd,
-    required VoidCallback callRemove,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-        decoration: BoxDecoration(
-            color: Colors.blueGrey.withOpacity(0.03),
-            borderRadius: BorderRadius.circular(15)),
-        child: Column(
-          children: [
             Container(
-              width: double.maxFinite,
-              height: 30,
-              alignment: Alignment.center,
-              child: Text(
-                title,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              width: MediaQuery.of(context).size.width * 0.45,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: Colors.orange,
+                ),
+              ),
+              child: Center(
+                child: InkWell(
+                  onTap: () {
+                    if (activeStep < upperBound) {
+                      setState(() => ++activeStep);
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      AppLocalizations.of(context)!.appNext,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                    onPressed: callAdd, child: const Icon(Icons.add)),
-                ElevatedButton(
-                    onPressed: callRemove, child: const Icon(Icons.remove)),
-              ],
-            )
           ],
         ),
       ),
