@@ -67,7 +67,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   bool areFieldsSelected() {
     // selectedDate is always not null
     return _selectedBook != null &&
-        _selectedChapter != null &&
+        // _selectedChapter != null &&
         _selectedRadioButtonValue != null;
   }
     List<String> chapters = [];
@@ -107,15 +107,15 @@ class _BookingTimeState extends State<BookingTimeScreen> {
               DropdownButtonWidget(
                 title: 'Book Selection',
                 opt: 1,
-                items: books,
+                items: widget.books,
                 onValueChanged: handleBookSelected,
               ),
-              DropdownButtonWidget(
-                title: 'Chapter Selection',
-                opt: 2,
-                items: chapters,
-                onValueChanged: handleChapterSelected,
-              ),
+              // DropdownButtonWidget(
+              //   title: 'Chapter Selection',
+              //   opt: 2,
+              //   items: chapters,
+              //   onValueChanged: handleChapterSelected,
+              // ),
               DatePickerWidget(
                 onDateSelected: handleDateSelected,
               ),

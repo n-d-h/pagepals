@@ -50,7 +50,7 @@ class _BookListViewState extends State<BookListView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Image(
-                      image: NetworkImage(book.imageUrl ?? ''),
+                      image: NetworkImage(book.thumbnailUrl ?? ''),
                       fit: BoxFit.contain,
                       width: 100,
                     ),
@@ -71,7 +71,7 @@ class _BookListViewState extends State<BookListView> {
                         ),
                         TextWidget(
                           length: 200,
-                          content: 'Category: ${book.category?.name ?? ''}',
+                          content: 'Category: ${book.bookCategories?[0].name ?? ''}',
                           overflow: TextOverflow.ellipsis,
                           fontSize: 14,
                           maxLines: 1,
@@ -79,7 +79,7 @@ class _BookListViewState extends State<BookListView> {
                         ),
                         TextWidget(
                           length: 230,
-                          content: book.author,
+                          content: book.bookAuthors?[0].name ?? '',
                           overflow: TextOverflow.ellipsis,
                           fontSize: 14,
                           maxLines: 1,

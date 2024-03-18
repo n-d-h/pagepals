@@ -78,25 +78,6 @@ class ReaderService {
               tags
               totalOfBookings
               totalOfReviews
-              services {
-                bookingDetails {
-                  rating
-                  review
-                  description
-                  booking {
-                    customer {
-                      account {
-                        username
-                      }
-                    }
-                  }
-                }
-                chapter {
-                  book {
-                    title
-                  }
-                }
-              }
             }
             workingTimeList {
               workingDates {

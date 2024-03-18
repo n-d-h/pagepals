@@ -1,7 +1,96 @@
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:pagepals/helpers/color_helper.dart';
+// import 'package:pagepals/helpers/space_helper.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//
+// class WelcomeWidget extends StatelessWidget {
+//   const WelcomeWidget({Key? key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
+//       margin: const EdgeInsets.symmetric(
+//         horizontal: SpaceHelper.space24,
+//         vertical: SpaceHelper.space24,
+//       ),
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(SpaceHelper.space16),
+//         gradient: LinearGradient(
+//           begin: Alignment.topLeft,
+//           end: Alignment.bottomRight,
+//           colors: [
+//             Colors.blue.withOpacity(0.8),
+//             Colors.purple.withOpacity(0.8),
+//           ],
+//         ),
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.2),
+//             blurRadius: SpaceHelper.space8,
+//             offset: const Offset(0, 5),
+//           ),
+//         ],
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Container(
+//             padding: const EdgeInsets.symmetric(
+//               horizontal: SpaceHelper.space24,
+//               vertical: SpaceHelper.space24,
+//             ),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 const Text(
+//                   'It\'s New!',
+//                   style: TextStyle(
+//                     fontSize: 30,
+//                     fontWeight: FontWeight.bold,
+//                     color: Colors.white,
+//                   ),
+//                 ),
+//                 const SizedBox(height: SpaceHelper.space8),
+//                 RichText(
+//                   text: TextSpan(
+//                     text:
+//                     // '${AppLocalizations.of(context)?.appWelcomeBack}, ',
+//                     'Review us now, ',
+//                     style: GoogleFonts.lexend(
+//                       fontSize: 23,
+//                       fontWeight: FontWeight.bold,
+//                       color: Colors.white,
+//                     ),
+//                     children: [
+//                       TextSpan(
+//                         text: 'Guest',
+//                         style: GoogleFonts.lexend(
+//                           fontSize: 23,
+//                           fontWeight: FontWeight.bold,
+//                           color: Colors.yellow,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+//
+//
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pagepals/helpers/color_helper.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({super.key});
@@ -10,52 +99,106 @@ class WelcomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
-      padding: const EdgeInsets.symmetric(
-        horizontal: SpaceHelper.space24,
-        vertical: SpaceHelper.space24,
-      ),
       margin: const EdgeInsets.symmetric(
         horizontal: SpaceHelper.space24,
         vertical: SpaceHelper.space24,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(SpaceHelper.space16),
-        boxShadow: const [
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.blue.withOpacity(0.8),
+            Colors.purple.withOpacity(0.8),
+          ],
+        ),
+        boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: Colors.black.withOpacity(0.2),
             blurRadius: SpaceHelper.space8,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Icon(
-            Icons.account_circle_outlined,
-            size: 80.0,
-            color: Colors.black54,
-          ),
-          const SizedBox(height: SpaceHelper.space8),
-          RichText(
-            text: TextSpan(
-                text: '${AppLocalizations.of(context)?.appWelcomeBack}, ',
-                style: const TextStyle(
-                  fontSize: 23,
+      child: Padding(
+        padding: const EdgeInsets.all(SpaceHelper.space24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // const SizedBox(height: SpaceHelper.space16),
+            SizedBox(
+            height: 84,
+              child: DefaultTextStyle(
+                style: GoogleFonts.lexend(
+                  fontSize: 35,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black
+                  color: Colors.white,
+                ),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    RotateAnimatedText(
+                      'Discover new books!',
+                      duration: const Duration(milliseconds: 1200),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    RotateAnimatedText(
+                      'Read and learn!',
+                      duration: const Duration(milliseconds: 1200),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    RotateAnimatedText(
+                      'Enjoy your time!',
+                      duration: const Duration(milliseconds: 1200),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    RotateAnimatedText(
+                      'Get inspired!',
+                      duration: const Duration(milliseconds: 1200),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    RotateAnimatedText(
+                      'Find your next book!',
+                      duration: const Duration(milliseconds: 1200),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    RotateAnimatedText(
+                      'Read and grow!',
+                      // duration: const Duration(milliseconds: 2000),
+                      alignment: Alignment.centerLeft,
+                    ),
+                  ],
+                  pause: const Duration(milliseconds: 300),
+                  repeatForever: true,
+                  onTap: () {
+                    print("Ad Banner tapped!");
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: SpaceHelper.space12),
+            RichText(
+              text: TextSpan(
+                text: 'Review us now, ',
+                style: GoogleFonts.lexend(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.cyanAccent,
                 ),
                 children: [
                   TextSpan(
-                      text: 'Guest',
-                      style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                          color: ColorHelper.getColor(ColorHelper.green)))
-                ]),
-          )
-        ],
+                    text: 'Guest',
+                    style: GoogleFonts.lexend(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.yellow,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

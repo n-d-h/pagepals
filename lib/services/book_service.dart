@@ -77,26 +77,18 @@ class BookService {
             book {
               id
               title
-              longTitle
-              author
               publisher
-              pages
               language
-              overview
-              imageUrl
-              edition
-              status
-              createdAt
-              category {
-                id
+              bookAuthors {
                 name
-                description
               }
-              chapters {
-                id
-                chapterNumber
-                pages
+              bookCategories {
+                name
               }
+              description
+              pageCount
+              smallThumbnailUrl
+              thumbnailUrl
             }
           }
         }

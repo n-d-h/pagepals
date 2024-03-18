@@ -1,14 +1,16 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/models/book_model.dart';
 import 'package:unicons/unicons.dart';
 
 class DropdownButtonWidget extends StatefulWidget {
   final String title;
   final int opt;
-  final List<String> items;
+  final List<BookModel> items;
   final Function(String?) onValueChanged;
 
   const DropdownButtonWidget(
@@ -23,7 +25,8 @@ class DropdownButtonWidget extends StatefulWidget {
 }
 
 class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
-  late List<String> items;
+  // late List<String> items;
+  late List<BookModel> items;
 
   String? selectedItem;
   late int opt;
@@ -90,14 +93,37 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
             style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
           items: items
-              .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  ))
+              .map(
+                (item) => DropdownMenuItem<String>(
+                  value: item.id,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image(
+                          image: NetworkImage(item.thumbnailUrl ?? ''),
+                          fit: BoxFit.fill,
+                          width: 80,
+                          height: 100,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        item.title ?? 'book',
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    print('Tapped');
+                  },
+                ),
+              )
               .toList(),
           validator: (value) {
             if (value == null) {
@@ -116,6 +142,7 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
             selectedItem = value.toString();
             widget.onValueChanged(selectedItem);
           },
+
           buttonStyleData: const ButtonStyleData(
             padding: EdgeInsets.only(right: 8),
           ),
@@ -128,13 +155,14 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
           ),
           dropdownStyleData: DropdownStyleData(
             width:
-                MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
+                MediaQuery.of(context).size.width - 32,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           menuItemStyleData: const MenuItemStyleData(
-            padding: EdgeInsets.symmetric(horizontal: 48),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            height: 120,
           ),
         ),
       ],

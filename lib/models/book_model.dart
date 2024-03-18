@@ -1,123 +1,99 @@
 class BookModel {
   String? id;
   String? title;
-  String? longTitle;
-  String? author;
   String? publisher;
-  int? pages;
   String? language;
-  String? overview;
-  String? imageUrl;
-  String? edition;
-  String? status;
-  String? createdAt;
-  Category? category;
-  List<Chapters>? chapters;
+  List<BookAuthors>? bookAuthors;
+  List<BookCategories>? bookCategories;
+  String? description;
+  int? pageCount;
+  String? smallThumbnailUrl;
+  String? thumbnailUrl;
 
   BookModel(
       {this.id,
-        this.title,
-        this.longTitle,
-        this.author,
-        this.publisher,
-        this.pages,
-        this.language,
-        this.overview,
-        this.imageUrl,
-        this.edition,
-        this.status,
-        this.createdAt,
-        this.category,
-        this.chapters});
+      this.title,
+      this.publisher,
+      this.language,
+      this.bookAuthors,
+      this.bookCategories,
+      this.description,
+      this.pageCount,
+      this.smallThumbnailUrl,
+      this.thumbnailUrl});
 
   BookModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
-    longTitle = json['longTitle'];
-    author = json['author'];
     publisher = json['publisher'];
-    pages = json['pages'];
     language = json['language'];
-    overview = json['overview'];
-    imageUrl = json['imageUrl'];
-    edition = json['edition'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
-    if (json['chapters'] != null) {
-      chapters = <Chapters>[];
-      json['chapters'].forEach((v) {
-        chapters!.add(new Chapters.fromJson(v));
+    if (json['bookAuthors'] != null) {
+      bookAuthors = <BookAuthors>[];
+      json['bookAuthors'].forEach((v) {
+        bookAuthors!.add(new BookAuthors.fromJson(v));
       });
     }
+    if (json['bookCategories'] != null) {
+      bookCategories = <BookCategories>[];
+      json['bookCategories'].forEach((v) {
+        bookCategories!.add(new BookCategories.fromJson(v));
+      });
+    }
+    description = json['description'];
+    pageCount = json['pageCount'];
+    smallThumbnailUrl = json['smallThumbnailUrl'];
+    thumbnailUrl = json['thumbnailUrl'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
-    data['longTitle'] = this.longTitle;
-    data['author'] = this.author;
     data['publisher'] = this.publisher;
-    data['pages'] = this.pages;
     data['language'] = this.language;
-    data['overview'] = this.overview;
-    data['imageUrl'] = this.imageUrl;
-    data['edition'] = this.edition;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
+    if (this.bookAuthors != null) {
+      data['bookAuthors'] = this.bookAuthors!.map((v) => v.toJson()).toList();
     }
-    if (this.chapters != null) {
-      data['chapters'] = this.chapters!.map((v) => v.toJson()).toList();
+    if (this.bookCategories != null) {
+      data['bookCategories'] =
+          this.bookCategories!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Category {
-  String? id;
-  String? name;
-  String? description;
-
-  Category({this.id, this.name, this.description});
-
-  Category.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    description = json['description'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
     data['description'] = this.description;
+    data['pageCount'] = this.pageCount;
+    data['smallThumbnailUrl'] = this.smallThumbnailUrl;
+    data['thumbnailUrl'] = this.thumbnailUrl;
     return data;
   }
 }
 
-class Chapters {
-  String? id;
-  int? chapterNumber;
-  int? pages;
+class BookAuthors {
+  String? name;
 
-  Chapters({this.id, this.chapterNumber, this.pages});
+  BookAuthors({this.name});
 
-  Chapters.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    chapterNumber = json['chapterNumber'];
-    pages = json['pages'];
+  BookAuthors.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['chapterNumber'] = this.chapterNumber;
-    data['pages'] = this.pages;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class BookCategories {
+  String? name;
+
+  BookCategories({this.name});
+
+  BookCategories.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
     return data;
   }
 }

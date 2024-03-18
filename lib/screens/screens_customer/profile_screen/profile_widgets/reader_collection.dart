@@ -4,6 +4,7 @@ import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro
 
 class ProfileReaderCollection extends StatelessWidget {
   final GlobalKey<IntroVideoState> introVideoKey;
+
   const ProfileReaderCollection({super.key, required this.introVideoKey});
 
   @override
@@ -18,8 +19,7 @@ class ProfileReaderCollection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin:
-            const EdgeInsets.only(top: 20, bottom: 10),
+            margin: const EdgeInsets.only(top: 20, bottom: 10),
             child: const Text(
               'People also view',
               style: TextStyle(
@@ -28,9 +28,7 @@ class ProfileReaderCollection extends StatelessWidget {
               ),
             ),
           ),
-          PopularReaderWidget(
-            introVideoKey: introVideoKey,
-          ),
+          const PopularReaderWidget(),
         ],
       ),
     );
