@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
+import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/popular_reader_box.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/popular_reader_shimmer.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/overview_screen.dart';
 import 'package:pagepals/services/reader_service.dart';
 
 class PopularReaderWidget extends StatefulWidget {
-  final GlobalKey<IntroVideoState> introVideoKey;
-
-  const PopularReaderWidget({super.key, required this.introVideoKey});
+  const PopularReaderWidget({super.key});
 
   @override
   State<PopularReaderWidget> createState() => _PopularReaderWidgetState();
@@ -37,13 +36,13 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    void pauseVideo() {
-      final IntroVideoState? introVideoState =
-          widget.introVideoKey.currentState;
-      if (introVideoState != null) {
-        introVideoState.pauseVideo();
-      }
-    }
+    // void pauseVideo(IntroVideoState? introVideoState) {
+    //   // final IntroVideoState? introVideoState =
+    //   //     widget.introVideoKey.currentState;
+    //   if (introVideoState != null) {
+    //     introVideoState.pauseVideo();
+    //   }
+    // }
 
     return SizedBox(
       height: 320,
@@ -54,7 +53,38 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
               itemCount: readers.length,
               itemBuilder: (context, index) {
                 var reader = readers[index];
-                return Container(
+                // final introVideo = IntroVideo(
+                //   videoUrl: reader.introductionVideoUrl!,
+                //   key: widget.introVideoKey,
+                // );
+                return PopularReaderBox(
+                  reader: reader,
+                  index: index,
+                  iconButton: IconButton(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () {
+                      setState(() {
+                        _clickedList[index] = !_clickedList[index];
+                      });
+                    },
+                    icon: Icon(
+                      _clickedList[index]
+                          ? Icons.favorite
+                          : Icons.favorite_border_sharp,
+                      size: 25,
+                      color: _clickedList[index] ? Colors.red : Colors.black12,
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
+
+/*
+Container(
                   width: 300,
                   margin: const EdgeInsets.fromLTRB(2, 10, 25, 10),
                   padding: const EdgeInsets.only(top: 0, bottom: 14),
@@ -91,7 +121,7 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          margin: const EdgeInsets.fromLTRB(0, 159, 5, 0),
+                          margin: const EdgeInsets.fromLTRB(0, 161, 5, 0),
                           child: Column(
                             children: [
                               Row(
@@ -251,9 +281,5 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                       ],
                     ),
                   ),
-                );
-              },
-            ),
-    );
-  }
-}
+                )
+*/

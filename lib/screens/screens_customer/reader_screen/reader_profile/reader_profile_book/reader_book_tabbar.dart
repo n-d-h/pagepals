@@ -14,7 +14,7 @@ class _ReaderBookTabbarState extends State<ReaderBookTabbar> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       controller: ScrollController(),
-      physics: const AlwaysScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         padding: const EdgeInsets.all(SpaceHelper.space16),

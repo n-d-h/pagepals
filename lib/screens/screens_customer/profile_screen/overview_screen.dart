@@ -40,7 +40,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
 
   // late String readerId;
   ReaderProfile? reader = ReaderProfile();
-  List<BookModel> books = [];
+  List<BookModel> bookModels = [];
 
   @override
   void initState() {
@@ -67,12 +67,13 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
   Future<void> getReaderBooks(String id) async {
     var result = await BookService.getReaderBooks(id);
     setState(() {
-      books = result;
+      bookModels = result;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // List<Book> books = bookModels.map((e) => e.book!).toList();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -139,12 +140,12 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                       width: MediaQuery.of(context).size.width,
                     ),
                     ProfileInfoLine(reader: reader),
-                    ProfileBookCollection(books: books),
+                    ProfileBookCollection(books: bookModels.map((e) => e.book!).toList()),
                     ProfileReviewWidget(reader: reader),
                     ProfileBookingButton(
                       reader: reader,
                       pauseVideo: pauseVideo,
-                      books: books,
+                      bookModels: bookModels,
                     ),
                     ProfileReaderCollection(introVideoKey: introVideoKey),
                   ],

@@ -77,25 +77,30 @@ class BookService {
             book {
               id
               title
-              longTitle
-              author
               publisher
-              pages
               language
-              overview
-              imageUrl
-              edition
-              status
-              createdAt
-              category {
+              authors {
+                name
+              }
+              categories {
+                name
+              }
+              description
+              pageCount
+              smallThumbnailUrl
+              thumbnailUrl
+            }
+            services {
+              id
+              description
+              duration
+              price
+              rating
+              totalOfBooking
+              totalOfReview
+              serviceType {
                 id
                 name
-                description
-              }
-              chapters {
-                id
-                chapterNumber
-                pages
               }
             }
           }
@@ -118,7 +123,7 @@ class BookService {
 
     final List<dynamic>? booksData = result.data?['getReaderBooks'];
     if (booksData != null) {
-      return booksData.map((bookJson) => BookModel.fromJson(bookJson['book'])).toList();
+      return booksData.map((bookJson) => BookModel.fromJson(bookJson)).toList();
     } else {
       throw Exception('Failed to parse books data');
     }

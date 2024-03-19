@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class TimeRowWidget extends StatelessWidget {
@@ -33,7 +34,7 @@ class TimeRowWidget extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: DateFormat('MMMM d, yyyy').format(time),
-                    style: const TextStyle(
+                    style: GoogleFonts.lexend(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
@@ -49,7 +50,7 @@ class TimeRowWidget extends StatelessWidget {
                   ),
                   TextSpan(
                     text: DateFormat('HH:mm').format(time),
-                    style: const TextStyle(
+                    style: GoogleFonts.lexend(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,

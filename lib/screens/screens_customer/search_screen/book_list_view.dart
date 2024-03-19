@@ -4,7 +4,7 @@ import 'package:pagepals/services/book_service.dart';
 import 'package:pagepals/widgets/text_widget.dart';
 
 class BookListView extends StatefulWidget {
-  const BookListView({Key? key});
+  const BookListView({super.key});
 
   @override
   State<BookListView> createState() => _BookListViewState();
@@ -50,7 +50,7 @@ class _BookListViewState extends State<BookListView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Image(
-                      image: NetworkImage(book.imageUrl ?? ''),
+                      image: NetworkImage(book.book?.thumbnailUrl ?? ''),
                       fit: BoxFit.contain,
                       width: 100,
                     ),
@@ -63,7 +63,7 @@ class _BookListViewState extends State<BookListView> {
                       children: [
                         TextWidget(
                           length: 200,
-                          content: book.title,
+                          content: book.book!.title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           softWrap: false,
@@ -71,7 +71,7 @@ class _BookListViewState extends State<BookListView> {
                         ),
                         TextWidget(
                           length: 200,
-                          content: 'Category: ${book.category?.name ?? ''}',
+                          content: 'Category: ${book.book?.categories?[0].name ?? ''}',
                           overflow: TextOverflow.ellipsis,
                           fontSize: 14,
                           maxLines: 1,
@@ -79,7 +79,7 @@ class _BookListViewState extends State<BookListView> {
                         ),
                         TextWidget(
                           length: 230,
-                          content: book.author,
+                          content: book.book?.categories?[0].name ?? '',
                           overflow: TextOverflow.ellipsis,
                           fontSize: 14,
                           maxLines: 1,

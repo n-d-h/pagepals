@@ -15,7 +15,7 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       controller: ScrollController(),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,

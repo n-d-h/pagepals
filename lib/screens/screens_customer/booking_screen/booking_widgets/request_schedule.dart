@@ -13,14 +13,14 @@ class RequestScheduleWidget extends StatelessWidget {
       children: [
         const SizedBox(height: 30),
         Container(
-          // padding: const EdgeInsets.all(2),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           // width: 350,
           decoration: BoxDecoration(
               color: Colors.grey.shade200,
               borderRadius: const BorderRadius.all(Radius.circular(50))),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 'Want a custom schedule?',
@@ -29,19 +29,15 @@ class RequestScheduleWidget extends StatelessWidget {
                     fontWeight: FontWeight.w300,
                     color: Colors.black),
               ),
-              SizedBox(
-                height: 37,
-                // width: 200,
-                child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Request Schedule',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: ColorHelper.getColor(ColorHelper.green)),
-                    )),
-              )
+              InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'Request Schedule',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: ColorHelper.getColor(ColorHelper.green)),
+                  )),
             ],
           ),
         ),

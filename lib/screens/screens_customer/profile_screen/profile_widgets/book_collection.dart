@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_model.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProfileBookCollection extends StatelessWidget {
-  final List<BookModel> books;
+  final List<Book> books;
 
   const ProfileBookCollection({super.key, required this.books});
 
@@ -42,45 +43,64 @@ class ProfileBookCollection extends StatelessWidget {
             ],
           ),
           if (books.isEmpty)
-            Center(
-              child: Text(
-                'No books found',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: ColorHelper.getColor(ColorHelper.green),
-                  fontSize: 14,
-                ),
+            SizedBox(
+              height: 150,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      // Adjust the right margin as needed
+                      decoration: const BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: const SizedBox(
+                        height: 150,
+                        width: 100,
+                      ),
+                    ),
+                  );
+                },
               ),
             )
           else
             SizedBox(
               height: 150,
               child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: books.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final book = books[index];
-                    return Container(
-                        margin: const EdgeInsets.only(right: 23),
-                        // Adjust the right margin as needed
-                        child: InkWell(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                height: 150,
-                                width: 100,
-                                child: Image(
-                                  image: NetworkImage(book.imageUrl ??
-                                      'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg'),
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              )
-                            ],
+                scrollDirection: Axis.horizontal,
+                itemCount: books.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final book = books[index];
+                  return InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 23),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: SizedBox(
+                          height: 150,
+                          width: 100,
+                          child: Image(
+                            image: NetworkImage(book.thumbnailUrl ??
+                                'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg'),
+                            fit: BoxFit.fill,
                           ),
-                        ));
-                  }),
-            )
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
         ],
       ),
     );
