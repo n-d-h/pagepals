@@ -3,18 +3,39 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_about/reader_about_tabbar.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_book/reader_book_tabbar.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_review/reader_review_tabbar.dart';
+import 'package:pagepals/services/reader_service.dart';
+import 'package:pagepals/widgets/reader_info_widget/booking_badge.dart';
+import 'package:pagepals/widgets/reader_info_widget/rating_row.dart';
 
 class ReaderProfileScreen extends StatefulWidget {
-  const ReaderProfileScreen({super.key});
+  final String readerId;
+
+  const ReaderProfileScreen({super.key, required this.readerId});
 
   @override
   State<ReaderProfileScreen> createState() => _ReaderProfileState();
 }
 
 class _ReaderProfileState extends State<ReaderProfileScreen> {
+  late ReaderProfile reader;
+
+  Future<void> getReaderProfile() async {
+    var data = await ReaderService.getReaderProfile(widget.readerId);
+    setState(() {
+      reader = data!;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getReaderProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -24,6 +45,7 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               SliverAppBar(
+                surfaceTintColor: Colors.white,
                 backgroundColor: Colors.white,
                 leading: IconButton(
                   onPressed: () {
@@ -31,7 +53,7 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                   },
                   splashRadius: 24,
                   icon: const Icon(
-                    Icons.close,
+                    Icons.arrow_back_ios,
                     color: Colors.black,
                   ),
                 ),
@@ -46,76 +68,63 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                     StretchMode.fadeTitle,
                   ],
                   background: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.6), BlendMode.darken),
+                        image: const AssetImage('assets/reading_book.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                     padding: const EdgeInsets.only(
                       top: 50,
                       bottom: SpaceHelper.space16,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const CircleAvatar(
-                          radius: 45,
-                          backgroundImage:
-                              AssetImage('assets/image_reader.png'),
-                        ),
-                        const SizedBox(height: SpaceHelper.space12),
-                        const Text(
-                          'Bùi Lễ Văn Minh',
-                          style: TextStyle(
-                            fontSize: SpaceHelper.fontSize14,
-                            fontWeight: FontWeight.bold,
+                    child: Container(
+                      // margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 35, 10, 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CircleAvatar(
+                            radius: 60,
+                            backgroundImage:
+                                AssetImage('assets/image_reader.png'),
                           ),
-                        ),
-                        const Text(
-                          '@minmin',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: SpaceHelper.fontSize12,
+                          const SizedBox(
+                            width: 20,
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // star rating
-                            Icon(
-                              Icons.star_rounded,
-                              color: ColorHelper.getColor('#FFA800'),
-                              size: 18,
-                            ),
-                            const SizedBox(width: 3),
-                            Text(
-                              '4.5',
-                              style: TextStyle(
-                                color: ColorHelper.getColor('#FFA800'),
-                                fontSize: SpaceHelper.fontSize14,
-                                fontWeight: FontWeight.w600
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              BookingBadge(
+                                  title: reader.profile?.countryAccent ??
+                                      'reader'),
+                              Text(
+                                reader.profile?.nickname ?? 'reader',
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
                               ),
-                            ),
-                            const SizedBox(width: 3),
-                            Text(
-                              '(100)',
-                              style: TextStyle(
-                                color: Colors.grey.withOpacity(0.5),
-                                fontSize: SpaceHelper.fontSize14,
+                              // SizedBox(height: 10,),
+                              Text(
+                                '@${reader.profile?.account?.username ?? 'reader'}',
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
                               ),
-                            ),
-                            const SizedBox(
-                              width: SpaceHelper.space8,
-                            ),
-                            Text(
-                              'Northern dialect Vietnamese',
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.7),
-                                fontSize: SpaceHelper.fontSize14,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                      ],
+                              RatingRow(
+                                rating: reader.profile?.rating ?? 0,
+                                reviews: reader.profile?.totalOfReviews ?? '0',
+                                color: Colors.white,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -139,11 +148,12 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                     ],
                   ),
                 ),
-                expandedHeight: 265.0,
+                expandedHeight: 240.0,
               ),
             ];
           },
           body: const TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               ReaderAboutTabbar(),
               ReaderBookTabbar(),

@@ -83,7 +83,7 @@ class _ReaderSearchScreenState extends State<ReaderSearchScreen> {
               Center(
                 child: Container(
                   margin: const EdgeInsets.only(top: 50),
-                  child: Text(
+                  child: const Text(
                     'Search for a reader',
                     style: TextStyle(
                       fontSize: 20,

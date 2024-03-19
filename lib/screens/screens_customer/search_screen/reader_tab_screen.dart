@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
+import 'package:pagepals/screens/screens_customer/profile_screen/overview_screen.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_widget.dart';
 import 'package:pagepals/services/reader_service.dart';
@@ -13,7 +14,6 @@ class ReaderTabScreen extends StatefulWidget {
 }
 
 class _ReaderTabScreenState extends State<ReaderTabScreen> {
-
   Future<List<PopularReader>> getActiveReader() {
     return ReaderService.getListActiveReader();
   }
@@ -21,8 +21,6 @@ class _ReaderTabScreenState extends State<ReaderTabScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: ScrollController(),
-      physics: const AlwaysScrollableScrollPhysics(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,21 +49,22 @@ class _ReaderTabScreenState extends State<ReaderTabScreen> {
                           context,
                           PageTransition(
                             type: PageTransitionType.rightToLeft,
-                            child: const ReaderProfileScreen(),
+                            child: ProfileOverviewScreen(
+                              readerId: reader.id!,
+                            ),
                           ),
                         );
                       },
-                      teacherName: reader.nickname,
-                      language: reader.language,
-                      rating: reader.rating,
-                      voiceDescription: reader.description,
+                      reader: reader,
                     );
                   }).toList(),
                 );
               }
             },
           ),
-          const SizedBox(height: 70,)
+          const SizedBox(
+            height: 70,
+          )
         ],
       ),
     );

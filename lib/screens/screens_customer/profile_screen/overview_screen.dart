@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/popular_reader_box.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/book_collection.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/booking_button.dart';
@@ -24,15 +25,10 @@ class ProfileOverviewScreen extends StatefulWidget {
 }
 
 class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
-  GlobalKey<IntroVideoState> introVideoKey = GlobalKey<IntroVideoState>();
   GlobalKey<IntroVideoState> mainIntroVideoKey = GlobalKey<IntroVideoState>();
 
   void pauseVideo() {
-    final IntroVideoState? introVideoState = introVideoKey.currentState;
     final IntroVideoState? mainIntroVideoState = mainIntroVideoKey.currentState;
-    if (introVideoState != null) {
-      introVideoState.pauseVideo();
-    }
     if (mainIntroVideoState != null) {
       mainIntroVideoState.pauseVideo();
     }
@@ -139,7 +135,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                       videoUrl: reader!.profile!.introductionVideoUrl!,
                       width: MediaQuery.of(context).size.width,
                     ),
-                    ProfileInfoLine(reader: reader),
+                    ProfileInfoLine(reader: reader, pauseVideo: pauseVideo),
                     ProfileBookCollection(books: bookModels.map((e) => e.book!).toList()),
                     ProfileReviewWidget(reader: reader),
                     ProfileBookingButton(
@@ -147,7 +143,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                       pauseVideo: pauseVideo,
                       bookModels: bookModels,
                     ),
-                    ProfileReaderCollection(introVideoKey: introVideoKey),
+                    // const ProfileReaderCollection(),
                   ],
                 ),
         ),

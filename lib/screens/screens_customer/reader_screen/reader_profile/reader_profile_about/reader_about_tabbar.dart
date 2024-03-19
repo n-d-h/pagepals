@@ -11,17 +11,18 @@ class ReaderAboutTabbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: ScrollController(),
-      physics: const NeverScrollableScrollPhysics(),
+      // controller: ScrollController(),
+      // physics: const AlwaysScrollableScrollPhysics(),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         padding: const EdgeInsets.symmetric(
-          vertical: 8,
+          vertical: 5,
           horizontal: 15,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -35,7 +36,9 @@ class ReaderAboutTabbar extends StatelessWidget {
                 ),
               ),
             ),
-            const VideoPlayerScreen(),
+            VideoPlayerScreen(
+              width: MediaQuery.of(context).size.width - 30,
+            ),
             const SizedBox(height: SpaceHelper.space16),
             Padding(
               padding: const EdgeInsets.only(top: 10),
@@ -103,7 +106,8 @@ class ReaderAboutTabbar extends StatelessWidget {
               iconData: UniconsLine.globe,
               title: 'Accent',
               content: 'Northern Spanish',
-            )
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

@@ -15,8 +15,6 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      controller: ScrollController(),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         padding: const EdgeInsets.all(SpaceHelper.space16),
@@ -118,6 +116,42 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
             const CommentCollectionWidget(
               text:
                   'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.sakfjdhlddldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldl ádlkfhjffjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjf',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.sakfjdhlddldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldl ádlkfhjffjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjf',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.sakfjdhlddldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldl ádlkfhjffjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjf',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
+            ),
+            const CommentCollectionWidget(
+              text:
+              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
             ),
           ],
         ),

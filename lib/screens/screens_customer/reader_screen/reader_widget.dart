@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/reader_models/popular_reader_model.dart';
+import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 
 class ReaderWidget extends StatefulWidget {
-  ReaderWidget({
+  final Function() onTap;
+  final PopularReader reader;
+
+  // String? teacherImage;
+  // String? teacherName;
+  // String? voiceDescription;
+  // int? rating;
+  // String? language;
+  const ReaderWidget({
     super.key,
     required this.onTap,
-    this.teacherImage,
-    this.teacherName,
-    this.voiceDescription,
-    this.rating,
-    this.language,
+    required this.reader,
   });
-
-  Function() onTap;
-  String? teacherImage;
-  String? teacherName;
-  String? voiceDescription;
-  int? rating;
-  String? language;
 
   @override
   State<ReaderWidget> createState() => _ReaderWidgetState();
@@ -48,8 +48,9 @@ class _ReaderWidgetState extends State<ReaderWidget> {
           children: [
             CircleAvatar(
               radius: 55,
-              backgroundImage:
-                  AssetImage(widget.teacherImage ?? 'assets/image_reader.png'),
+              backgroundImage: AssetImage(
+                  widget.reader.account?.customer?.imageUrl ??
+                      'assets/image_reader.png'),
             ),
             const SizedBox(width: 16),
             Column(
@@ -57,7 +58,7 @@ class _ReaderWidgetState extends State<ReaderWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Name: ${widget.teacherName ?? 'John Doe'}',
+                  widget.reader.nickname ?? 'John Doe',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -67,7 +68,7 @@ class _ReaderWidgetState extends State<ReaderWidget> {
                 Row(
                   children: [
                     const Text(
-                      'Description: ',
+                      'Genre: ',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.black,
@@ -75,7 +76,7 @@ class _ReaderWidgetState extends State<ReaderWidget> {
                       ),
                     ),
                     Text(
-                      widget.voiceDescription ?? 'Clear and engaging voice',
+                      widget.reader.genre ?? 'Clear and engaging voice',
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
@@ -95,7 +96,7 @@ class _ReaderWidgetState extends State<ReaderWidget> {
                       ),
                     ),
                     Text(
-                      widget.language ?? 'English, Vietnamese',
+                      widget.reader.language ?? 'English, Vietnamese',
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
@@ -116,11 +117,11 @@ class _ReaderWidgetState extends State<ReaderWidget> {
                       ),
                     ),
                     const SizedBox(width: 3),
-                    for (int i = 0; i < (widget.rating ?? 4); i++)
-                      const Icon(
+                    for (int i = 0; i < (widget.reader.rating ?? 4); i++)
+                      Icon(
                         Icons.star_rounded,
-                        color: Colors.yellow,
-                        size: 18,
+                        color: ColorHelper.getColor('#FFA800'),
+                        size: 20,
                       ),
                   ],
                 ),

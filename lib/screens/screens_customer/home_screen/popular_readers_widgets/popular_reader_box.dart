@@ -18,10 +18,10 @@ class PopularReaderBox extends StatefulWidget {
   });
 
   @override
-  State<PopularReaderBox> createState() => _PopularReaderBoxState();
+  State<PopularReaderBox> createState() => PopularReaderBoxState();
 }
 
-class _PopularReaderBoxState extends State<PopularReaderBox> {
+class PopularReaderBoxState extends State<PopularReaderBox> {
   late List<bool> _clickedList;
 
   @override

@@ -4,8 +4,9 @@ import 'package:pagepals/helpers/color_helper.dart';
 class RatingRow extends StatelessWidget {
   final int? rating;
   final String reviews;
+  final Color? color;
 
-  const RatingRow({super.key, required this.rating, required this.reviews});
+  const RatingRow({super.key, required this.rating, required this.reviews, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +19,9 @@ class RatingRow extends StatelessWidget {
           Container(
             height: 23,
             padding: const EdgeInsets.only(right: 12),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 border:
-                    Border(right: BorderSide(width: 2, color: Colors.black12))),
+                    Border(right: BorderSide(width: 2, color: color ?? Colors.black12))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,9 +35,10 @@ class RatingRow extends StatelessWidget {
                   margin: const EdgeInsets.only(left: 2),
                   child: Text(
                     '${rating ?? '0'}.0/5.0',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 13,
+                      color: color ?? Colors.black,
                     ),
                   ),
                 ),
@@ -54,10 +56,10 @@ class RatingRow extends StatelessWidget {
                 children: [
                   Text(
                     '$reviews reviews',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 12,
-                        color: Colors.black),
+                        color: color ?? Colors.black),
                   ),
                 ],
               ))

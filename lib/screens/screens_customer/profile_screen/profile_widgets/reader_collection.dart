@@ -3,9 +3,7 @@ import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_wi
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
 
 class ProfileReaderCollection extends StatelessWidget {
-  final GlobalKey<IntroVideoState> introVideoKey;
-
-  const ProfileReaderCollection({super.key, required this.introVideoKey});
+  const ProfileReaderCollection({super.key});
 
   @override
   Widget build(BuildContext context) {

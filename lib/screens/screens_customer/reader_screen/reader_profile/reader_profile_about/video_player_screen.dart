@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
+  final double width;
+
   const VideoPlayerScreen({
     super.key,
+    required this.width,
   });
 
   @override
@@ -24,6 +27,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       videoPlayerController: videoPlayerController,
       autoInitialize: true,
       looping: true,
+      aspectRatio: widget.width / 200,
       errorBuilder: (context, errorMessage) {
         return Center(
           child: Text(
@@ -44,17 +48,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 0.9;
-    final aspectRatio = width / 200;
-
     return SizedBox(
-      width: width,
+      width: widget.width,
       height: 200,
-      child: AspectRatio(
-        aspectRatio: aspectRatio,
-        child: Chewie(
-          controller: _chewieController,
-        ),
+      child: Chewie(
+        controller: _chewieController,
       ),
     );
   }
