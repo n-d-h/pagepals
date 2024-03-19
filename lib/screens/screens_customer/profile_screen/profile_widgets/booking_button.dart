@@ -9,10 +9,10 @@ import 'package:pagepals/screens/screens_customer/booking_screen/booking_time_sc
 class ProfileBookingButton extends StatelessWidget {
   final ReaderProfile? reader;
   final Function pauseVideo;
-  final List<BookModel> books;
+  final List<BookModel> bookModels;
 
   const ProfileBookingButton(
-      {super.key, this.reader, required this.pauseVideo, required this.books});
+      {super.key, this.reader, required this.pauseVideo, required this.bookModels});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ProfileBookingButton extends StatelessWidget {
               PageTransition(
                 child: BookingTimeScreen(
                   reader: reader,
-                  books: books,
+                  bookModels: bookModels,
                 ),
                 type: PageTransitionType.rightToLeft,
                 duration: const Duration(milliseconds: 300),

@@ -16,7 +16,7 @@ class ReviewSummaryScreen extends StatelessWidget {
   final ReaderProfile? reader;
   final DateTime time;
   final String? book;
-  final String? chapter;
+  // final String? chapter;
   final int? serviceType;
 
   const ReviewSummaryScreen(
@@ -24,7 +24,7 @@ class ReviewSummaryScreen extends StatelessWidget {
       this.reader,
       required this.time,
       required this.book,
-      required this.chapter,
+      // required this.chapter,
       required this.serviceType});
 
   @override
@@ -54,7 +54,7 @@ class ReviewSummaryScreen extends StatelessWidget {
               TimeRowWidget(time: time),
               ServiceRowWidget(service: serviceType!),
               BookRowWidget(book: book!),
-              ChapterRowWidget(chapter: chapter!),
+              // ChapterRowWidget(chapter: chapter!),
               const SizedBox(height: 15),
               const SpaceBetweenRowWidget(start: 'Amount', end: '15.000 VND'),
               const SpaceBetweenRowWidget(

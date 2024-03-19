@@ -4,7 +4,7 @@ import 'package:pagepals/models/book_model.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProfileBookCollection extends StatelessWidget {
-  final List<BookModel> books;
+  final List<Book> books;
 
   const ProfileBookCollection({super.key, required this.books});
 

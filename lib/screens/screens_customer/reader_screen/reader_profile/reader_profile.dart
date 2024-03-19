@@ -140,7 +140,6 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                   ),
                 ),
                 expandedHeight: 265.0,
-                // collapsedHeight: 0,
               ),
             ];
           },

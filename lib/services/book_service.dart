@@ -79,16 +79,29 @@ class BookService {
               title
               publisher
               language
-              bookAuthors {
+              authors {
                 name
               }
-              bookCategories {
+              categories {
                 name
               }
               description
               pageCount
               smallThumbnailUrl
               thumbnailUrl
+            }
+            services {
+              id
+              description
+              duration
+              price
+              rating
+              totalOfBooking
+              totalOfReview
+              serviceType {
+                id
+                name
+              }
             }
           }
         }
@@ -110,7 +123,7 @@ class BookService {
 
     final List<dynamic>? booksData = result.data?['getReaderBooks'];
     if (booksData != null) {
-      return booksData.map((bookJson) => BookModel.fromJson(bookJson['book'])).toList();
+      return booksData.map((bookJson) => BookModel.fromJson(bookJson)).toList();
     } else {
       throw Exception('Failed to parse books data');
     }

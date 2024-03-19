@@ -13,12 +13,12 @@ import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 
 class BookingTimeScreen extends StatefulWidget {
   final ReaderProfile? reader;
-  final List<BookModel> books;
+  final List<BookModel> bookModels;
 
   const BookingTimeScreen({
     super.key,
     required this.reader,
-    required this.books,
+    required this.bookModels,
   });
 
   @override
@@ -41,10 +41,21 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   }
 
   // Function to handle book selection
-  void handleBookSelected(String? book) {
+  void handleBookSelected(String? bookId) {
     setState(() {
-      _selectedBook = book;
+      widget.bookModels.forEach((element) {
+        if (element.book!.id == bookId) {
+          _selectedBook = element.book!.title;
+        }
+      });
     });
+    // setState(() {
+    //   _selectedBook = widget.books
+    //           .firstWhere((element) => element.book!.id == bookId,
+    //               orElse: () => BookModel(book: ''))
+    //           .title ??
+    //       '';
+    // });
     debugPrint('Selected book: $_selectedBook');
   }
 
@@ -70,12 +81,12 @@ class _BookingTimeState extends State<BookingTimeScreen> {
         // _selectedChapter != null &&
         _selectedRadioButtonValue != null;
   }
-    List<String> chapters = [];
 
+  List<String> chapters = [];
 
   @override
   Widget build(BuildContext context) {
-    final List<String> books = widget.books.map((e) => e.title!).toList();
+    // final List<String> books = widget.books.map((e) => e.book!.title!).toList();
     // final List<String> books =
     //     List.generate(10, (index) => 'This is book num $index');
     // final List<String> chapters = bookData
@@ -107,7 +118,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
               DropdownButtonWidget(
                 title: 'Book Selection',
                 opt: 1,
-                items: widget.books,
+                items: widget.bookModels.map((e) => e.book!).toList(),
                 onValueChanged: handleBookSelected,
               ),
               // DropdownButtonWidget(
@@ -148,7 +159,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                       reader: widget.reader,
                       time: selectedDate,
                       book: _selectedBook,
-                      chapter: _selectedBook,
+                      // chapter: _selectedBook,
                       serviceType: _selectedRadioButtonValue,
                     ),
                     type: PageTransitionType.rightToLeft,

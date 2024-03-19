@@ -10,7 +10,7 @@ import 'package:unicons/unicons.dart';
 class DropdownButtonWidget extends StatefulWidget {
   final String title;
   final int opt;
-  final List<BookModel> items;
+  final List<Book> items;
   final Function(String?) onValueChanged;
 
   const DropdownButtonWidget(
@@ -26,7 +26,7 @@ class DropdownButtonWidget extends StatefulWidget {
 
 class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
   // late List<String> items;
-  late List<BookModel> items;
+  late List<Book> items;
 
   String? selectedItem;
   late int opt;
@@ -64,6 +64,17 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
         ),
         DropdownButtonFormField2<String>(
           isExpanded: true,
+          selectedItemBuilder: (value) {
+            return items.map<Widget>(
+              (e) {
+                return Text(
+                  e.title ?? 'book',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
+                );
+              },
+            ).toList();
+          },
           decoration: InputDecoration(
             prefixIcon: opt == 1
                 ? Icon(
@@ -134,14 +145,15 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
           onChanged: (value) {
             // Update selectedGender to control the visibility of the icon
             setState(() {
-              selectedItem = value.toString();
+              selectedItem = value;
+              // print('item: ${value.toString()}');
             });
             widget.onValueChanged(selectedItem);
           },
-          onSaved: (value) {
-            selectedItem = value.toString();
-            widget.onValueChanged(selectedItem);
-          },
+          // onSaved: (value) {
+          //   selectedItem = value.toString();
+          //   widget.onValueChanged(selectedItem);
+          // },
 
           buttonStyleData: const ButtonStyleData(
             padding: EdgeInsets.only(right: 8),
@@ -154,8 +166,7 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
             iconSize: 24,
           ),
           dropdownStyleData: DropdownStyleData(
-            width:
-                MediaQuery.of(context).size.width - 32,
+            width: MediaQuery.of(context).size.width - 32,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
             ),
