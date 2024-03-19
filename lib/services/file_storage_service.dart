@@ -7,6 +7,7 @@ class FileStorageService {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // VIDEO
   Future<String> uploadFile(File filePath) async {
     Reference ref =
         _firebaseStorage.ref().child('videos/${DateTime.now()}.mp4');
@@ -31,6 +32,27 @@ class FileStorageService {
     await ref.delete();
   }
 
+  // AUDIO
+  Future<String> uploadAudio(File filePath) async {
+    Reference ref =
+        _firebaseStorage.ref().child('audios/${DateTime.now()}.mp3');
+
+    SettableMetadata metadata = SettableMetadata(contentType: 'audio/mp3');
+
+    await ref.putFile(filePath, metadata);
+    String url = await ref.getDownloadURL();
+    return url;
+  }
+
+  Future<void> saveAudioData(String audioUrl) async {
+    await _firestore.collection('audios').add({
+      'url': audioUrl,
+      'createdAt': FieldValue.serverTimestamp(),
+      'name': 'Reader Audio',
+    });
+  }
+
+  // IMAGE
   Future<String> uploadImage(File filePath) async {
     Reference ref =
         _firebaseStorage.ref().child('images/${DateTime.now()}.png');

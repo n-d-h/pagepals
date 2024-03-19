@@ -1,9 +1,9 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step1.dart';
-import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step2.dart';
-import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step3.dart';
+import 'package:pagepals/screens/screens_reader/reader_request/reader_request_step1.dart';
+import 'package:pagepals/screens/screens_reader/reader_request/reader_request_step2.dart';
+import 'package:pagepals/screens/screens_reader/reader_request/reader_request_step3.dart';
 
 class ReaderRequestScreen extends StatefulWidget {
   const ReaderRequestScreen({super.key});
@@ -15,21 +15,12 @@ class ReaderRequestScreen extends StatefulWidget {
 class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
   late int activeStep = 0;
   int upperBound = 3;
-  double progress = 0.2;
 
   List listScreen = [
     const ReaderRequestStep1(),
     const ReaderRequestStep2(),
     const ReaderRequestStep3(),
   ];
-
-  void increaseProgress() {
-    if (progress < 1) {
-      setState(() => progress += 0.2);
-    } else {
-      setState(() => progress = 0);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +138,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
           ),
           Expanded(
             child: SingleChildScrollView(
-              controller: ScrollController()..addListener(increaseProgress),
+              controller: ScrollController(),
               physics: const BouncingScrollPhysics(),
               child: listScreen[activeStep],
             ),
@@ -174,7 +165,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                 child: InkWell(
                   onTap: () {
                     if (activeStep > 0) {
-                      setState(() => --activeStep);
+                      setState(() => activeStep-=1);
                     }
                   },
                   child: Padding(
@@ -204,7 +195,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                 child: InkWell(
                   onTap: () {
                     if (activeStep < upperBound) {
-                      setState(() => ++activeStep);
+                      setState(() => activeStep += 1);
                     }
                   },
                   child: Padding(

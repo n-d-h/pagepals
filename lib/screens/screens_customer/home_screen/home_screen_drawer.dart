@@ -7,7 +7,7 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
-import 'package:pagepals/screens/screens_customer/reader_request/reader_request_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_request/reader_request_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
