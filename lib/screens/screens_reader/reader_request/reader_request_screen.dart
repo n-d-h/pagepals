@@ -27,7 +27,8 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text(""),
+        title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
+        centerTitle: true,
         actions: [
           InkWell(
             onTap: () {},
@@ -165,7 +166,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                 child: InkWell(
                   onTap: () {
                     if (activeStep > 0) {
-                      setState(() => activeStep-=1);
+                      setState(() => activeStep -= 1);
                     }
                   },
                   child: Padding(
@@ -194,7 +195,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
               child: Center(
                 child: InkWell(
                   onTap: () {
-                    if (activeStep < upperBound) {
+                    if (activeStep < upperBound - 1) {
                       setState(() => activeStep += 1);
                     }
                   },

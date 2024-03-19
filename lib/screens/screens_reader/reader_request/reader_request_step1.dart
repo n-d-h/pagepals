@@ -20,7 +20,7 @@ class _ReaderRequestStep1State extends State<ReaderRequestStep1> {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
       maxWidth: 1440,
-      maxHeight: 300,
+      maxHeight: 270,
       source: ImageSource.gallery,
     );
 
@@ -85,7 +85,7 @@ class _ReaderRequestStep1State extends State<ReaderRequestStep1> {
           const SizedBox(height: 16.0),
           Container(
             width: double.infinity,
-            height: 200.0,
+            height: 300.0,
             padding: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(
               border: Border.all(
@@ -100,17 +100,28 @@ class _ReaderRequestStep1State extends State<ReaderRequestStep1> {
                 _selectedImage != null
                     ? Image.file(_selectedImage!)
                     : const Icon(
-                  Icons.image,
-                  size: 60.0,
-                  color: Colors.grey,
-                ),
+                        Icons.image,
+                        size: 60.0,
+                        color: Colors.grey,
+                      ),
               ],
             ),
           ),
           const SizedBox(height: 15.0),
-          ElevatedButton(
-            onPressed: _handleImageSelection,
-            child: const Text('Upload'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                onPressed: _handleImageSelection,
+                child: const Text('Choose Image'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  print(_selectedImage);
+                },
+                child: const Text('Upload'),
+              ),
+            ],
           ),
         ],
       ),

@@ -14,15 +14,15 @@ class _ReaderRequestStep2State extends State<ReaderRequestStep2> {
       questions: [
         Question(
           question: 'What is your favorite color?',
-          answers: ['Red', 'Blue', 'Green', 'Yellow'],
         ),
         Question(
           question: 'Which of the following sports do you enjoy?',
-          answers: ['Football', 'Basketball'],
         ),
         Question(
           question: 'What is your favorite food?',
-          answers: ['Pizza', 'Burger', 'Pasta'],
+        ),
+        Question(
+          question: 'What is your favorite movie?',
         ),
       ],
     );
@@ -31,19 +31,19 @@ class _ReaderRequestStep2State extends State<ReaderRequestStep2> {
 
 class Question {
   final String question;
-  final List<String> answers;
 
-  Question({required this.question, required this.answers});
+  Question({required this.question});
 }
 
 class QuestionListView extends StatelessWidget {
   final List<Question> questions;
+  final TextEditingController controller = TextEditingController();
 
-  const QuestionListView({super.key, required this.questions});
+  QuestionListView({super.key, required this.questions});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
@@ -51,12 +51,6 @@ class QuestionListView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(17.0),
               margin: const EdgeInsets.only(bottom: 10),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,16 +62,15 @@ class QuestionListView extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  for (var answer in question.answers)
-                    RadioListTile(
-                      title: Text(
-                        answer,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      value: answer,
-                      groupValue: null,
-                      onChanged: (value) {},
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: controller,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                      hintText: 'Type your answer here',
+                      border: OutlineInputBorder(),
                     ),
+                  ),
                 ],
               ),
             ),

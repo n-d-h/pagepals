@@ -1,7 +1,9 @@
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_tokens.dart';
 import 'package:pagepals/models/authen_models/login_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenService {
   static const String baseUrl = 'https://pagepals.azurewebsites.net/graphql';
@@ -57,6 +59,8 @@ class AuthenService {
 
   static Future<AccountTokens?> _authenWithGoogle(
       GraphQLClient client, String mutation) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final QueryResult result = await client.query(
       QueryOptions(
         document: gql(mutation),
@@ -69,6 +73,11 @@ class AuthenService {
 
     var loginData = result.data?['loginWithGoogle'];
     if (loginData != null) {
+      final user = JWT.decode(loginData?['accessToken']);
+      prefs.setString('accessToken', loginData?['accessToken']);
+      prefs.setString('refreshToken', loginData?['refreshToken']);
+      prefs.setString('username', user.payload['username']);
+
       return AccountTokens(
         accessToken: loginData?['accessToken'],
         refreshToken: loginData?['refreshToken'],
