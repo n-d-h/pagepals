@@ -5,6 +5,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({super.key});
@@ -51,34 +52,64 @@ class WelcomeWidget extends StatelessWidget {
                 child: AnimatedTextKit(
                   animatedTexts: [
                     RotateAnimatedText(
-                      'Discover new books!',
+                      AppLocalizations.of(context)!.appDiscoveryNewBook,
                       duration: const Duration(milliseconds: 1200),
                       alignment: Alignment.centerLeft,
+                      textStyle: GoogleFonts.lexend(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     RotateAnimatedText(
-                      'Read and learn!',
+                      AppLocalizations.of(context)!.appReadAndLearn,
                       duration: const Duration(milliseconds: 1200),
                       alignment: Alignment.centerLeft,
+                      textStyle: GoogleFonts.lexend(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     RotateAnimatedText(
-                      'Enjoy your time!',
+                      AppLocalizations.of(context)!.appEnjoyYourTime,
                       duration: const Duration(milliseconds: 1200),
                       alignment: Alignment.centerLeft,
+                      textStyle: GoogleFonts.lexend(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     RotateAnimatedText(
-                      'Get inspired!',
+                      AppLocalizations.of(context)!.appGetInspired,
                       duration: const Duration(milliseconds: 1200),
                       alignment: Alignment.centerLeft,
+                      textStyle: GoogleFonts.lexend(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     RotateAnimatedText(
-                      'Find your next book!',
+                      AppLocalizations.of(context)!.appFindYourNextBook,
                       duration: const Duration(milliseconds: 1200),
                       alignment: Alignment.centerLeft,
+                      textStyle: GoogleFonts.lexend(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     RotateAnimatedText(
-                      'Read and grow!',
+                      AppLocalizations.of(context)!.appReadAndGrow,
                       // duration: const Duration(milliseconds: 2000),
                       alignment: Alignment.centerLeft,
+                      textStyle: GoogleFonts.lexend(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                   pause: const Duration(milliseconds: 300),
@@ -92,7 +123,7 @@ class WelcomeWidget extends StatelessWidget {
             const SizedBox(height: SpaceHelper.space12),
             RichText(
               text: TextSpan(
-                text: 'Review us now, ',
+                text: AppLocalizations.of(context)!.appReviewUsNow,
                 style: GoogleFonts.lexend(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
