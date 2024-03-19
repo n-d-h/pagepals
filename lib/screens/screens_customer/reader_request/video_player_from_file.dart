@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -14,69 +15,51 @@ class VideoPlayerFromFile extends StatefulWidget {
 }
 
 class _VideoPlayerFromFileState extends State<VideoPlayerFromFile> {
-  late VideoPlayerController _controller;
+  late ChewieController _chewieController;
+
+  void _initializeChewieController(File videoFile) {
+    _chewieController = ChewieController(
+      videoPlayerController: VideoPlayerController.file(videoFile),
+      autoInitialize: true,
+      autoPlay: false,
+      aspectRatio: 16 / 9,
+      showControlsOnInitialize: false,
+      looping: false,
+      errorBuilder: (context, errorMessage) {
+        return Center(
+          child: Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.white),
+          ),
+        );
+      },
+    );
+  }
+
+  void pauseVideo() {
+    if (_chewieController.videoPlayerController.value.isPlaying) {
+      _chewieController.pause();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(widget.videoFile)
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized
-        setState(() {});
-      });
+    _initializeChewieController(widget.videoFile);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Container(
-            width: 300,
-            height: 300,
-            child: _controller.value.isInitialized
-                ? AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  )
-                : const CircularProgressIndicator(),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    if (_controller.value.isPlaying) {
-                      _controller.pause();
-                    } else {
-                      _controller.play();
-                    }
-                  });
-                },
-                child: Icon(
-                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                ),
-              ),
-              const SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _controller.seekTo(const Duration(seconds: 0));
-                  });
-                },
-                child: const Icon(Icons.replay),
-              ),
-            ],
-          )
-        ],
+    return SizedBox(
+      height: 300,
+      child: Chewie(
+        controller: _chewieController,
       ),
     );
   }

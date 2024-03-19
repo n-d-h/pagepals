@@ -13,7 +13,7 @@ class VideoPlayerScreen extends StatefulWidget {
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'));
+      'https://firebasestorage.googleapis.com/v0/b/authen-6cf1b.appspot.com/o/videos%2F2024-03-19%2022%3A10%3A21.900394.mp4?alt=media&token=d49c14d4-c677-4674-b0a5-32d4fa1c2043'));
 
   late ChewieController _chewieController;
 

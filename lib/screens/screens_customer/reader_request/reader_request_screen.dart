@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step1.dart';
 import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step2.dart';
 import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step3.dart';
-import 'package:pagepals/screens/screens_customer/reader_request/reader_request_step4.dart';
 
 class ReaderRequestScreen extends StatefulWidget {
   const ReaderRequestScreen({super.key});
@@ -15,14 +14,13 @@ class ReaderRequestScreen extends StatefulWidget {
 
 class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
   late int activeStep = 0;
-  int upperBound = 4;
+  int upperBound = 3;
   double progress = 0.2;
 
   List listScreen = [
     const ReaderRequestStep1(),
     const ReaderRequestStep2(),
     const ReaderRequestStep3(),
-    const ReaderRequestStep4(),
   ];
 
   void increaseProgress() {
@@ -54,6 +52,15 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
             ),
           ),
         ],
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -133,26 +140,6 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                     ),
                   ),
                   title: AppLocalizations.of(context)!.appUploadVideo,
-                ),
-                EasyStep(
-                  customStep: CircleAvatar(
-                    radius: 15,
-                    backgroundColor: Colors.grey[200],
-                    child: CircleAvatar(
-                      radius: 15,
-                      backgroundColor:
-                          activeStep >= 3 ? Colors.orange : Colors.grey[200],
-                      child: activeStep >= 3
-                          ? const Icon(
-                              Icons.check,
-                              size: 15,
-                              color: Colors.white,
-                            )
-                          : const SizedBox(),
-                    ),
-                  ),
-                  title: AppLocalizations.of(context)!.appReCheckInformation,
-                  topTitle: true,
                 ),
               ],
               onStepReached: (index) => setState(() => activeStep = index),

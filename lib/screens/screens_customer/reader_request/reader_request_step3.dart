@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pagepals/screens/screens_customer/reader_request/video_player_from_file.dart';
-import 'package:video_player/video_player.dart';
+import 'package:pagepals/services/file_storage_service.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ReaderRequestStep3 extends StatefulWidget {
   const ReaderRequestStep3({super.key});
@@ -16,6 +17,7 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
   String uploadedText = '';
   File? _selectedImage;
   File? _selectedVideo;
+  late String _downloadUrl;
 
   void uploadText(String text) {
     setState(() {
@@ -119,17 +121,36 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
               children: [
                 _selectedVideo != null
                     ? VideoPlayerFromFile(videoFile: _selectedVideo!)
-                    : const Icon(
-                        Icons.video_collection,
-                        size: 60.0,
-                        color: Colors.grey,
+                    : IconButton(
+                        icon: const Icon(
+                          Icons.video_collection,
+                          size: 60.0,
+                          color: Colors.grey,
+                        ),
+                        onPressed: _handleVideoSelection,
                       ),
               ],
             ),
           ),
           const SizedBox(height: 16.0),
           ElevatedButton(
-            onPressed: _handleVideoSelection,
+            onPressed: () async {
+              _downloadUrl = await FileStorageService().uploadFile(_selectedVideo!);
+              print('Download URL: $_downloadUrl');
+              FileStorageService().saveVideoData(_downloadUrl);
+              setState(() {
+                _selectedVideo = null;
+              });
+              Future.delayed(const Duration(milliseconds: 300), () {
+                QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.success,
+                  title: 'Success Upload',
+                  text: 'Reader request has been submitted successfully',
+                  autoCloseDuration: const Duration(seconds: 3),
+                );
+              });
+            },
             child: const Text('Upload'),
           ),
         ],
@@ -137,4 +158,3 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
     );
   }
 }
-
