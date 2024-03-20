@@ -194,7 +194,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 context,
                 PageTransition(
                   child: const ReaderRequestScreen(),
-                  type: PageTransitionType.fade,
+                  type: PageTransitionType.rightToLeft,
                   duration: const Duration(milliseconds: 300),
                 ),
               );

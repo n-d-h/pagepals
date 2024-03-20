@@ -79,8 +79,9 @@ class ProfileInfoLine extends StatelessWidget {
             ],
           ),
           Container(
-            height: 45,
-            width: 45,
+            height: 40,
+            width: 40,
+            padding: const EdgeInsets.only(left: 1),
             decoration: BoxDecoration(
               color: ColorHelper.getColor(ColorHelper.white),
               borderRadius: BorderRadius.circular(10),
@@ -89,8 +90,9 @@ class ProfileInfoLine extends StatelessWidget {
                 width: 2,
               ),
             ),
-            margin: const EdgeInsets.only(right: 20),
+            margin: const EdgeInsets.only(right: 25),
             child: IconButton(
+              splashColor: Colors.grey,
               onPressed: () {
                 pauseVideo();
                 Navigator.push(
@@ -106,6 +108,7 @@ class ProfileInfoLine extends StatelessWidget {
               },
               icon: Icon(
                 Icons.arrow_forward_ios,
+                size: 20,
                 color: ColorHelper.getColor('#6C6C6C'),
               ),
             ),
