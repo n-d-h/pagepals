@@ -4,12 +4,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
+import 'dart:convert';
 
 class HomeScreenDrawer extends StatefulWidget {
   const HomeScreenDrawer({Key? key}) : super(key: key);
@@ -20,6 +23,7 @@ class HomeScreenDrawer extends StatefulWidget {
 
 class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
   late String _selectedLanguage;
+  late AccountModel account;
 
   @override
   void initState() {
@@ -27,14 +31,33 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
     var localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     _selectedLanguage =
         localeProvider.locale.languageCode == 'vi' ? 'Vietnamese' : 'English';
+    getAccount();
+  }
+
+  Future<void> getAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return;
+    }
+    try {
+      Map<String, dynamic> accountMap = json.decode(accountString);
+      setState(() {
+        account = AccountModel.fromJson(accountMap);
+      });
+    } catch (e) {
+      print('Error decoding account data: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-    String photoUrl = user?.photoURL ?? '';
+    String photoUrl = user?.photoURL ?? 'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain';
     String displayName = user?.displayName ?? 'Anonymous';
     String email = user?.email ?? 'anonymous@gmail.com';
+
 
     return Drawer(
       backgroundColor: Colors.white,
@@ -45,19 +68,20 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              displayName,
+              account.fullName ?? displayName,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
             accountEmail: Text(
-              '@${email.substring(0, email.indexOf('@'))}',
+              // '@${email.substring(0, email.indexOf('@'))}',
+              '@${account.username!}',
               style: const TextStyle(fontSize: 12),
             ),
             currentAccountPicture: CircleAvatar(
               radius: 60,
-              backgroundImage: NetworkImage(photoUrl),
+              backgroundImage: NetworkImage(account.customer?.imageUrl ?? photoUrl),
             ),
             decoration: BoxDecoration(
               color: ColorHelper.getColor(ColorHelper.green),
@@ -228,6 +252,9 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               GoogleSignInProvider googleSignInProvider =
                   GoogleSignInProvider();
               await googleSignInProvider.googleLogout();
+
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
 
               Future.delayed(const Duration(milliseconds: 0), () {
                 Navigator.pop(context);

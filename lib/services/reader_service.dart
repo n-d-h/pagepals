@@ -32,10 +32,6 @@ class ReaderService {
        }
     }
   ''';
-    return _fetchPopularReader(query);
-  }
-
-  static Future<List<PopularReader>> _fetchPopularReader(String query) async {
     final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(query),
@@ -90,10 +86,6 @@ class ReaderService {
           }
         }
     ''';
-    return _fetchReaderProfile(query);
-  }
-
-  static Future<ReaderProfile?> _fetchReaderProfile(String query) async {
     final QueryResult result = await graphQLClient.query(QueryOptions(
       document: gql(query),
     ));
@@ -135,10 +127,6 @@ class ReaderService {
     }
     ''';
 
-    return _fetchActiveReader(query);
-  }
-
-  static Future<List<PopularReader>> _fetchActiveReader(String query) async {
     final QueryResult result =
         await graphQLClient.query(QueryOptions(document: gql(query)));
 

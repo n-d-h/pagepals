@@ -17,22 +17,33 @@ class BookRowWidget extends StatelessWidget {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Book',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: Colors.black87.withOpacity(0.5),
+            Container(
+              width: 113,
+              // decoration: BoxDecoration(
+              //   color: Colors.grey.withOpacity(1),
+              // ),
+              margin: const EdgeInsets.only(right: 10),
+              child: Text(
+                'Book',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black87.withOpacity(0.5),
+                ),
               ),
             ),
-            Text(
-              book,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
+            Expanded(
+              child: Text(
+                book,
+                textAlign: TextAlign.end,
+                style: const TextStyle(
+                  fontSize: 18,
+                  overflow: TextOverflow.clip,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
               ),
             ),
           ],

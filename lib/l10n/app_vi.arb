@@ -1,6 +1,6 @@
 {
   "@@locale": "vi",
-  "appTitle": "Thư viện",
+  "appTitle": "bạn đọc",
   "appDescription": "Hãy tham gia cùng với những chuyên gia về sách đẻ có thể tìm thấy những cuốn sách hay nhất",
   "appContinueWithFacebook": "Tiếp tục với Facebook",
   "appContinueWithGoogle": "Tiếp tục với Google",
@@ -67,5 +67,5 @@
   "appGetInspired": "Được truyền cảm hứng",
   "appFindYourNextBook": "Tìm cuốn sách tiếp theo của bạn",
   "appReadAndGrow": "Đọc và phát triển",
-  "appReviewUsNow": "Đánh giá chúng tôi ngay, "
+  "appReviewUsNow": "Đánh giá ngay, "
 }

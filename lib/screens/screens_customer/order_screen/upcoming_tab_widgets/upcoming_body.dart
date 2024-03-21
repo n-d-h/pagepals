@@ -1,12 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_body_widgets/column_detail_rows.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_body_widgets/reader_name.dart';
 
 class UpcomingBody extends StatelessWidget {
-  const UpcomingBody({super.key});
+  final Booking booking;
+
+  const UpcomingBody({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
+    String bookImage = booking.service!.book!.smallThumbnailUrl!;
+    String nickname = booking.meeting!.reader!.nickname!;
+    String username = '@${booking.meeting!.reader!.account!.username!}';
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: const BoxDecoration(
@@ -16,28 +23,35 @@ class UpcomingBody extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox.square(
-            dimension: 90,
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                // color: Colors.green,
+          Container(
+            height: 125,
+            width: 87,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              // color: Colors.green,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                bookImage,
+                fit: BoxFit.fill,
               ),
-              child: Image.asset('assets/thobaymau.png'),
             ),
           ),
-          const SizedBox(width: 10),
-          const Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ReaderName(
-                nickname: 'Bùi Lễ Văn Minh',
-                username: '@minmin',
-              ),
-              ColumnDetail(),
-            ],
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ReaderName(
+                  nickname: nickname,
+                  username: username,
+                ),
+                ColumnDetail(booking: booking,),
+              ],
+            ),
           )
         ],
       ),

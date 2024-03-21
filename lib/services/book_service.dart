@@ -3,8 +3,9 @@ import 'package:pagepals/main.dart';
 import 'package:pagepals/models/book_model.dart';
 
 class BookService {
+  static GraphQLClient graphQLClient = client!.value;
+
   static Future<List<BookModel>> getAllBooks() async {
-    GraphQLClient graphQLClient = client!.value;
     var query = '''
     query {
       getListBook(
@@ -48,12 +49,7 @@ class BookService {
   ''';
 
     // Use the provided client to execute the query
-    return _fetchBooks(graphQLClient, query);
-  }
-
-  static Future<List<BookModel>> _fetchBooks(
-      GraphQLClient client, String query) async {
-    final QueryResult result = await client.query(QueryOptions(
+    final QueryResult result = await graphQLClient.query(QueryOptions(
       document: gql(query),
     ));
 
@@ -70,7 +66,6 @@ class BookService {
   }
 
   static Future<List<BookModel>> getReaderBooks(String readerId) async {
-    GraphQLClient graphQLClient = client!.value;
     var query = '''
         query {
           getReaderBooks(id: "$readerId") {
@@ -107,12 +102,7 @@ class BookService {
         }
     ''';
     // Use the provided client to execute the query
-    return _fetchReaderBooks(graphQLClient, query);
-  }
-
-  static Future<List<BookModel>> _fetchReaderBooks(
-      GraphQLClient client, String query) async {
-    final QueryResult result = await client.query(QueryOptions(
+    final QueryResult result = await graphQLClient.query(QueryOptions(
       document: gql(query),
       fetchPolicy: FetchPolicy.networkOnly,
     ));
@@ -129,5 +119,3 @@ class BookService {
     }
   }
 }
-
-

@@ -1,26 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ServiceRowWidget extends StatelessWidget {
-  final int service;
+  final String service;
+  final String serviceType;
 
-  const ServiceRowWidget({Key? key, required this.service}) : super(key: key);
+  const ServiceRowWidget({
+    Key? key,
+    required this.serviceType,
+    required this.service,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String serviceType;
-    switch (service) {
-      case 1:
-        serviceType = 'Read book';
-        break;
-      case 2:
-        serviceType = 'Book explaining';
-        break;
-      case 3:
-        serviceType = 'Not one of the above';
-        break;
-      default:
-        serviceType = 'Unknown'; // Handle unknown service type
-    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -30,26 +23,67 @@ class ServiceRowWidget extends StatelessWidget {
           height: 15,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Service type',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: Colors.black87.withOpacity(0.5),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 113,
+                child: Text(
+                  'Service type',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black87.withOpacity(0.5),
+                  ),
+                ),
               ),
-            ),
-            Text(
-              serviceType,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
+              Expanded(
+                child: Text(
+                  serviceType,
+                  textAlign: TextAlign.end,
+                  style: const TextStyle(
+                    overflow: TextOverflow.clip,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+
+        const SizedBox(
+          height: 15,
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 113,
+                child: Text(
+                  'Service',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black87.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  service,
+                  textAlign: TextAlign.end,
+                  style: const TextStyle(
+                    overflow: TextOverflow.clip,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+
         ),
       ],
     );

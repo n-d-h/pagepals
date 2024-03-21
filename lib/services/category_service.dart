@@ -3,8 +3,9 @@ import 'package:pagepals/main.dart';
 import 'package:pagepals/models/category_model.dart';
 
 class CategoryService {
+  static GraphQLClient graphQLClient = client!.value;
+
   static Future<List<CategoryModel>> getAllCategory() async {
-    GraphQLClient graphQLClient = client!.value;
     var query = '''
       query {
         getListCategories{

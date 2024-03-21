@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +8,45 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class WelcomeWidget extends StatelessWidget {
+class WelcomeWidget extends StatefulWidget {
   const WelcomeWidget({super.key});
 
   @override
+  State<WelcomeWidget> createState() => _WelcomeWidgetState();
+}
+
+class _WelcomeWidgetState extends State<WelcomeWidget> {
+  late String _displayName;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return;
+    }
+    try {
+      Map<String, dynamic> accountMap = json.decode(accountString);
+      setState(() {
+        _displayName = '@${AccountModel.fromJson(accountMap).fullName ?? 'anonymous'}' ;
+      });
+    } catch (e) {
+      print('Error decoding account data: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Container(
       width: MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
       margin: const EdgeInsets.symmetric(
@@ -131,7 +166,7 @@ class WelcomeWidget extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: FirebaseAuth.instance.currentUser?.displayName,
+                    text: AppLocalizations.of(context)!.appTitle,
                     style: GoogleFonts.lexend(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

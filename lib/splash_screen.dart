@@ -6,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,12 +23,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   setupPageTransition() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString('accessToken');
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushAndRemoveUntil(
         context,
         PageTransition(
           type: PageTransitionType.fade,
-          child: FirebaseAuth.instance.currentUser == null
+          child: accessToken == null
               ? const SigninHomeScreen()
               : const MenuItemScreen(),
         ),

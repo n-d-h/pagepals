@@ -80,7 +80,7 @@ class WalletWidget extends StatelessWidget {
                     ],
                   ),
                   const Text(
-                    '55.000 VND',
+                    '1.155.000 VND',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,

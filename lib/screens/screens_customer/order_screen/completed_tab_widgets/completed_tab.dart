@@ -31,15 +31,15 @@ class CompletedTab extends StatelessWidget {
                 )
               ],
             ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CompletedLeading(),
-                UpcomingBody(),
-                CompletedBottom(),
-              ],
-            ),
+            // child: const Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     CompletedLeading(),
+            //     UpcomingBody(),
+            //     CompletedBottom(),
+            //   ],
+            // ),
           ),
         ],
       ),

@@ -11,15 +11,14 @@ import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Declare client as a global variable
 ValueNotifier<GraphQLClient>? client;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
   await initHiveForFlutter();
 
@@ -27,9 +26,15 @@ Future<void> main() async {
     'https://pagepals.azurewebsites.net/graphql',
   );
 
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('accessToken');
+
   client = ValueNotifier(
     GraphQLClient(
-      link: httpLink,
+      link: token != null
+          ? AuthLink(getToken: () async => 'Bearer $token')
+              .concat(HttpLink('https://pagepals.azurewebsites.net/graphql'))
+          : HttpLink('https://pagepals.azurewebsites.net/graphql'),
       cache: GraphQLCache(store: HiveStore()),
     ),
   );
@@ -65,10 +70,7 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en'),
-          Locale('vi')
-        ],
+        supportedLocales: const [Locale('en'), Locale('vi')],
         locale: localeId,
         home: const SplashScreen(),
       ),

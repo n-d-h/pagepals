@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/booking_model.dart';
 
 class UpcomingLeading extends StatefulWidget {
-  const UpcomingLeading({super.key});
+  final Booking booking;
+  const UpcomingLeading({super.key, required this.booking});
 
   @override
   State<UpcomingLeading> createState() => _UpcomingLeadingState();
@@ -15,6 +18,9 @@ class _UpcomingLeadingState extends State<UpcomingLeading> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime startTime = DateTime.parse(widget.booking.startAt!);
+    String date = DateFormat('MMM d, yyyy').format(startTime);
+    String time = DateFormat('HH:mm').format(startTime);
     return Container(
       padding: const EdgeInsets.only(bottom: 14),
       decoration: const BoxDecoration(
@@ -28,7 +34,7 @@ class _UpcomingLeadingState extends State<UpcomingLeading> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'Feb 25, 2024 - 19:00',
+              '$date - $time',
               style: GoogleFonts.lexend(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/models/working_time_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/day_picker_widget.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/dropdown_buttons/dropdown_button_widget.dart';
-import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/radio_buttons_widget.dart';
+import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/dropdown_buttons/select_service_dropdown.dart';
+import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/time_picker_widget.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/request_schedule.dart';
-import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/time_slot_picker_widget.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/review_summary_screen.dart';
+import 'package:pagepals/services/working_time_service.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 
 class BookingTimeScreen extends StatefulWidget {
@@ -28,73 +30,105 @@ class BookingTimeScreen extends StatefulWidget {
 class _BookingTimeState extends State<BookingTimeScreen> {
   late DateTime now;
   late DateTime selectedDate;
-  int? _selectedRadioButtonValue;
 
-  String? _selectedBook;
-  String? _selectedChapter;
+  Book? _selectedBook;
+
+  List<ServiceType> serviceTypesByBook = [];
+  ServiceType? _selectServiceType;
+
+  List<Services> servicesByBook = [];
+  List<Services> servicesByServiceType = [];
+  Services? _selectedService;
+
+  WorkingTimeModel? workingTimeModels = WorkingTimeModel();
+  String? selectedTimeSlotId;
+
+  Future<void> getWorkingTime() async {
+    var result = await WorkingTimeService.getWorkingTime(widget.reader!.profile!.id!);
+    setState(() {
+      workingTimeModels = result;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     now = DateTime.now();
     selectedDate = DateTime(now.year, now.month, now.day);
+    getWorkingTime();
   }
 
   // Function to handle book selection
   void handleBookSelected(String? bookId) {
+    // Get the selected book model
+    final BookModel selectedBookModel =
+        widget.bookModels.firstWhere((element) => element.book!.id == bookId);
+    // Set the selected book
     setState(() {
-      widget.bookModels.forEach((element) {
-        if (element.book!.id == bookId) {
-          _selectedBook = element.book!.title;
-        }
-      });
+      _selectedBook = selectedBookModel.book;
     });
-    // setState(() {
-    //   _selectedBook = widget.books
-    //           .firstWhere((element) => element.book!.id == bookId,
-    //               orElse: () => BookModel(book: ''))
-    //           .title ??
-    //       '';
-    // });
-    debugPrint('Selected book: $_selectedBook');
+
+    // Get the services from the selected book model
+    final List<Services> services = selectedBookModel.services!;
+
+    if (services.isNotEmpty) {
+      // Get the unique ServiceType from the services
+      setState(() {
+        servicesByBook = services;
+        serviceTypesByBook =
+            Set<ServiceType>.from(services.map((e) => e.serviceType!)).toList();
+      });
+    }
   }
 
   // Function to handle chapter selection
-  void handleChapterSelected(String? chapter) {
+  void handleSelectedTypeSelected(String? selectedTypeId) {
     setState(() {
-      _selectedChapter = chapter;
+      // Set the selected service type
+      _selectServiceType = serviceTypesByBook
+          .firstWhere((serviceType) => serviceType.id == selectedTypeId);
+
+      // Filter services in book by the selected service type
+      servicesByServiceType = servicesByBook
+          .where((service) => service.serviceType!.id == selectedTypeId)
+          .toList();
     });
-    debugPrint('Selected chapter: $_selectedChapter');
+  }
+
+  void handleServiceSelected(String? serviceId) {
+    setState(() {
+      _selectedService = servicesByServiceType
+          .firstWhere((service) => service.id == serviceId);
+    });
   }
 
   void handleDateSelected(DateTime date) {
     setState(() {
       selectedDate = date;
     });
-    debugPrint('selected date: ${selectedDate.toString()}');
+  }
+
+  void handleTimeSlotIdSelected(String? timeSlotId, DateTime? timeSlotDate) {
+    setState(() {
+      // Set the selected time slot
+      selectedTimeSlotId = timeSlotId;
+      selectedDate = timeSlotDate!;
+    });
   }
 
   // Function to check if all required fields are selected
   bool areFieldsSelected() {
-    // selectedDate is always not null
     return _selectedBook != null &&
-        // _selectedChapter != null &&
-        _selectedRadioButtonValue != null;
+        _selectServiceType != null &&
+        _selectedService != null &&
+        selectedTimeSlotId != null;
   }
-
-  List<String> chapters = [];
 
   @override
   Widget build(BuildContext context) {
-    // final List<String> books = widget.books.map((e) => e.book!.title!).toList();
-    // final List<String> books =
-    //     List.generate(10, (index) => 'This is book num $index');
-    // final List<String> chapters = bookData
-    //     .map((e) => e.chapters!.map((e) => e.chapterNumber!).toString())
-    //     .toList();
-
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.white,
         title: const Text('Book appointment'),
         centerTitle: true,
         titleTextStyle: const TextStyle(
@@ -116,35 +150,94 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                 reader: widget.reader,
               ),
               DropdownButtonWidget(
-                title: 'Book Selection',
-                opt: 1,
+                title: 'Book',
                 items: widget.bookModels.map((e) => e.book!).toList(),
                 onValueChanged: handleBookSelected,
               ),
-              // DropdownButtonWidget(
-              //   title: 'Chapter Selection',
-              //   opt: 2,
-              //   items: chapters,
-              //   onValueChanged: handleChapterSelected,
-              // ),
+              if(serviceTypesByBook.isNotEmpty)
+              SelectServiceDropdown(
+                title: 'Service Type',
+                opt: 1,
+                selectedItemBuilder: (value) {
+                  return serviceTypesByBook
+                      .map<Widget>(
+                        (e) => Text(
+                          e.name ?? 'Service Type',
+                          style: const TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
+                      .toList();
+                },
+                items: serviceTypesByBook
+                    .map(
+                      (item) => DropdownMenuItem<String>(
+                        value: item.id,
+                        child: Text(
+                          item.name ?? 'Service',
+                          style: const TextStyle(
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onValueChanged: handleSelectedTypeSelected,
+              ),
+              if(servicesByServiceType.isNotEmpty)
+              SelectServiceDropdown(
+                title: 'Service',
+                opt: 2,
+                selectedItemBuilder: (value) {
+                  return servicesByServiceType
+                      .map<Widget>(
+                        (e) => Text(
+                          e.description ?? 'Service',
+                          style: const TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
+                      .toList();
+                },
+                items: servicesByServiceType
+                    .map(
+                      (item) => DropdownMenuItem<String>(
+                        value: item.id,
+                        child: Text(
+                          item.description ?? 'Service',
+                          style: const TextStyle(
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onValueChanged: handleServiceSelected,
+              ),
               DatePickerWidget(
                 onDateSelected: handleDateSelected,
               ),
-              // Pass the updated selectedDate to the TimeSlotPicker widget
-              TimeSlotPicker(
+              // TimeSlotPicker(
+              //   selectedDate: selectedDate,
+              //   onTimeSlotSelected: handleDateSelected,
+              // ),
+              TimePickerWidget(
                 selectedDate: selectedDate,
-                onTimeSlotSelected: handleDateSelected,
+                workingTimeModels: workingTimeModels ?? WorkingTimeModel(),
+                onTimeSlotIdSelected: handleTimeSlotIdSelected,
               ),
               const RequestScheduleWidget(),
-              RadioButtonsWidget(
-                onValueChanged: (value) {
-                  setState(() {
-                    _selectedRadioButtonValue = value;
-                    debugPrint(
-                        'selected radio button value: ${_selectedRadioButtonValue.toString()}');
-                  });
-                },
-              ),
+
             ],
           ),
         ),
@@ -158,9 +251,10 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                     child: ReviewSummaryScreen(
                       reader: widget.reader,
                       time: selectedDate,
+                      timeSlotId: selectedTimeSlotId!,
                       book: _selectedBook,
-                      // chapter: _selectedBook,
-                      serviceType: _selectedRadioButtonValue,
+                      service: _selectedService,
+                      serviceType: _selectServiceType,
                     ),
                     type: PageTransitionType.rightToLeft,
                     duration: const Duration(milliseconds: 200),

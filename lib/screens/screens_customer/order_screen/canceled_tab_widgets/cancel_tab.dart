@@ -31,15 +31,15 @@ class CanceledTab extends StatelessWidget {
                 )
               ],
             ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CompletedLeading(),
-                UpcomingBody(),
-                CanceledBottom(),
-              ],
-            ),
+            // child: const Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     CompletedLeading(),
+            //     UpcomingBody(),
+            //     CanceledBottom(),
+            //   ],
+            // ),
           ),
         ],
       ),

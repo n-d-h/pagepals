@@ -13,34 +13,37 @@ class ProfileBookCollection extends StatelessWidget {
     return Container(
       height: 230,
       decoration: const BoxDecoration(color: Colors.white),
-      padding: const EdgeInsets.fromLTRB(25, 1, 25, 10),
+      padding: const EdgeInsets.fromLTRB(25, 1, 0, 10),
       margin: const EdgeInsets.only(bottom: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'My book collection',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  'See All',
+          Container(
+            margin: const EdgeInsets.only(right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'My book collection',
                   style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: ColorHelper.getColor(ColorHelper.green),
-                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                 ),
-              )
-            ],
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'See All',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: ColorHelper.getColor(ColorHelper.green),
+                      fontSize: 14,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           if (books.isEmpty)
             SizedBox(
