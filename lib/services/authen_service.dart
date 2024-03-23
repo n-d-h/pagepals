@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
@@ -43,7 +44,8 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account = await getAccount(username);
+      AccountModel account =
+          await getAccount(username, loginData?['accessToken']);
       print('account: ${json.encoder.convert(account)}');
       prefs.setString('account', json.encoder.convert(account));
 
@@ -84,7 +86,8 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account = await getAccount(username);
+      AccountModel account =
+          await getAccount(username, loginData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
 
       return AccountTokens(
@@ -94,7 +97,7 @@ class AuthenService {
     }
   }
 
-  static Future<AccountModel> getAccount(String username) async {
+  static Future<AccountModel> getAccount(String username, String token) async {
     String query = '''
         query {
           getAccountByUsername(username: "$username") {
@@ -115,7 +118,13 @@ class AuthenService {
           }
         }
     ''';
-    final QueryResult result = await graphQLClient.query(
+    GraphQLClient clientWithToken = GraphQLClient(
+      link: AuthLink(getToken: () async => 'Bearer $token').concat(
+        graphQLClient.link,
+      ),
+      cache: graphQLClient.cache,
+    );
+    final QueryResult result = await clientWithToken.query(
       QueryOptions(
         document: gql(query),
         fetchPolicy: FetchPolicy.networkOnly,
@@ -185,7 +194,7 @@ class AuthenService {
     return '';
   }
 
-  static Future<AccountTokens?> registerCustomer(
+  static Future<bool> registerCustomer(
       String username, String password, String email) async {
     var mutation = '''
       mutation register {
@@ -214,13 +223,12 @@ class AuthenService {
       prefs.setString('refreshToken', registerData?['refreshToken']);
 
       // save account
-      AccountModel account = await getAccount(username);
+      AccountModel account =
+          await getAccount(username, registerData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
 
-      return AccountTokens(
-        accessToken: registerData?['accessToken'],
-        refreshToken: registerData?['refreshToken'],
-      );
+      return true;
     }
+    return false;
   }
 }

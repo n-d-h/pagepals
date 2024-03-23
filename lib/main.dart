@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -6,9 +9,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/firebase_options.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/cart_provider.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
+import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,12 +37,12 @@ Future<void> main() async {
   client = ValueNotifier(
     GraphQLClient(
       link: token != null
-          ? AuthLink(getToken: () async => 'Bearer $token')
-              .concat(HttpLink('https://pagepals.azurewebsites.net/graphql'))
-          : HttpLink('https://pagepals.azurewebsites.net/graphql'),
+          ? AuthLink(getToken: () async => 'Bearer $token').concat(httpLink)
+          : httpLink,
       cache: GraphQLCache(store: HiveStore()),
     ),
   );
+
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => GoogleSignInProvider()),
@@ -77,3 +82,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

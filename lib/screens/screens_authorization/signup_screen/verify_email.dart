@@ -4,6 +4,7 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/screens_authorization/signup_screen/verify_code.dart';
 import 'package:pagepals/services/authen_service.dart';
+import 'package:quickalert/quickalert.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   final String? email;
@@ -16,7 +17,8 @@ class VerifyEmailScreen extends StatefulWidget {
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   final TextEditingController _emailController = TextEditingController();
-  Color _buttonColor = ColorHelper.getColor(ColorHelper.grey); // Initialize button color to grey
+  Color _buttonColor = ColorHelper.getColor(ColorHelper.grey);
+  bool buttonClicked = false;
 
   @override
   void initState() {
@@ -55,7 +57,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           centerTitle: true,
         ),
         body: Container(
-          width: MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
+          width:
+              MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
           margin: const EdgeInsets.fromLTRB(20, 0, 20, 50),
           child: Center(
             child: Column(
@@ -68,7 +71,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                   controller: _emailController,
-                  onChanged: (_) => _updateButtonColor(), // Update button color when text changes
+                  onChanged: (_) => _updateButtonColor(),
+                  // Update button color when text changes
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.alternate_email_outlined),
                     prefixIconColor: Colors.grey,
@@ -101,21 +105,50 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     onPressed: _emailController.text.isEmpty
                         ? null
                         : () async {
-                      String otp = await AuthenService.verifyEmailRegister(
-                          _emailController.text);
-                      Future.delayed(Duration.zero, () {
-                        Navigator.of(context).push(
-                          PageTransition(
-                            child: VerifyCodeScreen(
-                              email: _emailController.text,
-                              otp: otp,
-                            ),
-                            type: PageTransitionType.rightToLeft,
-                            duration: const Duration(milliseconds: 300),
-                          ),
-                        );
-                      });
-                    },
+                            setState(() {
+                              buttonClicked = true;
+                            });
+
+                            // Verify email
+                            try {
+                              String otp =
+                                  await AuthenService.verifyEmailRegister(
+                                      _emailController.text);
+                              if (otp.isNotEmpty) {
+                                setState(() {
+                                  buttonClicked = false;
+                                });
+
+                                Future.delayed(Duration.zero, () {
+                                  Navigator.of(context).push(
+                                    PageTransition(
+                                      child: VerifyCodeScreen(
+                                        email: _emailController.text,
+                                        otp: otp,
+                                      ),
+                                      type: PageTransitionType.rightToLeft,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                    ),
+                                  );
+                                });
+                              }
+                            } catch (error) {
+                              setState(() {
+                                buttonClicked = false;
+                              });
+                              // Show dialog with error message
+                              Future.delayed(const Duration(milliseconds: 100),
+                                  () {
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.error,
+                                  title: 'Verification Failed',
+                                  text: 'Email not available',
+                                );
+                              });
+                            }
+                          },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: ColorHelper.getColor(ColorHelper.white),
                       backgroundColor: _buttonColor, // Use dynamic button color
@@ -127,13 +160,23 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
-                      'Verify Email',
-                      style: TextStyle(
-                        fontSize: SpaceHelper.fontSize16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    child: buttonClicked && _emailController.text.isNotEmpty
+                        ? SizedBox.square(
+                            dimension: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation(
+                                ColorHelper.getColor(ColorHelper.white),
+                              ),
+                            ),
+                          )
+                        : const Text(
+                            'Verify Email',
+                            style: TextStyle(
+                              fontSize: SpaceHelper.fontSize16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                   ),
                 ),
               ],
