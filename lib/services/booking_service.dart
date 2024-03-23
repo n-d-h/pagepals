@@ -17,6 +17,7 @@ class BookingService {
     String accountJson = prefs.getString('account')!;
     AccountModel account = AccountModel.fromJson(json.decode(accountJson));
     String customerId = account.customer!.id!;
+
     var mutation = '''
     mutation MyMutation {
       createBooking(
@@ -44,6 +45,7 @@ class BookingService {
     final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
@@ -105,7 +107,7 @@ class BookingService {
     final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(query),
-        fetchPolicy: FetchPolicy.noCache,
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 

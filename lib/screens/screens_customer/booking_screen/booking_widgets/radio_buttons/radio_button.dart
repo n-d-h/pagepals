@@ -20,9 +20,8 @@ class RadioButton extends StatelessWidget {
       height: 40,
       child: Theme(
         data: ThemeData(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent
-        ),
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent),
         child: ListTile(
           onTap: () {
             onChanged(value);
@@ -30,13 +29,22 @@ class RadioButton extends StatelessWidget {
           title: Text(
             text,
             style: const TextStyle(
-                fontWeight: FontWeight.w400, fontSize: 14, color: Colors.black,),
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              color: Colors.black,
+            ),
           ),
           leading: Radio<int>(
             value: value,
             groupValue: groupValue,
             onChanged: onChanged,
             activeColor: Colors.green,
+            fillColor: MaterialStateProperty.resolveWith<Color>((states) {
+              if (states.contains(MaterialState.selected)) {
+                return Colors.green; // Color when the radio button is selected
+              }
+              return Colors.grey; // Color when the radio button is unselected
+            }),
           ),
         ),
       ),

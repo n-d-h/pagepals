@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,6 +28,13 @@ class _SplashScreenState extends State<SplashScreen> {
   setupPageTransition() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString('accessToken');
+    if(accessToken != null) {
+      int exp = JWT.decode(accessToken).payload['exp'];
+      if(DateTime.now().millisecondsSinceEpoch > DateTime.fromMillisecondsSinceEpoch(exp).millisecondsSinceEpoch) {
+        prefs.remove('accessToken');
+        accessToken = null;
+      }
+    }
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushAndRemoveUntil(
         context,

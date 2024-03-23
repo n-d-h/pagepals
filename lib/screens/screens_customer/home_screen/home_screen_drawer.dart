@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -54,10 +55,10 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-    String photoUrl = user?.photoURL ?? 'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain';
+    String photoUrl = user?.photoURL ??
+        'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain';
     String displayName = user?.displayName ?? 'Anonymous';
     String email = user?.email ?? 'anonymous@gmail.com';
-
 
     return Drawer(
       backgroundColor: Colors.white,
@@ -81,7 +82,8 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             ),
             currentAccountPicture: CircleAvatar(
               radius: 60,
-              backgroundImage: NetworkImage(account.customer?.imageUrl ?? photoUrl),
+              backgroundImage:
+                  NetworkImage(account.customer?.imageUrl ?? photoUrl),
             ),
             decoration: BoxDecoration(
               color: ColorHelper.getColor(ColorHelper.green),
@@ -148,14 +150,9 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                   barrierDismissible: false,
                   builder: (BuildContext context) {
                     return Center(
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(
-                            ColorHelper.getColor(ColorHelper.green),
-                          ),
-                        ),
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.greenAccent,
+                        size: 60,
                       ),
                     );
                   },
@@ -236,14 +233,19 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 barrierDismissible: false,
                 builder: (BuildContext context) {
                   return Center(
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(
-                          ColorHelper.getColor(ColorHelper.green),
-                        ),
-                      ),
+                    child:
+                        // SizedBox(
+                        //   height: 50,
+                        //   width: 50,
+                        //   child: CircularProgressIndicator(
+                        //     valueColor: AlwaysStoppedAnimation(
+                        //       ColorHelper.getColor(ColorHelper.green),
+                        //     ),
+                        //   ),
+                        // ),
+                        LoadingAnimationWidget.staggeredDotsWave(
+                      color: Colors.greenAccent,
+                      size: 60,
                     ),
                   );
                 },
