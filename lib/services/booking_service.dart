@@ -14,6 +14,7 @@ class BookingService {
       String timeSlotId, String promotionCode) async {
     // get customer id
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('accessToken')!;
     String accountJson = prefs.getString('account')!;
     AccountModel account = AccountModel.fromJson(json.decode(accountJson));
     String customerId = account.customer!.id!;
@@ -42,7 +43,7 @@ class BookingService {
     }
     ''';
 
-    final QueryResult result = await graphQLClient.query(
+    QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(mutation),
         fetchPolicy: FetchPolicy.networkOnly,
@@ -50,7 +51,21 @@ class BookingService {
     );
 
     if (result.hasException) {
-      return false;
+      GraphQLClient clientWithToken = GraphQLClient(
+        link: AuthLink(getToken: () async => 'Bearer $token').concat(
+          graphQLClient.link,
+        ),
+        cache: graphQLClient.cache,
+      );
+      result = await clientWithToken.query(
+        QueryOptions(
+          document: gql(mutation),
+          fetchPolicy: FetchPolicy.networkOnly,
+        ),
+      );
+      if (result.hasException) {
+        return false;
+      }
       // throw Exception('Failed to create booking');
     }
     return result.data?['createBooking'] != null;
@@ -59,6 +74,7 @@ class BookingService {
   static Future<BookingModel> getBooking(int page, int pageSize) async {
     // get customer id
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('accessToken')!;
     String accountJson = prefs.getString('account')!;
     AccountModel account = AccountModel.fromJson(json.decode(accountJson));
     String customerId = account.customer!.id!;
@@ -104,7 +120,9 @@ class BookingService {
     }
     ''';
 
-    final QueryResult result = await graphQLClient.query(
+    QueryResult result;
+
+    result = await graphQLClient.query(
       QueryOptions(
         document: gql(query),
         fetchPolicy: FetchPolicy.networkOnly,
@@ -112,7 +130,21 @@ class BookingService {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to get booking');
+      GraphQLClient clientWithToken = GraphQLClient(
+        link: AuthLink(getToken: () async => 'Bearer $token').concat(
+          graphQLClient.link,
+        ),
+        cache: graphQLClient.cache,
+      );
+      result = await clientWithToken.query(
+        QueryOptions(
+          document: gql(query),
+          fetchPolicy: FetchPolicy.networkOnly,
+        ),
+      );
+      if (result.hasException) {
+        throw Exception('Failed to get booking');
+      }
     }
 
     return BookingModel.fromJson(result.data!['getListBookingByCustomer']);

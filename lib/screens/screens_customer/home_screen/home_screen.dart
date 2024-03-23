@@ -1,15 +1,25 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/constant.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/providers/google_signin_provider.dart';
+import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/explore_screen.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen_drawer.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/popular_readers_column.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/search_bar_widgets/home_search_bar.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/welcome_widget.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
+import 'package:pagepals/services/authen_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,6 +37,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Declare GlobalKey for Scaffold
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +88,24 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                PageTransition(
-                  child: const NotificationScreen(),
-                  type: PageTransitionType.bottomToTop,
-                  duration: const Duration(milliseconds: 300),
-                ),
-              );
+            onPressed: () async {
+              GoogleSignInProvider googleSignInProvider =
+              GoogleSignInProvider();
+              await googleSignInProvider.googleLogout();
+
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
+
+              Future.delayed(const Duration(milliseconds: 0), () {
+                Navigator.pop(context);
+                Navigator.of(context).pushAndRemoveUntil(
+                  PageTransition(
+                    child: const SigninHomeScreen(),
+                    type: PageTransitionType.fade,
+                  ),
+                      (route) => false,
+                );
+              });
             },
             icon: const Icon(
               Icons.notifications_none_outlined,

@@ -24,7 +24,7 @@ class HomeScreenDrawer extends StatefulWidget {
 
 class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
   late String _selectedLanguage;
-  late AccountModel account;
+  AccountModel? account;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              account.fullName ?? displayName,
+              account?.fullName ?? displayName,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -77,13 +77,13 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             ),
             accountEmail: Text(
               // '@${email.substring(0, email.indexOf('@'))}',
-              '@${account.username!}',
+              '@${account?.username!}',
               style: const TextStyle(fontSize: 12),
             ),
             currentAccountPicture: CircleAvatar(
               radius: 60,
               backgroundImage:
-                  NetworkImage(account.customer?.imageUrl ?? photoUrl),
+                  NetworkImage(account?.customer?.imageUrl ?? photoUrl),
             ),
             decoration: BoxDecoration(
               color: ColorHelper.getColor(ColorHelper.green),

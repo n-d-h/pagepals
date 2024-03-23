@@ -1,9 +1,16 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/models/authen_models/account_tokens.dart';
 import 'package:pagepals/screens/screens_authorization/signup_screen/signup_screen.dart';
+import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/video_conference_page.dart';
+import 'package:pagepals/services/authen_service.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String email;
@@ -35,6 +42,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     userEmail = widget.email;
+  }
+
+  bool allFieldsAreValid() {
+    return _userNameController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty &&
+        _fullNameController.text.isNotEmpty &&
+        _phoneController.text.isNotEmpty &&
+        selectedGender != null &&
+        isChecked;
   }
 
   @override
@@ -391,10 +407,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ColorHelper.green);
                                   }
                                   return ColorHelper.getColor(
-                                      ColorHelper.white
-                                  );
+                                      ColorHelper.white);
                                 }),
-
                                 value: isChecked,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -451,20 +465,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(
                       width: double.infinity, // <-- match_parent
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            PageTransition(
-                              child: const SignupScreen(),
-                              type: PageTransitionType.rightToLeft,
-                              duration: const Duration(milliseconds: 300),
-                            ),
+                        onPressed: () async {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: LoadingAnimationWidget.staggeredDotsWave(
+                                  color: Colors.greenAccent,
+                                  size: 60,
+                                ),
+                              );
+                            },
                           );
+                          try {
+                            bool registerSuccessfully =
+                                await AuthenService.registerCustomer(
+                              _userNameController.text,
+                              _passwordController.text,
+                              userEmail,
+                            );
+                            // Handle successful registration here
+                            if (registerSuccessfully) {
+                              Future.delayed(Duration.zero, () {
+                                Navigator.pop(context);
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  PageTransition(
+                                    child: const MenuItemScreen(),
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: const Duration(milliseconds: 300),
+                                  ),
+                                  (route) => false,
+                                );
+                              });
+                            }
+                          } catch (error) {
+                            // Handle error here
+                            Future.delayed(Duration.zero, () {
+                              Navigator.pop(context);
+                              QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.error,
+                                title: 'Error',
+                                text:
+                                    'An error occurred while registering. Please try again.',
+                                autoCloseDuration: const Duration(seconds: 3),
+                              );
+                            });
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor:
                               ColorHelper.getColor(ColorHelper.white),
-                          backgroundColor:
-                              ColorHelper.getColor(ColorHelper.green),
+                          backgroundColor: allFieldsAreValid()
+                              ? ColorHelper.getColor(ColorHelper.green)
+                              : ColorHelper.getColor(ColorHelper.grey),
                           padding: const EdgeInsets.symmetric(
                             horizontal: SpaceHelper.space16,
                             vertical: 9,
