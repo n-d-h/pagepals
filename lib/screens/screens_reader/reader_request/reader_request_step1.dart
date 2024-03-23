@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:unicons/unicons.dart';
 
 class ReaderRequestStep1 extends StatefulWidget {
   const ReaderRequestStep1({super.key});
@@ -20,7 +21,7 @@ class _ReaderRequestStep1State extends State<ReaderRequestStep1> {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
       maxWidth: 1440,
-      maxHeight: 270,
+      maxHeight: 1440,
       source: ImageSource.gallery,
     );
 
@@ -31,6 +32,19 @@ class _ReaderRequestStep1State extends State<ReaderRequestStep1> {
     }
   }
 
+  void _handleViewImage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.file(
+            _selectedImage!,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,6 +52,11 @@ class _ReaderRequestStep1State extends State<ReaderRequestStep1> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            'Basic Information:',
+            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16.0),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Name'),
             validator: (value) {
@@ -83,44 +102,44 @@ class _ReaderRequestStep1State extends State<ReaderRequestStep1> {
             style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16.0),
-          Container(
-            width: double.infinity,
-            height: 300.0,
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                style: BorderStyle.solid,
-                color: Colors.grey,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _selectedImage != null
-                    ? Image.file(_selectedImage!)
-                    : const Icon(
-                        Icons.image,
-                        size: 60.0,
-                        color: Colors.grey,
-                      ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 15.0),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ElevatedButton(
-                onPressed: _handleImageSelection,
-                child: const Text('Choose Image'),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    style: BorderStyle.solid,
+                    color: Colors.grey,
+                  ),
+                ),
+                child: ClipRect(
+                  child: _selectedImage != null
+                      ? InkWell(
+                          onTap: _handleViewImage,
+                          child: Image.file(
+                            _selectedImage!,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : const Icon(
+                          Icons.image,
+                          size: 30.0,
+                          color: Colors.grey,
+                        ),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  print(_selectedImage);
-                },
-                child: const Text('Upload'),
-              ),
+              const SizedBox(width: 20.0),
+              if (_selectedImage == null)
+                InkWell(
+                  onTap: _handleImageSelection,
+                  child: const Icon(
+                    UniconsLine.plus_circle,
+                    size: 30.0,
+                    color: Colors.grey,
+                  ),
+                ),
             ],
           ),
         ],

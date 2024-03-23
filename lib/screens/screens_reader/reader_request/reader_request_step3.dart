@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/video_player_from_file.dart';
-import 'package:pagepals/services/file_storage_service.dart';
-import 'package:quickalert/quickalert.dart';
+import 'package:unicons/unicons.dart';
 
 class ReaderRequestStep3 extends StatefulWidget {
   const ReaderRequestStep3({super.key});
@@ -29,6 +28,19 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
     }
   }
 
+  void _handleViewVideo() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: VideoPlayerFromFile(
+            videoFile: _selectedVideo!,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,54 +53,63 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16.0),
-          Container(
-            width: double.infinity,
-            height: 300.0,
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                style: BorderStyle.solid,
-                color: Colors.grey,
+          Row(
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    style: BorderStyle.solid,
+                    color: Colors.grey,
+                  ),
+                ),
+                child: ClipRect(
+                  child: _selectedVideo != null
+                      ? InkWell(
+                          onTap: _handleViewVideo,
+                          child: const Icon(
+                            Icons.play_arrow,
+                            size: 60.0,
+                            color: Colors.grey,
+                          ),
+                        )
+                      : SizedBox(),
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _selectedVideo != null
-                    ? VideoPlayerFromFile(videoFile: _selectedVideo!)
-                    : IconButton(
-                        icon: const Icon(
-                          Icons.video_collection,
-                          size: 60.0,
-                          color: Colors.grey,
-                        ),
-                        onPressed: _handleVideoSelection,
-                      ),
-              ],
-            ),
+              const SizedBox(width: 16.0),
+              InkWell(
+                onTap: _handleVideoSelection,
+                child: const Icon(
+                  UniconsLine.plus_circle,
+                  size: 30.0,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () async {
-              _downloadUrl = await FileStorageService().uploadFile(_selectedVideo!);
-              print('Download URL: $_downloadUrl');
-              FileStorageService().saveVideoData(_downloadUrl);
-              setState(() {
-                _selectedVideo = null;
-              });
-              Future.delayed(const Duration(milliseconds: 300), () {
-                QuickAlert.show(
-                  context: context,
-                  type: QuickAlertType.success,
-                  title: 'Success Upload',
-                  text: 'Reader request has been submitted successfully',
-                  autoCloseDuration: const Duration(seconds: 3),
-                );
-              });
-            },
-            child: const Text('Upload'),
-          ),
+          // const SizedBox(height: 16.0),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     _downloadUrl =
+          //         await FileStorageService().uploadFile(_selectedVideo!);
+          //     print('Download URL: $_downloadUrl');
+          //     FileStorageService().saveVideoData(_downloadUrl);
+          //     setState(() {
+          //       _selectedVideo = null;
+          //     });
+          //     Future.delayed(const Duration(milliseconds: 300), () {
+          //       QuickAlert.show(
+          //         context: context,
+          //         type: QuickAlertType.success,
+          //         title: 'Success Upload',
+          //         text: 'Reader request has been submitted successfully',
+          //         autoCloseDuration: const Duration(seconds: 3),
+          //       );
+          //     });
+          //   },
+          //   child: const Text('Upload'),
+          // ),
         ],
       ),
     );

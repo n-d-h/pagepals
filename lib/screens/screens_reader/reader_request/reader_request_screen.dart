@@ -1,6 +1,7 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_step1.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_step2.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_step3.dart';
@@ -26,7 +27,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: ColorHelper.getColor(ColorHelper.green),
         title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
         centerTitle: true,
         actions: [

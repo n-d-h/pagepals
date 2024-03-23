@@ -76,7 +76,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
         appBar: AppBar(
           backgroundColor: ColorHelper.getColor(ColorHelper.white),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back_ios),
             // iconSize: 30,
             onPressed: () {
               pauseVideo();
@@ -87,12 +87,27 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 0.0),
-              child: IconButton(
-                icon: const Icon(Icons.more_horiz_outlined),
+              child: DropdownButton(
+                icon: const Icon(Icons.more_vert_outlined),
                 iconSize: 30,
-                onPressed: () {
-                  // Handle the first action
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Main Page',
+                    child: Text('Go to Main Page'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Report',
+                    child: Text('Report'),
+                  ),
+                ],
+                onChanged: (value) {
+                  if(value == 'Report') {
+                    // Handle the first action
+                  } else if(value == 'Main Page') {
+                    Navigator.of(context).pop();
+                  }
                 },
+                underline: Container(),
               ),
             ),
             Padding(

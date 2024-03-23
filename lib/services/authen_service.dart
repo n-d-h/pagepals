@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/authen_models/account_tokens.dart';
 import 'package:pagepals/models/authen_models/login_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 
 class AuthenService {
   static GraphQLClient graphQLClient = client!.value;
@@ -44,8 +44,7 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account =
-          await getAccount(username, loginData?['accessToken']);
+      AccountModel account = await getAccount(username);
       print('account: ${json.encoder.convert(account)}');
       prefs.setString('account', json.encoder.convert(account));
 
@@ -86,8 +85,7 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account =
-          await getAccount(username, loginData?['accessToken']);
+      AccountModel account = await getAccount(username);
       prefs.setString('account', json.encoder.convert(account));
 
       return AccountTokens(
@@ -97,7 +95,7 @@ class AuthenService {
     }
   }
 
-  static Future<AccountModel> getAccount(String username, String token) async {
+  static Future<AccountModel> getAccount(String username) async {
     String query = '''
         query {
           getAccountByUsername(username: "$username") {
@@ -118,13 +116,7 @@ class AuthenService {
           }
         }
     ''';
-    GraphQLClient clientWithToken = GraphQLClient(
-      link: AuthLink(getToken: () async => 'Bearer $token').concat(
-        graphQLClient.link,
-      ),
-      cache: graphQLClient.cache,
-    );
-    final QueryResult result = await clientWithToken.query(
+    final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(query),
         fetchPolicy: FetchPolicy.networkOnly,
@@ -223,12 +215,12 @@ class AuthenService {
       prefs.setString('refreshToken', registerData?['refreshToken']);
 
       // save account
-      AccountModel account =
-          await getAccount(username, registerData?['accessToken']);
+      AccountModel account = await getAccount(username);
       prefs.setString('account', json.encoder.convert(account));
 
       return true;
     }
+
     return false;
   }
 }

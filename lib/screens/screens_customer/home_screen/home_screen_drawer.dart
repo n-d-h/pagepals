@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,11 +11,10 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
-import 'package:pagepals/screens/screens_reader/reader_request/reader_request_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
-import 'dart:convert';
 
 class HomeScreenDrawer extends StatefulWidget {
   const HomeScreenDrawer({Key? key}) : super(key: key);
@@ -211,10 +212,18 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
             onTap: () {
               Navigator.pop(context);
+              // Navigator.push(
+              //   context,
+              //   PageTransition(
+              //     child: const ReaderRequestScreen(),
+              //     type: PageTransitionType.rightToLeft,
+              //     duration: const Duration(milliseconds: 300),
+              //   ),
+              // );
               Navigator.push(
                 context,
                 PageTransition(
-                  child: const ReaderRequestScreen(),
+                  child: const ReaderMainScreen(),
                   type: PageTransitionType.rightToLeft,
                   duration: const Duration(milliseconds: 300),
                 ),
@@ -233,17 +242,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 barrierDismissible: false,
                 builder: (BuildContext context) {
                   return Center(
-                    child:
-                        // SizedBox(
-                        //   height: 50,
-                        //   width: 50,
-                        //   child: CircularProgressIndicator(
-                        //     valueColor: AlwaysStoppedAnimation(
-                        //       ColorHelper.getColor(ColorHelper.green),
-                        //     ),
-                        //   ),
-                        // ),
-                        LoadingAnimationWidget.staggeredDotsWave(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
                       color: Colors.greenAccent,
                       size: 60,
                     ),
