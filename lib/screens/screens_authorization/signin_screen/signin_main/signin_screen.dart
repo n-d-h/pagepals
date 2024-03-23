@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
@@ -200,14 +201,19 @@ class _SigninScreenState extends State<SigninScreen> {
                             barrierDismissible: false,
                             builder: (BuildContext context) {
                               return Center(
-                                child: SizedBox(
-                                  height: 50,
-                                  width: 50,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation(
-                                      ColorHelper.getColor(ColorHelper.green),
-                                    ),
-                                  ),
+                                child:
+                                // SizedBox(
+                                //   height: 50,
+                                //   width: 50,
+                                //   child: CircularProgressIndicator(
+                                //     valueColor: AlwaysStoppedAnimation(
+                                //       ColorHelper.getColor(ColorHelper.green),
+                                //     ),
+                                //   ),
+                                // ),
+                                LoadingAnimationWidget.staggeredDotsWave(
+                                  color: Colors.greenAccent,
+                                  size: 60,
                                 ),
                               );
                             },

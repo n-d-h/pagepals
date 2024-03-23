@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
@@ -6,6 +7,7 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/authen_models/account_tokens.dart';
 import 'package:pagepals/models/authen_models/login_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class AuthenService {
   static GraphQLClient graphQLClient = client!.value;
@@ -25,6 +27,7 @@ class AuthenService {
     final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
@@ -65,6 +68,7 @@ class AuthenService {
     final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
@@ -114,6 +118,7 @@ class AuthenService {
     final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
@@ -123,5 +128,99 @@ class AuthenService {
 
     final accountData = result.data?['getAccountByUsername'];
     return AccountModel.fromJson(accountData);
+  }
+
+  static Future<String> verifyEmailRegister(String email) async {
+    var mutation = '''
+    mutation {
+      verifyEmailRegister(
+        register: {username: "$email", password: "", email: "$email"}
+      )
+    }
+    ''';
+
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to refresh token');
+    }
+
+    var otpCode = result.data?['verifyEmailRegister'];
+    if (otpCode != null) {
+      // return code from backend
+      String encodedCode = otpCode.toString();
+      // set SECRET_KEY
+      String SECRET_KEY = "jkHGs0lbxWwbirSG";
+
+      // Convert the encoded code to bytes
+      Uint8List encodedBytes =
+          Uint8List.fromList(encrypt.Encrypted.fromBase64(encodedCode).bytes);
+
+      // Convert the secret key to bytes
+      Uint8List keyBytes = Uint8List.fromList(SECRET_KEY.codeUnits);
+
+      // Create an instance of AES cipher
+      final encrypter = encrypt.Encrypter(
+        encrypt.AES(
+          encrypt.Key(keyBytes),
+          mode: encrypt.AESMode.ecb, // Use ECB mode
+          padding: "PKCS7", // Use PKCS7 padding
+        ),
+      );
+
+      // Decrypt the bytes
+      final decryptedBytes =
+          encrypter.decryptBytes(encrypt.Encrypted(encodedBytes));
+
+      // Convert decrypted bytes to string
+      final decodedCode = String.fromCharCodes(decryptedBytes);
+
+      return decodedCode;
+    }
+    return '';
+  }
+
+  static Future<AccountTokens?> registerCustomer(
+      String username, String password, String email) async {
+    var mutation = '''
+      mutation register {
+        register(register: {username: "$username", password: "$password", email: "$email"}) {
+          accessToken
+          refreshToken
+        }
+      }
+    ''';
+
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to register');
+    }
+
+    var registerData = result.data?['register'];
+    if (registerData != null) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('accessToken', registerData?['accessToken']);
+      prefs.setString('refreshToken', registerData?['refreshToken']);
+
+      // save account
+      AccountModel account = await getAccount(username);
+      prefs.setString('account', json.encoder.convert(account));
+
+      return AccountTokens(
+        accessToken: registerData?['accessToken'],
+        refreshToken: registerData?['refreshToken'],
+      );
+    }
   }
 }

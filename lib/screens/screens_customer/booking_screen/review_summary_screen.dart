@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_model.dart';
@@ -95,7 +96,12 @@ class ReviewSummaryScreen extends StatelessWidget {
                 service: service!.description!,
                 serviceType: serviceType!.name!,
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 16),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+                height: 1,
+                color: Colors.black.withOpacity(0.1),
+              ),
               SpaceBetweenRowWidget(
                 start: 'Amount',
                 end: formatPrice(amount),
@@ -118,14 +124,19 @@ class ReviewSummaryScreen extends StatelessWidget {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return Center(
-                child: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation(
-                      ColorHelper.getColor(ColorHelper.green),
-                    ),
-                  ),
+                child:
+                // SizedBox(
+                //   height: 50,
+                //   width: 50,
+                //   child: CircularProgressIndicator(
+                //     valueColor: AlwaysStoppedAnimation(
+                //       ColorHelper.getColor(ColorHelper.green),
+                //     ),
+                //   ),
+                // ),
+                LoadingAnimationWidget.staggeredDotsWave(
+                  color: Colors.greenAccent,
+                  size: 60,
                 ),
               );
             },
@@ -147,7 +158,7 @@ class ReviewSummaryScreen extends StatelessWidget {
             return;
           } else {
             // Handle button press action here
-            Future.delayed(Duration.zero, () {
+            Future.delayed(const Duration(milliseconds: 100), () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
                 PageTransition(

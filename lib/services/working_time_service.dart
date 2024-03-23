@@ -25,6 +25,7 @@ class WorkingTimeService {
     final QueryResult result = await graphQLClient.query(
       QueryOptions(
         document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 

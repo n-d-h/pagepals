@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/booking_model.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/canceled_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/video_conference_page.dart';
 
 class UpcomingBottom extends StatelessWidget {
@@ -20,7 +21,19 @@ class UpcomingBottom extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           OutlinedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                PageTransition(
+                  child: CanceledScreen(
+                    onValueChanged: (value) {
+                      print(value);
+                    },
+                  ),
+                  type: PageTransitionType.rightToLeftWithFade,
+                  duration: const Duration(milliseconds: 300),
+                ),
+              );
+            },
             style: OutlinedButton.styleFrom(
               backgroundColor: ColorHelper.getColor('#C6F4DE'),
               side: const BorderSide(color: Colors.transparent),

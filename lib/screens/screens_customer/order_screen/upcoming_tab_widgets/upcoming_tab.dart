@@ -1,36 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_body.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_leading.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/video_conference_page.dart';
 import 'package:pagepals/services/booking_service.dart';
 
-class UpcomingTab extends StatefulWidget {
-  const UpcomingTab({super.key});
-
-  @override
-  State<UpcomingTab> createState() => _UpcomingTabState();
-}
-
-class _UpcomingTabState extends State<UpcomingTab> {
-  BookingModel? bookingModel;
-
-  Future<void> getBooking() async {
-    var result = await BookingService.getBooking(1, 10);
-    setState(() {
-      bookingModel = result;
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getBooking();
-  }
+class UpcomingTab extends StatelessWidget {
+  final BookingModel? bookingModel;
+  const UpcomingTab({super.key, this.bookingModel});
 
   @override
   Widget build(BuildContext context) {

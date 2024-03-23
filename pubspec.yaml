@@ -47,6 +47,8 @@ dependencies:
     sdk: flutter
   shimmer: ^3.0.0
   dart_jsonwebtoken: ^2.13.0
+  loading_animation_widget: ^1.2.1
+  encrypt: ^5.0.3
 
 dev_dependencies:
   flutter_test:
