@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/comment_screen.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/finance_screen.dart';
+import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/my_product_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/policy_screen.dart';
-import 'package:pagepals/screens/screens_reader/promotion_screen/promotion_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_edit_profile_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_settings_screen.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/report_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
+import 'package:pagepals/screens/screens_reader/promotion_screen/promotion_screen.dart';
+import 'package:pagepals/screens/screens_reader/report_screen/report_screen.dart';
 import 'package:unicons/unicons.dart';
 
 class ReaderMainScreen extends StatefulWidget {
@@ -249,7 +249,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                             children: [
                               Text('0'),
                               Text(
-                                'Cancelled',
+                                'Canceled',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 13,

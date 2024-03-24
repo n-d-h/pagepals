@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/screens/screens_reader/finance_screen/finance_send_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/transaction_money_widget.dart';
 
 class FinanceScreen extends StatefulWidget {
@@ -116,7 +118,13 @@ class _FinanceScreenState extends State<FinanceScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      print('Send');
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.bottomToTop,
+                          child: const FinanceSendScreen(),
+                        )
+                      );
                     },
                     child: Container(
                       decoration: BoxDecoration(

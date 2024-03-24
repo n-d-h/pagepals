@@ -12,6 +12,7 @@ import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_request/reader_request_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
@@ -92,6 +93,17 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
           ),
           ListTile(
             leading: Icon(
+              Icons.token_sharp,
+              color: Colors.deepPurpleAccent.withOpacity(0.7),
+            ),
+            title: const Text("Token: 200"),
+            onTap: () {
+              Navigator.pop(context);
+              // Navigate to profile screen
+            },
+          ),
+          ListTile(
+            leading: Icon(
               CustomIcons.user,
               color: ColorHelper.getColor(ColorHelper.green).withOpacity(0.7),
             ),
@@ -110,17 +122,6 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             onTap: () {
               Navigator.pop(context);
               // Navigate to interests screen
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.star_rounded,
-              color: ColorHelper.getColor('#FFA800'),
-            ),
-            title: Text(AppLocalizations.of(context)!.appFavorite),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigate to favorites screen
             },
           ),
           const Divider(),
@@ -212,22 +213,22 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
             onTap: () {
               Navigator.pop(context);
-              // Navigator.push(
-              //   context,
-              //   PageTransition(
-              //     child: const ReaderRequestScreen(),
-              //     type: PageTransitionType.rightToLeft,
-              //     duration: const Duration(milliseconds: 300),
-              //   ),
-              // );
               Navigator.push(
                 context,
                 PageTransition(
-                  child: const ReaderMainScreen(),
+                  child: const ReaderRequestScreen(),
                   type: PageTransitionType.rightToLeft,
                   duration: const Duration(milliseconds: 300),
                 ),
               );
+              // Navigator.push(
+              //   context,
+              //   PageTransition(
+              //     child: const ReaderMainScreen(),
+              //     type: PageTransitionType.rightToLeft,
+              //     duration: const Duration(milliseconds: 300),
+              //   ),
+              // );
               // Navigator.pushAndRemoveUntil(
               //   context,
               //   PageTransition(

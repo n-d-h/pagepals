@@ -28,6 +28,7 @@ class _PromotionCreateScreenState extends State<PromotionCreateScreen> {
                   'description':
                       'Get 10% off on all electronics items. Limited time offer!',
                   'discount_details': 'Use code: ELEC10',
+                  'percentage': '30% off',
                 },
               ),
             );
