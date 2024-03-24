@@ -13,6 +13,12 @@ class _WaitingScreenState extends State<WaitingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Waiting Screen'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Center(
         child: Text('Waiting Screen'),

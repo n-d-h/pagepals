@@ -13,6 +13,12 @@ class _ReaderCancelScreenState extends State<ReaderCancelScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Cancel Screen'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Center(
         child: ElevatedButton(

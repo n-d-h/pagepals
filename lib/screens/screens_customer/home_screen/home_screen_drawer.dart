@@ -228,6 +228,15 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                   duration: const Duration(milliseconds: 300),
                 ),
               );
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   PageTransition(
+              //     child: const ReaderMainScreen(),
+              //     type: PageTransitionType.rightToLeft,
+              //     duration: const Duration(milliseconds: 300),
+              //   ),
+              //   (route) => false,
+              // );
             },
           ),
           ListTile(
