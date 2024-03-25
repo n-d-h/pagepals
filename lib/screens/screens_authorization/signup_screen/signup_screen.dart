@@ -34,273 +34,266 @@ class _SignupScreenState extends State<SignupScreen> {
           children: [
             Container(
               alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width *
-                    SpaceHelper.spaceNineTenths,
-                margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: SingleChildScrollView(
-                  controller: ScrollController(),
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Image(
-                        image: AssetImage('assets/signin_logo.png'),
-                        fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width *
+                  SpaceHelper.spaceNineTenths,
+              margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Image(
+                      image: AssetImage('assets/signin_logo.png'),
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(height: SpaceHelper.space8),
+                    Text(
+                      "Join PagePals",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: ColorHelper.getColor(ColorHelper.black),
                       ),
-                      const SizedBox(height: SpaceHelper.space8),
-                      Text(
-                        "Join PagePals",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: ColorHelper.getColor(ColorHelper.black),
-                        ),
+                    ),
+                    const SizedBox(height: SpaceHelper.space8),
+                    Text(
+                      'Join our growing readers community to offer your professional '
+                      'service, connect with customers, and get paid '
+                      'to PagePals’ trusted platform.',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: SpaceHelper.fontSize16,
+                        fontWeight: FontWeight.w300,
+                        color: ColorHelper.getColor(ColorHelper.black),
                       ),
-                      const SizedBox(height: SpaceHelper.space8),
-                      Text(
-                        'Join our growing readers community to offer your professional '
-                        'service, connect with customers, and get paid '
-                        'to PagePals’ trusted platform.',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: SpaceHelper.fontSize16,
-                          fontWeight: FontWeight.w300,
-                          color: ColorHelper.getColor(ColorHelper.black),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      SizedBox(
-                        width: double.infinity, // <-- match_parent
-                        height: 50,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                PageTransition(
-                                    child: const MenuItemScreen(),
-                                    type: PageTransitionType.fade,
-                                    duration: const Duration(milliseconds: 300)),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor:
-                                  ColorHelper.getColor(ColorHelper.black),
-                              backgroundColor:
-                                  ColorHelper.getColor(ColorHelper.gray),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      width: double.infinity, // <-- match_parent
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              PageTransition(
+                                  child: const MenuItemScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration: const Duration(milliseconds: 300)),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor:
+                                ColorHelper.getColor(ColorHelper.black),
+                            backgroundColor:
+                                ColorHelper.getColor(ColorHelper.gray),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                    flex: 3,
-                                    child: Image(
-                                      image: AssetImage('assets/facebook.png'),
-                                      fit: BoxFit.scaleDown,
-                                    )),
-                                Expanded(
-                                  flex: 11,
-                                  child: Text(
-                                    'Continue with Facebook',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                  flex: 3,
+                                  child: Image(
+                                    image: AssetImage('assets/facebook.png'),
+                                    fit: BoxFit.scaleDown,
+                                  )),
+                              Expanded(
+                                flex: 11,
+                                child: Text(
+                                  'Continue with Facebook',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                )
-                              ],
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        width: double.infinity, // <-- match_parent
-                        height: 50,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return Center(
-                                    child:
-                                    // SizedBox(
-                                    //   height: 50,
-                                    //   width: 50,
-                                    //   child: CircularProgressIndicator(
-                                    //     valueColor: AlwaysStoppedAnimation(
-                                    //       ColorHelper.getColor(ColorHelper.green),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    LoadingAnimationWidget.staggeredDotsWave(
-                                      color: Colors.greenAccent,
-                                      size: 60,
-                                    ),
-                                  );
-                                },
-                              );
-                              // final SharedPreferences prefs =
-                              // await SharedPreferences.getInstance();
-                              final GoogleSignInProvider googleSignInProvider =
-                              GoogleSignInProvider();
-                              GoogleSignInAccount user = await googleSignInProvider.googleLogin();
+                                ),
+                              )
+                            ],
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: double.infinity, // <-- match_parent
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child:
+                                      LoadingAnimationWidget.staggeredDotsWave(
+                                    color: Colors.greenAccent,
+                                    size: 60,
+                                  ),
+                                );
+                              },
+                            );
+                            final GoogleSignInProvider googleSignInProvider =
+                                GoogleSignInProvider();
+                            GoogleSignInAccount user =
+                                await googleSignInProvider.googleLogin();
 
-                              try {
-                                // Get Google ID token from Firebase user
-                                String? googleIdToken =
-                                await FirebaseAuth.instance.currentUser!.getIdToken();
+                            try {
+                              // Get Google ID token from Firebase user
+                              String? googleIdToken = await FirebaseAuth
+                                  .instance.currentUser!
+                                  .getIdToken();
 
-                                AccountTokens? accountTokens =
-                                await AuthenService.loginWithGoogle(googleIdToken!);
-                                // Handle successful login here
-                                if (accountTokens!.accessToken != null) {
-                                  // Navigate to Dashboard screen on successful login
-                                  Future.delayed(const Duration(seconds: 2), () {
-                                    Navigator.pop(context);
-                                    Navigator.of(context).push(
-                                      PageTransition(
-                                        child: const MenuItemScreen(),
-                                        type: PageTransitionType.bottomToTop,
-                                        duration: const Duration(milliseconds: 400),
-                                      ),
-                                    );
-                                  });
-                                }
-                              } catch (error) {
-                                // Show dialog with error message
-                                Future.delayed(const Duration(milliseconds: 100), () {
+                              AccountTokens? accountTokens =
+                                  await AuthenService.loginWithGoogle(
+                                      googleIdToken!);
+                              // Handle successful login here
+                              if (accountTokens!.accessToken != null) {
+                                // Navigate to Dashboard screen on successful login
+                                Future.delayed(const Duration(seconds: 2), () {
                                   Navigator.pop(context);
-                                  QuickAlert.show(
-                                    context: context,
-                                    type: QuickAlertType.error,
-                                    title: 'Login Failed',
-                                    text: 'Google account not available',
+                                  Navigator.of(context).push(
+                                    PageTransition(
+                                      child: const MenuItemScreen(),
+                                      type: PageTransitionType.bottomToTop,
+                                      duration:
+                                          const Duration(milliseconds: 400),
+                                    ),
                                   );
                                 });
                               }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor:
-                                  ColorHelper.getColor(ColorHelper.black),
-                              backgroundColor:
-                                  ColorHelper.getColor(ColorHelper.gray),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                            } catch (error) {
+                              // Show dialog with error message
+                              Future.delayed(const Duration(milliseconds: 100),
+                                  () {
+                                Navigator.pop(context);
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.error,
+                                  title: 'Login Failed',
+                                  text: 'Google account not available',
+                                );
+                              });
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor:
+                                ColorHelper.getColor(ColorHelper.black),
+                            backgroundColor:
+                                ColorHelper.getColor(ColorHelper.gray),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                    flex: 3,
-                                    child: Image(
-                                      image: AssetImage('assets/google.png'),
-                                      fit: BoxFit.scaleDown,
-                                    )),
-                                Expanded(
-                                  flex: 9,
-                                  child: Text(
-                                    'Continue with Google',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        width: double.infinity, // <-- match_parent
-                        height: 50,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                PageTransition(
-                                    child: const VerifyEmailScreen(),
-                                    type: PageTransitionType.fade,
-                                    duration: const Duration(milliseconds: 300)),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor:
-                                  ColorHelper.getColor(ColorHelper.black),
-                              backgroundColor:
-                                  ColorHelper.getColor(ColorHelper.gray),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: const Text(
-                              'Create PagePals account',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          // Align the text inside RichText
-                          text: TextSpan(
-                            text: 'By Signing up, you agree to PagePals ',
-                            style: TextStyle(
-                              fontSize: SpaceHelper.fontSize14,
-                              fontWeight: FontWeight.w400,
-                              color: ColorHelper.getColor(ColorHelper.black),
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'Terms of Services ',
-                                style: TextStyle(
-                                  fontSize: SpaceHelper.fontSize14,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorHelper.getColor(ColorHelper.green),
-                                ),
-                              ),
-                              TextSpan(
-                                text: '& ',
-                                style: TextStyle(
-                                  fontSize: SpaceHelper.fontSize14,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorHelper.getColor(ColorHelper.black),
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Privacy Policy',
-                                style: TextStyle(
-                                  fontSize: SpaceHelper.fontSize14,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorHelper.getColor(ColorHelper.green),
-                                ),
-                              ),
-                            ],
                           ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                  flex: 3,
+                                  child: Image(
+                                    image: AssetImage('assets/google.png'),
+                                    fit: BoxFit.scaleDown,
+                                  )),
+                              Expanded(
+                                flex: 9,
+                                child: Text(
+                                  'Continue with Google',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: double.infinity, // <-- match_parent
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              PageTransition(
+                                  child: const VerifyEmailScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration: const Duration(milliseconds: 300)),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor:
+                                ColorHelper.getColor(ColorHelper.black),
+                            backgroundColor:
+                                ColorHelper.getColor(ColorHelper.gray),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Create PagePals account',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        // Align the text inside RichText
+                        text: TextSpan(
+                          text: 'By Signing up, you agree to PagePals ',
+                          style: TextStyle(
+                            fontSize: SpaceHelper.fontSize14,
+                            fontWeight: FontWeight.w400,
+                            color: ColorHelper.getColor(ColorHelper.black),
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'Terms of Services ',
+                              style: TextStyle(
+                                fontSize: SpaceHelper.fontSize14,
+                                fontWeight: FontWeight.w400,
+                                color: ColorHelper.getColor(ColorHelper.green),
+                              ),
+                            ),
+                            TextSpan(
+                              text: '& ',
+                              style: TextStyle(
+                                fontSize: SpaceHelper.fontSize14,
+                                fontWeight: FontWeight.w400,
+                                color: ColorHelper.getColor(ColorHelper.black),
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'Privacy Policy',
+                              style: TextStyle(
+                                fontSize: SpaceHelper.fontSize14,
+                                fontWeight: FontWeight.w400,
+                                color: ColorHelper.getColor(ColorHelper.green),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                  ],
                 ),
               ),
-
+            ),
             Container(
               alignment: Alignment.bottomCenter,
               margin: const EdgeInsets.fromLTRB(20, 0, 20, 23),

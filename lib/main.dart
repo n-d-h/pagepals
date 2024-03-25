@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,11 +6,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/firebase_options.dart';
-import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/cart_provider.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
-import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,12 +38,25 @@ Future<void> main() async {
     ),
   );
 
+  // Just for test
+  printSharedPreferencesData();
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => GoogleSignInProvider()),
     ChangeNotifierProvider(create: (_) => CartProvider()),
     ChangeNotifierProvider(create: (_) => LocaleProvider()),
   ], child: const MyApp()));
+}
+
+// Just for test
+void printSharedPreferencesData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  Set<String> keys = prefs.getKeys();
+
+  print('SharedPreferences Data:');
+  for (String key in keys) {
+    print('$key: ${prefs.get(key)}');
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -82,5 +90,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
