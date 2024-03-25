@@ -3,3 +3,4 @@
 - Call api for waiting and Cancel (Booking State)
 - MoMo Payment
 - API for wallet
+- Check notification in background / foreground

@@ -9,6 +9,7 @@ import 'package:pagepals/firebase_options.dart';
 import 'package:pagepals/providers/cart_provider.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
+import 'package:pagepals/services/firebase_message_service.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,8 +27,15 @@ Future<void> main() async {
     'https://pagepals.azurewebsites.net/graphql',
   );
 
+  FirebaseMessageService firebaseMessageService = FirebaseMessageService();
+  await firebaseMessageService.initialize();
+  String? fcmToken = await firebaseMessageService.getFCMToken();
+
+  print('FCM Token: $fcmToken');
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('accessToken');
+  prefs.setString('fcmToken', fcmToken!);
 
   client = ValueNotifier(
     GraphQLClient(
