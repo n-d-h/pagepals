@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/service_model.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/service_widget.dart';
+import 'package:pagepals/services/service_service.dart';
 import 'package:unicons/unicons.dart';
 
-class MyProductScreen extends StatefulWidget {
-  const MyProductScreen({super.key});
+class MyServiceScreen extends StatefulWidget {
+  MyServiceScreen({super.key, this.readerId});
+
+  String? readerId;
 
   @override
-  State<MyProductScreen> createState() => _MyProductScreenState();
+  State<MyServiceScreen> createState() => _MyServiceScreenState();
 }
 
-class _MyProductScreenState extends State<MyProductScreen> {
+class _MyServiceScreenState extends State<MyServiceScreen> {
   TextEditingController searchController = TextEditingController();
   bool isSearching = false;
+
+  Future<List<ServiceModel>> getListServiceByReader() {
+    return ServiceService.getListServiceByReader(widget.readerId!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +32,7 @@ class _MyProductScreenState extends State<MyProductScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
-          title: const Text('My Product'),
+          title: const Text('My Services'),
           elevation: 0,
           surfaceTintColor: Colors.white,
           centerTitle: true,
@@ -36,20 +45,44 @@ class _MyProductScreenState extends State<MyProductScreen> {
         ),
         body: Stack(
           children: [
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              controller: ScrollController(),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 80),
-                  ServiceWidget(),
-                  ServiceWidget(),
-                  ServiceWidget(),
-                  ServiceWidget(),
-                  ServiceWidget(),
-                  ServiceWidget(),
-                ],
+            Container(
+              margin: const EdgeInsets.only(top: 80),
+              child: FutureBuilder(
+                future: getListServiceByReader(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.green,
+                        size: 60,
+                      ),
+                    );
+                  } else {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    } else {
+                      List<ServiceModel> services =
+                          snapshot.data as List<ServiceModel>;
+                      return ListView.builder(
+                        itemCount: services.length,
+                        itemBuilder: (context, index) {
+                          return ServiceWidget(
+                            imageUrl: services[index].book!.smallThumbnailUrl,
+                            serviceName: services[index].book!.title,
+                            serviceDescription:
+                                services[index].book!.description,
+                            price: services[index].price,
+                            rating: services[index].rating.toString(),
+                            totalOfRating:
+                                services[index].totalOfReview.toString(),
+                          );
+                        },
+                      );
+                    }
+                  }
+                },
               ),
             ),
             Positioned(
@@ -84,7 +117,7 @@ class _MyProductScreenState extends State<MyProductScreen> {
                       controller: searchController,
                       trailing: [
                         SizedBox.square(
-                          dimension: 25,
+                          dimension: 26,
                           child: IconButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
@@ -95,7 +128,7 @@ class _MyProductScreenState extends State<MyProductScreen> {
                               isSearching
                                   ? UniconsLine.multiply
                                   : UniconsLine.search,
-                              size: 12,
+                              size: 11,
                               color: Colors.white,
                             ),
                             onPressed: () {
@@ -134,7 +167,7 @@ class _MyProductScreenState extends State<MyProductScreen> {
                       surfaceTintColor: MaterialStateProperty.all(Colors.white),
                       backgroundColor: MaterialStateProperty.all(Colors.white),
                       shadowColor:
-                      MaterialStateProperty.all(Colors.grey.withOpacity(0)),
+                          MaterialStateProperty.all(Colors.grey.withOpacity(0)),
                       textStyle: MaterialStateProperty.all(
                         const TextStyle(
                           color: Colors.black,

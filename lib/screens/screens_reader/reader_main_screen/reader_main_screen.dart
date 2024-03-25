@@ -1,21 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/comment_screen.dart';
-import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/my_product_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
+import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/policy_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_edit_profile_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_settings_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
+import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
 import 'package:pagepals/screens/screens_reader/promotion_screen/promotion_screen.dart';
 import 'package:pagepals/screens/screens_reader/report_screen/report_screen.dart';
 import 'package:unicons/unicons.dart';
 
 class ReaderMainScreen extends StatefulWidget {
-  const ReaderMainScreen({super.key});
+  ReaderMainScreen({super.key, this.accountModel});
+
+  AccountModel? accountModel;
 
   @override
   State<ReaderMainScreen> createState() => _ReaderMainScreenState();
@@ -24,6 +29,8 @@ class ReaderMainScreen extends StatefulWidget {
 class _ReaderMainScreenState extends State<ReaderMainScreen> {
   @override
   Widget build(BuildContext context) {
+    print(widget.accountModel!.reader!.nickname!);
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -95,31 +102,37 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Image.asset('assets/image_reader.png'),
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundImage: NetworkImage(
+                              widget.accountModel!.customer!.imageUrl!,
+                            ),
+                          ),
                         ),
-                        const SizedBox(width: 20),
-                        const Column(
+                        const SizedBox(width: 5),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'John Doe',
-                              style: TextStyle(
+                              widget.accountModel!.email!,
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Text(
-                              'john@gmail.com',
-                              style: TextStyle(
+                              '@${widget.accountModel!.username!}',
+                              style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 15,
+                                fontSize: 12,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    const SizedBox(width: 50),
                     Container(
                       width: 30,
                       height: 30,
@@ -178,7 +191,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Orders',
+                    'Bookings',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -309,7 +322,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Products',
+                    'Functions',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -329,7 +342,10 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: const MyProductScreen(),
+                                    child: MyServiceScreen(
+                                      readerId:
+                                          widget.accountModel!.reader!.id!,
+                                    ),
                                   ),
                                 );
                               },
@@ -356,7 +372,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                     ),
                                     const SizedBox(height: 8),
                                     const Text(
-                                      'My Products',
+                                      'My Services',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 13,
@@ -510,7 +526,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: const PolicyScreen(),
+                                    child: const ReaderSeminarScreen(),
                                   ),
                                 );
                               },
@@ -530,14 +546,14 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: const Icon(
-                                        UniconsLine.lock_access,
+                                        UniconsLine.meeting_board,
                                         color: Colors.white,
                                         size: 25,
                                       ),
                                     ),
                                     const SizedBox(height: 5),
                                     const Text(
-                                      'Policy',
+                                      'My Seminars',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 13,

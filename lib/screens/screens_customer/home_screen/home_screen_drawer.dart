@@ -49,6 +49,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
       setState(() {
         account = AccountModel.fromJson(accountMap);
       });
+      print('Account data: ${account!.reader!.nickname}');
     } catch (e) {
       print('Error decoding account data: $e');
     }
@@ -212,32 +213,47 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             ),
             title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                PageTransition(
-                  child: const ReaderRequestScreen(),
-                  type: PageTransitionType.rightToLeft,
-                  duration: const Duration(milliseconds: 300),
-                ),
-              );
-              // Navigator.push(
-              //   context,
-              //   PageTransition(
-              //     child: const ReaderMainScreen(),
-              //     type: PageTransitionType.rightToLeft,
-              //     duration: const Duration(milliseconds: 300),
-              //   ),
-              // );
-              // Navigator.pushAndRemoveUntil(
-              //   context,
-              //   PageTransition(
-              //     child: const ReaderMainScreen(),
-              //     type: PageTransitionType.rightToLeft,
-              //     duration: const Duration(milliseconds: 300),
-              //   ),
-              //   (route) => false,
-              // );
+              if (account?.reader?.id != null) {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: ReaderMainScreen(
+                        accountModel: account!,
+                    ),
+                    type: PageTransitionType.rightToLeft,
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                );
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   PageTransition(
+                //     child: const ReaderMainScreen(),
+                //     type: PageTransitionType.rightToLeft,
+                //     duration: const Duration(milliseconds: 300),
+                //   ),
+                //   (route) => false,
+                // );
+              } else {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: const ReaderRequestScreen(),
+                    type: PageTransitionType.rightToLeft,
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                );
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   PageTransition(
+                //     child: const ReaderRequestScreen(),
+                //     type: PageTransitionType.rightToLeft,
+                //     duration: const Duration(milliseconds: 300),
+                //   ),
+                //   (route) => false,
+                // );
+              }
             },
           ),
           ListTile(

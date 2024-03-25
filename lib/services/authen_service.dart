@@ -44,7 +44,8 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account = await getAccount(username);
+      AccountModel account =
+          await getAccount(username, loginData?['accessToken']);
       print('account: ${json.encoder.convert(account)}');
       prefs.setString('account', json.encoder.convert(account));
 
@@ -85,7 +86,8 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account = await getAccount(username);
+      AccountModel account =
+          await getAccount(username, loginData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
 
       return AccountTokens(
@@ -95,7 +97,7 @@ class AuthenService {
     }
   }
 
-  static Future<AccountModel> getAccount(String username) async {
+  static Future<AccountModel> getAccount(String username, String token) async {
     String query = '''
         query {
           getAccountByUsername(username: "$username") {
@@ -112,11 +114,18 @@ class AuthenService {
             }
             reader {
               id
+              nickname
             }
           }
         }
     ''';
-    final QueryResult result = await graphQLClient.query(
+    GraphQLClient clientWithToken = GraphQLClient(
+      link: AuthLink(getToken: () async => 'Bearer $token').concat(
+        graphQLClient.link,
+      ),
+      cache: graphQLClient.cache,
+    );
+    final QueryResult result = await clientWithToken.query(
       QueryOptions(
         document: gql(query),
         fetchPolicy: FetchPolicy.networkOnly,
@@ -215,7 +224,8 @@ class AuthenService {
       prefs.setString('refreshToken', registerData?['refreshToken']);
 
       // save account
-      AccountModel account = await getAccount(username);
+      AccountModel account =
+          await getAccount(username, registerData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
 
       return true;

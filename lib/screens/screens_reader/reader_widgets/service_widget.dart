@@ -2,7 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ServiceWidget extends StatelessWidget {
-  const ServiceWidget({super.key});
+  ServiceWidget({
+    super.key,
+    this.imageUrl,
+    this.serviceName,
+    this.serviceDescription,
+    this.price,
+    this.rating,
+    this.totalOfRating,
+  });
+
+  String? imageUrl;
+  String? serviceName;
+  String? serviceDescription;
+  double? price;
+  String? rating;
+  String? totalOfRating;
 
   @override
   Widget build(BuildContext context) {
@@ -19,37 +34,37 @@ class ServiceWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                width: 100,
-                height: 100,
+                width: 90,
+                height: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  image: const DecorationImage(
-                    image: AssetImage('assets/book.jpg'),
-                    fit: BoxFit.cover,
+                  image: DecorationImage(
+                    image: NetworkImage(imageUrl!),
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
               const SizedBox(width: 10),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Product Name',
-                    style: TextStyle(
+                    serviceName!,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    'Product Description',
-                    style: TextStyle(
+                    serviceDescription!,
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
                     ),
                   ),
                   Text(
-                    'Price: \$100',
-                    style: TextStyle(
+                    'Price: \$${price.toString()}',
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.green,
                     ),
