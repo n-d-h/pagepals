@@ -33,6 +33,11 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
       context: context,
       builder: (context) {
         return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           child: VideoPlayerFromFile(
             videoFile: _selectedVideo!,
           ),
@@ -74,7 +79,11 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
                             color: Colors.grey,
                           ),
                         )
-                      : SizedBox(),
+                      : const Icon(
+                          Icons.video_collection,
+                          size: 30.0,
+                          color: Colors.grey,
+                        ),
                 ),
               ),
               const SizedBox(width: 16.0),

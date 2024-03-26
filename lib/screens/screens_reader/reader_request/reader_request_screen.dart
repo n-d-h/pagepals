@@ -27,7 +27,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorHelper.getColor(ColorHelper.green),
+        backgroundColor: ColorHelper.getColor(ColorHelper.greenActive),
         title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
         centerTitle: true,
         actions: [

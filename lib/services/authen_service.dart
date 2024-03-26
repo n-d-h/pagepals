@@ -112,18 +112,17 @@ class AuthenService {
             }
             reader {
               id
+              nickname
             }
           }
         }
     ''';
-
     GraphQLClient clientWithToken = GraphQLClient(
       link: AuthLink(getToken: () async => 'Bearer $token').concat(
         graphQLClient.link,
       ),
       cache: graphQLClient.cache,
     );
-
     final QueryResult result = await clientWithToken.query(
       QueryOptions(
         document: gql(query),
