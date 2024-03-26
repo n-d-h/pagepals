@@ -228,7 +228,9 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 // Navigator.pushAndRemoveUntil(
                 //   context,
                 //   PageTransition(
-                //     child: const ReaderMainScreen(),
+                //     child: ReaderMainScreen(
+                //       accountModel: account!,
+                //     ),
                 //     type: PageTransitionType.rightToLeft,
                 //     duration: const Duration(milliseconds: 300),
                 //   ),

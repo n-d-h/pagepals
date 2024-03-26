@@ -9,7 +9,7 @@ import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_s
 import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/policy_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/reader_edit_profile_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_settings_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
