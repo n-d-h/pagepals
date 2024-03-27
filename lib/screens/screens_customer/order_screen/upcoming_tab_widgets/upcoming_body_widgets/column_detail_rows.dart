@@ -5,14 +5,16 @@ import 'package:unicons/unicons.dart';
 
 class ColumnDetail extends StatelessWidget {
   final Booking booking;
+
   const ColumnDetail({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
-    String title = booking.service!.book!.title!;
-    String service = booking.service!.description!;
+    String title = booking.service?.book?.title ?? 'Unknown';
+    String service = booking.service?.description ?? 'Unknown';
     String meetingCode = "#${booking.meeting!.meetingCode!}";
-    String duration = '${booking.service!.duration!.toInt()} minutes';
+    String duration =
+        '${booking.service?.duration != null ? booking.service!.duration!.toInt() : '60'} minutes';
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Column(
