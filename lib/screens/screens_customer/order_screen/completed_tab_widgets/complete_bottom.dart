@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/booking_model.dart';
 
 class CompletedBottom extends StatelessWidget {
-  const CompletedBottom({super.key});
+  final Booking booking;
+
+  const CompletedBottom({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {

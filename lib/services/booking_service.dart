@@ -43,7 +43,14 @@ class BookingService {
     }
     ''';
 
-    QueryResult result = await graphQLClient.query(
+    GraphQLClient clientWithToken = GraphQLClient(
+      link: AuthLink(getToken: () async => 'Bearer $token').concat(
+        graphQLClient.link,
+      ),
+      cache: graphQLClient.cache,
+    );
+
+    QueryResult result = await clientWithToken.query(
       QueryOptions(
         document: gql(mutation),
         fetchPolicy: FetchPolicy.networkOnly,
@@ -51,27 +58,15 @@ class BookingService {
     );
 
     if (result.hasException) {
-      GraphQLClient clientWithToken = GraphQLClient(
-        link: AuthLink(getToken: () async => 'Bearer $token').concat(
-          graphQLClient.link,
-        ),
-        cache: graphQLClient.cache,
-      );
-      result = await clientWithToken.query(
-        QueryOptions(
-          document: gql(mutation),
-          fetchPolicy: FetchPolicy.networkOnly,
-        ),
-      );
-      if (result.hasException) {
-        return false;
-      }
-      // throw Exception('Failed to create booking');
+      return false;
     }
+    // throw Exception('Failed to create booking');
+
     return result.data?['createBooking'] != null;
   }
 
-  static Future<BookingModel> getBooking(int page, int pageSize) async {
+  static Future<BookingModel> getBooking(
+      int page, int pageSize, String bookingState) async {
     // get customer id
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('accessToken')!;
@@ -83,11 +78,13 @@ class BookingService {
     query {
       getListBookingByCustomer(
         customerId: "$customerId"
-        filter: {page: 0, pageSize: 10}
+        filter: {page: $page, pageSize: $pageSize, bookingState: "$bookingState"}
       ) {
         list {
+          id
           meeting {
             reader {
+              id
               nickname
               account {
                 customer {
@@ -97,17 +94,23 @@ class BookingService {
               }
             }
             meetingCode
+            limitOfPerson
+            id
           }
           service {
             book {
               title
               smallThumbnailUrl
               thumbnailUrl
+              id
             }
             duration
             description
+            id
+            price
           }
           startAt
+          createdAt
         }
         pagination {
           currentPage
@@ -120,9 +123,13 @@ class BookingService {
     }
     ''';
 
-    QueryResult result;
-
-    result = await graphQLClient.query(
+    GraphQLClient clientWithToken = GraphQLClient(
+      link: AuthLink(getToken: () async => 'Bearer $token').concat(
+        graphQLClient.link,
+      ),
+      cache: graphQLClient.cache,
+    );
+    QueryResult result = await clientWithToken.query(
       QueryOptions(
         document: gql(query),
         fetchPolicy: FetchPolicy.networkOnly,
@@ -130,23 +137,85 @@ class BookingService {
     );
 
     if (result.hasException) {
-      GraphQLClient clientWithToken = GraphQLClient(
-        link: AuthLink(getToken: () async => 'Bearer $token').concat(
-          graphQLClient.link,
-        ),
-        cache: graphQLClient.cache,
-      );
-      result = await clientWithToken.query(
-        QueryOptions(
-          document: gql(query),
-          fetchPolicy: FetchPolicy.networkOnly,
-        ),
-      );
-      if (result.hasException) {
-        throw Exception('Failed to get booking');
-      }
+      throw Exception('Failed to get booking');
     }
 
     return BookingModel.fromJson(result.data!['getListBookingByCustomer']);
+  }
+
+  static Future<BookingModel> getBookingByReader(
+      String readerId, int page, int pageSize, String bookingState) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('accessToken')!;
+    print('accessToken: $token');
+
+    var query = '''
+    query {
+      getListBookingByReader(
+        readerId: "$readerId"
+        filter: {page: $page, pageSize: $pageSize, bookingState: "$bookingState"}
+      ) {
+        list {
+          id
+          meeting {
+            reader {
+              id
+              nickname
+              account {
+                customer {
+                  imageUrl
+                }
+                username
+              }
+            }
+            meetingCode
+            limitOfPerson
+            id
+          }
+          service {
+            book {
+              title
+              smallThumbnailUrl
+              thumbnailUrl
+              id
+            }
+            duration
+            description
+            id
+            price
+          }
+          startAt
+          createdAt
+        }
+        pagination {
+          currentPage
+          pageSize
+          sort
+          totalOfElements
+          totalOfPages
+        }
+      }
+    }
+    ''';
+
+    GraphQLClient clientWithToken = GraphQLClient(
+      link: AuthLink(getToken: () async => 'Bearer $token').concat(
+        graphQLClient.link,
+      ),
+      cache: graphQLClient.cache,
+    );
+
+    QueryResult result = await clientWithToken.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to get booking');
+    }
+
+    return BookingModel.fromJson(result.data!['getListBookingByReader']);
   }
 }

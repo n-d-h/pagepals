@@ -1,52 +1,38 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/models/service_model.dart';
-import 'package:pagepals/screens/screens_reader/reader_widgets/service_widget.dart';
-import 'package:pagepals/screens/screens_reader/services_screen/create_service.dart';
-import 'package:pagepals/services/service_service.dart';
+import 'package:pagepals/models/google_book.dart';
+import 'package:pagepals/screens/screens_reader/services_screen/create_widgets/google_book_widget.dart';
+import 'package:pagepals/services/book_service.dart';
 import 'package:unicons/unicons.dart';
 
-class MyServiceScreen extends StatefulWidget {
-  final String? readerId;
+class SearchBookScreen extends StatefulWidget {
+  final Function(GoogleBookModel?)? onTap;
 
-  const MyServiceScreen({super.key, this.readerId});
+  const SearchBookScreen({Key? key, this.onTap}) : super(key: key);
 
   @override
-  State<MyServiceScreen> createState() => _MyServiceScreenState();
+  State<SearchBookScreen> createState() => _SearchBookScreenState();
 }
 
-class _MyServiceScreenState extends State<MyServiceScreen> {
+class _SearchBookScreenState extends State<SearchBookScreen> {
   TextEditingController searchController = TextEditingController();
   bool isSearching = false;
-
-  int limit = 10;
-  String search = "";
-  int currentPage = 0;
-  List<ServiceModel> services = [];
+  String query = 'a';
+  int currentPage = 1;
+  List<GoogleBookModel> googleBooks = [];
   bool isLoadingNextPage = false;
   bool hasMorePages = true;
 
   final ScrollController _scrollController = ScrollController();
-
   Timer? _debounce;
-
-  void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      _fetchNextPage();
-    }
-  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController.addListener(_scrollListener);
-    _fetchServices();
+    _fetchGoogleBooks();
   }
 
   @override
@@ -57,18 +43,19 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
     super.dispose();
   }
 
-  Future<List<ServiceModel>> getListServiceByReader(
-      int page, int limit, String search) {
-    return ServiceService.getListServiceByReader(
-        widget.readerId!, page, limit, search);
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _fetchNextPage();
+    }
   }
 
-  Future<void> _fetchServices() async {
+  Future<void> _fetchGoogleBooks() async {
     try {
-      List<ServiceModel> result = await ServiceService.getListServiceByReader(
-          widget.readerId!, currentPage, limit, search);
+      List<GoogleBookModel> result =
+          await BookService.getGoogleBooks("a", query, currentPage, 10);
       setState(() {
-        services.addAll(result);
+        googleBooks.addAll(result);
         currentPage++;
         if (result.isEmpty) {
           hasMorePages = false;
@@ -85,9 +72,8 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
         isLoadingNextPage = true;
       });
       try {
-        List<ServiceModel> result =
-            await await ServiceService.getListServiceByReader(
-                widget.readerId!, currentPage, limit, search);
+        List<GoogleBookModel> result =
+            await BookService.getGoogleBooks("a", query, currentPage, 10);
         if (result.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -95,11 +81,10 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
           });
         } else {
           setState(() {
-            // Filter out duplicates before adding them to services
-            final filteredResult = result.where((service) => !services
-                .any((existingService) => existingService.id == service.id));
-            services.addAll(filteredResult);
-
+            // Filter out duplicates before adding them to googleBooks
+            final filteredResult = result.where((book) =>
+                !googleBooks.any((existingBook) => existingBook.id == book.id));
+            googleBooks.addAll(filteredResult);
             currentPage++;
             isLoadingNextPage = false;
           });
@@ -116,10 +101,8 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: const Text('My Services'),
-        elevation: 0,
+        title: const Text('Select Book'),
         surfaceTintColor: Colors.white,
         centerTitle: true,
         leading: IconButton(
@@ -128,89 +111,44 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(UniconsLine.plus_circle),
-            onPressed: () {
-              Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.rightToLeft,
-                  child: CreateService(
-                    readerId: widget.readerId!,
-                    onCreated: (value) {
-                      if (value != null && value) {
-                        setState(() {
-                          services.clear();
-                          currentPage = 0;
-                          hasMorePages = true;
-                          _fetchServices();
-                        });
-                      }
-                    },
-                  ),
-                  duration: const Duration(milliseconds: 300),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: Stack(
         children: [
           Container(
-              margin: const EdgeInsets.only(top: 80),
-              child: services.isEmpty
-                  ? Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: ColorHelper.getColor(ColorHelper.green),
-                        size: 60,
-                      ),
-                    )
-                  : ListView.builder(
-                      controller: _scrollController,
-                      itemCount: services.length + (isLoadingNextPage ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index == services.length) {
-                          // Show loading indicator at the bottom
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: LoadingAnimationWidget.prograssiveDots(
-                                color: ColorHelper.getColor(ColorHelper.green),
-                                size: 50,
-                              ),
-                            ),
-                          );
-                        } else {
-                          return ServiceWidget(
-                            id: services[index].id,
-                            readerId: widget.readerId!,
-                            imageUrl: services[index].book!.smallThumbnailUrl,
-                            book: services[index].book!.title,
-                            duration: services[index].duration,
-                            createdAt: services[index].createdAt!,
-                            serviceType: services[index].serviceType!.id,
-                            serviceName: services[index].description,
-                            bookDescription: services[index].book!.description,
-                            price: services[index].price,
-                            rating: services[index].rating.toString(),
-                            totalOfRating:
-                                services[index].totalOfReview.toString(),
-                            onDeleted: (value) {
-                              if (value != null && value) {
-                                setState(() {
-                                  services.clear();
-                                  currentPage = 0;
-                                  hasMorePages = true;
-                                  _fetchServices();
-                                });
-                              }
-                            },
-                          );
-                        }
-                      },
-                    )),
+            color: Colors.grey[200]!,
+            margin: const EdgeInsets.only(top: 80),
+            child: googleBooks.isEmpty
+                ? Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: Colors.green,
+                      size: 60,
+                    ),
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    itemCount: googleBooks.length + (isLoadingNextPage ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == googleBooks.length) {
+                        // Show loading indicator at the bottom
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: LoadingAnimationWidget.prograssiveDots(
+                              color: Colors.green,
+                              size: 50,
+                            )
+                          ),
+                        );
+                      } else {
+                        var ggBook = googleBooks[index];
+                        return GoogleBookWidget(
+                          book: ggBook,
+                          onTap: widget.onTap,
+                        );
+                      }
+                    },
+                  ),
+          ),
           Positioned(
             top: 0,
             left: 0,
@@ -227,33 +165,31 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
                   child: SearchBar(
                     autoFocus: true,
                     onChanged: (value) {
-                      print('Searching for: $value');
                       if (value.isNotEmpty) {
+                        // Clear the previous search results
                         setState(() {
-                          services.clear();
-                          currentPage = 0;
+                          googleBooks.clear();
+                          currentPage = 1;
                           hasMorePages = true;
                           isSearching = true;
                         });
                         if (_debounce?.isActive ?? false) _debounce?.cancel();
                         _debounce =
                             Timer(const Duration(milliseconds: 300), () {
+                          // Fetch new data based on the new query
                           setState(() {
-                            // do something with query
-                            search = value;
+                            query = value;
                           });
-                          _fetchServices();
+                          _fetchGoogleBooks();
                         });
                       } else {
+                        // If the search query is empty, reset to default query 'a'
                         setState(() {
                           isSearching = false;
-                          search = "";
+                          query = "a";
                         });
                       }
                     },
-                    // onSubmitted: (value) {
-                    //   print('Submit Searching for: $value');
-                    // },
                     controller: searchController,
                     trailing: [
                       SizedBox.square(
@@ -281,11 +217,11 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
                                 searchController.clear();
                                 // Stop searching
                                 isSearching = false;
-                                currentPage = 0;
+                                currentPage = 1;
                                 hasMorePages = true;
-                                services.clear();
-                                search = "";
-                                _fetchServices();
+                                googleBooks.clear();
+                                query = "a";
+                                _fetchGoogleBooks();
                               } else {
                                 // Start searching
                                 isSearching = true;
@@ -314,15 +250,16 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
                     ),
                     surfaceTintColor: MaterialStateProperty.all(Colors.white),
                     backgroundColor: MaterialStateProperty.all(Colors.white),
-                    shadowColor:
-                        MaterialStateProperty.all(Colors.grey.withOpacity(0)),
+                    shadowColor: MaterialStateProperty.all(
+                      Colors.grey.withOpacity(0),
+                    ),
                     textStyle: MaterialStateProperty.all(
                       const TextStyle(
                         color: Colors.black,
                         fontSize: 14,
                       ),
                     ),
-                    hintText: 'Search by book title...',
+                    hintText: 'Search for products...',
                     hintStyle: MaterialStateProperty.all(
                       const TextStyle(
                         color: Colors.grey,

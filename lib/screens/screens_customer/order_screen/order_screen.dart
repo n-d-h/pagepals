@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -17,12 +18,18 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  BookingModel? bookingModel;
+  BookingModel? pendingBooking;
+  BookingModel? completedBooking;
+  BookingModel? canceledBooking;
 
   Future<void> getBooking() async {
-    var result = await BookingService.getBooking(1, 10);
+    var pending = await BookingService.getBooking(0, 10, 'PENDING');
+    var done = await BookingService.getBooking(0, 10, 'DONE');
+    var cancel = await BookingService.getBooking(0, 10, 'CANCEL');
     setState(() {
-      bookingModel = result;
+      pendingBooking = pending;
+      completedBooking = done;
+      canceledBooking = cancel;
     });
   }
 
@@ -38,7 +45,9 @@ class _OrderScreenState extends State<OrderScreen> {
     return DefaultTabController(
       initialIndex: 0,
       length: 3,
-      child: bookingModel == null
+      child: pendingBooking == null ||
+              completedBooking == null ||
+              canceledBooking == null
           ? Scaffold(
               backgroundColor: Colors.white,
               body: Center(
@@ -89,9 +98,9 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
               body: TabBarView(
                 children: [
-                  UpcomingTab(bookingModel: bookingModel,),
-                  CompletedTab(),
-                  CanceledTab(),
+                  UpcomingTab(bookingModel: pendingBooking),
+                  CompletedTab(bookingModel: completedBooking),
+                  CanceledTab(bookingModel: canceledBooking),
                 ],
               ),
             ),

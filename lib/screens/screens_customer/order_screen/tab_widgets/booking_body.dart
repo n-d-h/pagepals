@@ -4,10 +4,10 @@ import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_body_widgets/column_detail_rows.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_body_widgets/reader_name.dart';
 
-class UpcomingBody extends StatelessWidget {
+class BookingBody extends StatelessWidget {
   final Booking booking;
 
-  const UpcomingBody({super.key, required this.booking});
+  const BookingBody({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {

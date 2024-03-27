@@ -44,8 +44,7 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account =
-          await getAccount(username, loginData?['accessToken']);
+      AccountModel account = await getAccount(username, loginData?['accessToken']);
       print('account: ${json.encoder.convert(account)}');
       prefs.setString('account', json.encoder.convert(account));
 
@@ -86,8 +85,7 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account =
-          await getAccount(username, loginData?['accessToken']);
+      AccountModel account = await getAccount(username, loginData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
 
       return AccountTokens(
@@ -224,8 +222,7 @@ class AuthenService {
       prefs.setString('refreshToken', registerData?['refreshToken']);
 
       // save account
-      AccountModel account =
-          await getAccount(username, registerData?['accessToken']);
+      AccountModel account = await getAccount(username, registerData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
 
       return true;
