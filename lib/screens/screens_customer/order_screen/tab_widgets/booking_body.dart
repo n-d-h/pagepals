@@ -11,7 +11,7 @@ class BookingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String bookImage = booking.service!.book!.smallThumbnailUrl!;
+    String bookImage = booking.service?.book?.smallThumbnailUrl ?? 'https://via.placeholder.com/150';
     String nickname = booking.meeting!.reader!.nickname!;
     String username = '@${booking.meeting!.reader!.account!.username!}';
     return Container(
