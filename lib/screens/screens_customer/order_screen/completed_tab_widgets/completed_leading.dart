@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:pagepals/models/booking_model.dart';
 
 class CompletedLeading extends StatelessWidget {
-  const CompletedLeading({super.key});
+  final Booking booking;
+
+  const CompletedLeading({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
+    DateTime startTime = DateTime.parse(booking.startAt!);
+    String date = DateFormat('MMM d, yyyy').format(startTime);
+    String time = DateFormat('HH:mm').format(startTime);
     return Container(
       padding: const EdgeInsets.only(bottom: 14),
       decoration: const BoxDecoration(
@@ -19,7 +26,7 @@ class CompletedLeading extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'Feb 25, 2024 - 19:00',
+              '$date - $time',
               style: GoogleFonts.lexend(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,

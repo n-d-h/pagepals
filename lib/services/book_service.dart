@@ -1,6 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/google_book.dart';
 
 class BookService {
   static GraphQLClient graphQLClient = client!.value;
@@ -117,5 +118,49 @@ class BookService {
     } else {
       throw Exception('Failed to parse books data');
     }
+  }
+
+  static Future<List<GoogleBookModel>> getGoogleBooks(String author,
+      String title, int page, int pageSize) async {
+    final String query = '''
+      query {
+        searchBook(
+          author: "$author", 
+          title: "$title",
+          page: $page, 
+          pageSize: $pageSize
+        ) {
+          items {
+            id
+            volumeInfo {
+              authors
+              categories
+              description
+              imageLinks {
+                smallThumbnail
+                thumbnail
+              }
+              language
+              pageCount
+              publishedDate
+              publisher
+              title
+            }
+          }
+        }
+      }
+    ''';
+
+    final QueryResult result = await graphQLClient.query(QueryOptions(
+      document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+
+    if (result.hasException) {
+      throw Exception('Failed to load books: ${result.exception.toString()}');
+    }
+
+    final List<dynamic> bookData = result.data?['searchBook']?['items'] ?? [];
+    return bookData.map((item) => GoogleBookModel.fromJson(item)).toList();
   }
 }

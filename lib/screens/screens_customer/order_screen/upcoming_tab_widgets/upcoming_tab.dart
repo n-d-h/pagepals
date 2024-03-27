@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_body.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booking_body.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_leading.dart';
 import 'package:pagepals/services/booking_service.dart';
@@ -55,7 +55,7 @@ class UpcomingTab extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             UpcomingLeading(booking: booking,),
-                            UpcomingBody(booking: booking,),
+                            BookingBody(booking: booking,),
                             UpcomingBottom(booking: booking,),
                           ],
                         ),

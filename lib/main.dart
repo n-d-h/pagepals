@@ -1,3 +1,4 @@
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -35,13 +36,23 @@ Future<void> main() async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('accessToken');
+  if (token != null) {
+    // get expiration time
+    int exp = JWT.decode(token).payload['exp'];
+    DateTime expirationDateTime =
+    DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+    print('expirationDateTime: $expirationDateTime');
+    if (DateTime.now().isAfter(expirationDateTime)) {
+      prefs.clear();
+      token = null;
+    }
+  }
+
   prefs.setString('fcmToken', fcmToken!);
 
   client = ValueNotifier(
     GraphQLClient(
-      link: token != null
-          ? AuthLink(getToken: () async => 'Bearer $token').concat(httpLink)
-          : httpLink,
+      link: httpLink,
       cache: GraphQLCache(store: HiveStore()),
     ),
   );

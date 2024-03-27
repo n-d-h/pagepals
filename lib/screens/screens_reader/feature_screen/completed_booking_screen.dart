@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/models/booking_model.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/canceled_tab_widgets/cancel_bottom.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/complete_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/completed_leading.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booking_body.dart';
 
-class CanceledTab extends StatelessWidget {
+class CompletedBookingScreen extends StatelessWidget {
   final BookingModel? bookingModel;
-  const CanceledTab({super.key, this.bookingModel});
+
+  const CompletedBookingScreen({super.key, this.bookingModel});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 75),
-      child: ListView.builder(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Comment Screen'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: const AlwaysScrollableScrollPhysics(),
@@ -28,13 +37,13 @@ class CanceledTab extends StatelessWidget {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: () {
-                      },
+                      onTap: () {},
                       child: Container(
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
                           border: Border.all(
                               width: 0.3, color: Colors.black.withOpacity(0.4)),
                           // boxShadow: [
@@ -55,7 +64,7 @@ class CanceledTab extends StatelessWidget {
                           children: [
                             CompletedLeading(booking: booking),
                             BookingBody(booking: booking),
-                            CanceledBottom(booking: booking),
+                            CompletedBottom(booking: booking),
                           ],
                         ),
                       ),
@@ -71,4 +80,3 @@ class CanceledTab extends StatelessWidget {
     );
   }
 }
-

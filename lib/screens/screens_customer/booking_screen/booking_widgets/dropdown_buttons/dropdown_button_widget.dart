@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
@@ -28,6 +29,13 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
 
   String? selectedItem;
   late String title;
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -114,10 +122,12 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
                       const SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        item.title ?? 'book',
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
+                      Expanded(
+                        child: Text(
+                          item.title ?? 'book',
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ],
                   ),
@@ -146,6 +156,71 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
           //   widget.onValueChanged(selectedItem);
           // },
 
+          dropdownSearchData: DropdownSearchData(
+            searchController: textEditingController,
+            searchInnerWidgetHeight: 55,
+            searchInnerWidget: Container(
+              height: 55,
+              padding: const EdgeInsets.only(
+                top: 8,
+                bottom: 0,
+                right: 12,
+                left: 12,
+              ),
+              child: TextFormField(
+                onChanged: (value) {
+                  textEditingController.text = value;
+                },
+                expands: true,
+                maxLines: null,
+                controller: textEditingController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                  hintText: 'Search for a book...',
+                  hintStyle: const TextStyle(fontSize: 12),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.black54,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: ColorHelper.getColor(ColorHelper.green),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  suffixIcon: Theme(
+                    data: ThemeData(
+                      splashFactory: NoSplash.splashFactory,
+                    ),
+                    child: IconButton(
+                      padding: const EdgeInsets.all(0),
+                      onPressed: () {
+                        textEditingController.clear();
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            searchMatchFn: (item, searchValue) {
+              return item.value.toString().contains(searchValue);
+            },
+          ),
+          //This to clear the search value when you close the menu
+          onMenuStateChange: (isOpen) {
+            if (!isOpen) {
+              textEditingController.clear();
+            }
+          },
           buttonStyleData: const ButtonStyleData(
             padding: EdgeInsets.only(right: 8),
           ),

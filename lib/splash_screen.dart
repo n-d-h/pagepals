@@ -36,20 +36,20 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       accessToken = prefs.getString('accessToken');
     });
-    if (accessToken != null) {
-      print('accessToken: $accessToken');
-      // get expiration time
-      int exp = JWT.decode(accessToken!).payload['exp'];
-      DateTime expirationDateTime =
-          DateTime.fromMillisecondsSinceEpoch(exp * 1000);
-      print('expirationDateTime: $expirationDateTime');
-      if (DateTime.now().isAfter(expirationDateTime)) {
-        prefs.clear();
-        setState(() {
-          accessToken = null;
-        });
-      }
-    }
+    // if (accessToken != null) {
+    //   print('accessToken: $accessToken');
+    //   // get expiration time
+    //   int exp = JWT.decode(accessToken!).payload['exp'];
+    //   DateTime expirationDateTime =
+    //       DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+    //   print('expirationDateTime: $expirationDateTime');
+    //   if (DateTime.now().isAfter(expirationDateTime)) {
+    //     prefs.clear();
+    //     setState(() {
+    //       accessToken = null;
+    //     });
+    //   }
+    // }
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushAndRemoveUntil(
         context,
