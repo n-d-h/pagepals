@@ -1,6 +1,7 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,6 +21,10 @@ ValueNotifier<GraphQLClient>? client;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.top],
+  );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
   await initHiveForFlutter();
@@ -40,7 +45,7 @@ Future<void> main() async {
     // get expiration time
     int exp = JWT.decode(token).payload['exp'];
     DateTime expirationDateTime =
-    DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+        DateTime.fromMillisecondsSinceEpoch(exp * 1000);
     print('expirationDateTime: $expirationDateTime');
     if (DateTime.now().isAfter(expirationDateTime)) {
       prefs.clear();

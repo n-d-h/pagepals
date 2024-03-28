@@ -1,13 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/service_model.dart';
+import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/service_widget.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/create_service.dart';
 import 'package:pagepals/services/service_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 class MyServiceScreen extends StatefulWidget {
@@ -124,8 +128,20 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
+          onPressed: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            String account = prefs.getString('account')!;
+            AccountModel accountModel =
+                AccountModel.fromJson(json.decoder.convert(account));
+            // Navigator.pop(context);
+            Future.delayed(const Duration(milliseconds: 300), () {
+              Navigator.of(context).push(
+                PageTransition(
+                  type: PageTransitionType.leftToRight,
+                  child: ReaderMainScreen(accountModel: accountModel),
+                ),
+              );
+            });
           },
         ),
         actions: [

@@ -101,7 +101,7 @@ class ServiceModel {
   double? duration;
   String? description;
   String? createdAt;
-  double? price;
+  int? price;
   int? rating;
   ServiceType? serviceType;
   String? status;

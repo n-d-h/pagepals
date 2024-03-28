@@ -1,18 +1,10 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/main.dart';
-import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
-import 'package:pagepals/services/authen_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {

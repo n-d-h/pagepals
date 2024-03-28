@@ -7,6 +7,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/booking_model.dart';
+import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
@@ -23,9 +24,9 @@ import 'package:pagepals/services/booking_service.dart';
 import 'package:unicons/unicons.dart';
 
 class ReaderMainScreen extends StatefulWidget {
-  ReaderMainScreen({super.key, this.accountModel});
+  final AccountModel? accountModel;
 
-  AccountModel? accountModel;
+  const ReaderMainScreen({super.key, this.accountModel});
 
   @override
   State<ReaderMainScreen> createState() => _ReaderMainScreenState();
@@ -90,7 +91,13 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    PageTransition(
+                      child: const MenuItemScreen(),
+                      type: PageTransitionType.leftToRight,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                  );
                 },
               ),
               actions: [
@@ -260,7 +267,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: WaitingScreen(bookingModel: pendingBooking,),
+                                    child: WaitingScreen(
+                                      bookingModel: pendingBooking,
+                                    ),
                                   ),
                                 );
                               },
@@ -297,7 +306,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: CompletedBookingScreen(bookingModel: completedBooking,),
+                                    child: CompletedBookingScreen(
+                                      bookingModel: completedBooking,
+                                    ),
                                   ),
                                 );
                               },
@@ -334,7 +345,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: ReaderCancelScreen(bookingModel: canceledBooking,),
+                                    child: ReaderCancelScreen(
+                                      bookingModel: canceledBooking,
+                                    ),
                                   ),
                                 );
                               },
