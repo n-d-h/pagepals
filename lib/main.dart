@@ -25,6 +25,15 @@ Future<void> main() async {
     SystemUiMode.manual,
     overlays: [SystemUiOverlay.top],
   );
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      // statusBarColor: Colors.transparent,
+      // statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarDividerColor: Colors.transparent,
+    ),
+  );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
   await initHiveForFlutter();

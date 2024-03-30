@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -37,7 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-              automaticallyImplyLeading: true,
+              automaticallyImplyLeading: false,
               centerTitle: true,
               toolbarHeight: 65,
               backgroundColor: Colors.white,
@@ -103,11 +104,11 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                         ),
                       ],
-                      constraints: const BoxConstraints(
+                      constraints: BoxConstraints(
                         maxHeight: 50,
-                        maxWidth: 270,
+                        maxWidth: MediaQuery.of(context).size.width - 80,
                         minHeight: 50,
-                        minWidth: 270,
+                        minWidth: MediaQuery.of(context).size.width - 80,
                       ),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
