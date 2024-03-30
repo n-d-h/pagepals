@@ -6,11 +6,14 @@ import 'package:pagepals/screens/screens_customer/menu_item/bottom_nav_bar.dart'
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/post_screen.dart';
+import 'package:pagepals/screens/screens_customer/search_screen/search_screen.dart';
 import 'package:unicons/unicons.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuItemScreen extends StatefulWidget {
-  const MenuItemScreen({Key? key}) : super(key: key);
+  final int? index;
+
+  const MenuItemScreen({Key? key, this.index}) : super(key: key);
 
   @override
   State<MenuItemScreen> createState() => _MenuItemScreenState();
@@ -23,7 +26,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   @override
   void initState() {
     super.initState();
-    _currentIndex = 0;
+    _currentIndex = widget.index ?? 0;
   }
 
   void _handleDrawerChange(bool isOpen) {
@@ -35,6 +38,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   List<Widget> _listScreens() {
     return [
       HomeScreen(onDrawerChange: _handleDrawerChange),
+      const SearchScreen(),
       const NotificationScreen(),
       const OrderScreen(),
       const PostScreen(),
@@ -47,6 +51,11 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         icon: const Icon(UniconsLine.home_alt),
         activeIcon: const Icon(CustomIcons.home_alt),
         label: AppLocalizations.of(context)!.appHome,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.search),
+        activeIcon: const Icon(CustomIcons.search),
+        label: AppLocalizations.of(context)!.appSearch,
       ),
       BottomNavigationBarItem(
         icon: const Icon(Icons.notifications_none),

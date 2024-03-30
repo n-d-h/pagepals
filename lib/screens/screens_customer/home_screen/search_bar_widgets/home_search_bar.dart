@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/search_screen/search_screen.dart';
 import 'package:unicons/unicons.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,7 +22,7 @@ class HomeSearchBar extends StatelessWidget {
             Navigator.of(context).push(
               PageTransition(
                 type: PageTransitionType.fade,
-                child: const SearchScreen(),
+                child: const MenuItemScreen(index: 1),
                 duration: const Duration(milliseconds: 300),
               ),
             );

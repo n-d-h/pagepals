@@ -18,7 +18,7 @@ class ServiceWidget extends StatefulWidget {
   final String? serviceType;
   final String? serviceName;
   final String? bookDescription;
-  final double? price;
+  final int? price;
   final String? rating;
   final String? totalOfRating;
   final Function(bool?)? onDeleted;

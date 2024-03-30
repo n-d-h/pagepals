@@ -129,7 +129,7 @@ class Services {
   String? id;
   String? description;
   double? duration;
-  double? price;
+  int? price;
   int? rating;
   int? totalOfBooking;
   int? totalOfReview;

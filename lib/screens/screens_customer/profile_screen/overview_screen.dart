@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
+import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/book_collection.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/booking_button.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/info_line.dart';
@@ -101,10 +104,18 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                   ),
                 ],
                 onChanged: (value) {
-                  if(value == 'Report') {
+                  if (value == 'Report') {
                     // Handle the first action
-                  } else if(value == 'Main Page') {
-                    Navigator.of(context).pop();
+                  } else if (value == 'Main Page') {
+                    pauseVideo();
+                    // Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      PageTransition(
+                        type: PageTransitionType.fade,
+                        child: const MenuItemScreen(index: 0),
+                        duration: const Duration(milliseconds: 300),
+                      )
+                    );
                   }
                 },
                 underline: Container(),
@@ -130,12 +141,15 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
           child: reader?.profile == null
               ? SizedBox(
                   height: MediaQuery.of(context).size.height - 100,
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Center(
-                        child: CircularProgressIndicator(),
+                        child: LoadingAnimationWidget.staggeredDotsWave(
+                          color: ColorHelper.getColor(ColorHelper.green),
+                          size: 60,
+                        ),
                       ),
                     ],
                   ),
@@ -149,7 +163,8 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                       width: MediaQuery.of(context).size.width,
                     ),
                     ProfileInfoLine(reader: reader, pauseVideo: pauseVideo),
-                    ProfileBookCollection(books: bookModels.map((e) => e.book!).toList()),
+                    ProfileBookCollection(
+                        books: bookModels.map((e) => e.book!).toList()),
                     ProfileReviewWidget(reader: reader),
                     ProfileBookingButton(
                       reader: reader,

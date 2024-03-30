@@ -10,6 +10,7 @@ class ProfileBookCollection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('books: ${books.length}');
     return Container(
       height: 230,
       decoration: const BoxDecoration(color: Colors.white),

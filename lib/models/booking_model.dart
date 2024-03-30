@@ -159,7 +159,7 @@ class Service {
   double? duration;
   String? description;
   String? id;
-  double? price;
+  int? price;
 
   Service({this.book, this.duration, this.description, this.id, this.price});
 

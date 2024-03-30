@@ -70,7 +70,7 @@ class PopularReader {
 }
 
 class Services {
-  double? price;
+  int? price;
   int? totalOfReview;
 
   Services({this.price, this.totalOfReview});
