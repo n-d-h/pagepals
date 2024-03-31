@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/models/reader_request_model.dart';
+import 'package:pagepals/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReaderService {
   static GraphQLClient graphQLClient = client!.value;
@@ -141,6 +147,62 @@ class ReaderService {
           .toList();
     } else {
       throw Exception('Failed to load read Data');
+    }
+  }
+
+  static Future<String> registerReader(ReaderRequestModel request) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String account = prefs.getString('account') ?? '';
+    AccountModel accountModel =
+        AccountModel.fromJson(json.decoder.convert(account));
+
+    String query = '''
+      mutation {
+        registerReader(
+          accountId: "${accountModel.id}",
+          data: {
+            information: {
+              audioDescriptionUrl: "${request.information?.audioDescriptionUrl}", 
+              avatarUrl: "${request.information?.avatarUrl}", 
+              countryAccent: "${request.information?.countryAccent}", 
+              description: "${request.information?.description}", 
+              genres: "${request.information?.genres}", 
+              introductionVideoUrl: "${request.information?.introductionVideoUrl}",
+              languages: "${request.information?.languages}", 
+              nickname: "${request.information?.nickname}"
+            }, 
+            answers: [
+              ${request.answers?.map((answer) => '''
+                {
+                  content: "${answer?.content}",
+                  questionId: "${answer?.questionId}"
+                }
+              ''').join(',')}
+            ]
+          }
+        )
+      }
+    ''';
+
+    final GraphQLClient clientWithToken =
+        await AuthService.getGraphQLClientWithToken();
+
+    final QueryResult result = await clientWithToken.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to register reader');
+    }
+
+    final String? status = result.data?['registerReader'];
+    if (status != null && status == 'Register reader success!') {
+      return 'OK';
+    } else {
+      throw Exception('Failed to register reader');
     }
   }
 }

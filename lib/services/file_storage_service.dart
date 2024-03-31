@@ -4,11 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class FileStorageService {
-  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  static final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  static final FirebaseFirestore _firebaseStore = FirebaseFirestore.instance;
 
   // VIDEO
-  Future<String> uploadFile(File filePath) async {
+  static Future<String> uploadFile(File filePath) async {
     Reference ref =
         _firebaseStorage.ref().child('videos/${DateTime.now()}.mp4');
 
@@ -19,21 +19,21 @@ class FileStorageService {
     return url;
   }
 
-  Future<void> saveVideoData(String videoUrl) async {
-    await _firestore.collection('videos').add({
+  static Future<void> saveVideoData(String videoUrl) async {
+    await _firebaseStore.collection('videos').add({
       'url': videoUrl,
       'createdAt': FieldValue.serverTimestamp(),
       'name': 'Reader Video',
     });
   }
 
-  Future<void> deleteFile(String filePath) async {
+  static Future<void> deleteFile(String filePath) async {
     Reference ref = _firebaseStorage.refFromURL(filePath);
     await ref.delete();
   }
 
   // AUDIO
-  Future<String> uploadAudio(File filePath) async {
+  static Future<String> uploadAudio(File filePath) async {
     Reference ref =
         _firebaseStorage.ref().child('audios/${DateTime.now()}.mp3');
 
@@ -44,8 +44,8 @@ class FileStorageService {
     return url;
   }
 
-  Future<void> saveAudioData(String audioUrl) async {
-    await _firestore.collection('audios').add({
+  static Future<void> saveAudioData(String audioUrl) async {
+    await _firebaseStore.collection('audios').add({
       'url': audioUrl,
       'createdAt': FieldValue.serverTimestamp(),
       'name': 'Reader Audio',
@@ -53,7 +53,7 @@ class FileStorageService {
   }
 
   // IMAGE
-  Future<String> uploadImage(File filePath) async {
+  static Future<String> uploadImage(File filePath) async {
     Reference ref =
         _firebaseStorage.ref().child('images/${DateTime.now()}.png');
 
@@ -64,8 +64,8 @@ class FileStorageService {
     return url;
   }
 
-  Future<void> saveImageData(String imageUrl) async {
-    await _firestore.collection('images').add({
+  static Future<void> saveImageData(String imageUrl) async {
+    await _firebaseStore.collection('images').add({
       'url': imageUrl,
       'createdAt': FieldValue.serverTimestamp(),
       'name': 'Reader Image',

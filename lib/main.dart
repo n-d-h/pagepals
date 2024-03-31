@@ -11,6 +11,7 @@ import 'package:pagepals/firebase_options.dart';
 import 'package:pagepals/providers/cart_provider.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
+import 'package:pagepals/providers/reader_request_provider.dart';
 import 'package:pagepals/services/firebase_message_service.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +51,7 @@ Future<void> main() async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('accessToken');
+  print('Token: $token');
   if (token != null) {
     // get expiration time
     int exp = JWT.decode(token).payload['exp'];
@@ -78,6 +80,7 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (_) => GoogleSignInProvider()),
     ChangeNotifierProvider(create: (_) => CartProvider()),
     ChangeNotifierProvider(create: (_) => LocaleProvider()),
+    ChangeNotifierProvider(create: (_) => ReaderRequestProvider()),
   ], child: const MyApp()));
 }
 
@@ -88,7 +91,7 @@ void printSharedPreferencesData() async {
 
   print('SharedPreferences Data:');
   for (String key in keys) {
-    print('$key: ${prefs.get(key)}');
+    print('$key: ${prefs.getString(key)}');
   }
 }
 

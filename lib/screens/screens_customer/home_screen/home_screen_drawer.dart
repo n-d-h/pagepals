@@ -12,6 +12,8 @@ import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_pending_screen/reader_pending_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_request/reader_request_intro_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +51,6 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
       setState(() {
         account = AccountModel.fromJson(accountMap);
       });
-      print('Account data: ${account!.reader!.nickname}');
     } catch (e) {
       print('Error decoding account data: $e');
     }
@@ -62,6 +63,8 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
         'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain';
     String displayName = user?.displayName ?? 'Anonymous';
     String email = user?.email ?? 'anonymous@gmail.com';
+    String accountState = account?.accountState?.name ?? 'Anonymous';
+    print('accountState: $accountState');
 
     return Drawer(
       backgroundColor: Colors.white,
@@ -213,48 +216,36 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             ),
             title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
             onTap: () {
-              if (account?.reader?.id != null) {
-                Navigator.pop(context);
+              Navigator.pop(context);
+              if (account?.accountState?.name == "READER_PENDING") {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: const ReaderPendingScreen(),
+                    type: PageTransitionType.rightToLeft,
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                );
+              } else if (account?.reader?.id != null) {
                 Navigator.push(
                   context,
                   PageTransition(
                     child: ReaderMainScreen(
-                        accountModel: account!,
+                      accountModel: account!,
                     ),
                     type: PageTransitionType.rightToLeft,
                     duration: const Duration(milliseconds: 300),
                   ),
                 );
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   PageTransition(
-                //     child: ReaderMainScreen(
-                //       accountModel: account!,
-                //     ),
-                //     type: PageTransitionType.rightToLeft,
-                //     duration: const Duration(milliseconds: 300),
-                //   ),
-                //   (route) => false,
-                // );
               } else {
-                Navigator.pop(context);
                 Navigator.push(
                   context,
                   PageTransition(
-                    child: const ReaderRequestScreen(),
+                    child: const ReaderRequestIntroScreen(),
                     type: PageTransitionType.rightToLeft,
                     duration: const Duration(milliseconds: 300),
                   ),
                 );
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   PageTransition(
-                //     child: const ReaderRequestScreen(),
-                //     type: PageTransitionType.rightToLeft,
-                //     duration: const Duration(milliseconds: 300),
-                //   ),
-                //   (route) => false,
-                // );
               }
             },
           ),

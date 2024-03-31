@@ -6,15 +6,18 @@ class AccountModel {
   String? email;
   Customer? customer;
   Reader? reader;
+  AccountState? accountState;
 
-  AccountModel(
-      {this.id,
-      this.username,
-      this.fullName,
-      this.phoneNumber,
-      this.email,
-      this.customer,
-      this.reader});
+  AccountModel({
+    this.id,
+    this.username,
+    this.fullName,
+    this.phoneNumber,
+    this.email,
+    this.customer,
+    this.reader,
+    this.accountState,
+  });
 
   AccountModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,6 +30,9 @@ class AccountModel {
         : null;
     reader =
         json['reader'] != null ? new Reader.fromJson(json['reader']) : null;
+    accountState = json['accountState'] != null
+        ? new AccountState.fromJson(json['accountState'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -41,6 +47,9 @@ class AccountModel {
     }
     if (this.reader != null) {
       data['reader'] = this.reader!.toJson();
+    }
+    if (this.accountState != null) {
+      data['accountState'] = this.accountState!.toJson();
     }
     return data;
   }
@@ -86,6 +95,25 @@ class Reader {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['nickname'] = this.nickname;
+    return data;
+  }
+}
+
+class AccountState {
+  String? name;
+  String? id;
+
+  AccountState({this.name, this.id});
+
+  AccountState.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['id'] = this.id;
     return data;
   }
 }

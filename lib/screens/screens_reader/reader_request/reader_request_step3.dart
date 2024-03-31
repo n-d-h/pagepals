@@ -6,7 +6,15 @@ import 'package:pagepals/screens/screens_reader/reader_request/video_player_from
 import 'package:unicons/unicons.dart';
 
 class ReaderRequestStep3 extends StatefulWidget {
-  const ReaderRequestStep3({super.key});
+  ReaderRequestStep3({
+    super.key,
+    required,
+    required this.videoUploadCallback,
+    required this.imageUploadCallback,
+  });
+
+  void Function(dynamic value) videoUploadCallback;
+  void Function(dynamic value) imageUploadCallback;
 
   @override
   State<ReaderRequestStep3> createState() => _ReaderRequestStep3State();
@@ -14,7 +22,7 @@ class ReaderRequestStep3 extends StatefulWidget {
 
 class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
   File? _selectedVideo;
-  late String _downloadUrl;
+  File? _selectedImage;
 
   void _handleVideoSelection() async {
     final result = await ImagePicker().pickVideo(
@@ -25,6 +33,7 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
       setState(() {
         _selectedVideo = File(result.path);
       });
+      widget.videoUploadCallback(result.path);
     }
   }
 
@@ -46,6 +55,35 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
     );
   }
 
+  void _handleImageSelection() async {
+    final result = await ImagePicker().pickImage(
+      imageQuality: 70,
+      maxWidth: 1440,
+      maxHeight: 1440,
+      source: ImageSource.gallery,
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedImage = File(result.path);
+      });
+      widget.imageUploadCallback(result.path);
+    }
+  }
+
+  void _handleViewImage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.file(
+            _selectedImage!,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,7 +92,7 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'Upload your video introduction:',
+            'Upload video:',
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16.0),
@@ -97,7 +135,68 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
               ),
             ],
           ),
-          // const SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
+          const Text(
+            'After uploading the video, you can click the play button to preview the video',
+            style: TextStyle(
+              fontSize: 12.0,
+              fontWeight: FontWeight.normal,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          const Text(
+            'Upload image:',
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16.0),
+          Row(
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    style: BorderStyle.solid,
+                    color: Colors.grey,
+                  ),
+                ),
+                child: ClipRect(
+                  child: _selectedImage != null
+                      ? InkWell(
+                          onTap: _handleViewImage,
+                          child: Image.file(
+                            _selectedImage!,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : const Icon(
+                          Icons.image,
+                          size: 30.0,
+                          color: Colors.grey,
+                        ),
+                ),
+              ),
+              const SizedBox(width: 16.0),
+              InkWell(
+                onTap: _handleImageSelection,
+                child: const Icon(
+                  UniconsLine.plus_circle,
+                  size: 30.0,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16.0),
+          const Text(
+            'After uploading the image, you can click the image to preview the image',
+            style: TextStyle(
+              fontSize: 12.0,
+              fontWeight: FontWeight.normal,
+              color: Colors.grey,
+            ),
+          ),
           // ElevatedButton(
           //   onPressed: () async {
           //     _downloadUrl =
