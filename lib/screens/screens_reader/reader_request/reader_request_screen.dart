@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/models/question_model.dart';
 import 'package:pagepals/models/reader_request_model.dart';
 import 'package:pagepals/providers/reader_request_provider.dart';
@@ -12,6 +13,7 @@ import 'package:pagepals/screens/screens_reader/reader_request/reader_request_st
 import 'package:pagepals/services/file_storage_service.dart';
 import 'package:pagepals/services/reader_service.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ReaderRequestScreen extends StatefulWidget {
   ReaderRequestScreen({
@@ -229,6 +231,19 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
               child: Center(
                 child: InkWell(
                   onTap: () async {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child:
+                          LoadingAnimationWidget.staggeredDotsWave(
+                            color: Colors.greenAccent,
+                            size: 60,
+                          ),
+                        );
+                      },
+                    );
                     String imageDownloadUrl =
                         await FileStorageService.uploadImage(File(imageUrl));
                     String videoDownloadUrl =
@@ -242,32 +257,19 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                     readerModel.information?.introductionVideoUrl =
                         videoDownloadUrl;
 
-                    await ReaderService.registerReader(readerModel);
-
-                    // Future.delayed(const Duration(milliseconds: 300), () async {
-                    //   final readerRequestProvider =
-                    //       context.read<ReaderRequestProvider>();
-                    //   readerRequestProvider.updateReaderRequestModelAtStep3(
-                    //     avatarUrl: imageDownloadUrl,
-                    //     introVideoUrl: videoDownloadUrl,
-                    //     audioDescriptionUrl: '',
-                    //   );
-                    //
-                    //   print(context
-                    //       .watch<ReaderRequestProvider>()
-                    //       .readerRequestModel
-                    //       .toString());
-
-                      // final readerRequestModel = context
-                      //     .watch<ReaderRequestProvider>()
-                      //     .readerRequestModel;
-                      //
-                      // ReaderService.registerReader(readerRequestModel)
-                      //     .then((res) {
-                      //   print(res);
-                      //   Navigator.pop(context);
-                      // });
-                    // });
+                    String response = await ReaderService.registerReader(readerModel);
+                    if(response == "OK") {
+                      Future.delayed(const Duration(milliseconds: 0), () {
+                        Navigator.pop(context);
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.success,
+                          title: 'Request submitted',
+                          text: 'Your request has been submitted successfully. \n'
+                              'Please wait for the admin to approve your request.',
+                        );
+                      });
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),

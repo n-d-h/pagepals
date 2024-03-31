@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/question_model.dart';
@@ -58,27 +59,39 @@ class _ReaderRequestIntroScreenState extends State<ReaderRequestIntroScreen> {
           children: [
             Image.asset('assets/seminar.jpg'),
             const SizedBox(height: 20),
-            const Text(
-              'Welcome to the New Reader',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'This is the first step to become a reader',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Please click the Continue button below to proceed',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Welcome to the New Reader',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'This is the first step to become a reader',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Please click the Continue button below to proceed',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
           ],
@@ -89,16 +102,32 @@ class _ReaderRequestIntroScreenState extends State<ReaderRequestIntroScreen> {
         surfaceTintColor: Colors.transparent,
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.fade,
-                child: ReaderRequestScreen(
-                  listQuestions: listQuestions,
-                  listCountry: listCountry,
-                ),
-              ),
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return Center(
+                  child:
+                  LoadingAnimationWidget.staggeredDotsWave(
+                    color: Colors.greenAccent,
+                    size: 60,
+                  ),
+                );
+              },
             );
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                PageTransition(
+                  type: PageTransitionType.fade,
+                  child: ReaderRequestScreen(
+                    listQuestions: listQuestions,
+                    listCountry: listCountry,
+                  ),
+                ),
+              );
+            });
           },
           child: Container(
             height: 50,
