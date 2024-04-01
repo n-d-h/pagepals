@@ -17,10 +17,14 @@ class BottomNavBar extends StatelessWidget {
           highlightColor: Colors.transparent,
         ),
         child: Container(
-          margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+          margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
           decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            // color: Colors.black45.withOpacity(0.9),
+            // borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black12,
@@ -30,7 +34,11 @@ class BottomNavBar extends StatelessWidget {
             ],
           ),
           child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            // borderRadius: const BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
             child: bottomBar,
           ),
         ),

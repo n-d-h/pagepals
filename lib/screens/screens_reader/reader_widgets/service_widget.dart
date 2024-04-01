@@ -36,7 +36,8 @@ class ServiceWidget extends StatefulWidget {
     this.bookDescription,
     this.price,
     this.rating,
-    this.totalOfRating, this.onDeleted,
+    this.totalOfRating,
+    this.onDeleted,
   });
 
   @override
@@ -126,43 +127,6 @@ class _ServiceWidgetState extends State<ServiceWidget> {
               children: [
                 OutlinedButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                      PageTransition(
-                        child: UpdateServiceScreen(
-                          serviceId: widget.id!,
-                          bookTitle: widget.book!,
-                          serviceType: widget.serviceType!,
-                          serviceName: widget.serviceName!,
-                          price: widget.price!.toString(),
-                          readerId: widget.readerId!,
-                        ),
-                        type: PageTransitionType.rightToLeft,
-                        duration: const Duration(milliseconds: 300),
-                      ),
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    side: const BorderSide(color: Colors.grey),
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.blue,
-                    fixedSize:
-                        Size(MediaQuery.of(context).size.width * 0.4, 40),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Edit',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: () {
                     // Save the context in a variable
                     BuildContext dialogContext = context;
                     showDialog(
@@ -245,6 +209,43 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                   child: const Center(
                     child: Text(
                       'Delete',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        child: UpdateServiceScreen(
+                          serviceId: widget.id!,
+                          bookTitle: widget.book!,
+                          serviceType: widget.serviceType!,
+                          serviceName: widget.serviceName!,
+                          price: widget.price!.toString(),
+                          readerId: widget.readerId!,
+                        ),
+                        type: PageTransitionType.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                      ),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    side: const BorderSide(color: Colors.grey),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                    fixedSize:
+                        Size(MediaQuery.of(context).size.width * 0.4, 40),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Edit',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,

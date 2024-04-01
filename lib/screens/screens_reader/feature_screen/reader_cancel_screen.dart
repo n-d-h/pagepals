@@ -14,7 +14,7 @@ class ReaderCancelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cancel Screen'),
+        title: Text('Cancel Booking'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -64,7 +64,7 @@ class ReaderCancelScreen extends StatelessWidget {
                           children: [
                             CompletedLeading(booking: booking),
                             BookingBody(booking: booking),
-                            CanceledBottom(booking: booking),
+                            CanceledBottom(booking: booking, title: 'View Detail',),
                           ],
                         ),
                       ),

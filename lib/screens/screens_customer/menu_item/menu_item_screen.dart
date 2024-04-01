@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
@@ -28,6 +29,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     super.initState();
     _currentIndex = widget.index ?? 0;
   }
+
 
   void _handleDrawerChange(bool isOpen) {
     setState(() {
@@ -93,7 +95,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
                 }),
                 items: _navigatorItems,
                 selectedItemColor:
-                    ColorHelper.getColor(ColorHelper.green).withOpacity(0.7),
+                    ColorHelper.getColor(ColorHelper.green).withOpacity(0.8),
                 unselectedItemColor: Colors.grey,
                 selectedFontSize: 10,
                 unselectedFontSize: 10,

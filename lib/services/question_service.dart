@@ -27,7 +27,7 @@ class QuestionService {
           .map((questionJson) => QuestionModel.fromJson(questionJson))
           .toList();
     } else {
-      throw Exception('Fail to load question data');
+      throw Exception('Fail to load questions');
     }
   }
 }
