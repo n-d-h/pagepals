@@ -102,32 +102,17 @@ class _ReaderRequestIntroScreenState extends State<ReaderRequestIntroScreen> {
         surfaceTintColor: Colors.transparent,
         child: InkWell(
           onTap: () {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return Center(
-                  child:
-                  LoadingAnimationWidget.staggeredDotsWave(
-                    color: Colors.greenAccent,
-                    size: 60,
-                  ),
-                );
-              },
-            );
-            Future.delayed(const Duration(seconds: 2), () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.fade,
-                  child: ReaderRequestScreen(
-                    listQuestions: listQuestions,
-                    listCountry: listCountry,
-                  ),
+            Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.fade,
+                child: ReaderRequestScreen(
+                  listQuestions: listQuestions,
+                  listCountry: listCountry,
                 ),
-              );
-            });
+                duration: const Duration(milliseconds: 300),
+              ),
+            );
           },
           child: Container(
             height: 50,

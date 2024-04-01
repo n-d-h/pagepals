@@ -5,8 +5,9 @@ import 'package:pagepals/models/booking_model.dart';
 
 class CanceledBottom extends StatelessWidget {
   final Booking booking;
+  final String? title;
 
-  const CanceledBottom({super.key, required this.booking});
+  const CanceledBottom({super.key, required this.booking, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class CanceledBottom extends StatelessWidget {
                 fixedSize: const Size.fromWidth(double.infinity),
               ),
               child: Text(
-                'Re-book this Reader',
+                title ?? 'Re-book this Reader',
                 style: GoogleFonts.lexend(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,

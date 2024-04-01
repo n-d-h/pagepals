@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_send_screen.dart';
@@ -76,14 +77,17 @@ class _FinanceScreenState extends State<FinanceScreen> {
                     children: [
                       Icon(
                         Icons.currency_bitcoin_outlined,
-                        size: 50,
+                        size: 45,
                         color: Colors.orange,
                       ),
-                      Text(
-                        '100.000 BTC',
-                        style: TextStyle(
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          '100.000 BTC',
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 45,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],

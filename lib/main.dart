@@ -16,6 +16,7 @@ import 'package:pagepals/services/firebase_message_service.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 // Declare client as a global variable
 ValueNotifier<GraphQLClient>? client;
@@ -23,9 +24,10 @@ ValueNotifier<GraphQLClient>? client;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.manual,
-    overlays: [SystemUiOverlay.top],
+    SystemUiMode.edgeToEdge,
+    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
   );
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       // statusBarColor: Colors.transparent,
@@ -76,12 +78,17 @@ Future<void> main() async {
   // Just for test
   printSharedPreferencesData();
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => GoogleSignInProvider()),
-    ChangeNotifierProvider(create: (_) => CartProvider()),
-    ChangeNotifierProvider(create: (_) => LocaleProvider()),
-    ChangeNotifierProvider(create: (_) => ReaderRequestProvider()),
-  ], child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => GoogleSignInProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        ChangeNotifierProvider(create: (_) => ReaderRequestProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 // Just for test

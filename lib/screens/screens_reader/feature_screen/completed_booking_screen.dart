@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/models/booking_model.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/canceled_tab_widgets/cancel_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/complete_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/completed_leading.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.dart';
@@ -14,7 +15,7 @@ class CompletedBookingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comment Screen'),
+        title: Text('Completed Booking'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -64,7 +65,7 @@ class CompletedBookingScreen extends StatelessWidget {
                           children: [
                             CompletedLeading(booking: booking),
                             BookingBody(booking: booking),
-                            CompletedBottom(booking: booking),
+                            CanceledBottom(booking: booking, title: 'View Detail',),
                           ],
                         ),
                       ),

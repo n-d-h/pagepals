@@ -11,6 +11,7 @@ import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dar
 import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/policy_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
@@ -386,16 +387,51 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                   Container(
                     color: Colors.white,
                     padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Functions',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Functions',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: const ReaderWorkingTime(),
+                                    duration: const Duration(milliseconds: 300),
+                                  ),
+                                );
+                              },
+                              child: const Row(
+                                children: [
+                                  Text(
+                                    'work schedule',
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.blue,
+                                    size: 12,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
                         Container(
