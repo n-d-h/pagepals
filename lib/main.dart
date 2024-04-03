@@ -12,6 +12,7 @@ import 'package:pagepals/providers/cart_provider.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/providers/reader_request_provider.dart';
+import 'package:pagepals/screens/screens_customer/demo_screen.dart';
 import 'package:pagepals/services/firebase_message_service.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -129,6 +130,52 @@ class MyApp extends StatelessWidget {
         supportedLocales: const [Locale('en'), Locale('vi')],
         locale: localeId,
         home: const SplashScreen(),
+        onGenerateRoute: (settings) {
+          final fullRoute = settings.name;
+          print(fullRoute);
+          if (fullRoute == null) {
+            return null;
+          }
+          final routeData = Uri.tryParse(fullRoute);
+          if (routeData == null) {
+            return null;
+          }
+          final pathParameters = routeData.pathSegments;
+          final queryParameters = routeData.queryParameters;
+          print('pathParameters: $pathParameters');
+
+          final partnerCode = queryParameters['partnerCode'] ?? '';
+          final orderId = queryParameters['orderId'] ?? '';
+          final requestId = queryParameters['requestId'] ?? '';
+          final amount = queryParameters['amount'] ?? '';
+          final orderInfo = queryParameters['orderInfo'] ?? '';
+          final orderType = queryParameters['orderType'] ?? '';
+          final resultCode = queryParameters['resultCode'] ?? '';
+          final message = queryParameters['message'] ?? '';
+          final payType = queryParameters['payType'] ?? '';
+          final extraData = queryParameters['extraData'] ?? '';
+          final responseTime = queryParameters['responseTime'] ?? '';
+          final signature = queryParameters['signature'] ?? '';
+          final transId = queryParameters['transId'] ?? '';
+
+          return MaterialPageRoute(
+            builder: (context) => DemoScreen(
+              partnerCode: partnerCode,
+              orderId: orderId,
+              requestId: requestId,
+              amount: amount,
+              orderInfo: orderInfo,
+              orderType: orderType,
+              transId: transId,
+              resultCode: resultCode,
+              message: message,
+              payType: payType,
+              responseTime: responseTime,
+              extraData: extraData,
+              signature: signature,
+            ),
+          );
+        },
       ),
     );
   }
