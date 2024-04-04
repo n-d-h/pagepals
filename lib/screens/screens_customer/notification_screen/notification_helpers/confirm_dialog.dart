@@ -7,7 +7,8 @@ class ConfirmationDialog {
       builder: (context) {
         return AlertDialog(
           title: const Text('Confirm Read All'),
-          content: const Text('Are you sure you want to mark all messages as read?'),
+          content:
+              const Text('Are you sure you want to mark all messages as read?'),
           actions: [
             TextButton(
               onPressed: () {

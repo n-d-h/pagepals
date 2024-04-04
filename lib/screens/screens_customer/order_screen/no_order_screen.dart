@@ -45,7 +45,7 @@ class NoOrderWidget extends StatelessWidget {
             OutlinedButton(
               onPressed: () {},
               style: OutlinedButton.styleFrom(
-                 foregroundColor: ColorHelper.getColor(ColorHelper.normal),
+                foregroundColor: ColorHelper.getColor(ColorHelper.normal),
                 side: const BorderSide(
                   color: Colors.transparent,
                 ),

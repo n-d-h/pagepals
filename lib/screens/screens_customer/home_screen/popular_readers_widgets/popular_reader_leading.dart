@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pagepals/helpers/color_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 
 class CardLeading extends StatelessWidget {
   final String title;
@@ -11,7 +11,8 @@ class CardLeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: seeAll ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
+      mainAxisAlignment:
+          seeAll ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
       children: [
         Text(
           title,

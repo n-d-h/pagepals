@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/canceled_tab_widgets/cancel_tab.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/completed_tab.dart';

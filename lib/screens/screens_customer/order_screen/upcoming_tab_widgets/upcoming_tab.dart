@@ -4,10 +4,10 @@ import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.
 import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booking_body.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_leading.dart';
-import 'package:pagepals/services/booking_service.dart';
 
 class UpcomingTab extends StatelessWidget {
   final BookingModel? bookingModel;
+
   const UpcomingTab({super.key, this.bookingModel});
 
   @override
@@ -29,13 +29,13 @@ class UpcomingTab extends StatelessWidget {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: () {
-                      },
+                      onTap: () {},
                       child: Container(
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
                           border: Border.all(
                               width: 0.3, color: Colors.black.withOpacity(0.4)),
                           // boxShadow: [
@@ -54,9 +54,15 @@ class UpcomingTab extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            UpcomingLeading(booking: booking,),
-                            BookingBody(booking: booking,),
-                            UpcomingBottom(booking: booking,),
+                            UpcomingLeading(
+                              booking: booking,
+                            ),
+                            BookingBody(
+                              booking: booking,
+                            ),
+                            UpcomingBottom(
+                              booking: booking,
+                            ),
                           ],
                         ),
                       ),

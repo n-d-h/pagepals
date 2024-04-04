@@ -63,7 +63,9 @@ class _RadioButtonsWidgetState extends State<RadioButtonsWidget> {
             ),
           ],
         ),
-        const SizedBox(height: 15,)
+        const SizedBox(
+          height: 15,
+        )
       ],
     );
   }

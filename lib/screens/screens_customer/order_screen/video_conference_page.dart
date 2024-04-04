@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
 
 final userId = Random().nextInt(1000000).toString();
 final userName = FirebaseAuth.instance.currentUser?.displayName ?? 'Anonymous';

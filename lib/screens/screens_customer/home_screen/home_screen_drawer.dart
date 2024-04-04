@@ -15,7 +15,6 @@ import 'package:pagepals/screens/screens_customer/customer_wallet_screen/custome
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_pending_screen/reader_pending_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_intro_screen.dart';
-import 'package:pagepals/screens/screens_reader/reader_request/reader_request_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';

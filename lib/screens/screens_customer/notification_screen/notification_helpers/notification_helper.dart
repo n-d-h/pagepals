@@ -6,9 +6,7 @@ String formatTime(String timeString) {
   final formatter = DateFormat.Hm(); // Format: HH:mm (hours and minutes)
   final yesterday = DateTime(now.year, now.month, now.day - 1);
 
-  if (time.year == now.year &&
-      time.month == now.month &&
-      time.day == now.day) {
+  if (time.year == now.year && time.month == now.month && time.day == now.day) {
     // Today
     return formatter.format(time);
   } else if (time.year == yesterday.year &&
@@ -19,7 +17,7 @@ String formatTime(String timeString) {
   } else {
     // Far from yesterday
     final fullFormatter =
-    DateFormat('HH:mm dd-MM-yyyy'); // Format: HH:mm dd-MM-yyyy
+        DateFormat('HH:mm dd-MM-yyyy'); // Format: HH:mm dd-MM-yyyy
     return fullFormatter.format(time);
   }
 }

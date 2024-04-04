@@ -7,6 +7,7 @@ import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booki
 
 class CanceledTab extends StatelessWidget {
   final BookingModel? bookingModel;
+
   const CanceledTab({super.key, this.bookingModel});
 
   @override
@@ -28,13 +29,13 @@ class CanceledTab extends StatelessWidget {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: () {
-                      },
+                      onTap: () {},
                       child: Container(
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
                           border: Border.all(
                               width: 0.3, color: Colors.black.withOpacity(0.4)),
                           // boxShadow: [
@@ -71,4 +72,3 @@ class CanceledTab extends StatelessWidget {
     );
   }
 }
-

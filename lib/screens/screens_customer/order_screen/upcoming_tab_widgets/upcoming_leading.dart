@@ -7,6 +7,7 @@ import 'package:pagepals/models/booking_model.dart';
 
 class UpcomingLeading extends StatefulWidget {
   final Booking booking;
+
   const UpcomingLeading({super.key, required this.booking});
 
   @override

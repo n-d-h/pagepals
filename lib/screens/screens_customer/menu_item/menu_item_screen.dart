@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
@@ -9,7 +9,6 @@ import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart
 import 'package:pagepals/screens/screens_customer/post_screen/post_screen.dart';
 import 'package:pagepals/screens/screens_customer/search_screen/search_screen.dart';
 import 'package:unicons/unicons.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuItemScreen extends StatefulWidget {
   final int? index;
@@ -29,7 +28,6 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     super.initState();
     _currentIndex = widget.index ?? 0;
   }
-
 
   void _handleDrawerChange(bool isOpen) {
     setState(() {

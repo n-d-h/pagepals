@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_success_screen.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/book_row.dart';
-import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/chapter_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/service_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/time_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/wallet_widget.dart';
@@ -98,7 +96,8 @@ class ReviewSummaryScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
                 height: 1,
                 color: Colors.black.withOpacity(0.1),
               ),
@@ -125,16 +124,16 @@ class ReviewSummaryScreen extends StatelessWidget {
             builder: (BuildContext context) {
               return Center(
                 child:
-                // SizedBox(
-                //   height: 50,
-                //   width: 50,
-                //   child: CircularProgressIndicator(
-                //     valueColor: AlwaysStoppedAnimation(
-                //       ColorHelper.getColor(ColorHelper.green),
-                //     ),
-                //   ),
-                // ),
-                LoadingAnimationWidget.staggeredDotsWave(
+                    // SizedBox(
+                    //   height: 50,
+                    //   width: 50,
+                    //   child: CircularProgressIndicator(
+                    //     valueColor: AlwaysStoppedAnimation(
+                    //       ColorHelper.getColor(ColorHelper.green),
+                    //     ),
+                    //   ),
+                    // ),
+                    LoadingAnimationWidget.staggeredDotsWave(
                   color: Colors.greenAccent,
                   size: 60,
                 ),
