@@ -132,7 +132,6 @@ class MyApp extends StatelessWidget {
         home: const SplashScreen(),
         onGenerateRoute: (settings) {
           final fullRoute = settings.name;
-          print(fullRoute);
           if (fullRoute == null) {
             return null;
           }
@@ -140,9 +139,9 @@ class MyApp extends StatelessWidget {
           if (routeData == null) {
             return null;
           }
-          final pathParameters = routeData.pathSegments;
+
           final queryParameters = routeData.queryParameters;
-          print('pathParameters: $pathParameters');
+          print('pathParameters: $queryParameters');
 
           final partnerCode = queryParameters['partnerCode'] ?? '';
           final orderId = queryParameters['orderId'] ?? '';
