@@ -146,4 +146,31 @@ class TransactionMoneyWidget extends StatelessWidget {
       ),
     );
   }
+
+  static Widget transactionButton() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Colors.orange,
+            Colors.green,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.grey,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: const Icon(
+        Icons.history,
+        size: 35,
+        color: Colors.white,
+      ),
+    );
+  }
+
 }
