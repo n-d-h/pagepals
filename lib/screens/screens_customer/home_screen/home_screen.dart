@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () async {
               GoogleSignInProvider googleSignInProvider =
-              GoogleSignInProvider();
+                  GoogleSignInProvider();
               await googleSignInProvider.googleLogout();
 
               SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: const SigninHomeScreen(),
                     type: PageTransitionType.fade,
                   ),
-                      (route) => false,
+                  (route) => false,
                 );
               });
             },
@@ -118,9 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
               WelcomeWidget(),
               PopularReadersColumn(),
               ExploreScreen(),
-              SizedBox(
-                height: 70,
-              )
             ],
           ),
         ),

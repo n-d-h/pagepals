@@ -15,6 +15,7 @@ class ServiceWidget extends StatefulWidget {
   final String? book;
   final double? duration;
   final String createdAt;
+  final String? serviceTypeId;
   final String? serviceType;
   final String? serviceName;
   final String? bookDescription;
@@ -31,6 +32,7 @@ class ServiceWidget extends StatefulWidget {
     this.book,
     this.duration,
     required this.createdAt,
+    this.serviceTypeId,
     this.serviceType,
     this.serviceName,
     this.bookDescription,
@@ -94,10 +96,11 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                       ),
                     ),
                     Text(
-                      widget.book!,
+                      'Book: ${widget.book!}',
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
@@ -223,6 +226,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                         child: UpdateServiceScreen(
                           serviceId: widget.id!,
                           bookTitle: widget.book!,
+                          serviceTypeId: widget.serviceTypeId!,
                           serviceType: widget.serviceType!,
                           serviceName: widget.serviceName!,
                           price: widget.price!.toString(),

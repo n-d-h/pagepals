@@ -35,7 +35,14 @@ class _ReaderPendingScreenState extends State<ReaderPendingScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.leftToRight,
+                    child: const MenuItemScreen(),
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                );
               },
               child: const Text('Back to Main Screen'),
             ),

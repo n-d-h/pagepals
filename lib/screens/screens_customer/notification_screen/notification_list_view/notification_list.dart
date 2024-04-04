@@ -31,7 +31,6 @@ class NotificationList extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(height: 75),
       ],
     );
   }

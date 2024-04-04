@@ -130,9 +130,6 @@ class _NewFeedTabbarState extends State<NewFeedTabbar> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 75,
-            )
           ],
         ),
       ),

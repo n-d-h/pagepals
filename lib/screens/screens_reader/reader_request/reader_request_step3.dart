@@ -6,15 +6,14 @@ import 'package:pagepals/screens/screens_reader/reader_request/video_player_from
 import 'package:unicons/unicons.dart';
 
 class ReaderRequestStep3 extends StatefulWidget {
-  ReaderRequestStep3({
+  final Function(dynamic value) videoUploadCallback;
+  final Function(dynamic value) imageUploadCallback;
+  const ReaderRequestStep3({
     super.key,
-    required,
     required this.videoUploadCallback,
     required this.imageUploadCallback,
   });
 
-  void Function(dynamic value) videoUploadCallback;
-  void Function(dynamic value) imageUploadCallback;
 
   @override
   State<ReaderRequestStep3> createState() => _ReaderRequestStep3State();

@@ -1,15 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/question_model.dart';
 import 'package:pagepals/providers/reader_request_provider.dart';
 import 'package:provider/provider.dart';
 
 class ReaderRequestStep2 extends StatefulWidget {
-  ReaderRequestStep2({
-    super.key,
-    this.listQuestions,
-  });
+  final List<QuestionModel>? listQuestions;
 
-  List<QuestionModel>? listQuestions = [];
+  const ReaderRequestStep2({
+    Key? key,
+    this.listQuestions,
+  }) : super(key: key);
 
   @override
   State<ReaderRequestStep2> createState() => _ReaderRequestStep2State();
@@ -18,6 +20,7 @@ class ReaderRequestStep2 extends StatefulWidget {
 class _ReaderRequestStep2State extends State<ReaderRequestStep2> {
   @override
   Widget build(BuildContext context) {
+    int count = 1;
     return Container(
       padding: const EdgeInsets.all(16.0),
       child: Form(
@@ -26,6 +29,7 @@ class _ReaderRequestStep2State extends State<ReaderRequestStep2> {
             for (final question in widget.listQuestions!)
               QuestionWidget(
                 question: question,
+                count: count++,
               ),
           ],
         ),
@@ -38,9 +42,11 @@ class QuestionWidget extends StatefulWidget {
   const QuestionWidget({
     Key? key,
     required this.question,
+    required this.count,
   }) : super(key: key);
 
   final QuestionModel question;
+  final int count;
 
   @override
   State<QuestionWidget> createState() => _QuestionWidgetState();
@@ -63,15 +69,26 @@ class _QuestionWidgetState extends State<QuestionWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final readerProvider = context.watch<ReaderRequestProvider>();
+    final readerRequestModel = readerProvider.readerRequestModel;
+    setState(() {
+      _controller.text = readerRequestModel.answers
+              ?.firstWhere(
+                (element) => element?.questionId == widget.question.id,
+                orElse: () => null,
+              )
+              ?.content ??
+          '';
+    });
     return Container(
-      padding: const EdgeInsets.all(17.0),
+      padding: const EdgeInsets.fromLTRB(17, 0, 17, 17),
       margin: const EdgeInsets.only(bottom: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.question.content ?? '',
+            '${widget.count}. ${widget.question.content ?? ''}',
             style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
@@ -81,21 +98,30 @@ class _QuestionWidgetState extends State<QuestionWidget> {
           TextFormField(
             controller: _controller,
             maxLines: 6,
-            decoration: const InputDecoration(
-              hintText: 'Type your answer here',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              hintText: 'Type your answer here...',
+              hintStyle: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black12, width: 1),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: ColorHelper.getColor(ColorHelper.green), width: 2),
+              ),
             ),
             onTapOutside: (value) {
-              FocusScope.of(context).unfocus();
-            },
-            onChanged: (value) {
-              final readerRequestProvider = context.read<ReaderRequestProvider>();
+              final readerRequestProvider =
+                  context.read<ReaderRequestProvider>();
 
               readerRequestProvider.setAnswer(
                 widget.question.id ?? '',
-                value,
+                _controller.text,
               );
 
+              FocusScope.of(context).unfocus();
               print(readerRequestProvider.readerRequestModel.toString());
             },
             validator: (value) {
