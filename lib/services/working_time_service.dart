@@ -39,4 +39,34 @@ class WorkingTimeService {
       return WorkingTimeModel.fromJson(workingTimeData);
     }
   }
+
+  static Future<bool> createWorkingTime(
+      String readerId, bool isWeekLy, String date, String startTime) async {
+    var mutation = '''
+      mutation createWork {
+        createReaderWorkingTime(
+          workingTime: {
+            readerId: "$readerId", 
+            isWeekly: $isWeekLy, 
+            list: {
+              date: "$date",
+              duration: 60,
+              startTime: "$startTime"
+            }
+          }
+        )
+      }
+    ''';
+
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+          document: gql(mutation), fetchPolicy: FetchPolicy.networkOnly),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to create working time');
+    }
+
+    return result.data?['createWorkingTime'] != null;
+  }
 }
