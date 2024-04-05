@@ -11,12 +11,14 @@ class SelectServiceDropdown extends StatefulWidget {
   final Function(String?) onValueChanged;
   final List<Widget> Function(BuildContext)? selectedItemBuilder;
 
-  const SelectServiceDropdown(
-      {super.key,
-      required this.opt,
-      required this.title,
-      required this.items,
-      required this.onValueChanged, this.selectedItemBuilder});
+  const SelectServiceDropdown({
+    super.key,
+    required this.opt,
+    required this.title,
+    required this.items,
+    required this.onValueChanged,
+    this.selectedItemBuilder,
+  });
 
   @override
   State<SelectServiceDropdown> createState() => _DropdownButtonWidgetState();

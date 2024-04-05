@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/models/message_type_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/message_screen/message_item.dart';
 import 'package:unicons/unicons.dart';
 

@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/screens/screens_customer/customer_wallet_screen/payment_response_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/transaction_money_widget.dart';
 import 'package:pagepals/services/momo_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -161,11 +161,11 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                   InkWell(
                     onTap: () {
                       // Navigator.push(
-                      //     context,
-                      //     PageTransition(
-                      //       type: PageTransitionType.bottomToTop,
-                      //       child: const CustomerWalletProcessScreen(),
-                      //     )
+                      //   context,
+                      //   PageTransition(
+                      //     type: PageTransitionType.bottomToTop,
+                      //     child: const PaymentResponseScreen(),
+                      //   ),
                       // );
                     },
                     child: Container(
@@ -279,7 +279,7 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                       int.parse(_controller.text), account.customer?.id ?? '');
                   Uri url = Uri.parse(response.payUrl!);
 
-                  if(await canLaunchUrl(url)){
+                  if (await canLaunchUrl(url)) {
                     await launchUrl(url, mode: LaunchMode.externalApplication);
                   }
 

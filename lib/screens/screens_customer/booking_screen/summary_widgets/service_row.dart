@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ServiceRowWidget extends StatelessWidget {
   final String service;
@@ -23,67 +21,65 @@ class ServiceRowWidget extends StatelessWidget {
           height: 15,
         ),
         Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 113,
-                child: Text(
-                  'Service type',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87.withOpacity(0.5),
-                  ),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 113,
+              child: Text(
+                'Service type',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black87.withOpacity(0.5),
                 ),
               ),
-              Expanded(
-                child: Text(
-                  serviceType,
-                  textAlign: TextAlign.end,
-                  style: const TextStyle(
-                    overflow: TextOverflow.clip,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
+            ),
+            Expanded(
+              child: Text(
+                serviceType,
+                textAlign: TextAlign.end,
+                style: const TextStyle(
+                  overflow: TextOverflow.clip,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
                 ),
               ),
-            ],
-          ),
-
+            ),
+          ],
+        ),
         const SizedBox(
           height: 15,
         ),
         Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 113,
-                child: Text(
-                  'Service',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87.withOpacity(0.5),
-                  ),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 113,
+              child: Text(
+                'Service',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black87.withOpacity(0.5),
                 ),
               ),
-              Expanded(
-                child: Text(
-                  service,
-                  textAlign: TextAlign.end,
-                  style: const TextStyle(
-                    overflow: TextOverflow.clip,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
+            ),
+            Expanded(
+              child: Text(
+                service,
+                textAlign: TextAlign.end,
+                style: const TextStyle(
+                  overflow: TextOverflow.clip,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
                 ),
               ),
-            ],
-
+            ),
+          ],
         ),
       ],
     );

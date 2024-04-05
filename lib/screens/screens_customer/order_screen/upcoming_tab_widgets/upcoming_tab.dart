@@ -4,7 +4,6 @@ import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.
 import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booking_body.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_leading.dart';
-import 'package:pagepals/services/booking_service.dart';
 
 class UpcomingTab extends StatelessWidget {
   final BookingModel? bookingModel;

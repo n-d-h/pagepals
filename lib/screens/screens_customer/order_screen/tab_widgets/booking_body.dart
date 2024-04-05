@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_body_widgets/column_detail_rows.dart';
@@ -11,7 +10,8 @@ class BookingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String bookImage = booking.service?.book?.smallThumbnailUrl ?? 'https://via.placeholder.com/150';
+    String bookImage = booking.service?.book?.smallThumbnailUrl ??
+        'https://via.placeholder.com/150';
     String nickname = booking.meeting!.reader!.nickname!;
     String username = '@${booking.meeting!.reader!.account!.username!}';
     return Container(
@@ -49,7 +49,9 @@ class BookingBody extends StatelessWidget {
                   nickname: nickname,
                   username: username,
                 ),
-                ColumnDetail(booking: booking,),
+                ColumnDetail(
+                  booking: booking,
+                ),
               ],
             ),
           )

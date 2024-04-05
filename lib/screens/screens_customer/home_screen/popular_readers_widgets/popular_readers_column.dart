@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pagepals/helpers/space_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/popular_reader_leading.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/popular_reader_widget.dart';
 

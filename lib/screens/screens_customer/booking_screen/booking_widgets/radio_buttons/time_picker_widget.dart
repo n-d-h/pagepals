@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/working_time_model.dart';
-import 'package:pagepals/services/working_time_service.dart';
 
 class TimePickerWidget extends StatefulWidget {
   final DateTime selectedDate;
@@ -146,7 +145,8 @@ class _TimeSlotPickerState extends State<TimePickerWidget> {
                                   setState(() {
                                     selectedTimeSlot = timeSlot;
                                   });
-                                  widget.onTimeSlotIdSelected!(timeSlot.id!, timeSlotDatetime);
+                                  widget.onTimeSlotIdSelected!(
+                                      timeSlot.id!, timeSlotDatetime);
                                 }
                               : null,
                           style: OutlinedButton.styleFrom(

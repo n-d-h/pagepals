@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
+import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 
 class DatePickerWidget extends StatefulWidget {

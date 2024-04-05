@@ -1,13 +1,10 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +34,8 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
     try {
       Map<String, dynamic> accountMap = json.decode(accountString);
       setState(() {
-        _displayName = '@${AccountModel.fromJson(accountMap).fullName ?? 'anonymous'}' ;
+        _displayName =
+            '@${AccountModel.fromJson(accountMap).fullName ?? 'anonymous'}';
       });
     } catch (e) {
       print('Error decoding account data: $e');
@@ -46,7 +44,6 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       width: MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
       margin: const EdgeInsets.symmetric(
@@ -77,7 +74,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-            height: 84,
+              height: 84,
               child: DefaultTextStyle(
                 style: GoogleFonts.lexend(
                   fontSize: 35,

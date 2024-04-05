@@ -13,30 +13,30 @@ class NotificationAppBarBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
+      decoration: BoxDecoration(
+        color: ColorHelper.getColor(ColorHelper.grey).withOpacity(0.3),
       ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
-        decoration: BoxDecoration(
-          color: ColorHelper.getColor(ColorHelper.grey).withOpacity(0.3),
-        ),
-        height: 35,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Messages',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black45,
-              ),
+      height: 35,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            'Messages',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.black45,
             ),
-            InkWell(
+          ),
+          Theme(
+            data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: InkWell(
               onTap: onReadAllPressed != null && unreadCount > 0
                   ? onReadAllPressed
                   : null,
@@ -48,8 +48,8 @@ class NotificationAppBarBottom extends StatelessWidget {
                     fontSize: 12,
                   )),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

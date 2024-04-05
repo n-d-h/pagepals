@@ -7,12 +7,12 @@ class BottomButton extends StatelessWidget {
   final bool isEnabled;
   final String title;
 
-  const BottomButton({
-    Key? key,
-    required this.onPressed,
-    required this.isEnabled,
-    required this.title
-  }) : super(key: key);
+  const BottomButton(
+      {Key? key,
+      required this.onPressed,
+      required this.isEnabled,
+      required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,12 @@ class BottomButton extends StatelessWidget {
             // Disable button if not enabled
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: Colors.transparent),
-              foregroundColor: isEnabled ? ColorHelper.getColor(ColorHelper.white) : Colors.grey,
-              backgroundColor: isEnabled ? ColorHelper.getColor(ColorHelper.green) : Colors.grey.withOpacity(0.3),
+              foregroundColor: isEnabled
+                  ? ColorHelper.getColor(ColorHelper.white)
+                  : Colors.grey,
+              backgroundColor: isEnabled
+                  ? ColorHelper.getColor(ColorHelper.green)
+                  : Colors.grey.withOpacity(0.3),
               padding: const EdgeInsets.symmetric(
                 horizontal: SpaceHelper.space16,
                 vertical: 12,

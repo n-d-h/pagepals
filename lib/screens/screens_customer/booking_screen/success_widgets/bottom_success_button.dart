@@ -61,7 +61,6 @@ class SuccessBottomButton extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-
               OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -78,7 +77,7 @@ class SuccessBottomButton extends StatelessWidget {
                   side: const BorderSide(color: Colors.transparent),
                   foregroundColor: ColorHelper.getColor(ColorHelper.green),
                   backgroundColor:
-                  ColorHelper.getColor(ColorHelper.transparent),
+                      ColorHelper.getColor(ColorHelper.transparent),
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),

@@ -44,7 +44,8 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   String? selectedTimeSlotId;
 
   Future<void> getWorkingTime() async {
-    var result = await WorkingTimeService.getWorkingTime(widget.reader!.profile!.id!);
+    var result =
+        await WorkingTimeService.getWorkingTime(widget.reader!.profile!.id!);
     setState(() {
       workingTimeModels = result;
     });
@@ -154,76 +155,76 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                 items: widget.bookModels.map((e) => e.book!).toList(),
                 onValueChanged: handleBookSelected,
               ),
-              if(serviceTypesByBook.isNotEmpty)
-              SelectServiceDropdown(
-                title: 'Service Type',
-                opt: 1,
-                selectedItemBuilder: (value) {
-                  return serviceTypesByBook
-                      .map<Widget>(
-                        (e) => Text(
-                          e.name ?? 'Service Type',
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
+              if (serviceTypesByBook.isNotEmpty)
+                SelectServiceDropdown(
+                  title: 'Service Type',
+                  opt: 1,
+                  selectedItemBuilder: (value) {
+                    return serviceTypesByBook
+                        .map<Widget>(
+                          (e) => Text(
+                            e.name ?? 'Service Type',
+                            style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )
+                        .toList();
+                  },
+                  items: serviceTypesByBook
+                      .map(
+                        (item) => DropdownMenuItem<String>(
+                          value: item.id,
+                          child: Text(
+                            item.name ?? 'Service',
+                            style: const TextStyle(
+                              overflow: TextOverflow.clip,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       )
-                      .toList();
-                },
-                items: serviceTypesByBook
-                    .map(
-                      (item) => DropdownMenuItem<String>(
-                        value: item.id,
-                        child: Text(
-                          item.name ?? 'Service',
-                          style: const TextStyle(
-                            overflow: TextOverflow.clip,
-                            fontWeight: FontWeight.w600,
+                      .toList(),
+                  onValueChanged: handleSelectedTypeSelected,
+                ),
+              if (servicesByServiceType.isNotEmpty)
+                SelectServiceDropdown(
+                  title: 'Service',
+                  opt: 2,
+                  selectedItemBuilder: (value) {
+                    return servicesByServiceType
+                        .map<Widget>(
+                          (e) => Text(
+                            e.description ?? 'Service',
+                            style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onValueChanged: handleSelectedTypeSelected,
-              ),
-              if(servicesByServiceType.isNotEmpty)
-              SelectServiceDropdown(
-                title: 'Service',
-                opt: 2,
-                selectedItemBuilder: (value) {
-                  return servicesByServiceType
-                      .map<Widget>(
-                        (e) => Text(
-                          e.description ?? 'Service',
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
+                        )
+                        .toList();
+                  },
+                  items: servicesByServiceType
+                      .map(
+                        (item) => DropdownMenuItem<String>(
+                          value: item.id,
+                          child: Text(
+                            item.description ?? 'Service',
+                            style: const TextStyle(
+                              overflow: TextOverflow.clip,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       )
-                      .toList();
-                },
-                items: servicesByServiceType
-                    .map(
-                      (item) => DropdownMenuItem<String>(
-                        value: item.id,
-                        child: Text(
-                          item.description ?? 'Service',
-                          style: const TextStyle(
-                            overflow: TextOverflow.clip,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onValueChanged: handleServiceSelected,
-              ),
+                      .toList(),
+                  onValueChanged: handleServiceSelected,
+                ),
               DatePickerWidget(
                 onDateSelected: handleDateSelected,
               ),
@@ -237,7 +238,6 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                 onTimeSlotIdSelected: handleTimeSlotIdSelected,
               ),
               const RequestScheduleWidget(),
-
             ],
           ),
         ),
