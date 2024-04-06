@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/working_time_model.dart';
@@ -6,6 +10,7 @@ import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/day_picker_widget.dart';
 import 'package:pagepals/screens/screens_reader/reader_working_time/time_picker_widget/ndh_time_range_picker.dart';
 import 'package:pagepals/services/working_time_service.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ReaderWorkingTime extends StatefulWidget {
   final String title;
@@ -24,6 +29,7 @@ class _ReaderWorkingTimeState extends State<ReaderWorkingTime> {
   WorkingDates? selectedWorkingDate;
   List<TimeSlots> timeSlots = [];
   late DateTime selectedDate;
+  bool isCheck = false;
 
   Future<void> getWorkingTime() async {
     var result = await WorkingTimeService.getWorkingTime(widget.readerId);
@@ -164,6 +170,7 @@ class _ReaderWorkingTimeState extends State<ReaderWorkingTime> {
               physics: const BouncingScrollPhysics(),
               controller: ScrollController(),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -254,15 +261,133 @@ class _ReaderWorkingTimeState extends State<ReaderWorkingTime> {
                       },
                     ),
                   ),
+                  Container(
+                    width: double.infinity,
+                    color: Colors.grey[100]!,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Checkbox(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          side: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.4,
+                          ),
+                          checkColor: Colors.white,
+                          fillColor: MaterialStateColor.resolveWith((states) {
+                            const Set<MaterialState> interactiveStates =
+                                <MaterialState>{
+                              MaterialState.pressed,
+                              MaterialState.hovered,
+                              MaterialState.selected,
+                            };
+                            if (states.any(interactiveStates.contains)) {
+                              return ColorHelper.getColor(ColorHelper.green);
+                            }
+                            return ColorHelper.getColor(ColorHelper.white);
+                          }),
+                          value: isCheck,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isCheck = value!;
+                            });
+                          },
+                        ),
+                        Expanded(
+                            child: RichText(
+                          textAlign: TextAlign.start,
+                          // Align the text inside RichText
+                          text: TextSpan(
+                            text:
+                                'Repeat for the next 3 months with this time frame on ',
+                            style: GoogleFonts.lexend(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                            children: [
+                              TextSpan(
+                                text: DateFormat('EEEE').format(selectedDate),
+                                style: GoogleFonts.lexend(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color:
+                                      ColorHelper.getColor(ColorHelper.green),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
             bottomNavigationBar: BottomButton(
               title: 'Save',
-              onPressed: () {
-                print('selectedDate: $selectedDate');
-                print('Start: $_startTime');
-                print('End: $_endTime');
+              onPressed: () async {
+                // reload the working time
+                setState(() {
+                  workingTimeModels = null;
+                  _startTime = TimeOfDay(hour: (DateTime.now().hour + 1), minute: 0);
+                  _endTime = TimeOfDay.fromDateTime(DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                    (DateTime.now().hour + 1),
+                    0,
+                  ).add(const Duration(hours: 5)));
+                });
+
+                // Get the date
+                String date = selectedDate.toString().split(' ').first;
+
+                // Get the start time
+                DateTime start = DateTime(selectedDate.year, selectedDate.month,
+                    selectedDate.day, _startTime.hour, _startTime.minute);
+
+                // Get the slots between the start and end time
+                int slots = (_endTime.hour - _startTime.hour);
+
+                // Get the start times
+                List<String>? startTimes = [];
+                for (int slot = 0; slot < slots; slot++) {
+                  startTimes.add(start
+                      .add(Duration(hours: slot))
+                      .toString()
+                      .split('.')
+                      .first);
+                }
+
+                // call the create working time function
+                bool created = await WorkingTimeService.createWorkingTime(
+                    widget.readerId, isCheck, date, startTimes);
+
+                if (created) {
+                  getWorkingTime();
+                  Future.delayed(Duration.zero, () {
+                    QuickAlert.show(
+                      context: context,
+                      title: 'Success',
+                      text: 'Working time created successfully',
+                      type: QuickAlertType.success,
+                    );
+                  });
+                } else {
+                  getWorkingTime();
+                  Future.delayed(Duration.zero, () {
+                    QuickAlert.show(
+                      context: context,
+                      title: 'Error',
+                      text: 'Failed to create working time',
+                      type: QuickAlertType.error,
+                    );
+                  });
+                }
               },
               isEnabled: selectedDate.isBefore(DateTime(
                 DateTime.now().year,
