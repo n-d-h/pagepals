@@ -23,7 +23,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Future<void> getBooking() async {
     var pending = await BookingService.getBooking(0, 10, 'PENDING');
-    var done = await BookingService.getBooking(0, 10, 'DONE');
+    var done = await BookingService.getBooking(0, 10, 'COMPLETE');
     var cancel = await BookingService.getBooking(0, 10, 'CANCEL');
     setState(() {
       pendingBooking = pending;

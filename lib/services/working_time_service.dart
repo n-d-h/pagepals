@@ -1,6 +1,8 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/working_time_model.dart';
+import 'package:pagepals/services/auth_service.dart';
+import 'package:pagepals/services/authen_service.dart';
 
 class WorkingTimeService {
   static GraphQLClient graphQLClient = client!.value;
@@ -38,5 +40,44 @@ class WorkingTimeService {
     if (workingTimeData != null) {
       return WorkingTimeModel.fromJson(workingTimeData);
     }
+  }
+
+  static Future<bool> createWorkingTime(String readerId, bool isWeekLy,
+      String date, List<String> startTimes) async {
+    var mutation = '''
+      mutation {
+        createReaderWorkingTime(
+          workingTime: {
+            readerId: "$readerId", 
+            isWeekly: $isWeekLy, 
+            list: [
+              ${startTimes.map((time) => '''
+                {
+                  date: "$date",
+                  startTime: "$time",
+                  duration: 60
+                }
+              ''').join(',')}
+            ]
+          }
+        )
+      }
+    ''';
+
+    GraphQLClient clientWithToken =
+        await AuthService.getGraphQLClientWithToken();
+
+    final QueryResult result = await clientWithToken.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to create working time');
+    }
+
+    return result.data?['createReaderWorkingTime'] != null;
   }
 }

@@ -1,66 +1,70 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/customer_book.dart';
 import 'package:pagepals/models/google_book.dart';
 
 class BookService {
   static GraphQLClient graphQLClient = client!.value;
 
-  static Future<List<BookModel>> getAllBooks() async {
+  static Future<CustomerBook> getAllBooks(String author, String categoryId,
+      int page, int pageSize, String search, String sort) async {
     var query = '''
-    query {
-      getListBook(
-        query : {
-          search : "",
-          sort: "asc",
-        }
-      ) {
-        list {
-          id,
-          title,
-          longTitle,
-          author,
-          publisher,
-          pages,
-          language,
-          overview,
-          imageUrl,
-          edition,
-          status,
-          createdAt,
-          category { 
-              id,
-              name,
-              description
-          },
-          chapters {
-              id,
-              chapterNumber,
-              pages
+      query {
+        getListBookForCustomer(
+          searchBook: {
+            author: "$author",
+            categoryId: "$categoryId",
+            page: $page, 
+            pageSize: $pageSize, 
+            search: "$search", 
+            sort: "$sort"}
+        ) {
+          list {
+            authors {
+              id
+              name
+            }
+            categories {
+              id
+              name
+            }
+            description
+            externalId
+            id
+            language
+            pageCount
+            publishedDate
+            publisher
+            smallThumbnailUrl
+            thumbnailUrl
+            title
           }
-        },
-        pagination {
-            totalOfPages,
-            totalOfElements,
-            currentPage,
+          pagination {
+            currentPage
             pageSize
+            sort
+            totalOfElements
+            totalOfPages
+          }
         }
       }
-    }
   ''';
 
     // Use the provided client to execute the query
     final QueryResult result = await graphQLClient.query(QueryOptions(
       document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
     ));
 
     if (result.hasException) {
       throw Exception('Failed to load books');
     }
 
-    final List<dynamic>? booksData = result.data?['getListBook']?['list'];
+    final Map<String, dynamic>? booksData =
+        result.data?['getListBookForCustomer'];
     if (booksData != null) {
-      return booksData.map((bookJson) => BookModel.fromJson(bookJson)).toList();
+      return CustomerBook.fromJson(booksData);
     } else {
       throw Exception('Failed to parse books data');
     }
@@ -120,8 +124,8 @@ class BookService {
     }
   }
 
-  static Future<List<GoogleBookModel>> getGoogleBooks(String author,
-      String title, int page, int pageSize) async {
+  static Future<List<GoogleBookModel>> getGoogleBooks(
+      String author, String title, int page, int pageSize) async {
     final String query = '''
       query {
         searchBook(

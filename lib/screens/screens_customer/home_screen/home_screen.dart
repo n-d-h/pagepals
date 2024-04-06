@@ -118,9 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
               WelcomeWidget(),
               PopularReadersColumn(),
               ExploreScreen(),
-              SizedBox(
-                height: 70,
-              )
             ],
           ),
         ),

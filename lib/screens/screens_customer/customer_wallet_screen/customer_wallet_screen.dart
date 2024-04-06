@@ -84,13 +84,13 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                     children: [
                       Icon(
                         Icons.currency_bitcoin_outlined,
-                        size: 50,
+                        size: 45,
                         color: Colors.orange,
                       ),
                       Text(
                         '100.000 BTC',
                         style: TextStyle(
-                          fontSize: 50,
+                          fontSize: 45,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -141,7 +141,7 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                         ],
                       ),
                       padding: const EdgeInsets.all(15),
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      width: 160,
                       child: Row(
                         children: [
                           TransactionMoneyWidget.sendButton(),
@@ -181,7 +181,7 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                         ],
                       ),
                       padding: const EdgeInsets.all(15),
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      width: 160,
                       child: Row(
                         children: [
                           TransactionMoneyWidget.transactionButton(),

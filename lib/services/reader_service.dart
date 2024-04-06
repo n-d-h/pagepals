@@ -7,6 +7,7 @@ import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/reader_request_model.dart';
 import 'package:pagepals/services/auth_service.dart';
+import 'package:pagepals/services/authen_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReaderService {
@@ -162,7 +163,7 @@ class ReaderService {
           accountId: "${accountModel.id}",
           data: {
             information: {
-              audioDescriptionUrl: "${request.information?.audioDescriptionUrl}", 
+              audioDescriptionUrl: "${request.information?.audioDescriptionUrl ?? ''}", 
               avatarUrl: "${request.information?.avatarUrl}", 
               countryAccent: "${request.information?.countryAccent}", 
               description: "${request.information?.description}", 
@@ -170,7 +171,7 @@ class ReaderService {
               introductionVideoUrl: "${request.information?.introductionVideoUrl}",
               languages: "${request.information?.languages}", 
               nickname: "${request.information?.nickname}"
-            }, 
+            },
             answers: [
               ${request.answers?.map((answer) => '''
                 {
@@ -180,8 +181,10 @@ class ReaderService {
               ''').join(',')}
             ]
           }
-        )
-      }
+        ) {
+          id
+        }
+      } 
     ''';
 
     final GraphQLClient clientWithToken =
@@ -198,8 +201,13 @@ class ReaderService {
       throw Exception('Failed to register reader');
     }
 
-    final String? status = result.data?['registerReader'];
-    if (status != null && status == 'Register reader success!') {
+    final String? status = result.data?['registerReader']?['id'];
+    if (status != null) {
+      String accessToken = prefs.getString('accessToken') ?? '';
+      AccountModel acc = await AuthenService.getAccount(
+          accountModel.username ?? '', accessToken);
+      prefs.remove('account');
+      prefs.setString('account', json.encoder.convert(acc));
       return 'OK';
     } else {
       throw Exception('Failed to register reader');

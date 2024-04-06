@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/customer_book.dart';
 import 'package:pagepals/services/book_service.dart';
 import 'package:pagepals/widgets/text_widget.dart';
 
@@ -11,81 +15,105 @@ class BookListView extends StatefulWidget {
 }
 
 class _BookListViewState extends State<BookListView> {
-  List<BookModel> books = [];
-
-  @override
-  void initState() {
-    super.initState();
-    books = [];
-  }
+  CustomerBook? bookModel;
 
   @override
   Widget build(BuildContext context) {
-    Future<List<BookModel>> getListBooks() async {
-      var books = await BookService.getAllBooks();
-      return books;
+    Future<CustomerBook> getBookModel() async {
+      var bookModel = await BookService.getAllBooks("","",0, 10, "", "desc");
+      return bookModel;
     }
 
-    return FutureBuilder<List<BookModel>>(
-      future: getListBooks(),
+    return FutureBuilder<CustomerBook>(
+      future: getBookModel(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Container(
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
+            child: Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: ColorHelper.getColor(ColorHelper.green),
+                size: 60,
+              ),
+            ),
           );
         } else if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
+          return Container(
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
+            child: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
           );
         } else if (snapshot.hasData) {
-          books = snapshot.data!;
+          bookModel = snapshot.data!;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: books.map((book) {
+            children: bookModel!.list!.map((book) {
               return Container(
-                width: MediaQuery.of(context).size.width * 0.9,
+                width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Image(
-                      image: NetworkImage(book.book?.thumbnailUrl ?? ''),
-                      fit: BoxFit.contain,
+                    Container(
                       width: 100,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: NetworkImage(book.smallThumbnailUrl ??
+                              "https://via.placeholder.com/150"),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       width: 5,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        TextWidget(
-                          length: 200,
-                          content: book.book!.title,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          softWrap: false,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        TextWidget(
-                          length: 200,
-                          content: 'Category: ${book.book?.categories?[0].name ?? ''}',
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 14,
-                          maxLines: 1,
-                          softWrap: false,
-                        ),
-                        TextWidget(
-                          length: 230,
-                          content: book.book?.categories?[0].name ?? '',
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 14,
-                          maxLines: 1,
-                          softWrap: false,
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // TextWidget(
+                          //   length: 200,
+                          //   content: book.title ?? '',
+                          //   overflow: TextOverflow.ellipsis,
+                          //   maxLines: 3,
+                          //   softWrap: false,
+                          //   fontWeight: FontWeight.bold,
+                          // ),
+                          Text(
+                            book.title ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                            softWrap: false,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextWidget(
+                            length: 200,
+                            content:
+                                'Category: ${book.categories?[0].name ?? ''}',
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 14,
+                            maxLines: 1,
+                            softWrap: false,
+                          ),
+                          TextWidget(
+                            length: 230,
+                            content: book.categories?[0].name ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 14,
+                            maxLines: 1,
+                            softWrap: false,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

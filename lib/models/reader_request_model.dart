@@ -92,7 +92,10 @@ class ReaderRequestModel {
   String toString() {
     return 'ReaderRequestModel('
         'information: (${information?.audioDescriptionUrl}, ${information?.avatarUrl}, ${information?.countryAccent}, ${information?.description}, ${information?.genres}, ${information?.introductionVideoUrl}, ${information?.languages}, ${information?.nickname}), '
-        'answers: ${answers?.map((v) => v?.content).toList()}'
-        ')';
+        'answers: ${answers?.map((v) => {
+              'content': v?.content,
+              'questionId': v?.questionId
+            }).toList()})';
+    ')';
   }
 }

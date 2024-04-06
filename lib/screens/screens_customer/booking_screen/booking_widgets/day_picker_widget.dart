@@ -4,8 +4,10 @@ import 'package:pagepals/helpers/color_helper.dart';
 
 class DatePickerWidget extends StatefulWidget {
   final Function(DateTime selectedDate)? onDateSelected;
+  final bool? isWorkingTime;
 
-  const DatePickerWidget({Key? key, this.onDateSelected}) : super(key: key);
+  const DatePickerWidget({Key? key, this.onDateSelected, this.isWorkingTime})
+      : super(key: key);
 
   @override
   State<DatePickerWidget> createState() => _DatePickerWidgetState();
@@ -13,6 +15,7 @@ class DatePickerWidget extends StatefulWidget {
 
 class _DatePickerWidgetState extends State<DatePickerWidget> {
   late DateTime now;
+  late DateTime tomorrow;
   late DateTime todayMidnight;
   late DateTime sDate;
 
@@ -20,6 +23,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   void initState() {
     super.initState();
     now = DateTime.now();
+    tomorrow = DateTime(now.year, now.month, now.day + 1);
     todayMidnight = DateTime(now.year, now.month, now.day);
     sDate = now;
   }
@@ -31,16 +35,17 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 30),
-        const Text(
-          'Day',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+        if (widget.isWorkingTime == null) const SizedBox(height: 30),
+        if (widget.isWorkingTime == null)
+          const Text(
+            'Day',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
           ),
-        ),
-        const SizedBox(height: 15),
+        if (widget.isWorkingTime == null) const SizedBox(height: 15),
         Theme(
           data: ThemeData(
               splashColor: Colors.transparent,
@@ -52,10 +57,13 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 EasyDateTimeLine(
-                  initialDate: now,
+                  initialDate: widget.isWorkingTime != null ? tomorrow : now,
                   onDateChange: (selectedDate) {
                     if (widget.onDateSelected != null &&
                         !selectedDate.isBefore(todayMidnight)) {
+                      widget.onDateSelected!(selectedDate);
+                    } else if (widget.onDateSelected != null &&
+                        widget.isWorkingTime != null) {
                       widget.onDateSelected!(selectedDate);
                     }
                     setState(() {
@@ -66,17 +74,21 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                     height: 52.0,
                     width: 115.0,
                   ),
-                  headerProps: const EasyHeaderProps(
-                    // showSelectedDate: !sDate.isBefore(todayMidnight),
-                    // dateFormatter: const DateFormatter.fullDateMonthAsStrDY(),
-                    // showMonthPicker: false,
-                    showHeader: false,
+                  headerProps: EasyHeaderProps(
+                    // && !sDate.isBefore(todayMidnight)
+                    showSelectedDate: widget.isWorkingTime != null,
+                    dateFormatter: const DateFormatter.fullDateMonthAsStrDY(),
+                    showMonthPicker: widget.isWorkingTime != null,
+                    showHeader: widget.isWorkingTime != null,
                   ),
                   itemBuilder: (BuildContext context, String dayNumber, dayName,
                       monthName, fullDate, isSelected) {
                     final isToday = fullDate.year == now.year &&
                         fullDate.month == now.month &&
                         fullDate.day == now.day;
+                    final isTomorrow = fullDate.year == tomorrow.year &&
+                        fullDate.month == tomorrow.month &&
+                        fullDate.day == tomorrow.day;
                     final isBeforeToday = fullDate.isBefore(todayMidnight);
                     return Container(
                       width: 115.0,
@@ -94,17 +106,30 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            isToday ? 'Today' : dayName,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: isSelected && !isBeforeToday
-                                  ? Colors.white
-                                  : isBeforeToday
-                                      ? Colors.grey
-                                      : const Color(0xff6D5D6E),
+                          if (widget.isWorkingTime == null)
+                            Text(
+                              isToday ? 'Today' : dayName,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: isSelected && !isBeforeToday
+                                    ? Colors.white
+                                    : isBeforeToday
+                                        ? Colors.grey
+                                        : const Color(0xff6D5D6E),
+                              ),
                             ),
-                          ),
+                          if (widget.isWorkingTime != null)
+                            Text(
+                              isTomorrow ? 'Tomorrow' : dayName,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: isSelected && !isBeforeToday
+                                    ? Colors.white
+                                    : isBeforeToday
+                                        ? Colors.grey
+                                        : const Color(0xff6D5D6E),
+                              ),
+                            ),
                           const SizedBox(width: 8.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

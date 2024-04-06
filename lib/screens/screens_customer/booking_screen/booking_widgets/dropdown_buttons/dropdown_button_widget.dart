@@ -8,13 +8,15 @@ import 'package:unicons/unicons.dart';
 class DropdownButtonWidget extends StatefulWidget {
   final String title;
   final List<Book> items;
+  final String? value;
   final Function(String?) onValueChanged;
 
   const DropdownButtonWidget(
       {super.key,
       required this.title,
       required this.items,
-      required this.onValueChanged});
+      required this.onValueChanged,
+      this.value});
 
   @override
   State<DropdownButtonWidget> createState() => _DropdownButtonWidgetState();
@@ -62,6 +64,7 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
           ),
         ),
         DropdownButtonFormField2<String>(
+          value: widget.value,
           isExpanded: true,
           selectedItemBuilder: (value) {
             return items.map<Widget>(

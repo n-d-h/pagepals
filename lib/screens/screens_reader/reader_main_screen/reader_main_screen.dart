@@ -408,27 +408,37 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: const ReaderWorkingTime(),
+                                    child: ReaderWorkingTime(
+                                      title: 'Working Time',
+                                      readerId:
+                                          widget.accountModel?.reader?.id ?? '',
+                                    ),
                                     duration: const Duration(milliseconds: 300),
                                   ),
                                 );
                               },
-                              child: const Row(
-                                children: [
-                                  Text(
-                                    'work schedule',
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 14,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: const BoxDecoration(
+                                  color: Colors.transparent,
+                                ),
+                                child: const Row(
+                                  children: [
+                                    Text(
+                                      'work schedule',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 14,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.blue,
-                                    size: 12,
-                                  ),
-                                ],
+                                    SizedBox(width: 10),
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.blue,
+                                      size: 12,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

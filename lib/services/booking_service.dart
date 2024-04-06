@@ -5,6 +5,7 @@ import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/book_model.dart';
 import 'package:pagepals/models/booking_model.dart';
+import 'package:pagepals/services/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingService {
@@ -20,27 +21,27 @@ class BookingService {
     String customerId = account.customer!.id!;
 
     var mutation = '''
-    mutation MyMutation {
-      createBooking(
-        booking: {
-          description: "$description", 
-          serviceId: "${service.id}", 
-          totalPrice: ${service.price}, 
-          workingTimeId: "$timeSlotId", 
-          promotionCode: "$promotionCode"
-        }
-        customerId: "$customerId"
-      ) {
-        id
-        meeting {
-          meetingCode
-        }
-        workingTime {
-          date
-          startTime
+      mutation MyMutation {
+        createBooking(
+          booking: {
+            description: "$description", 
+            serviceId: "${service.id}", 
+            totalPrice: ${service.price}, 
+            workingTimeId: "$timeSlotId", 
+            promotionCode: "$promotionCode"
+          }
+          customerId: "$customerId"
+        ) {
+          id
+          meeting {
+            meetingCode
+          }
+          workingTime {
+            date
+            startTime
+          }
         }
       }
-    }
     ''';
 
     GraphQLClient clientWithToken = GraphQLClient(
@@ -217,5 +218,52 @@ class BookingService {
     }
 
     return BookingModel.fromJson(result.data!['getListBookingByReader']);
+  }
+
+  static Future<bool> cancelBooking(String bookingId) async {
+    print('bookingId: $bookingId');
+    var mutation = '''
+      mutation {
+        cancelBooking(bookingId: "$bookingId") {
+          id
+        }
+      }
+    ''';
+
+    QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      return false;
+    }
+
+    return result.data?['cancelBooking']?['id'] != null;
+  }
+
+  static Future<bool> completeBooking(String bookingId) async {
+    var mutation = '''
+      mutation {
+        completeBooking(bookingId: "$bookingId") {
+          id
+        }
+      }
+    ''';
+
+    QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      return false;
+    }
+
+    return result.data?['completeBooking']?['id'] != null;
   }
 }

@@ -12,6 +12,7 @@ import 'package:quickalert/quickalert.dart';
 class UpdateServiceScreen extends StatefulWidget {
   final String serviceId;
   final String bookTitle;
+  final String serviceTypeId;
   final String serviceType;
   final String serviceName;
   final String price;
@@ -24,24 +25,26 @@ class UpdateServiceScreen extends StatefulWidget {
       required this.serviceType,
       required this.serviceName,
       required this.price,
-      required this.serviceId});
+      required this.serviceId, required this.serviceTypeId});
 
   @override
   State<UpdateServiceScreen> createState() => _CreateServiceState();
 }
 
 class _CreateServiceState extends State<UpdateServiceScreen> {
-  String? selectedServiceType;
+  // String? selectedServiceType;
 
   final TextEditingController serviceNameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController bookController = TextEditingController();
+  final TextEditingController serviceTypeController = TextEditingController();
 
   @override
   initState() {
     super.initState();
     bookController.text = widget.bookTitle;
-    selectedServiceType = widget.serviceType;
+    // selectedServiceType = widget.serviceType;
+    serviceTypeController.text = widget.serviceType;
     serviceNameController.text = widget.serviceName;
     priceController.text = widget.price.toString();
   }
@@ -86,13 +89,18 @@ class _CreateServiceState extends State<UpdateServiceScreen> {
               ),
 
               const SizedBox(height: 20),
-              ServiceTypeDropdown(
-                onChanged: (value) {
-                  setState(() {
-                    selectedServiceType = value;
-                  });
-                },
-                value: selectedServiceType,
+              // ServiceTypeDropdown(
+              //   onChanged: (value) {
+              //     setState(() {
+              //       selectedServiceType = value;
+              //     });
+              //   },
+              //   value: selectedServiceType,
+              // ),
+              CustomTextFormField(
+                controller: serviceTypeController,
+                label: 'Service Type',
+                readOnly: true,
               ),
               const SizedBox(height: 20),
               CustomTextFormField(
@@ -134,7 +142,7 @@ class _CreateServiceState extends State<UpdateServiceScreen> {
 
                   bool updated = await ServiceService.updateService(
                       widget.serviceId,
-                      selectedServiceType!,
+                      widget.serviceTypeId,
                       description,
                       price);
                   if (updated) {

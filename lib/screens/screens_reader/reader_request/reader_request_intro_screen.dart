@@ -19,23 +19,31 @@ class _ReaderRequestIntroScreenState extends State<ReaderRequestIntroScreen> {
   List<QuestionModel> listQuestions = [];
   List<String> listCountry = [];
 
-  Future<List<QuestionModel>> getListQuestion() async {
-    return QuestionService.getListQuestion();
+  Future<void> getListQuestion() async {
+    var value = await QuestionService.getListQuestion();
+    setState(() {
+      listQuestions = value;
+    });
   }
 
-  Future<List<String>> getListCountry() async {
-    return CountryService.getListCountry(null);
+  Future<void> getListCountry() async {
+    var value = await CountryService.getListCountry(null);
+    setState(() {
+      listCountry = value;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    Future.wait([getListQuestion(), getListCountry()]).then((List results) {
-      setState(() {
-        listQuestions = results[0];
-        listCountry = results[1];
-      });
-    });
+    // Future.wait([getListQuestion(), getListCountry()]).then((List results) {
+    //   setState(() {
+    //     listQuestions = results[0];
+    //     listCountry = results[1];
+    //   });
+    // });
+    getListCountry();
+    getListQuestion();
   }
 
   @override
@@ -66,7 +74,7 @@ class _ReaderRequestIntroScreenState extends State<ReaderRequestIntroScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Welcome to the New Reader',
+                    'Welcome to Reader site',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.normal,

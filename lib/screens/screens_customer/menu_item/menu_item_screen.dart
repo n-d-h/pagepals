@@ -80,17 +80,17 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     final screens = _listScreens();
 
     return Scaffold(
-      body: Stack(
-        children: [
-          screens[_currentIndex],
-          if (!_isDrawerOpen)
-            BottomNavBar(
+      body: screens[_currentIndex],
+      bottomNavigationBar: !_isDrawerOpen
+          ? BottomNavBar(
               bottomBar: BottomNavigationBar(
                 backgroundColor: Colors.white,
                 currentIndex: _currentIndex,
-                onTap: (index) => setState(() {
-                  _currentIndex = index;
-                }),
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
                 items: _navigatorItems,
                 selectedItemColor:
                     ColorHelper.getColor(ColorHelper.green).withOpacity(0.8),
@@ -98,13 +98,37 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
                 selectedFontSize: 10,
                 unselectedFontSize: 10,
                 iconSize: 24,
-                // showUnselectedLabels: false,
-                // showSelectedLabels: false,
                 type: BottomNavigationBarType.fixed,
               ),
-            ),
-        ],
-      ),
+            )
+          : null,
     );
   }
+// return Scaffold(
+//   body: Stack(
+//     children: [
+//       screens[_currentIndex],
+//       if (!_isDrawerOpen)
+//         BottomNavBar(
+//           bottomBar: BottomNavigationBar(
+//             backgroundColor: Colors.white,
+//             currentIndex: _currentIndex,
+//             onTap: (index) => setState(() {
+//               _currentIndex = index;
+//             }),
+//             items: _navigatorItems,
+//             selectedItemColor:
+//                 ColorHelper.getColor(ColorHelper.green).withOpacity(0.8),
+//             unselectedItemColor: Colors.grey,
+//             selectedFontSize: 10,
+//             unselectedFontSize: 10,
+//             iconSize: 24,
+//             // showUnselectedLabels: false,
+//             // showSelectedLabels: false,
+//             type: BottomNavigationBarType.fixed,
+//           ),
+//         ),
+//     ],
+//   ),
+// );
 }

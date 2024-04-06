@@ -62,9 +62,6 @@ class _ReaderTabScreenState extends State<ReaderTabScreen> {
               }
             },
           ),
-          const SizedBox(
-            height: 70,
-          )
         ],
       ),
     );
