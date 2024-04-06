@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:pagepals/screens/screens_reader/reader_request/video_player_from_file.dart';
 
 class ReaderEditProfileScreen extends StatefulWidget {
   const ReaderEditProfileScreen({super.key});
@@ -9,6 +13,67 @@ class ReaderEditProfileScreen extends StatefulWidget {
 }
 
 class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
+  File? _selectedVideo;
+  File? _selectedImage;
+
+  void _handleVideoSelection() async {
+    final result = await ImagePicker().pickVideo(
+      source: ImageSource.gallery,
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedVideo = File(result.path);
+      });
+    }
+  }
+
+  void _handleViewVideo() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+          child: VideoPlayerFromFile(
+            videoFile: _selectedVideo!,
+          ),
+        );
+      },
+    );
+  }
+
+  void _handleImageSelection() async {
+    final result = await ImagePicker().pickImage(
+      imageQuality: 70,
+      maxWidth: 1440,
+      maxHeight: 1440,
+      source: ImageSource.gallery,
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedImage = File(result.path);
+      });
+    }
+  }
+
+  void _handleViewImage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.file(
+            _selectedImage!,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,6 +222,84 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                       },
                     );
                   }),
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(bottom: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Update Video',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                height: 120,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.cloud_upload,
+                                      size: 50,
+                                    ),
+                                    Text('Change Video'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 30),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Update Audio',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                height: 120,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.cloud_upload,
+                                      size: 50,
+                                    ),
+                                    Text('Change Audio'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -284,6 +427,58 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                       'value': controller.text,
                     });
                   },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future showBottomSheetForUpload(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.3,
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              InkWell(
+                onTap: () {
+                  _handleVideoSelection();
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Upload Video',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              InkWell(
+                onTap: () {
+                  _handleImageSelection();
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Upload Image',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue,
+                  ),
                 ),
               ),
             ],
