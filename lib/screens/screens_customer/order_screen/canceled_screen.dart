@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/radio_button.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
+import 'package:pagepals/services/booking_service.dart';
+import 'package:quickalert/quickalert.dart';
 
 class CanceledScreen extends StatefulWidget {
   final Function(int)? onValueChanged;
+  final String bookingId;
 
-  const CanceledScreen({super.key, this.onValueChanged});
+  const CanceledScreen(
+      {super.key, this.onValueChanged, required this.bookingId});
 
   @override
   State<CanceledScreen> createState() => _CanceledScreenState();
@@ -184,8 +191,41 @@ class _CanceledScreenState extends State<CanceledScreen> {
         ),
       ),
       bottomNavigationBar: BottomButton(
-        onPressed: () {
-          Navigator.pop(context);
+        onPressed: () async {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Center(
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: Colors.greenAccent,
+                  size: 60,
+                ),
+              );
+            },
+          );
+          bool isCanceled =
+              await BookingService.cancelBooking(widget.bookingId);
+          if (isCanceled) {
+            Future.delayed(Duration.zero, () {
+              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                PageTransition(
+                  child: const OrderScreen(),
+                  type: PageTransitionType.leftToRight,
+                  duration: const Duration(milliseconds: 300),
+                ),
+                (route) => false,
+              );
+
+              QuickAlert.show(
+                context: context,
+                title: 'Booking Canceled',
+                text: 'Your booking has been canceled successfully',
+                type: QuickAlertType.success,
+              );
+            });
+          }
         },
         isEnabled: _selectedValue != null,
         title: 'Submit',
