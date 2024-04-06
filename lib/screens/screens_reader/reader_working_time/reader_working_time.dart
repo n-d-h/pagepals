@@ -146,257 +146,299 @@ class _ReaderWorkingTimeState extends State<ReaderWorkingTime> {
     DateTime.now().day,
     (DateTime.now().hour + 1),
     0,
-  ).add(const Duration(hours: 5)));
+  ).add(const Duration(hours: 2)));
 
   @override
   Widget build(BuildContext context) {
     initializeData();
-    return workingTimeModels == null
-        ? Scaffold(
-            body: Center(
-            child: LoadingAnimationWidget.staggeredDotsWave(
-              color: ColorHelper.getColor(ColorHelper.green),
-              size: 60,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        centerTitle: true,
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        controller: ScrollController(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+              child: DatePickerWidget(
+                isWorkingTime: true,
+                onDateSelected: (value) {
+                  setState(() {
+                    if (value != selectedDate) {
+                      selectedDate = value;
+                      workingTimeModels = null;
+                      getWorkingTime();
+                    }
+                  });
+                },
+              ),
             ),
-          ))
-        : Scaffold(
-            appBar: AppBar(
-              title: Text(widget.title),
-              centerTitle: true,
-              surfaceTintColor: Colors.white,
-              backgroundColor: Colors.white,
+            const Divider(),
+            const SizedBox(
+              height: 15,
             ),
-            body: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              controller: ScrollController(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                    child: DatePickerWidget(
-                      isWorkingTime: true,
-                      onDateSelected: (value) {
-                        setState(() {
-                          selectedDate = value;
-                          workingTimeModels = null;
-                          getWorkingTime();
-                        });
-                      },
-                    ),
-                  ),
-                  const Divider(),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        "Start: ${_startTime.format(context)}",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        "End: ${_endTime.format(context)}",
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    height: 400,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: TimeRangePicker(
-                      paintingStyle: PaintingStyle.stroke,
-                      hideButtons: true,
-                      hideTimes: true,
-                      interval: const Duration(hours: 1),
-                      minDuration: const Duration(hours: 1),
-                      strokeWidth: 10,
-                      ticks: 12,
-                      ticksOffset: 2,
-                      ticksLength: 8,
-                      handlerRadius: 8,
-                      ticksColor: Colors.grey,
-                      rotateLabels: false,
-                      backgroundColor: Colors.grey[200]!,
-                      handlerColor: Colors.blueAccent,
-                      strokeColor: ColorHelper.getColor(ColorHelper.green),
-                      labels: [
-                        "0 h",
-                        "3 h",
-                        "6 h",
-                        "9 h",
-                        "12 h",
-                        "15 h",
-                        "18 h",
-                        "21 h"
-                      ].asMap().entries.map((e) {
-                        return ClockLabel.fromIndex(
-                            idx: e.key, length: 8, text: e.value);
-                      }).toList(),
-                      labelOffset: 30,
-                      padding: 55,
-                      labelStyle:
-                          const TextStyle(fontSize: 18, color: Colors.black),
-                      start: _startTime,
-                      end: _endTime,
-                      disabledTimes: generateDisabledTimes(),
-                      clockRotation: 180.0,
-                      onStartChange: (start) {
-                        setState(() {
-                          _startTime = start;
-                        });
-                      },
-                      onEndChange: (end) {
-                        setState(() {
-                          _endTime = end;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    color: Colors.grey[100]!,
-                    child: Row(
+            workingTimeModels == null
+                ? Container(
+                    margin: const EdgeInsets.only(top: 120),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Checkbox(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                        Center(
+                          child: LoadingAnimationWidget.prograssiveDots(
+                            color: ColorHelper.getColor(ColorHelper.green),
+                            size: 60,
                           ),
-                          side: const BorderSide(
-                            color: Colors.grey,
-                            width: 1.4,
-                          ),
-                          checkColor: Colors.white,
-                          fillColor: MaterialStateColor.resolveWith((states) {
-                            const Set<MaterialState> interactiveStates =
-                                <MaterialState>{
-                              MaterialState.pressed,
-                              MaterialState.hovered,
-                              MaterialState.selected,
-                            };
-                            if (states.any(interactiveStates.contains)) {
-                              return ColorHelper.getColor(ColorHelper.green);
-                            }
-                            return ColorHelper.getColor(ColorHelper.white);
-                          }),
-                          value: isCheck,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isCheck = value!;
-                            });
-                          },
                         ),
-                        Expanded(
-                            child: RichText(
-                          textAlign: TextAlign.start,
-                          // Align the text inside RichText
-                          text: TextSpan(
-                            text:
-                                'Repeat for the next 3 months with this time frame on ',
-                            style: GoogleFonts.lexend(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                            children: [
-                              TextSpan(
-                                text: DateFormat('EEEE').format(selectedDate),
-                                style: GoogleFonts.lexend(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color:
-                                      ColorHelper.getColor(ColorHelper.green),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )),
                       ],
                     ),
                   )
-                ],
-              ),
-            ),
-            bottomNavigationBar: BottomButton(
-              title: 'Save',
-              onPressed: () async {
-                // reload the working time
-                setState(() {
-                  workingTimeModels = null;
-                  _startTime = TimeOfDay(hour: (DateTime.now().hour + 1), minute: 0);
-                  _endTime = TimeOfDay.fromDateTime(DateTime(
-                    DateTime.now().year,
-                    DateTime.now().month,
-                    DateTime.now().day,
-                    (DateTime.now().hour + 1),
-                    0,
-                  ).add(const Duration(hours: 5)));
-                });
-
-                // Get the date
-                String date = selectedDate.toString().split(' ').first;
-
-                // Get the start time
-                DateTime start = DateTime(selectedDate.year, selectedDate.month,
-                    selectedDate.day, _startTime.hour, _startTime.minute);
-
-                // Get the slots between the start and end time
-                int slots = (_endTime.hour - _startTime.hour);
-
-                // Get the start times
-                List<String>? startTimes = [];
-                for (int slot = 0; slot < slots; slot++) {
-                  startTimes.add(start
-                      .add(Duration(hours: slot))
-                      .toString()
-                      .split('.')
-                      .first);
-                }
-
-                // call the create working time function
-                bool created = await WorkingTimeService.createWorkingTime(
-                    widget.readerId, isCheck, date, startTimes);
-
-                if (created) {
-                  getWorkingTime();
-                  Future.delayed(Duration.zero, () {
-                    QuickAlert.show(
-                      context: context,
-                      title: 'Success',
-                      text: 'Working time created successfully',
-                      type: QuickAlertType.success,
-                    );
-                  });
-                } else {
-                  getWorkingTime();
-                  Future.delayed(Duration.zero, () {
-                    QuickAlert.show(
-                      context: context,
-                      title: 'Error',
-                      text: 'Failed to create working time',
-                      type: QuickAlertType.error,
-                    );
-                  });
-                }
+                : Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            "Start: ${_startTime.format(context)}",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "End: ${_endTime.format(context)}",
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 400,
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TimeRangePicker(
+                          paintingStyle: PaintingStyle.stroke,
+                          hideButtons: true,
+                          hideTimes: true,
+                          interval: const Duration(hours: 1),
+                          minDuration: const Duration(hours: 1),
+                          strokeWidth: 10,
+                          ticks: 12,
+                          ticksOffset: 2,
+                          ticksLength: 8,
+                          handlerRadius: 8,
+                          ticksColor: Colors.grey,
+                          rotateLabels: false,
+                          backgroundColor: Colors.grey[200]!,
+                          handlerColor: Colors.blueAccent,
+                          strokeColor: ColorHelper.getColor(ColorHelper.green),
+                          labels: [
+                            "0 h",
+                            "3 h",
+                            "6 h",
+                            "9 h",
+                            "12 h",
+                            "15 h",
+                            "18 h",
+                            "21 h"
+                          ].asMap().entries.map((e) {
+                            return ClockLabel.fromIndex(
+                                idx: e.key, length: 8, text: e.value);
+                          }).toList(),
+                          labelOffset: 30,
+                          padding: 55,
+                          labelStyle: const TextStyle(
+                              fontSize: 18, color: Colors.black),
+                          start: _startTime,
+                          end: _endTime,
+                          disabledTimes: generateDisabledTimes(),
+                          clockRotation: 180.0,
+                          onStartChange: (start) {
+                            setState(() {
+                              _startTime = start;
+                            });
+                          },
+                          onEndChange: (end) {
+                            setState(() {
+                              _endTime = end;
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        color: Colors.grey[100]!,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Checkbox(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              side: const BorderSide(
+                                color: Colors.grey,
+                                width: 1.4,
+                              ),
+                              checkColor: Colors.white,
+                              fillColor:
+                                  MaterialStateColor.resolveWith((states) {
+                                const Set<MaterialState> interactiveStates =
+                                    <MaterialState>{
+                                  MaterialState.pressed,
+                                  MaterialState.hovered,
+                                  MaterialState.selected,
+                                };
+                                if (states.any(interactiveStates.contains)) {
+                                  return ColorHelper.getColor(
+                                      ColorHelper.green);
+                                }
+                                return ColorHelper.getColor(ColorHelper.white);
+                              }),
+                              value: isCheck,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isCheck = value!;
+                                });
+                              },
+                            ),
+                            Expanded(
+                                child: RichText(
+                              textAlign: TextAlign.start,
+                              // Align the text inside RichText
+                              text: TextSpan(
+                                text:
+                                    'Repeat for the next 3 months with this time frame on ',
+                                style: GoogleFonts.lexend(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text:
+                                        DateFormat('EEEE').format(selectedDate),
+                                    style: GoogleFonts.lexend(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorHelper.getColor(
+                                          ColorHelper.green),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomButton(
+        title: 'Save',
+        onPressed: () async {
+          if (_endTime.hour - _startTime.hour <= 0) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("Invalid End Time"),
+                  content: const Text(
+                      "The end time must be before 12:00 AM. Please select a valid end time."),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
               },
-              isEnabled: selectedDate.isBefore(DateTime(
-                DateTime.now().year,
-                DateTime.now().month,
-                (DateTime.now().day + 1),
-              ))
-                  ? false
-                  : true,
-            ),
-          );
+            );
+          } else {
+            // reload the working time
+            setState(() {
+              workingTimeModels = null;
+            });
+
+            // Get the date
+            String date = selectedDate.toString().split(' ').first;
+
+            // Get the start time
+            DateTime start = DateTime(selectedDate.year, selectedDate.month,
+                selectedDate.day, _startTime.hour, _startTime.minute);
+
+            // Get the end time
+            DateTime endTime = DateTime(selectedDate.year, selectedDate.month,
+                selectedDate.day, _endTime.hour, _endTime.minute);
+
+            // Get the slots between the start and end time
+            int slots = endTime.difference(start).inHours;
+
+            // Get the start times
+            List<String>? startTimes = [];
+            for (int slot = 0; slot < slots; slot++) {
+              startTimes.add(
+                  start.add(Duration(hours: slot)).toString().split('.').first);
+            }
+
+            // call the create working time function
+            bool created = await WorkingTimeService.createWorkingTime(
+                widget.readerId, isCheck, date, startTimes);
+
+            if (created) {
+              getWorkingTime();
+              Future.delayed(Duration.zero, () {
+                QuickAlert.show(
+                  context: context,
+                  title: 'Success',
+                  text: 'Working time created successfully',
+                  type: QuickAlertType.success,
+                );
+              });
+              setState(() {
+                _startTime =
+                    TimeOfDay(hour: (DateTime.now().hour + 1), minute: 0);
+                _endTime = TimeOfDay.fromDateTime(DateTime(
+                  DateTime.now().year,
+                  DateTime.now().month,
+                  DateTime.now().day,
+                  (DateTime.now().hour + 1),
+                  0,
+                ).add(const Duration(hours: 2)));
+              });
+            } else {
+              getWorkingTime();
+              Future.delayed(Duration.zero, () {
+                QuickAlert.show(
+                  context: context,
+                  title: 'Error',
+                  text: 'Failed to create working time',
+                  type: QuickAlertType.error,
+                );
+              });
+            }
+          }
+        },
+        isEnabled: selectedDate.isBefore(DateTime(
+          DateTime.now().year,
+          DateTime.now().month,
+          (DateTime.now().day + 1),
+        ))
+            ? false
+            : true,
+      ),
+    );
   }
 }

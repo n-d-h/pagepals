@@ -43,7 +43,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
   Future<void> getBooking(String readerId) async {
     var pending =
         await BookingService.getBookingByReader(readerId, 0, 10, 'PENDING');
-    var done = await BookingService.getBookingByReader(readerId, 0, 10, 'DONE');
+    var done = await BookingService.getBookingByReader(readerId, 0, 10, 'COMPLETE');
     var cancel =
         await BookingService.getBookingByReader(readerId, 0, 10, 'CANCEL');
     setState(() {
