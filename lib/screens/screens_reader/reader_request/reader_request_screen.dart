@@ -93,26 +93,6 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
             appBar: AppBar(
               title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
               centerTitle: true,
-              actions: [
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.appSave,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ],
               leading: IconButton(
                 onPressed: () {
                   showDialog(

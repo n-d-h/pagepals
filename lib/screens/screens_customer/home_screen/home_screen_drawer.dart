@@ -11,6 +11,7 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
+import 'package:pagepals/screens/screens_customer/customer_profile/customer_profile_screen.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/customer_wallet_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_pending_screen/reader_pending_screen.dart';
@@ -121,7 +122,17 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             title: Text(AppLocalizations.of(context)!.appProfile),
             onTap: () {
               Navigator.pop(context);
-              // Navigate to profile screen
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageTransition(
+                  child: CustomerProfileScreen(
+                    account: account,
+                  ),
+                  type: PageTransitionType.rightToLeft,
+                  duration: const Duration(milliseconds: 300),
+                ),
+                (route) => false,
+              );
             },
           ),
           ListTile(

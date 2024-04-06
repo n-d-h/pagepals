@@ -58,16 +58,18 @@ class AccountModel {
 class Customer {
   String? id;
   String? imageUrl;
+  String? fullName;
   String? dob;
   String? gender;
 
-  Customer({this.id, this.imageUrl, this.dob, this.gender});
+  Customer({this.id, this.imageUrl, this.dob, this.gender, this.fullName});
 
   Customer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     imageUrl = json['imageUrl'];
     dob = json['dob'];
     gender = json['gender'];
+    fullName = json['fullName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +78,7 @@ class Customer {
     data['imageUrl'] = this.imageUrl;
     data['dob'] = this.dob;
     data['gender'] = this.gender;
+    data['fullName'] = this.fullName;
     return data;
   }
 }
