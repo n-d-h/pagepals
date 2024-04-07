@@ -110,6 +110,7 @@ class AuthenService {
               imageUrl
               dob
               gender
+              fullName
             }
             reader {
               id

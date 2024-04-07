@@ -122,16 +122,13 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             title: Text(AppLocalizations.of(context)!.appProfile),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushAndRemoveUntil(
+              Navigator.push(
                 context,
                 PageTransition(
-                  child: CustomerProfileScreen(
-                    account: account,
-                  ),
+                  child: const CustomerProfileScreen(),
                   type: PageTransitionType.rightToLeft,
                   duration: const Duration(milliseconds: 300),
                 ),
-                (route) => false,
               );
             },
           ),
