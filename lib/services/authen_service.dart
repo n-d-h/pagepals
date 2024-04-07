@@ -115,6 +115,7 @@ class AuthenService {
             reader {
               id
               nickname
+              avatarUrl
             }
             accountState {
               name
