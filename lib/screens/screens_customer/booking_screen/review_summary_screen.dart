@@ -106,7 +106,9 @@ class ReviewSummaryScreen extends StatelessWidget {
                 end: formatPrice(amount),
               ),
               const SpaceBetweenRowWidget(
-                  start: 'Service fees', end: '3.000 VND'),
+                start: 'Service fees',
+                end: '3.000 VND',
+              ),
               SpaceBetweenRowWidget(
                 start: 'Total',
                 end: formatPrice(total),
@@ -123,17 +125,7 @@ class ReviewSummaryScreen extends StatelessWidget {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return Center(
-                child:
-                    // SizedBox(
-                    //   height: 50,
-                    //   width: 50,
-                    //   child: CircularProgressIndicator(
-                    //     valueColor: AlwaysStoppedAnimation(
-                    //       ColorHelper.getColor(ColorHelper.green),
-                    //     ),
-                    //   ),
-                    // ),
-                    LoadingAnimationWidget.staggeredDotsWave(
+                child: LoadingAnimationWidget.staggeredDotsWave(
                   color: Colors.greenAccent,
                   size: 60,
                 ),

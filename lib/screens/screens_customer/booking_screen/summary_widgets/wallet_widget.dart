@@ -1,9 +1,45 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
-class WalletWidget extends StatelessWidget {
+class WalletWidget extends StatefulWidget {
   const WalletWidget({super.key});
+
+  @override
+  State<WalletWidget> createState() => _WalletWidgetState();
+}
+
+class _WalletWidgetState extends State<WalletWidget> {
+  AccountModel? accountModel;
+
+  @override
+  void initState() {
+    super.initState();
+    getAccount();
+  }
+
+  void getAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return;
+    }
+    try {
+      Map<String, dynamic> accountMap = json.decode(accountString);
+      AccountModel account = AccountModel.fromJson(accountMap);
+      setState(() {
+        accountModel = account;
+      });
+    } catch (e) {
+      print('Error decoding account data: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +114,9 @@ class WalletWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Text(
-                    '1.155.000 VND',
-                    style: TextStyle(
+                  Text(
+                    '${accountModel?.wallet!.tokenAmount.toString()} pals',
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
