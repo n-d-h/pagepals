@@ -93,18 +93,21 @@ class Customer {
 class Reader {
   String? id;
   String? nickname;
+  String? avatarUrl;
 
-  Reader({this.id, this.nickname});
+  Reader({this.id, this.nickname, this.avatarUrl});
 
   Reader.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nickname = json['nickname'];
+    avatarUrl = json['avatarUrl'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['nickname'] = this.nickname;
+    data['avatarUrl'] = this.avatarUrl;
     return data;
   }
 }
