@@ -18,9 +18,10 @@ class ReaderInfoWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 60,
-            backgroundImage: AssetImage('assets/image_reader.png'),
+            backgroundImage: NetworkImage(reader?.profile?.avatarUrl ??
+                'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain'),
           ),
           const SizedBox(
             width: 20,

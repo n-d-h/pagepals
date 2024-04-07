@@ -24,6 +24,7 @@ class ReaderService {
           experience
           genre
           id
+          avatarUrl
           nickname
           services {
             price
@@ -122,6 +123,7 @@ class ReaderService {
         experience
         genre
         id
+        avatarUrl
         introductionVideoUrl
         language
         nickname

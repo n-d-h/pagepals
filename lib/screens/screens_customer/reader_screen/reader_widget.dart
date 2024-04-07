@@ -48,9 +48,8 @@ class _ReaderWidgetState extends State<ReaderWidget> {
           children: [
             CircleAvatar(
               radius: 55,
-              backgroundImage: AssetImage(
-                  widget.reader.account?.customer?.imageUrl ??
-                      'assets/image_reader.png'),
+              backgroundImage: NetworkImage(widget.reader.avatarUrl ??
+                  'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain'),
             ),
             const SizedBox(width: 16),
             Column(

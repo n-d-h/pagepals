@@ -43,13 +43,14 @@ class ProfileInfoLine extends StatelessWidget {
                   margin: const EdgeInsets.only(left: 25, right: 10),
                   width: 50,
                   height: 50,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         image: NetworkImage(
+                          reader?.profile?.avatarUrl ??
                           'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
                         ),
-                        fit: BoxFit.fitHeight),
+                        fit: BoxFit.fill),
                   ),
                 ),
               ),

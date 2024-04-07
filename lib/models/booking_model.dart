@@ -30,15 +30,19 @@ class BookingModel {
 
 class Booking {
   String? id;
+  int? rating;
+  String? review;
   Meeting? meeting;
   Service? service;
   String? startAt;
   String? createdAt;
 
-  Booking({this.id, this.meeting, this.service, this.startAt, this.createdAt});
+  Booking({this.id, this.rating, this.review, this.meeting, this.service, this.startAt, this.createdAt});
 
   Booking.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    rating = json['rating'];
+    review = json['review'];
     meeting =
         json['meeting'] != null ? new Meeting.fromJson(json['meeting']) : null;
     service =
@@ -50,6 +54,8 @@ class Booking {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['rating'] = this.rating;
+    data['review'] = this.review;
     if (this.meeting != null) {
       data['meeting'] = this.meeting!.toJson();
     }
@@ -93,13 +99,15 @@ class Meeting {
 class Reader {
   String? id;
   String? nickname;
+  String? avatarUrl;
   Account? account;
 
-  Reader({this.id, this.nickname, this.account});
+  Reader({this.id, this.nickname, this.avatarUrl, this.account});
 
   Reader.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nickname = json['nickname'];
+    avatarUrl = json['avatarUrl'];
     account =
         json['account'] != null ? new Account.fromJson(json['account']) : null;
   }
@@ -108,6 +116,7 @@ class Reader {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['nickname'] = this.nickname;
+    data['avatarUrl'] = this.avatarUrl;
     if (this.account != null) {
       data['account'] = this.account!.toJson();
     }
