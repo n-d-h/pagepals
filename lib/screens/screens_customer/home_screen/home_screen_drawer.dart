@@ -101,13 +101,13 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.token_sharp,
               color: Colors.deepPurpleAccent.withOpacity(0.7),
             ),
-            title: const Text("Token: 200"),
+            title: Text("Token: ${account?.wallet?.tokenAmount} pals"),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
                 context,
                 PageTransition(
-                  child: const CustomerWalletScreen(),
+                  child: CustomerWalletScreen(account: account),
                   type: PageTransitionType.rightToLeft,
                   duration: const Duration(milliseconds: 300),
                 ),
@@ -122,16 +122,13 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             title: Text(AppLocalizations.of(context)!.appProfile),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushAndRemoveUntil(
+              Navigator.push(
                 context,
                 PageTransition(
-                  child: CustomerProfileScreen(
-                    account: account,
-                  ),
+                  child: const CustomerProfileScreen(),
                   type: PageTransitionType.rightToLeft,
                   duration: const Duration(milliseconds: 300),
                 ),
-                (route) => false,
               );
             },
           ),

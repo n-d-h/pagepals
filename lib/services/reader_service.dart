@@ -81,6 +81,7 @@ class ReaderService {
               tags
               totalOfBookings
               totalOfReviews
+              avatarUrl
             }
             workingTimeList {
               workingDates {

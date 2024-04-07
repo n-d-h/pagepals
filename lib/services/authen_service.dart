@@ -110,6 +110,7 @@ class AuthenService {
               imageUrl
               dob
               gender
+              fullName
             }
             reader {
               id
@@ -118,6 +119,20 @@ class AuthenService {
             accountState {
               name
               id
+            }
+            wallet {
+              id
+              cash
+              tokenAmount
+              transactions {
+                amount
+                transactionType
+                status
+                id
+                description
+                currency
+                createAt
+              }
             }
           }
         }
