@@ -39,6 +39,7 @@ class Profile {
   String? tags;
   String? totalOfBookings;
   String? totalOfReviews;
+  String? avatarUrl;
 
   Profile(
       {this.account,
@@ -54,7 +55,8 @@ class Profile {
       this.rating,
       this.tags,
       this.totalOfBookings,
-      this.totalOfReviews});
+      this.totalOfReviews,
+      this.avatarUrl});
 
   Profile.fromJson(Map<String, dynamic> json) {
     account =
@@ -72,6 +74,7 @@ class Profile {
     tags = json['tags'];
     totalOfBookings = json['totalOfBookings'];
     totalOfReviews = json['totalOfReviews'];
+    avatarUrl = json['avatarUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -92,6 +95,7 @@ class Profile {
     data['tags'] = this.tags;
     data['totalOfBookings'] = this.totalOfBookings;
     data['totalOfReviews'] = this.totalOfReviews;
+    data['avatarUrl'] = this.avatarUrl;
     return data;
   }
 }

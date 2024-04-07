@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/services/customer_service.dart';
+import 'package:pagepals/services/file_storage_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final customerEditFormKey = GlobalKey<FormState>();
 
@@ -21,6 +25,12 @@ class CustomerEditProfileScreen extends StatefulWidget {
 class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   File? _selectedImage;
   List<String> gender = ["MALE", "FEMALE", "OTHER"];
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  String? fullName;
+  String? dob;
+  Customer? customer;
 
   void _handleImageSelection() async {
     final result = await ImagePicker().pickImage(
@@ -38,18 +48,17 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Customer customer = widget.account?.customer ?? Customer();
-    TextEditingController fullNameController = TextEditingController(
-      text: customer.fullName,
-    );
-    TextEditingController dobController = TextEditingController(
-      text: customer.dob,
-    );
-    TextEditingController genderController = TextEditingController(
-      text: customer.gender,
-    );
+  void initState() {
+    super.initState();
+    fullNameController.text = widget.account?.fullName ?? '';
+    dobController.text = widget.account?.customer?.dob?.substring(0, 10) ?? '';
+    genderController.text = widget.account?.customer?.gender ?? '';
+    fullName = widget.account?.fullName ?? '';
+    dob = widget.account?.customer?.dob?.substring(0, 10) ?? '';
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.account?.username}'),
@@ -151,7 +160,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                             : CircleAvatar(
                                 radius: 50,
                                 backgroundImage: NetworkImage(
-                                  customer?.imageUrl ?? '',
+                                  widget.account?.customer?.imageUrl ?? '',
                                 ),
                               ),
                         Positioned(
@@ -212,8 +221,11 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                       onTapOutside: (e) {
                         FocusScope.of(context).unfocus();
                       },
-                      onChanged: (value) {
-                        fullNameController.text = value;
+                      onFieldSubmitted: (value) {
+                        setState(() {
+                          fullName = value;
+                          fullNameController.text = value;
+                        });
                       },
                     ),
                     const SizedBox(height: 20),
@@ -224,12 +236,11 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.datetime,
-                      onSaved: (value) {
-                        dobController.text = value!;
-                      },
-                      onTapOutside: (e) {
-                        FocusScope.of(context).unfocus();
-                        dobController.text = dobController.text;
+                      onFieldSubmitted: (value) {
+                        setState(() {
+                          dob = value;
+                          dobController.text = value;
+                        });
                       },
                     ),
                     const SizedBox(height: 20),
@@ -260,13 +271,52 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                     InkWell(
                       onTap: () async {
                         customerEditFormKey.currentState?.save();
-                        await CustomerService.updateCustomer(
+                        FocusScope.of(context).unfocus();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(
+                              child: LoadingAnimationWidget.staggeredDotsWave(
+                                color: ColorHelper.getColor(ColorHelper.green),
+                                size: 60,
+                              ),
+                            );
+                          },
+                        );
+
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        String account = prefs.getString('account') ?? '';
+                        AccountModel accountModel = AccountModel.fromJson(
+                          json.decoder.convert(account),
+                        );
+
+                        String url = widget.account?.customer?.imageUrl ?? '';
+
+                        if(_selectedImage != null) {
+                          url = await FileStorageService.uploadImage(
+                            _selectedImage!,
+                          );
+                        }
+
+                        Customer customer =
+                            await CustomerService.updateCustomer(
                           widget.account?.customer?.id ?? '',
                           dobController.text,
                           fullNameController.text,
                           genderController.text,
-                          _selectedImage?.path ?? '',
+                          url,
                         );
+
+                        Future.delayed(const Duration(seconds: 2), () {
+                          Navigator.pop(context);
+
+                          accountModel.customer = customer;
+                          prefs.setString(
+                              'account', json.encoder.convert(accountModel));
+
+                          Navigator.pop(context, accountModel);
+                        });
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),

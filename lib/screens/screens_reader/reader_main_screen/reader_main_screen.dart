@@ -7,6 +7,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/booking_model.dart';
+import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
@@ -22,6 +23,7 @@ import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.da
 import 'package:pagepals/screens/screens_reader/promotion_screen/promotion_screen.dart';
 import 'package:pagepals/screens/screens_reader/report_screen/report_screen.dart';
 import 'package:pagepals/services/booking_service.dart';
+import 'package:pagepals/services/reader_service.dart';
 import 'package:unicons/unicons.dart';
 
 class ReaderMainScreen extends StatefulWidget {
@@ -35,6 +37,7 @@ class ReaderMainScreen extends StatefulWidget {
 
 class _ReaderMainScreenState extends State<ReaderMainScreen> {
   late String readerId;
+  ReaderProfile? readerProfile;
 
   BookingModel? pendingBooking;
   BookingModel? completedBooking;
@@ -53,12 +56,20 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
     });
   }
 
+  Future<void> getReaderProfile(String readerId) async {
+    ReaderProfile? reader =
+        await ReaderService.getReaderProfile(readerId);
+    setState(() {
+      readerProfile = reader;
+    });
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     readerId = widget.accountModel!.reader!.id!;
     getBooking(readerId);
+    getReaderProfile(readerId);
   }
 
   @override
@@ -139,7 +150,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                         Navigator.push(
                           context,
                           PageTransition(
-                            child: const ReaderEditProfileScreen(),
+                            child: ReaderEditProfileScreen(
+                              readerProfile: readerProfile,
+                            ),
                             type: PageTransitionType.rightToLeft,
                           ),
                         );

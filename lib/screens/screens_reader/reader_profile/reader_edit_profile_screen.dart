@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/video_player_from_file.dart';
 
 class ReaderEditProfileScreen extends StatefulWidget {
-  const ReaderEditProfileScreen({super.key});
+  const ReaderEditProfileScreen({super.key, this.readerProfile});
+
+  final ReaderProfile? readerProfile;
 
   @override
   State<ReaderEditProfileScreen> createState() =>
@@ -80,6 +83,7 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
       appBar: AppBar(
         title: const Text('Edit Profile'),
         centerTitle: true,
+        surfaceTintColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -103,9 +107,12 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                 children: [
                   Stack(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage('assets/image_reader.png'),
+                        backgroundImage: NetworkImage(
+                          widget.readerProfile?.profile?.avatarUrl ??
+                              'https://via.placeholder.com/150',
+                        ),
                       ),
                       Positioned(
                         bottom: 0,

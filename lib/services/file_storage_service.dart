@@ -71,4 +71,9 @@ class FileStorageService {
       'name': 'Reader Image',
     });
   }
+
+  static Future<void> deleteImage(String imageUrl) async {
+    Reference ref = _firebaseStorage.refFromURL(imageUrl);
+    await ref.delete();
+  }
 }
