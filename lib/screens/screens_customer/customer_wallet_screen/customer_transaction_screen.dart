@@ -17,6 +17,7 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Transaction History'),
+        surfaceTintColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -33,6 +34,14 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
               : Colors.red;
           var minus =
               transaction?.transactionType == 'DEPOSIT_TOKEN' ? '+' : '-';
+          var description = '';
+          if (transaction?.transactionType == 'DEPOSIT_TOKEN') {
+            description = 'Deposit token';
+          } else if (transaction?.transactionType == 'BOOKING_PAYMENT') {
+            description = 'Booking payment';
+          } else if (transaction?.transactionType == 'BOOKING_REFUND') {
+            description = 'Booking refund';
+          }
           return Container(
             margin: const EdgeInsets.all(10),
             padding: const EdgeInsets.all(10),
@@ -67,7 +76,7 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
                         ),
                       ],
                     ),
-                    Text(transaction?.description ?? 'No description'),
+                    Text(description),
                   ],
                 ),
                 Text(transaction?.createAt?.toString() ?? ''),

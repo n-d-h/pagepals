@@ -291,9 +291,13 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                           json.decoder.convert(account),
                         );
 
-                        String url = await FileStorageService.uploadImage(
-                          _selectedImage!,
-                        );
+                        String url = widget.account?.customer?.imageUrl ?? '';
+
+                        if(_selectedImage != null) {
+                          url = await FileStorageService.uploadImage(
+                            _selectedImage!,
+                          );
+                        }
 
                         Customer customer =
                             await CustomerService.updateCustomer(
