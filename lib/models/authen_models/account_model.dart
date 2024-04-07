@@ -7,6 +7,7 @@ class AccountModel {
   Customer? customer;
   Reader? reader;
   AccountState? accountState;
+  Wallet? wallet;
 
   AccountModel({
     this.id,
@@ -17,6 +18,7 @@ class AccountModel {
     this.customer,
     this.reader,
     this.accountState,
+    this.wallet,
   });
 
   AccountModel.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,8 @@ class AccountModel {
     accountState = json['accountState'] != null
         ? new AccountState.fromJson(json['accountState'])
         : null;
+    wallet =
+        json['wallet'] != null ? new Wallet.fromJson(json['wallet']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -50,6 +54,9 @@ class AccountModel {
     }
     if (this.accountState != null) {
       data['accountState'] = this.accountState!.toJson();
+    }
+    if (this.wallet != null) {
+      data['wallet'] = this.wallet!.toJson();
     }
     return data;
   }
@@ -117,6 +124,79 @@ class AccountState {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['id'] = this.id;
+    return data;
+  }
+}
+
+class Wallet {
+  String? id;
+  double? cash;
+  int? tokenAmount;
+  List<Transaction?>? transactions;
+
+  Wallet({this.id, this.cash, this.tokenAmount, this.transactions});
+
+  Wallet.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    cash = json['cash'];
+    tokenAmount = json['tokenAmount'];
+    if (json['transactions'] != null) {
+      transactions = <Transaction>[];
+      json['transactions'].forEach((v) {
+        transactions!.add(Transaction.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['cash'] = cash;
+    data['tokenAmount'] = tokenAmount;
+    data['transactions'] = transactions != null
+        ? transactions!.map((v) => v?.toJson()).toList()
+        : null;
+    return data;
+  }
+}
+
+class Transaction {
+  double? amount;
+  String? transactionType;
+  String? status;
+  String? id;
+  String? description;
+  String? currency;
+  String? createAt;
+
+  Transaction(
+      {this.amount,
+      this.transactionType,
+      this.status,
+      this.id,
+      this.description,
+      this.currency,
+      this.createAt});
+
+  Transaction.fromJson(Map<String, dynamic> json) {
+    amount = json['amount'];
+    transactionType = json['transactionType'];
+    status = json['status'];
+    id = json['id'];
+    description = json['description'];
+    currency = json['currency'];
+    createAt = json['createAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['amount'] = amount;
+    data['transactionType'] = transactionType;
+    data['status'] = status;
+    data['id'] = id;
+    data['description'] = description;
+    data['currency'] = currency;
+    data['createAt'] = createAt;
     return data;
   }
 }

@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
-import 'package:pagepals/screens/screens_customer/customer_wallet_screen/payment_response_screen.dart';
+import 'package:pagepals/screens/screens_customer/customer_wallet_screen/customer_transaction_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/transaction_money_widget.dart';
 import 'package:pagepals/services/momo_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomerWalletScreen extends StatefulWidget {
-  const CustomerWalletScreen({super.key});
+  const CustomerWalletScreen({super.key, this.account});
+
+  final AccountModel? account;
 
   @override
   State<CustomerWalletScreen> createState() => _CustomerWalletScreenState();
@@ -79,38 +81,22 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.currency_bitcoin_outlined,
-                        size: 45,
-                        color: Colors.orange,
-                      ),
                       Text(
-                        '100.000 BTC',
-                        style: TextStyle(
+                        widget.account?.wallet?.tokenAmount.toString() ?? '0',
+                        style: const TextStyle(
                           fontSize: 45,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.currency_bitcoin_outlined,
-                        size: 20,
-                        color: Colors.grey.shade600,
-                      ),
                       Text(
-                        '100.000 BTC',
+                        ' pals',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 30,
+                          color: Colors.yellow.shade700,
                           fontWeight: FontWeight.normal,
-                          color: Colors.grey.shade600,
                         ),
                       ),
                     ],
@@ -160,13 +146,15 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   PageTransition(
-                      //     type: PageTransitionType.bottomToTop,
-                      //     child: const PaymentResponseScreen(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.bottomToTop,
+                          child: CustomerTransactionScreen(
+                            account: widget.account,
+                          ),
+                        ),
+                      );
                     },
                     child: Container(
                       decoration: BoxDecoration(

@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/response_results_code.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
+import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/momo_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentResponseScreen extends StatefulWidget {
   final Map<String, String>? data;
@@ -20,20 +24,9 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
   @override
   void initState() {
     super.initState();
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Center(
-          child: LoadingAnimationWidget.staggeredDotsWave(
-            color: Colors.greenAccent,
-            size: 60,
-          ),
-        );
-      },
-    );
     Future.delayed(const Duration(seconds: 2), () {
       handleUpdateWallet(widget.data);
+      updateAccount();
     });
   }
 
@@ -67,6 +60,31 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
       signature,
       transId,
     );
+  }
+
+  void updateAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    String accessToken = prefs.getString('accessToken')!;
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return;
+    }
+    try {
+      Map<String, dynamic> accountMap = json.decode(accountString);
+      AccountModel account = AccountModel.fromJson(accountMap);
+      String userName = account.username!;
+
+      AccountModel updatedAccount = await AuthenService.getAccount(userName, accessToken);
+      prefs.setString('account', json.encode(updatedAccount));
+    } catch (e) {
+      print('Error decoding account data: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
