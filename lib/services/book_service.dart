@@ -118,9 +118,11 @@ class BookService {
 
     final List<dynamic>? booksData = result.data?['getReaderBooks'];
     if (booksData != null) {
-      return booksData.map((bookJson) => BookModel.fromJson(bookJson)).toList();
+      return booksData.isNotEmpty
+          ? booksData.map((bookJson) => BookModel.fromJson(bookJson)).toList()
+          : [BookModel(book: null, services: [])];
     } else {
-      throw Exception('Failed to parse books data');
+      return [BookModel(book: null, services: [])];
     }
   }
 

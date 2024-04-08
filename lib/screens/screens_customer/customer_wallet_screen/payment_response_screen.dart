@@ -71,11 +71,12 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
       return;
     }
     try {
-      Map<String, dynamic> accountMap = json.decode(accountString);
-      AccountModel account = AccountModel.fromJson(accountMap);
+      AccountModel account = AccountModel.fromJson(json.decoder.convert(accountString));
       String userName = account.username!;
 
       AccountModel updatedAccount = await AuthenService.getAccount(userName, accessToken);
+      prefs.remove('account');
+      print('account: ${json.encode(updatedAccount)}');
       prefs.setString('account', json.encode(updatedAccount));
     } catch (e) {
       print('Error decoding account data: $e');

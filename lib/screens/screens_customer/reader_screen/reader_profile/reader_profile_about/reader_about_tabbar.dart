@@ -6,10 +6,13 @@ import 'package:unicons/unicons.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReaderAboutTabbar extends StatelessWidget {
-  const ReaderAboutTabbar({super.key});
+  final String videoUrl;
+  const ReaderAboutTabbar({super.key, required this.videoUrl});
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<VideoPlayerScreenState> videoPlayerKey =
+        GlobalKey<VideoPlayerScreenState>();
     return SingleChildScrollView(
       // controller: ScrollController(),
       // physics: const AlwaysScrollableScrollPhysics(),
@@ -37,6 +40,8 @@ class ReaderAboutTabbar extends StatelessWidget {
               ),
             ),
             VideoPlayerScreen(
+              key: videoPlayerKey,
+              videoUrl: videoUrl,
               width: MediaQuery.of(context).size.width - 30,
             ),
             const SizedBox(height: SpaceHelper.space16),

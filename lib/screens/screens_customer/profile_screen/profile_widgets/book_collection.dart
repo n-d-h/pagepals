@@ -73,7 +73,7 @@ class ProfileBookCollection extends StatelessWidget {
                 },
               ),
             )
-          else
+          else if (books.first.id != '')
             SizedBox(
               height: 150,
               child: ListView.builder(
@@ -103,6 +103,20 @@ class ProfileBookCollection extends StatelessWidget {
                     ),
                   );
                 },
+              ),
+            )
+          else
+            Container(
+              height: 150,
+              margin: const EdgeInsets.only(right: 25),
+              child: const Center(
+                child: Text(
+                  'No book found',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
         ],
