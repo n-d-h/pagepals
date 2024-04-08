@@ -21,7 +21,7 @@ class ReaderProfileScreen extends StatefulWidget {
 }
 
 class _ReaderProfileState extends State<ReaderProfileScreen> {
-  late ReaderProfile reader;
+  ReaderProfile reader = ReaderProfile();
 
   Future<void> getReaderProfile() async {
     var data = await ReaderService.getReaderProfile(widget.readerId);
@@ -86,10 +86,12 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CircleAvatar(
+                          CircleAvatar(
                             radius: 60,
-                            backgroundImage:
-                                AssetImage('assets/image_reader.png'),
+                            backgroundImage: NetworkImage(
+                              reader.profile?.avatarUrl ??
+                                  'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+                            ),
                           ),
                           const SizedBox(
                             width: 20,
@@ -152,12 +154,12 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
               ),
             ];
           },
-          body: const TabBarView(
-            physics: NeverScrollableScrollPhysics(),
+          body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
             children: [
-              ReaderAboutTabbar(),
-              ReaderBookTabbar(),
-              ReaderReviewTabbar(),
+              ReaderAboutTabbar(videoUrl: reader.profile?.introductionVideoUrl ?? '',),
+              const ReaderBookTabbar(),
+              const ReaderReviewTabbar(),
             ],
           ),
         ),

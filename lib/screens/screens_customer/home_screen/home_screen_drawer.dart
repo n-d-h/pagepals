@@ -93,7 +93,12 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                   NetworkImage(account?.customer?.imageUrl ?? photoUrl),
             ),
             decoration: BoxDecoration(
-              color: ColorHelper.getColor(ColorHelper.green),
+              image: DecorationImage(
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.6), BlendMode.darken),
+                image: const AssetImage('assets/reading_book.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           ListTile(

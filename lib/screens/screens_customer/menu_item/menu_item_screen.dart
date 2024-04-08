@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/custom_icons.dart';
-import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
-import 'package:pagepals/screens/screens_customer/menu_item/bottom_nav_bar.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/bottom_tab_bar.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
@@ -79,32 +77,6 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   @override
   Widget build(BuildContext context) {
     final screens = _listScreens();
-
-    // return Scaffold(
-    //   body: screens[_currentIndex],
-    //   bottomNavigationBar: !_isDrawerOpen
-    //       ? BottomNavBar(
-    //           bottomBar: BottomNavigationBar(
-    //             backgroundColor: Colors.white,
-    //             currentIndex: _currentIndex,
-    //             onTap: (index) {
-    //               setState(() {
-    //                 _currentIndex = index;
-    //               });
-    //             },
-    //             items: _navigatorItems,
-    //             selectedItemColor:
-    //                 ColorHelper.getColor(ColorHelper.green).withOpacity(0.8),
-    //             unselectedItemColor: Colors.grey,
-    //             selectedFontSize: 10,
-    //             unselectedFontSize: 10,
-    //             iconSize: 24,
-    //             type: BottomNavigationBarType.fixed,
-    //           ),
-    //         )
-    //       : null,
-    // );
-
     return DefaultTabController(
       initialIndex: _currentIndex,
       length: screens.length,
@@ -141,32 +113,4 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
       ),
     );
   }
-
-// return Scaffold(
-//   body: Stack(
-//     children: [
-//       screens[_currentIndex],
-//       if (!_isDrawerOpen)
-//         BottomNavBar(
-//           bottomBar: BottomNavigationBar(
-//             backgroundColor: Colors.white,
-//             currentIndex: _currentIndex,
-//             onTap: (index) => setState(() {
-//               _currentIndex = index;
-//             }),
-//             items: _navigatorItems,
-//             selectedItemColor:
-//                 ColorHelper.getColor(ColorHelper.green).withOpacity(0.8),
-//             unselectedItemColor: Colors.grey,
-//             selectedFontSize: 10,
-//             unselectedFontSize: 10,
-//             iconSize: 24,
-//             // showUnselectedLabels: false,
-//             // showSelectedLabels: false,
-//             type: BottomNavigationBarType.fixed,
-//           ),
-//         ),
-//     ],
-//   ),
-// );
 }
