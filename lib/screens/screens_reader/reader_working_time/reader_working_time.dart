@@ -223,16 +223,16 @@ class _ReaderWorkingTimeState extends State<ReaderWorkingTime> {
                       ),
                       Container(
                         height: 400,
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        // margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: TimeRangePicker(
                           paintingStyle: PaintingStyle.stroke,
                           hideButtons: true,
                           hideTimes: true,
                           interval: const Duration(hours: 1),
                           minDuration: const Duration(hours: 1),
-                          strokeWidth: 10,
+                          // strokeWidth: 10,
                           ticks: 12,
-                          ticksOffset: 2,
+                          ticksOffset: -12,
                           ticksLength: 8,
                           handlerRadius: 8,
                           ticksColor: Colors.grey,
@@ -253,7 +253,7 @@ class _ReaderWorkingTimeState extends State<ReaderWorkingTime> {
                             return ClockLabel.fromIndex(
                                 idx: e.key, length: 8, text: e.value);
                           }).toList(),
-                          labelOffset: 30,
+                          labelOffset: -34,
                           padding: 55,
                           labelStyle: const TextStyle(
                               fontSize: 18, color: Colors.black),

@@ -94,13 +94,12 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
                             ),
                             width: 35,
                             height: 35,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/image_reader.png',
-                                ),
-                                fit: BoxFit.fitHeight,
+                                image: NetworkImage(widget.reader.avatarUrl ??
+                                    'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain'),
+                                fit: BoxFit.fill,
                               ),
                             ),
                           ),

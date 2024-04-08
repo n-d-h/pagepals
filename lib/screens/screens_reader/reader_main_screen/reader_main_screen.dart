@@ -46,7 +46,8 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
   Future<void> getBooking(String readerId) async {
     var pending =
         await BookingService.getBookingByReader(readerId, 0, 10, 'PENDING');
-    var done = await BookingService.getBookingByReader(readerId, 0, 10, 'COMPLETE');
+    var done =
+        await BookingService.getBookingByReader(readerId, 0, 10, 'COMPLETE');
     var cancel =
         await BookingService.getBookingByReader(readerId, 0, 10, 'CANCEL');
     setState(() {
@@ -57,8 +58,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
   }
 
   Future<void> getReaderProfile(String readerId) async {
-    ReaderProfile? reader =
-        await ReaderService.getReaderProfile(readerId);
+    ReaderProfile? reader = await ReaderService.getReaderProfile(readerId);
     setState(() {
       readerProfile = reader;
     });
@@ -173,7 +173,8 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   child: CircleAvatar(
                                     radius: 30,
                                     backgroundImage: NetworkImage(
-                                      widget.accountModel!.customer!.imageUrl!,
+                                      widget.accountModel?.reader?.avatarUrl ??
+                                          'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
                                     ),
                                   ),
                                 ),

@@ -17,18 +17,38 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  bool isLoading = true;
   BookingModel? pendingBooking;
   BookingModel? completedBooking;
   BookingModel? canceledBooking;
 
-  Future<void> getBooking() async {
+  Future<void> getPendingBooking() async {
     var pending = await BookingService.getBooking(0, 10, 'PENDING');
-    var done = await BookingService.getBooking(0, 10, 'COMPLETE');
-    var cancel = await BookingService.getBooking(0, 10, 'CANCEL');
     setState(() {
       pendingBooking = pending;
-      completedBooking = done;
+      if (pendingBooking != null) {
+        isLoading = false;
+      }
+    });
+  }
+
+  Future<void> getCompleteBooking() async {
+    var complete = await BookingService.getBooking(0, 10, 'COMPLETE');
+    setState(() {
+      completedBooking = complete;
+      if (completedBooking != null) {
+        isLoading = false;
+      }
+    });
+  }
+
+  Future<void> getCancelBooking() async {
+    var cancel = await BookingService.getBooking(0, 10, 'CANCEL');
+    setState(() {
       canceledBooking = cancel;
+      if (canceledBooking != null) {
+        isLoading = false;
+      }
     });
   }
 
@@ -36,7 +56,7 @@ class _OrderScreenState extends State<OrderScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getBooking();
+    getPendingBooking();
   }
 
   @override
@@ -44,65 +64,96 @@ class _OrderScreenState extends State<OrderScreen> {
     return DefaultTabController(
       initialIndex: 0,
       length: 3,
-      child: pendingBooking == null ||
-              completedBooking == null ||
-              canceledBooking == null
-          ? Scaffold(
-              backgroundColor: Colors.white,
-              body: Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: Colors.green,
-                  size: 60,
-                ),
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Text(
+              'My Booking',
+              style: GoogleFonts.lexend(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
               ),
-            )
-          : Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                title: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Text(
-                    'My Booking',
-                    style: GoogleFonts.lexend(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                bottom: TabBar(
-                  indicatorColor: ColorHelper.getColor(ColorHelper.green),
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  labelColor: ColorHelper.getColor(ColorHelper.green),
-                  labelStyle: GoogleFonts.lexend(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                  unselectedLabelColor: Colors.grey.shade400,
-                  tabs: [
-                    Tab(text: AppLocalizations.of(context)!.appUpcoming),
-                    Tab(text: AppLocalizations.of(context)!.appCompleted),
-                    Tab(text: AppLocalizations.of(context)!.appCanceled),
-                  ],
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.search_rounded,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
+            ),
+          ),
+          bottom: TabBar(
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  {
+                    setState(() {
+                      isLoading = true;
+                      pendingBooking = null;
+                    });
+                    getPendingBooking();
+                    break;
+                  }
+                case 1:
+                  {
+                    setState(() {
+                      isLoading = true;
+                      completedBooking = null;
+                    });
+                    getCompleteBooking();
+                    break;
+                  }
+                case 2:
+                  {
+                    setState(() {
+                      isLoading = true;
+                      canceledBooking = null;
+                    });
+                    getCancelBooking();
+                    break;
+                  }
+              }
+            },
+            isScrollable: false,
+            indicatorColor: ColorHelper.getColor(ColorHelper.green),
+            indicatorSize: TabBarIndicatorSize.tab,
+            labelColor: ColorHelper.getColor(ColorHelper.green),
+            labelStyle: GoogleFonts.lexend(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+            unselectedLabelColor: Colors.grey.shade400,
+            tabs: [
+              Tab(text: AppLocalizations.of(context)!.appUpcoming),
+              Tab(text: AppLocalizations.of(context)!.appCompleted),
+              Tab(text: AppLocalizations.of(context)!.appCanceled),
+            ],
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.search_rounded,
+                color: Colors.black,
               ),
-              body: TabBarView(
+            ),
+          ],
+        ),
+        body: isLoading
+            ? Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: Colors.green,
+                    size: 60,
+                  ),
+                ),
+              )
+            : TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   UpcomingTab(bookingModel: pendingBooking),
                   CompletedTab(bookingModel: completedBooking),
                   CanceledTab(bookingModel: canceledBooking),
                 ],
               ),
-            ),
+      ),
     );
   }
 }

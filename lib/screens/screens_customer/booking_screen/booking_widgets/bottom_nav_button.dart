@@ -6,12 +6,14 @@ class BottomButton extends StatelessWidget {
   final Function()? onPressed;
   final bool isEnabled;
   final String title;
+  final bool? isLoading;
 
   const BottomButton(
       {Key? key,
       required this.onPressed,
       required this.isEnabled,
-      required this.title})
+      required this.title,
+      this.isLoading})
       : super(key: key);
 
   @override
@@ -31,6 +33,7 @@ class BottomButton extends StatelessWidget {
       ),
       child: Center(
         child: Container(
+          height: 50,
           width: double.infinity,
           margin: const EdgeInsets.symmetric(horizontal: 30),
           child: OutlinedButton(
@@ -52,13 +55,22 @@ class BottomButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
               ),
             ),
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            child: isLoading != null && isLoading == true
+                ? const SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
           ),
         ),
       ),

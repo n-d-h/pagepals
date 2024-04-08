@@ -4,6 +4,7 @@ import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/bottom_nav_bar.dart';
+import 'package:pagepals/screens/screens_customer/menu_item/bottom_tab_bar.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/post_screen.dart';
@@ -79,31 +80,68 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   Widget build(BuildContext context) {
     final screens = _listScreens();
 
-    return Scaffold(
-      body: screens[_currentIndex],
-      bottomNavigationBar: !_isDrawerOpen
-          ? BottomNavBar(
-              bottomBar: BottomNavigationBar(
-                backgroundColor: Colors.white,
-                currentIndex: _currentIndex,
-                onTap: (index) {
+    // return Scaffold(
+    //   body: screens[_currentIndex],
+    //   bottomNavigationBar: !_isDrawerOpen
+    //       ? BottomNavBar(
+    //           bottomBar: BottomNavigationBar(
+    //             backgroundColor: Colors.white,
+    //             currentIndex: _currentIndex,
+    //             onTap: (index) {
+    //               setState(() {
+    //                 _currentIndex = index;
+    //               });
+    //             },
+    //             items: _navigatorItems,
+    //             selectedItemColor:
+    //                 ColorHelper.getColor(ColorHelper.green).withOpacity(0.8),
+    //             unselectedItemColor: Colors.grey,
+    //             selectedFontSize: 10,
+    //             unselectedFontSize: 10,
+    //             iconSize: 24,
+    //             type: BottomNavigationBarType.fixed,
+    //           ),
+    //         )
+    //       : null,
+    // );
+
+    return DefaultTabController(
+      initialIndex: _currentIndex,
+      length: screens.length,
+      child: Scaffold(
+        body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
+          children: screens,
+        ),
+        bottomNavigationBar: !_isDrawerOpen
+            ? BottomTabBar(
+                onTabChange: (index) {
                   setState(() {
                     _currentIndex = index;
                   });
                 },
-                items: _navigatorItems,
-                selectedItemColor:
-                    ColorHelper.getColor(ColorHelper.green).withOpacity(0.8),
-                unselectedItemColor: Colors.grey,
-                selectedFontSize: 10,
-                unselectedFontSize: 10,
-                iconSize: 24,
-                type: BottomNavigationBarType.fixed,
-              ),
-            )
-          : null,
+                tabs: _navigatorItems
+                    .map(
+                      (e) => Tab(
+                        iconMargin: const EdgeInsets.only(bottom: 2),
+                        icon: e.icon == _navigatorItems[_currentIndex].icon
+                            ? e.activeIcon
+                            : e.icon,
+                        child: Text(
+                          e.label!,
+                          style: const TextStyle(
+                            fontSize: 8,
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              )
+            : null,
+      ),
     );
   }
+
 // return Scaffold(
 //   body: Stack(
 //     children: [

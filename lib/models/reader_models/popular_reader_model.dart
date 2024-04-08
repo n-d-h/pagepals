@@ -6,6 +6,7 @@ class PopularReader {
   double? experience;
   String? genre;
   String? id;
+  String? avatarUrl;
   String? nickname;
   List<Services>? services;
   String? introductionVideoUrl;
@@ -20,6 +21,7 @@ class PopularReader {
         this.experience,
         this.genre,
         this.id,
+        this.avatarUrl,
         this.nickname,
         this.services,
         this.introductionVideoUrl,
@@ -34,6 +36,7 @@ class PopularReader {
     experience = json['experience'];
     genre = json['genre'];
     id = json['id'];
+    avatarUrl = json['avatarUrl'];
     nickname = json['nickname'];
     if (json['services'] != null) {
       services = <Services>[];
@@ -56,6 +59,7 @@ class PopularReader {
     data['experience'] = this.experience;
     data['genre'] = this.genre;
     data['id'] = this.id;
+    data['avatarUrl'] = this.avatarUrl;
     data['nickname'] = this.nickname;
     if (this.services != null) {
       data['services'] = this.services!.map((v) => v.toJson()).toList();

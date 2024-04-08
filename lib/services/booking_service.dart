@@ -83,10 +83,13 @@ class BookingService {
       ) {
         list {
           id
+          rating
+          review
           meeting {
             reader {
               id
               nickname
+              avatarUrl
               account {
                 customer {
                   imageUrl
@@ -158,10 +161,13 @@ class BookingService {
       ) {
         list {
           id
+          rating
+          review
           meeting {
             reader {
               id
               nickname
+              avatarUrl
               account {
                 customer {
                   imageUrl
@@ -265,5 +271,34 @@ class BookingService {
     }
 
     return result.data?['completeBooking']?['id'] != null;
+  }
+
+  static Future<bool> reviewBooking(String bookingId, int rating, String review) async {
+    var mutation = '''
+      mutation {
+        reviewBooking(
+          bookingId: "$bookingId", 
+          review: {
+            rating: $rating,
+            review: "$review"
+          }
+        ) {
+          rating
+        }
+      }
+    ''';
+
+    QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      return false;
+    }
+
+    return result.data?['reviewBooking']?['rating'] != null;
   }
 }
