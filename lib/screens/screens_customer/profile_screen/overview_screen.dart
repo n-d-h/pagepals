@@ -109,13 +109,11 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                   } else if (value == 'Main Page') {
                     pauseVideo();
                     // Navigator.of(context).pop();
-                    Navigator.of(context).push(
-                      PageTransition(
-                        type: PageTransitionType.fade,
-                        child: const MenuItemScreen(index: 0),
-                        duration: const Duration(milliseconds: 300),
-                      )
-                    );
+                    Navigator.of(context).push(PageTransition(
+                      type: PageTransitionType.fade,
+                      child: const MenuItemScreen(index: 0),
+                      duration: const Duration(milliseconds: 300),
+                    ));
                   }
                 },
                 underline: Container(),
@@ -164,13 +162,16 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                     ),
                     ProfileInfoLine(reader: reader, pauseVideo: pauseVideo),
                     ProfileBookCollection(
-                        books: bookModels.map((e) => e.book!).toList()),
+                        books: bookModels
+                            .map((e) => e.book ?? Book(id: ''))
+                            .toList()),
                     ProfileReviewWidget(reader: reader),
-                    ProfileBookingButton(
-                      reader: reader,
-                      pauseVideo: pauseVideo,
-                      bookModels: bookModels,
-                    ),
+                    if (bookModels.isNotEmpty && bookModels.first.book != null)
+                      ProfileBookingButton(
+                        reader: reader,
+                        pauseVideo: pauseVideo,
+                        bookModels: bookModels,
+                      ),
                     // const ProfileReaderCollection(),
                   ],
                 ),
