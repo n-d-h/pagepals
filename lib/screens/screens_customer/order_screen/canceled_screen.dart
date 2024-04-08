@@ -7,6 +7,7 @@ import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/radio_button.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
+import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -209,6 +210,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
               await BookingService.cancelBooking(widget.bookingId);
           if (isCanceled) {
             Future.delayed(Duration.zero, () {
+              AuthenService.updateAccountToSharedPreferences();
               Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(
                 PageTransition(

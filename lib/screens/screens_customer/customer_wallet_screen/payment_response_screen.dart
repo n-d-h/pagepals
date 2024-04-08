@@ -62,7 +62,7 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
     );
   }
 
-  void updateAccount() async {
+  Future<void> updateAccount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accountString = prefs.getString('account');
     String accessToken = prefs.getString('accessToken')!;

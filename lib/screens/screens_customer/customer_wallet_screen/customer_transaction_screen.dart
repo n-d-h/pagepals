@@ -50,19 +50,31 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
           } else {
             currency = 'pals';
           }
-
-          var color = transaction?.transactionType == 'DEPOSIT_TOKEN'
-              ? Colors.green
-              : Colors.red;
-          var minus =
-              transaction?.transactionType == 'DEPOSIT_TOKEN' ? '+' : '-';
+          Color color = Colors.red;
+          var prefix = '';
           var description = '';
-          if (transaction?.transactionType == 'DEPOSIT_TOKEN') {
-            description = 'Deposit token';
-          } else if (transaction?.transactionType == 'BOOKING_PAYMENT') {
-            description = 'Booking payment';
-          } else if (transaction?.transactionType == 'BOOKING_REFUND') {
-            description = 'Booking refund';
+          Icon icon = const Icon(Icons.arrow_upward, color: Colors.red);
+          switch (transaction?.transactionType) {
+            case 'DEPOSIT_TOKEN':
+              description = 'Deposit token';
+              color = Colors.green;
+              prefix = '+';
+              icon = const Icon(Icons.arrow_downward, color: Colors.green);
+              break;
+            case 'BOOKING_PAYMENT':
+              description = 'Booking payment';
+              color = Colors.red;
+              prefix = '-';
+              icon = const Icon(Icons.arrow_upward, color: Colors.red);
+              break;
+            case 'BOOKING_REFUND':
+              description = 'Booking refund';
+              color = Colors.green;
+              prefix = '+';
+              icon = const Icon(Icons.arrow_downward, color: Colors.green);
+              break;
+            default:
+              description = '';
           }
           return Container(
             margin: const EdgeInsets.all(10),
@@ -82,9 +94,7 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                transaction?.transactionType == 'DEPOSIT_TOKEN'
-                    ? const Icon(Icons.arrow_downward, color: Colors.green)
-                    : const Icon(Icons.arrow_upward, color: Colors.red),
+                icon,
                 const SizedBox(width: 50),
                 Expanded(
                   child: Row(
@@ -97,7 +107,7 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
                           Row(
                             children: [
                               Text(
-                                '$minus${transaction?.amount?.toStringAsFixed(0) ?? ''} $currency',
+                                '$prefix${transaction?.amount?.toStringAsFixed(0) ?? ''} $currency',
                                 style: TextStyle(color: color),
                               ),
                             ],

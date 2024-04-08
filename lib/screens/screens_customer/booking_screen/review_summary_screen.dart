@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/utils.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_success_screen.dart';
@@ -10,12 +14,14 @@ import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/service_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/time_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/wallet_widget.dart';
+import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ReviewSummaryScreen extends StatelessWidget {
+class ReviewSummaryScreen extends StatefulWidget {
   final ReaderProfile? reader;
   final DateTime time;
   final String timeSlotId;
@@ -36,31 +42,43 @@ class ReviewSummaryScreen extends StatelessWidget {
     required this.timeSlotId,
   });
 
-  String formatPrice(double priceInDong) {
-    // Check if priceInDong is in cents or dong
-    if (priceInDong < 100) {
-      // If priceInDong is less than 100, assume it's already in dong
-      priceInDong *= 100; // Convert it to cents
+  @override
+  State<ReviewSummaryScreen> createState() => _ReviewSummaryScreenState();
+}
+
+class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
+  AccountModel? accountModel;
+
+  @override
+  void initState() {
+    super.initState();
+    getAccount();
+  }
+
+  Future<void> getAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return;
     }
-
-    // Create a NumberFormat instance for formatting the price with thousands separators
-    NumberFormat format = NumberFormat("#,##0", "en_US");
-
-    // Format the price with thousands separators
-    String formattedPrice = format.format(priceInDong);
-
-    // Add " VND" suffix and replace commas with dots
-    formattedPrice += " VND";
-    formattedPrice = formattedPrice.replaceAll(',', '.');
-
-    return formattedPrice;
+    try {
+      Map<String, dynamic> accountMap = json.decode(accountString);
+      AccountModel account = AccountModel.fromJson(accountMap);
+      setState(() {
+        accountModel = account;
+      });
+    } catch (e) {
+      print('Error decoding account data: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    double amount = (service?.price ?? 0) * 23000;
-    double total = amount + 3000;
-    print('amount: $amount');
+    int amount = (widget.service?.price ?? 0);
+    int promotion = 0;
+    double total = amount - (amount * promotion / 100);
+
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -82,17 +100,17 @@ class ReviewSummaryScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               ReaderInfoWidget(
-                reader: reader,
+                reader: widget.reader,
               ),
-              TimeRowWidget(time: time),
+              TimeRowWidget(time: widget.time),
               SpaceBetweenRowWidget(
                 start: 'Duration',
-                end: '${service!.duration!.toInt()} minutes',
+                end: '${widget.service!.duration!.toInt()} minutes',
               ),
-              BookRowWidget(book: book!.title!),
+              BookRowWidget(book: widget.book!.title!),
               ServiceRowWidget(
-                service: service!.description!,
-                serviceType: serviceType!.name!,
+                service: widget.service!.description!,
+                serviceType: widget.serviceType!.name!,
               ),
               const SizedBox(height: 16),
               Container(
@@ -103,17 +121,19 @@ class ReviewSummaryScreen extends StatelessWidget {
               ),
               SpaceBetweenRowWidget(
                 start: 'Amount',
-                end: formatPrice(amount),
+                end: '$amount pals',
               ),
-              const SpaceBetweenRowWidget(
-                start: 'Service fees',
-                end: '3.000 VND',
+              SpaceBetweenRowWidget(
+                start: 'Promotion',
+                end: '$promotion %',
               ),
               SpaceBetweenRowWidget(
                 start: 'Total',
-                end: formatPrice(total),
+                end: '$total pals',
               ),
-              const WalletWidget(),
+              WalletWidget(
+                  accountModel: accountModel,
+              ),
             ],
           ),
         ),
@@ -133,8 +153,22 @@ class ReviewSummaryScreen extends StatelessWidget {
             },
           );
 
+          if((accountModel?.wallet?.tokenAmount ?? 0) < total){
+            Future.delayed(const Duration(milliseconds: 300), () {
+              Navigator.of(context).pop();
+              QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Error',
+                text: 'You do not have enough balance to book this service.',
+                autoCloseDuration: const Duration(seconds: 3),
+              );
+            });
+            return;
+          }
+
           bool bookingCreated =
-              await BookingService.createBooking("", service!, timeSlotId, "");
+              await BookingService.createBooking("", widget.service!, widget.timeSlotId, "");
           if (!bookingCreated) {
             Future.delayed(const Duration(milliseconds: 300), () {
               Navigator.of(context).pop();
@@ -153,7 +187,7 @@ class ReviewSummaryScreen extends StatelessWidget {
               Navigator.of(context).pop();
               Navigator.of(context).push(
                 PageTransition(
-                  child: BookingSuccessScreen(reader: reader),
+                  child: BookingSuccessScreen(reader: widget.reader),
                   type: PageTransitionType.rightToLeft,
                   duration: const Duration(milliseconds: 300),
                 ),
@@ -167,6 +201,8 @@ class ReviewSummaryScreen extends StatelessWidget {
                 text: 'Thank you for booking!',
                 autoCloseDuration: const Duration(seconds: 3),
               );
+
+              AuthenService.updateAccountToSharedPreferences();
             });
           }
         },

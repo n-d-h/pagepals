@@ -1,45 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
-class WalletWidget extends StatefulWidget {
-  const WalletWidget({super.key});
+class WalletWidget extends StatelessWidget {
+  final AccountModel? accountModel;
 
-  @override
-  State<WalletWidget> createState() => _WalletWidgetState();
-}
-
-class _WalletWidgetState extends State<WalletWidget> {
-  AccountModel? accountModel;
-
-  @override
-  void initState() {
-    super.initState();
-    getAccount();
-  }
-
-  void getAccount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accountString = prefs.getString('account');
-    if (accountString == null) {
-      print('No account data found in SharedPreferences');
-      return;
-    }
-    try {
-      Map<String, dynamic> accountMap = json.decode(accountString);
-      AccountModel account = AccountModel.fromJson(accountMap);
-      setState(() {
-        accountModel = account;
-      });
-    } catch (e) {
-      print('Error decoding account data: $e');
-    }
-  }
-
+  const WalletWidget({super.key, this.accountModel});
 
   @override
   Widget build(BuildContext context) {
