@@ -110,6 +110,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   }
               }
             },
+            isScrollable: false,
             indicatorColor: ColorHelper.getColor(ColorHelper.green),
             indicatorSize: TabBarIndicatorSize.tab,
             labelColor: ColorHelper.getColor(ColorHelper.green),
@@ -145,6 +146,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),
               )
             : TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   UpcomingTab(bookingModel: pendingBooking),
                   CompletedTab(bookingModel: completedBooking),
