@@ -14,9 +14,11 @@ class ReaderCancelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cancel Booking'),
+        title: const Text('Cancel Booking'),
+        centerTitle: true,
+        surfaceTintColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
           },

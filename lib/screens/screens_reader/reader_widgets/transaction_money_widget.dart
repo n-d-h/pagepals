@@ -105,13 +105,6 @@ class TransactionMoneyWidget extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
       ),
       child: const Icon(
         Icons.arrow_upward,
@@ -131,13 +124,6 @@ class TransactionMoneyWidget extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
       ),
       child: const Icon(
         Icons.arrow_downward,
@@ -157,13 +143,6 @@ class TransactionMoneyWidget extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
       ),
       child: const Icon(
         Icons.history,

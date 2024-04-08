@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/screens/screens_reader/finance_screen/finance_send_screen.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/screens/screens_reader/finance_screen/finance_history_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/transaction_money_widget.dart';
 
 class FinanceScreen extends StatefulWidget {
-  const FinanceScreen({super.key});
+  const FinanceScreen({super.key, this.accountModel});
+
+  final AccountModel? accountModel;
 
   @override
   State<FinanceScreen> createState() => _FinanceScreenState();
@@ -72,42 +74,25 @@ class _FinanceScreenState extends State<FinanceScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.currency_bitcoin_outlined,
-                        size: 45,
-                        color: Colors.orange,
-                      ),
-                      Expanded(
-                        child: Text(
-                          '100.000 BTC',
-                          style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 45,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.currency_bitcoin_outlined,
-                        size: 20,
-                        color: Colors.grey.shade600,
-                      ),
                       Text(
-                        '100.000 BTC',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.grey.shade600,
+                        '${widget.accountModel?.wallet?.cash ?? 0}',
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 45,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      const Text(
+                        ' VND',
+                        style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.yellow),
                       ),
                     ],
                   ),
@@ -120,46 +105,6 @@ class _FinanceScreenState extends State<FinanceScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.bottomToTop,
-                          child: const FinanceSendScreen(),
-                        )
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 10,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(15),
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: Row(
-                        children: [
-                          TransactionMoneyWidget.sendButton(),
-                          const SizedBox(width: 20),
-                          Text(
-                            'Send',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   InkWell(
                     onTap: () {
                       print('Receive');
@@ -180,7 +125,10 @@ class _FinanceScreenState extends State<FinanceScreen> {
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: Row(
                         children: [
-                          TransactionMoneyWidget.receiveButton(),
+                          Transform.rotate(
+                            angle: 3.14,
+                            child: TransactionMoneyWidget.sendButton(),
+                          ),
                           const SizedBox(width: 10),
                           Text(
                             'Receive',
@@ -194,42 +142,49 @@ class _FinanceScreenState extends State<FinanceScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(
-                    left: 15,
-                    right: 15,
-                  ),
-                  child: Text(
-                    'Transaction History',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade600,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: FinanceHistoryScreen(
+                              accountModel: widget.accountModel,
+                            ),
+                          ));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(15),
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Row(
+                        children: [
+                          TransactionMoneyWidget.transactionButton(),
+                          const SizedBox(width: 20),
+                          Text(
+                            'History',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                const TransactionMoneyWidget(
-                  transactionType: TransactionType.send,
-                ),
-                const TransactionMoneyWidget(
-                  transactionType: TransactionType.receive,
-                ),
-                const TransactionMoneyWidget(
-                  transactionType: TransactionType.receive,
-                ),
-                const TransactionMoneyWidget(
-                  transactionType: TransactionType.send,
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

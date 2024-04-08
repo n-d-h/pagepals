@@ -268,7 +268,7 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                   Uri url = Uri.parse(response.payUrl!);
 
                   if (await canLaunchUrl(url)) {
-                    await launchUrl(url, mode: LaunchMode.platformDefault);
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
                   }
 
                   Future.delayed(const Duration(seconds: 1), () {

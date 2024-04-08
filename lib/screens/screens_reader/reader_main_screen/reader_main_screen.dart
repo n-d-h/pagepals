@@ -1,4 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,7 +15,6 @@ import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart'
 import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/policy_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_settings_screen.dart';
@@ -24,6 +24,7 @@ import 'package:pagepals/screens/screens_reader/promotion_screen/promotion_scree
 import 'package:pagepals/screens/screens_reader/report_screen/report_screen.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:pagepals/services/reader_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 class ReaderMainScreen extends StatefulWidget {
@@ -42,6 +43,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
   BookingModel? pendingBooking;
   BookingModel? completedBooking;
   BookingModel? canceledBooking;
+  AccountModel? account;
 
   Future<void> getBooking(String readerId) async {
     var pending =
@@ -64,12 +66,25 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
     });
   }
 
+  Future<void> getAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    if (accountString != null) {
+      var jsonData = json.decode(accountString);
+      AccountModel accountModel = AccountModel.fromJson(jsonData);
+      setState(() {
+        account = accountModel;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     readerId = widget.accountModel!.reader!.id!;
     getBooking(readerId);
     getReaderProfile(readerId);
+    getAccount();
   }
 
   @override
@@ -521,7 +536,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: const FinanceScreen(),
+                                          child: FinanceScreen(
+                                            accountModel: account,
+                                          ),
                                         ),
                                       );
                                     },

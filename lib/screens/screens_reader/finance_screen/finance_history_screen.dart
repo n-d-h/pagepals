@@ -1,25 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pagepals/helpers/utils.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 
-class CustomerTransactionScreen extends StatefulWidget {
-  const CustomerTransactionScreen({super.key, this.account});
+class FinanceHistoryScreen extends StatefulWidget {
+  const FinanceHistoryScreen({super.key, this.accountModel});
 
-  final AccountModel? account;
+  final AccountModel? accountModel;
 
   @override
-  State<CustomerTransactionScreen> createState() =>
-      _CustomerTransactionScreenState();
+  State<FinanceHistoryScreen> createState() => _FinanceHistoryScreenState();
 }
 
-class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
+class _FinanceHistoryScreenState extends State<FinanceHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transaction History'),
+        title: const Text('History'),
         centerTitle: true,
         surfaceTintColor: Colors.white,
         leading: IconButton(
@@ -30,12 +27,13 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
         ),
       ),
       body: ListView.builder(
-        itemCount: widget.account!.wallet?.transactions!.length,
+        itemCount:widget.accountModel!.wallet?.transactions!.length,
         itemBuilder: (context, index) {
-          var transaction = widget.account!.wallet!.transactions![index];
+          var transaction = widget.accountModel!.wallet!.transactions![index];
 
-          if(transaction?.transactionType == 'WITHDRAW_MONEY' ||
-              transaction?.transactionType == 'BOOKING_DONE_RECEIVE') {
+          if(transaction?.transactionType == 'DEPOSIT_TOKEN' ||
+              transaction?.transactionType == 'BOOKING_PAYMENT' ||
+              transaction?.transactionType == 'BOOKING_REFUND') {
             return Container();
           }
 
@@ -51,19 +49,19 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
             currency = 'pals';
           }
 
-          var color = transaction?.transactionType == 'DEPOSIT_TOKEN'
+          var color = transaction?.transactionType == 'BOOKING_DONE_RECEIVE'
               ? Colors.green
               : Colors.red;
           var minus =
-              transaction?.transactionType == 'DEPOSIT_TOKEN' ? '+' : '-';
+          transaction?.transactionType == 'BOOKING_DONE_RECEIVE' ? '+' : '-';
           var description = '';
-          if (transaction?.transactionType == 'DEPOSIT_TOKEN') {
-            description = 'Deposit token';
-          } else if (transaction?.transactionType == 'BOOKING_PAYMENT') {
-            description = 'Booking payment';
-          } else if (transaction?.transactionType == 'BOOKING_REFUND') {
-            description = 'Booking refund';
+          if(transaction?.transactionType == 'WITHDRAW_MONEY') {
+            description = 'Withdraw money';
           }
+          else if(transaction?.transactionType == 'BOOKING_DONE_RECEIVE') {
+            description = 'Booking done receive';
+          }
+
           return Container(
             margin: const EdgeInsets.all(10),
             padding: const EdgeInsets.all(10),
@@ -82,7 +80,7 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                transaction?.transactionType == 'DEPOSIT_TOKEN'
+                transaction?.transactionType == 'BOOKING_DONE_RECEIVE'
                     ? const Icon(Icons.arrow_downward, color: Colors.green)
                     : const Icon(Icons.arrow_upward, color: Colors.red),
                 const SizedBox(width: 50),
