@@ -24,10 +24,8 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      handleUpdateWallet(widget.data);
-      updateAccount();
-    });
+    handleUpdateWallet(widget.data);
+    updateAccount();
   }
 
   void handleUpdateWallet(Map<String, String>? data) async {
