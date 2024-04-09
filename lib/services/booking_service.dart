@@ -114,7 +114,7 @@ class BookingService {
             price
           }
           startAt
-          createdAt
+          createAt
         }
         pagination {
           currentPage
@@ -192,7 +192,7 @@ class BookingService {
             price
           }
           startAt
-          createdAt
+          createAt
         }
         pagination {
           currentPage

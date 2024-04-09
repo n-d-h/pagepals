@@ -10,7 +10,7 @@ class PopularReader {
   String? nickname;
   List<Services>? services;
   String? introductionVideoUrl;
-  String? totalOfReviews;
+  int? totalOfReviews;
   Account? account;
 
   PopularReader(
