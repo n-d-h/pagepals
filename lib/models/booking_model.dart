@@ -35,9 +35,9 @@ class Booking {
   Meeting? meeting;
   Service? service;
   String? startAt;
-  String? createdAt;
+  String? createAt;
 
-  Booking({this.id, this.rating, this.review, this.meeting, this.service, this.startAt, this.createdAt});
+  Booking({this.id, this.rating, this.review, this.meeting, this.service, this.startAt, this.createAt});
 
   Booking.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -48,7 +48,7 @@ class Booking {
     service =
         json['service'] != null ? new Service.fromJson(json['service']) : null;
     startAt = json['startAt'];
-    createdAt = json['createdAt'];
+    createAt = json['createdAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,7 +63,7 @@ class Booking {
       data['service'] = this.service!.toJson();
     }
     data['startAt'] = this.startAt;
-    data['createdAt'] = this.createdAt;
+    data['createdAt'] = this.createAt;
     return data;
   }
 }
