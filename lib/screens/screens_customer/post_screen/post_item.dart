@@ -33,18 +33,12 @@ class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 8.0),
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: double.infinity,
-            height: 5.0,
-            color: Colors.grey[300],
-            margin: const EdgeInsets.symmetric(vertical: 12.0),
-          ),
-          const SizedBox(height: 8.0),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.6,
             child: Row(
