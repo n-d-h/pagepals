@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/helpers/utils.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/services/customer_service.dart';
 import 'package:pagepals/services/file_storage_service.dart';
@@ -50,11 +51,11 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   @override
   void initState() {
     super.initState();
+    dob = Utils.formatDateTime(widget.account?.customer?.dob?.substring(0, 10) ?? '');
     fullNameController.text = widget.account?.fullName ?? '';
-    dobController.text = widget.account?.customer?.dob?.substring(0, 10) ?? '';
+    dobController.text = dob ?? '';
     genderController.text = widget.account?.customer?.gender ?? '';
     fullName = widget.account?.fullName ?? '';
-    dob = widget.account?.customer?.dob?.substring(0, 10) ?? '';
   }
 
   @override
@@ -297,12 +298,16 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                           url = await FileStorageService.uploadImage(
                             _selectedImage!,
                           );
+
+                          await FileStorageService.deleteImage(
+                            widget.account?.customer?.imageUrl ?? '',
+                          );
                         }
 
                         Customer customer =
                             await CustomerService.updateCustomer(
                           widget.account?.customer?.id ?? '',
-                          dobController.text,
+                          Utils.formatDateTime(dobController.text ?? ''),
                           fullNameController.text,
                           genderController.text,
                           url,

@@ -7,7 +7,8 @@ import 'package:pagepals/models/google_book.dart';
 class BookService {
   static GraphQLClient graphQLClient = client!.value;
 
-  static Future<CustomerBook> getAllBooks(String author, String categoryId,
+  static Future<CustomerBook> getAllBooks(
+      String author, String categoryId,
       int page, int pageSize, String search, String sort) async {
     var query = '''
       query {
