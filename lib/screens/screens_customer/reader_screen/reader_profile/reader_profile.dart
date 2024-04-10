@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_about/reader_about_tabbar.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_book/reader_book_tabbar.dart';
@@ -22,19 +23,29 @@ class ReaderProfileScreen extends StatefulWidget {
 
 class _ReaderProfileState extends State<ReaderProfileScreen> {
   ReaderProfile reader = ReaderProfile();
+  CommentModel? commentModel;
 
-  Future<void> getReaderProfile() async {
-    var data = await ReaderService.getReaderProfile(widget.readerId);
+  @override
+  void initState() {
+    super.initState();
+    getReaderProfile(widget.readerId);
+    getListReaderComment(widget.readerId);
+  }
+
+  Future<void> getReaderProfile(String id) async {
+    var data = await ReaderService.getReaderProfile(id);
     setState(() {
       reader = data!;
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getReaderProfile();
+  Future<void> getListReaderComment(String id) async {
+    var result = await ReaderService.getListReaderComment(id, 0, 10);
+    setState(() {
+      commentModel = result;
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +101,7 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                             radius: 60,
                             backgroundImage: NetworkImage(
                               reader.profile?.avatarUrl ??
-                                  'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+                                  'https://via.placeholder.com/150',
                             ),
                           ),
                           const SizedBox(
@@ -120,7 +131,7 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                               ),
                               RatingRow(
                                 rating: reader.profile?.rating ?? 0,
-                                reviews: reader.profile?.totalOfReviews ?? '0',
+                                reviews: reader.profile?.totalOfReviews ?? 0,
                                 color: Colors.white,
                               )
                             ],
@@ -157,9 +168,13 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
           body: TabBarView(
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              ReaderAboutTabbar(videoUrl: reader.profile?.introductionVideoUrl ?? '',),
+              ReaderAboutTabbar(
+                videoUrl: reader.profile?.introductionVideoUrl ?? '',
+              ),
               const ReaderBookTabbar(),
-              const ReaderReviewTabbar(),
+              ReaderReviewTabbar(
+                commentModel: commentModel,
+              ),
             ],
           ),
         ),

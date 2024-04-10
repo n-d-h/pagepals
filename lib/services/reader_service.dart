@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/reader_request_model.dart';
@@ -98,6 +99,7 @@ class ReaderService {
     ''';
     final QueryResult result = await graphQLClient.query(QueryOptions(
       document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
     ));
 
     if (result.hasException) {
@@ -262,10 +264,52 @@ class ReaderService {
     ));
 
     if (result.hasException) {
-      throw Exception('Failed to get customer transaction');
+      throw Exception('Failed to get reader transaction');
     }
 
     final transactionData = result.data?['getListTransactionForReader'];
     return ReaderTransactionModel.fromJson(transactionData);
+  }
+
+  static Future<CommentModel> getListReaderComment(
+      String readerId, int page, int pageSize) async {
+    String query = '''
+      query {
+        getReaderReviews(
+          readerId: "$readerId"
+          pageSize: $pageSize
+          page: $page
+        ) {
+          list {
+            date
+            rating
+            review
+            customer {
+              fullName
+              imageUrl
+            }
+          }
+          pagination {
+            currentPage
+            pageSize
+            sort
+            totalOfElements
+            totalOfPages
+          }
+        }
+      }
+    ''';
+
+    final QueryResult result = await graphQLClient.query(QueryOptions(
+      document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+
+    if (result.hasException) {
+      throw Exception('Failed to get reader comment');
+    }
+
+    final commentData = result.data?['getReaderReviews'] ?? CommentModel();
+    return CommentModel.fromJson(commentData);
   }
 }

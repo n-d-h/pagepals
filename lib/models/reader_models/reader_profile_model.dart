@@ -37,8 +37,8 @@ class Profile {
   String? language;
   int? rating;
   String? tags;
-  String? totalOfBookings;
-  String? totalOfReviews;
+  int? totalOfBookings;
+  int? totalOfReviews;
   String? avatarUrl;
 
   Profile(

@@ -8,10 +8,12 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/booking_model.dart';
+import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
+import 'package:pagepals/screens/screens_reader/feature_screen/reader_comment_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
@@ -44,6 +46,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
   BookingModel? completedBooking;
   BookingModel? canceledBooking;
   AccountModel? account;
+  CommentModel? commentModel;
 
   Future<void> getBooking(String readerId) async {
     var pending =
@@ -52,10 +55,13 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
         await BookingService.getBookingByReader(readerId, 0, 10, 'COMPLETE');
     var cancel =
         await BookingService.getBookingByReader(readerId, 0, 10, 'CANCEL');
+    var comment =
+        await ReaderService.getListReaderComment(readerId, 0, 10);
     setState(() {
       pendingBooking = pending;
       completedBooking = done;
       canceledBooking = cancel;
+      commentModel = comment;
     });
   }
 
@@ -94,7 +100,8 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
 
     return pendingBooking == null ||
             completedBooking == null ||
-            canceledBooking == null
+            canceledBooking == null ||
+            commentModel == null
         ? Scaffold(
             backgroundColor: Colors.white,
             body: Center(
@@ -306,7 +313,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                               borderRadius: BorderRadius.circular(10),
                               child: Container(
                                 padding: const EdgeInsets.all(10),
-                                width: width / 3,
+                                width: width / 4,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey[200],
@@ -329,7 +336,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 5),
                             InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -345,7 +352,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                               borderRadius: BorderRadius.circular(10),
                               child: Container(
                                 padding: const EdgeInsets.all(10),
-                                width: width / 3,
+                                width: width / 4,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey[200],
@@ -368,7 +375,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 5),
                             InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -384,7 +391,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                               borderRadius: BorderRadius.circular(10),
                               child: Container(
                                 padding: const EdgeInsets.all(10),
-                                width: width / 3,
+                                width: width / 4,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey[200],
@@ -398,6 +405,45 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         '${canceledBooking!.pagination!.totalOfElements!}'),
                                     const Text(
                                       'Canceled',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: ReaderCommentScreen(
+                                      commentModel: commentModel,
+                                    ),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                width: width / 4,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        '${commentModel!.pagination!.totalOfElements!}'),
+                                    const Text(
+                                      'Comment',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 13,
