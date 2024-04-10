@@ -1,145 +1,81 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/widgets/text_widget.dart';
+import 'package:pagepals/models/comment_model.dart';
 
-class CommentCollectionWidget extends StatefulWidget {
-  const CommentCollectionWidget({super.key, required this.text});
+class CommentCollectionItem extends StatelessWidget {
+  const CommentCollectionItem({super.key, this.comment});
 
-  final String text;
-
-  @override
-  State<CommentCollectionWidget> createState() =>
-      _CommentCollectionWidgetState();
-}
-
-class _CommentCollectionWidgetState extends State<CommentCollectionWidget> {
-  bool showFullComment = false;
-  int maxLines = 2;
+  final CommentItem? comment;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.only(
-        top: SpaceHelper.space4,
-        bottom: SpaceHelper.space10,
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         border: Border.all(
-          color: Colors.grey.shade300,
+          width: 0.3,
+          color: Colors.black.withOpacity(0.4),
         ),
-        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12.withOpacity(0.2),
+            blurRadius: 3,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CircleAvatar(
-                radius: 20,
-                backgroundImage: AssetImage('assets/image_reader.png'),
+                backgroundImage: NetworkImage(
+                  comment?.customer?.imageUrl ??
+                      'https://via.placeholder.com/150',
+                ),
               ),
-              SizedBox(width: SpaceHelper.space12),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    comment?.customer?.fullName ?? 'Anonymous',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    comment?.date ?? DateTime.now().toString(),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      '@builevanminh',
-                      style: TextStyle(
-                        fontSize: SpaceHelper.fontSize14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star_rounded,
-                          color: ColorHelper.getColor('#FFA800'),
-                        ),
-                        const SizedBox(width: 0.5),
-                        const Text(
-                          '5.0',
-                          style: TextStyle(
-                            fontSize: SpaceHelper.fontSize14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange,
-                          ),
-                        )
-                      ],
-                    )
-                  ],
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              for (int i = 0; i < comment!.rating!; i++)
+                const Icon(
+                  Icons.star,
+                  color: Colors.yellow,
                 ),
-                const SizedBox(height: SpaceHelper.space4),
-                const Row(
-                  children: [
-                    Image(image: AssetImage('assets/image_vn.png')),
-                    SizedBox(width: SpaceHelper.space4),
-                    Text(
-                      'Vietnamese',
-                      style: TextStyle(
-                        fontSize: SpaceHelper.fontSize10,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
+              for (int i = 0; i < 5 - comment!.rating!; i++)
+                const Icon(
+                  Icons.star,
+                  color: Colors.grey,
                 ),
-                const SizedBox(height: SpaceHelper.space4),
-                const Text(
-                  '2 months ago',
-                  style: TextStyle(
-                    fontSize: SpaceHelper.fontSize10,
-                    color: Colors.grey,
-                  ),
-                ),
-                const SizedBox(height: SpaceHelper.space8),
-                TextWidget(
-                  length: double.infinity,
-                  height: showFullComment
-                      ? ((widget.text.length.toDouble() * 2.2 ~/ 95.0) * 20)
-                          .toDouble()
-                      : 50,
-                  content: widget.text,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: showFullComment
-                      ? (widget.text.length.toDouble() * 2.2 ~/ 95.0)
-                      : 2,
-                  softWrap: true,
-                  fontSize: SpaceHelper.fontSize12,
-                ),
-                const SizedBox(height: SpaceHelper.space4),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      showFullComment = !showFullComment;
-                    });
-                  },
-                  child: Text(
-                    showFullComment ? 'Less' : 'More',
-                    style: const TextStyle(
-                      fontSize: SpaceHelper.fontSize10,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            ],
           ),
+          const SizedBox(height: 10),
+          Text(comment!.review!),
+          const SizedBox(height: 10),
         ],
       ),
     );

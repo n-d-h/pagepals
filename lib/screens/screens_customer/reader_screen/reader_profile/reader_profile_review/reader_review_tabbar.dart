@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/rating_line.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_review/comment_collection_widget.dart';
 
 class ReaderReviewTabbar extends StatefulWidget {
-  const ReaderReviewTabbar({super.key});
+  final CommentModel? commentModel;
+
+  const ReaderReviewTabbar({super.key, this.commentModel});
 
   @override
   State<ReaderReviewTabbar> createState() => _ReaderReviewTabbarState();
@@ -89,201 +93,32 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(width: SpaceHelper.space8),
-                TextButton(
-                  onPressed: () {
-                    showSortByBottomSheetModal(context);
-                  },
-                  child: Text(
-                    'Filter',
-                    style: TextStyle(
-                      fontSize: SpaceHelper.fontSize14,
-                      color: ColorHelper.getColor(ColorHelper.normal),
-                    ),
-                  ),
-                ),
               ],
             ),
-            const SizedBox(height: SpaceHelper.space16),
-            const CommentCollectionWidget(
-              text:
-                  'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.sakfjdhlddldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldl ádlkfhjffjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjf',
-            ),
-            const CommentCollectionWidget(
-              text:
-                  'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
-            ),
-            const CommentCollectionWidget(
-              text:
-                  'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.sakfjdhlddldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldl ádlkfhjffjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjf',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.sakfjdhlddldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldl ádlkfhjffjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjf',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.sakfjdhlddldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldldl ádlkfhjffjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjfjf',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
-            ),
-            const CommentCollectionWidget(
-              text:
-              'I am very satisfied with the service of this reader. I have learned a lot from her. I will continue to use her service in the future.',
-            ),
+            widget.commentModel == null
+                ? SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: ColorHelper.getColor(ColorHelper.green),
+                        size: 60,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: widget.commentModel!.list!.length,
+                    itemBuilder: (context, index) {
+                      final comment = widget.commentModel!.list![index];
+                      return CommentCollectionItem(
+                        comment: comment,
+                      );
+                    },
+                  ),
           ],
         ),
       ),
-    );
-  }
-
-  void showSortByBottomSheetModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.9,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(SpaceHelper.space16),
-          child: Column(
-            children: [
-              const Text(
-                'Sort by',
-                style: TextStyle(
-                  fontSize: SpaceHelper.fontSize18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: SpaceHelper.space16),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.check,
-                    color: Colors.grey,
-                    size: SpaceHelper.fontSize40,
-                  ),
-                  title: Text(
-                    'Most relevant',
-                    style: TextStyle(
-                      fontSize: SpaceHelper.fontSize14,
-                      color: ColorHelper.getColor(ColorHelper.normal),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              const SizedBox(height: SpaceHelper.space16),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.punch_clock,
-                    color: Colors.grey,
-                    size: SpaceHelper.fontSize40,
-                  ),
-                  title: Text(
-                    'Most relevant',
-                    style: TextStyle(
-                      fontSize: SpaceHelper.fontSize14,
-                      color: ColorHelper.getColor(ColorHelper.normal),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              const SizedBox(height: SpaceHelper.space16),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.thumb_up,
-                    color: Colors.grey,
-                    size: SpaceHelper.fontSize40,
-                  ),
-                  title: Text(
-                    'Most relevant',
-                    style: TextStyle(
-                      fontSize: SpaceHelper.fontSize14,
-                      color: ColorHelper.getColor(ColorHelper.normal),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              const SizedBox(height: SpaceHelper.space16),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.thumb_down,
-                    color: Colors.grey,
-                    size: SpaceHelper.fontSize40,
-                  ),
-                  title: Text(
-                    'Most relevant',
-                    style: TextStyle(
-                      fontSize: SpaceHelper.fontSize14,
-                      color: ColorHelper.getColor(ColorHelper.normal),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

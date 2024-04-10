@@ -3,7 +3,7 @@ import 'package:pagepals/helpers/color_helper.dart';
 
 class RatingRow extends StatelessWidget {
   final int? rating;
-  final String reviews;
+  final int reviews;
   final Color? color;
 
   const RatingRow({super.key, required this.rating, required this.reviews, this.color});

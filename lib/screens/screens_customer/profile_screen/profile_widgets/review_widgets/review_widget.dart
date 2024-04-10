@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/rating_line.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/review_widgets/review_box.dart';
 
 class ProfileReviewWidget extends StatelessWidget {
   final ReaderProfile? reader;
+  final CommentModel? comment;
 
-  const ProfileReviewWidget({super.key, this.reader});
+  const ProfileReviewWidget({super.key, this.reader, this.comment});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,7 @@ class ProfileReviewWidget extends StatelessWidget {
               ],
             ),
           ),
-          const ProfileReviewBox(),
+          ProfileReviewBox(comment: comment),
         ],
       ),
     );
