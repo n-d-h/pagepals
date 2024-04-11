@@ -79,7 +79,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
         }
       }
     });
-    Future.delayed(const Duration(seconds: 1), () async {
+    Future.delayed(const Duration(milliseconds: 300), () async {
       var serviceTypes = await ServiceTypeService.getListServiceTypesByService(
           selectedBookModel.services!.map((e) => e.id!).toList());
 
@@ -120,11 +120,10 @@ class _BookingTimeState extends State<BookingTimeScreen> {
         if (_oldSelectServiceType!.id != _selectServiceType!.id) {
           setState(() {
             servicesByServiceType = [];
-            print("hieeafas00");
           });
         }
       }
-    Future.delayed(const Duration(seconds: 1), ()
+    Future.delayed(const Duration(milliseconds: 300), ()
     {
       setState(() {
         _oldSelectServiceType = _selectServiceType;
