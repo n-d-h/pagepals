@@ -37,17 +37,11 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      margin: const EdgeInsets.only(bottom: 10.0),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: double.infinity,
-            height: 5.0,
-            color: Colors.grey[300],
-            margin: const EdgeInsets.symmetric(vertical: 12.0),
-          ),
-          const SizedBox(height: 8.0),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

@@ -3,6 +3,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
+import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
@@ -38,14 +39,15 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
   // late String readerId;
   ReaderProfile? reader = ReaderProfile();
   BookModel? bookModel;
+  CommentModel? commentModel;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // readerId = widget.readerId;
     getReaderProfile(widget.readerId);
     getReaderBooks(widget.readerId);
+    getListReaderComment(widget.readerId);
   }
 
   @override
@@ -68,6 +70,13 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
     });
   }
 
+  Future<void> getListReaderComment(String id) async {
+    var result = await ReaderService.getListReaderComment(id, 0, 10);
+    setState(() {
+      commentModel = result;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // List<Book> books = bookModels.map((e) => e.book!).toList();
@@ -78,6 +87,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: ColorHelper.getColor(ColorHelper.white),
+          surfaceTintColor: Colors.white,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             // iconSize: 30,
@@ -166,7 +176,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                         books: bookModel!.list!
                             .map((e) => e.book ?? Book(id: ''))
                             .toList()),
-                    ProfileReviewWidget(reader: reader),
+                    ProfileReviewWidget(reader: reader, comment: commentModel),
                     if (bookModel!.list!.isNotEmpty && bookModel!.list!.first.book != null)
                       ProfileBookingButton(
                         reader: reader,

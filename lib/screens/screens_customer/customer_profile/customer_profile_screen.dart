@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/utils.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_customer/customer_profile/customer_edit_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,7 @@ class CustomerProfileScreen extends StatefulWidget {
 
 class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
   AccountModel? account;
+  String? dob;
 
   @override
   void initState() {
@@ -29,6 +31,8 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
       AccountModel accountModel = AccountModel.fromJson(json.decoder.convert(accountString));
       setState(() {
         account = accountModel;
+        dob = Utils.formatDate(
+            accountModel.customer?.dob?.substring(0, 10) ?? '');
       });
     }
   }
@@ -65,6 +69,8 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                 if (value != null) {
                   setState(() {
                     account = value;
+                    dob = Utils.formatDate(
+                        value.customer?.dob?.substring(0, 10) ?? '');
                   });
                 }
               });
@@ -109,7 +115,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                   customerDataField('Email', account?.email),
                   customerDataField('Full Name', account?.customer?.fullName),
                   customerDataField('Phone Number', account?.phoneNumber),
-                  customerDataField('Date of Birth', account?.customer?.dob),
+                  customerDataField('Date of Birth', dob),
                 ],
               ),
             ),

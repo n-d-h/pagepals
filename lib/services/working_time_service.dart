@@ -2,7 +2,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/working_time_model.dart';
 import 'package:pagepals/services/auth_service.dart';
-import 'package:pagepals/services/authen_service.dart';
 
 class WorkingTimeService {
   static GraphQLClient graphQLClient = client!.value;
@@ -40,6 +39,8 @@ class WorkingTimeService {
     if (workingTimeData != null) {
       return WorkingTimeModel.fromJson(workingTimeData);
     }
+
+    return null;
   }
 
   static Future<bool> createWorkingTime(String readerId, bool isWeekLy,

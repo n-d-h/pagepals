@@ -48,7 +48,7 @@ class ReaderInfoWidget extends StatelessWidget {
               ),
               RatingRow(
                   rating: reader?.profile?.rating ?? 0,
-                  reviews: reader?.profile?.totalOfReviews ?? 0)
+                  reviews: reader?.profile?.totalOfReviews ?? 0),
             ],
           )
         ],

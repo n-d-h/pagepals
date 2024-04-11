@@ -5,6 +5,11 @@ class Utils {
     return DateFormat('dd-MM-yyyy').format(DateTime.parse(date));
   }
 
+  static String formatDateTime(String dateTime) {
+    var date = dateTime.split("-");
+    return date.reversed.join("-");
+  }
+
   static String formatPrice(double priceInDong) {
     // Check if priceInDong is in cents or dong
     if (priceInDong < 100) {
