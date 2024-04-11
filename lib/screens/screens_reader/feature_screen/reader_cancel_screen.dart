@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/canceled_tab_widgets/cancel_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/completed_leading.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booking_body.dart';
+import 'package:pagepals/screens/screens_reader/feature_screen/booking_detail_screen.dart';
 
 class ReaderCancelScreen extends StatelessWidget {
   final BookingModel? bookingModel;
@@ -39,7 +41,19 @@ class ReaderCancelScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          PageTransition(
+                            child: BookingDetailScreen(
+                              booking: booking,
+                              title: 'Canceled',
+                              isEnabled: false,
+                            ),
+                            type: PageTransitionType.rightToLeft,
+                            duration: const Duration(milliseconds: 300),
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
@@ -65,8 +79,24 @@ class ReaderCancelScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CompletedLeading(booking: booking),
-                            BookingBody(booking: booking),
-                            CanceledBottom(booking: booking, title: 'View Detail',),
+                            BookingBody(booking: booking, isReader: true),
+                            CanceledBottom(
+                              booking: booking,
+                              title: 'View Detail',
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  PageTransition(
+                                    child: BookingDetailScreen(
+                                      booking: booking,
+                                      title: 'Canceled',
+                                      isEnabled: false,
+                                    ),
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: const Duration(milliseconds: 300),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),

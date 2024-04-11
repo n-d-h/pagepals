@@ -6,8 +6,10 @@ import 'package:pagepals/models/booking_model.dart';
 class CanceledBottom extends StatelessWidget {
   final Booking booking;
   final String? title;
+  final Function()? onPressed;
 
-  const CanceledBottom({super.key, required this.booking, this.title});
+  const CanceledBottom(
+      {super.key, required this.booking, this.title, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class CanceledBottom extends StatelessWidget {
         children: [
           Expanded(
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: onPressed,
               style: OutlinedButton.styleFrom(
                 backgroundColor: ColorHelper.getColor(ColorHelper.green),
                 side: const BorderSide(color: Colors.transparent),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ReaderName extends StatelessWidget {
+class InfoName extends StatelessWidget {
   final String nickname;
   final String username;
 
-  const ReaderName({super.key, required this.nickname, required this.username});
+  const InfoName({super.key, required this.nickname, required this.username});
 
   @override
   Widget build(BuildContext context) {

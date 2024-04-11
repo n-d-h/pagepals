@@ -112,9 +112,25 @@ class BookingService {
             description
             id
             price
+            serviceType {
+              id
+              name
+              description
+            }
           }
           startAt
           createAt
+          customer {
+            id
+            imageUrl
+            fullName
+            gender
+            account {
+              username
+              email
+              phoneNumber
+            }
+          }
         }
         pagination {
           currentPage
@@ -190,9 +206,25 @@ class BookingService {
             description
             id
             price
+            serviceType {
+              id
+              name
+              description
+            }
           }
           startAt
           createAt
+          customer {
+            id
+            imageUrl
+            fullName
+            gender
+            account {
+              username
+              email
+              phoneNumber
+            }
+          }
         }
         pagination {
           currentPage
