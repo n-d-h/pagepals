@@ -43,6 +43,13 @@ class _NewFeedTabbarState extends State<NewFeedTabbar> {
               Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
                 ),
                 padding: const EdgeInsets.all(10),
                 child: Row(
