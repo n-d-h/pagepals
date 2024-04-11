@@ -165,7 +165,16 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.only(bottom: 10),
-                    color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
@@ -246,7 +255,16 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                     ),
                   ),
                   Container(
-                    color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
                     margin: const EdgeInsets.only(bottom: 10),
                     child: FlutterCarousel(
                       options: CarouselOptions(
@@ -282,7 +300,16 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.only(bottom: 10),
-                    color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -467,7 +494,16 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                     ),
                   ),
                   Container(
-                    color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.only(bottom: 20),
                     child: Column(
