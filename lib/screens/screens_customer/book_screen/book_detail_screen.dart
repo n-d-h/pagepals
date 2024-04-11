@@ -24,6 +24,12 @@ class BookDetailScreen extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         surfaceTintColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {},
