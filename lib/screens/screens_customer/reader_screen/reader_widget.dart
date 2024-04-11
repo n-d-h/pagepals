@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
-import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 
 class ReaderWidget extends StatefulWidget {
   final Function() onTap;
@@ -47,11 +48,13 @@ class _ReaderWidgetState extends State<ReaderWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
-              radius: 55,
-              backgroundImage: NetworkImage(widget.reader.avatarUrl ??
-                  'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain'),
+              radius: 45,
+              backgroundImage: NetworkImage(
+                widget.reader.avatarUrl ??
+                    'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+              ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -65,6 +68,8 @@ class _ReaderWidgetState extends State<ReaderWidget> {
                 ),
                 const SizedBox(height: 8),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Genre: ',
@@ -74,11 +79,15 @@ class _ReaderWidgetState extends State<ReaderWidget> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      widget.reader.genre ?? 'Clear and engaging voice',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
+                    Container(
+                      width: 200,
+                      child: Text(
+                        widget.reader.genre ?? 'Clear and engaging voice',
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   ],

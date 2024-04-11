@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/overview_screen.dart';
-import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_widget.dart';
 import 'package:pagepals/services/reader_service.dart';
 
@@ -31,8 +32,20 @@ class _ReaderTabScreenState extends State<ReaderTabScreen> {
             builder: (context, snapshot) {
               final data = snapshot.data;
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: LoadingAnimationWidget.staggeredDotsWave(
+                          color: ColorHelper.getColor(ColorHelper.green),
+                          size: 60,
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               } else if (snapshot.hasError) {
                 return Center(
