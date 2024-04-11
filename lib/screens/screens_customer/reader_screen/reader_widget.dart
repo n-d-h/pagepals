@@ -29,8 +29,8 @@ class _ReaderWidgetState extends State<ReaderWidget> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        padding: const EdgeInsets.all(10.0),
-        margin: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -55,85 +55,88 @@ class _ReaderWidgetState extends State<ReaderWidget> {
               ),
             ),
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  widget.reader.nickname ?? 'John Doe',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Genre: ',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.reader.nickname ?? 'John Doe',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Container(
-                      width: 200,
-                      child: Text(
-                        widget.reader.genre ?? 'Clear and engaging voice',
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Genre: ',
+                        style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Text(
-                      'Language: ',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          widget.reader.genre ?? 'Clear and engaging voice',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
-                    ),
-                    Text(
-                      widget.reader.language ?? 'English, Vietnamese',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Text(
+                        'Language: ',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Rating:',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.blue,
+                      Expanded(
+                        child: Text(
+                          widget.reader.language ?? 'English, Vietnamese',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 3),
-                    for (int i = 0; i < (widget.reader.rating ?? 4); i++)
-                      Icon(
-                        Icons.star_rounded,
-                        color: ColorHelper.getColor('#FFA800'),
-                        size: 20,
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Rating:',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.blue,
+                        ),
                       ),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 3),
+                      for (int i = 0; i < (widget.reader.rating ?? 4); i++)
+                        Icon(
+                          Icons.star_rounded,
+                          color: ColorHelper.getColor('#FFA800'),
+                          size: 20,
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             )
           ],
         ),
