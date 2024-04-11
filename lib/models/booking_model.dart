@@ -36,8 +36,17 @@ class Booking {
   Service? service;
   String? startAt;
   String? createAt;
+  CustomerBooked? customer;
 
-  Booking({this.id, this.rating, this.review, this.meeting, this.service, this.startAt, this.createAt});
+  Booking(
+      {this.id,
+      this.rating,
+      this.review,
+      this.meeting,
+      this.service,
+      this.startAt,
+      this.createAt,
+      this.customer});
 
   Booking.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,6 +58,9 @@ class Booking {
         json['service'] != null ? new Service.fromJson(json['service']) : null;
     startAt = json['startAt'];
     createAt = json['createdAt'];
+    customer = json['customer'] != null
+        ? new CustomerBooked.fromJson(json['customer'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +76,9 @@ class Booking {
     }
     data['startAt'] = this.startAt;
     data['createdAt'] = this.createAt;
+    if (this.customer != null) {
+      data['customer'] = this.customer!.toJson();
+    }
     return data;
   }
 }
@@ -169,6 +184,7 @@ class Service {
   String? description;
   String? id;
   int? price;
+  ServiceType? serviceType;
 
   Service({this.book, this.duration, this.description, this.id, this.price});
 
@@ -178,6 +194,9 @@ class Service {
     description = json['description'];
     id = json['id'];
     price = json['price'];
+    serviceType = json['serviceType'] != null
+        ? new ServiceType.fromJson(json['serviceType'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -189,6 +208,31 @@ class Service {
     data['description'] = this.description;
     data['id'] = this.id;
     data['price'] = this.price;
+    if (this.serviceType != null) {
+      data['serviceType'] = this.serviceType!.toJson();
+    }
+    return data;
+  }
+}
+
+class ServiceType {
+  String? id;
+  String? name;
+  String? description;
+
+  ServiceType({this.id, this.name, this.description});
+
+  ServiceType.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    description = json['description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['description'] = this.description;
     return data;
   }
 }
@@ -214,6 +258,61 @@ class Book {
     data['smallThumbnailUrl'] = this.smallThumbnailUrl;
     data['thumbnailUrl'] = this.thumbnailUrl;
     data['id'] = this.id;
+    return data;
+  }
+}
+
+class CustomerBooked {
+  String? id;
+  String? imageUrl;
+  String? fullName;
+  String? gender;
+  AccountBooked? account;
+
+  CustomerBooked(
+      {this.id, this.imageUrl, this.fullName, this.gender, this.account});
+
+  CustomerBooked.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imageUrl = json['imageUrl'];
+    fullName = json['fullName'];
+    gender = json['gender'];
+    account = json['account'] != null
+        ? new AccountBooked.fromJson(json['account'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['imageUrl'] = this.imageUrl;
+    data['fullName'] = this.fullName;
+    data['gender'] = this.gender;
+    if (this.account != null) {
+      data['account'] = this.account!.toJson();
+    }
+    return data;
+  }
+}
+
+class AccountBooked {
+  String? username;
+  String? email;
+  String? phoneNumber;
+
+  AccountBooked({this.username, this.email, this.phoneNumber});
+
+  AccountBooked.fromJson(Map<String, dynamic> json) {
+    username = json['username'];
+    email = json['email'];
+    phoneNumber = json['phoneNumber'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['username'] = this.username;
+    data['email'] = this.email;
+    data['phoneNumber'] = this.phoneNumber;
     return data;
   }
 }

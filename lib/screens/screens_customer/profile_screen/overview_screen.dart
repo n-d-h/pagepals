@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
@@ -38,7 +38,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
 
   // late String readerId;
   ReaderProfile? reader = ReaderProfile();
-  List<BookModel> bookModels = [];
+  BookModel? bookModel;
   CommentModel? commentModel;
 
   @override
@@ -66,7 +66,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
   Future<void> getReaderBooks(String id) async {
     var result = await BookService.getReaderBooks(id);
     setState(() {
-      bookModels = result;
+      bookModel = result;
     });
   }
 
@@ -146,7 +146,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           controller: ScrollController(),
           // padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: reader?.profile == null
+          child: reader?.profile == null || bookModel == null
               ? SizedBox(
                   height: MediaQuery.of(context).size.height - 100,
                   child: Column(
@@ -171,16 +171,17 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                       width: MediaQuery.of(context).size.width,
                     ),
                     ProfileInfoLine(reader: reader, pauseVideo: pauseVideo),
+                    if (bookModel != null)
                     ProfileBookCollection(
-                        books: bookModels
+                        books: bookModel!.list!
                             .map((e) => e.book ?? Book(id: ''))
                             .toList()),
                     ProfileReviewWidget(reader: reader, comment: commentModel),
-                    if (bookModels.isNotEmpty && bookModels.first.book != null)
+                    if (bookModel!.list!.isNotEmpty && bookModel!.list!.first.book != null)
                       ProfileBookingButton(
                         reader: reader,
                         pauseVideo: pauseVideo,
-                        bookModels: bookModels,
+                        bookModel: bookModel!,
                       ),
                     // const ProfileReaderCollection(),
                   ],

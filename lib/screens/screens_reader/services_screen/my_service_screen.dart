@@ -6,7 +6,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
-import 'package:pagepals/models/service_model.dart';
+import 'package:pagepals/models/service_models/service_model.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/service_widget.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/create_service.dart';
@@ -119,6 +119,8 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('service');
+    print(services.length);
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -183,51 +185,59 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
                         size: 60,
                       ),
                     )
-                  : ListView.builder(
-                      controller: _scrollController,
-                      itemCount: services.length + (isLoadingNextPage ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index == services.length) {
-                          // Show loading indicator at the bottom
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: LoadingAnimationWidget.prograssiveDots(
-                                color: ColorHelper.getColor(ColorHelper.green),
-                                size: 50,
-                              ),
-                            ),
-                          );
-                        } else {
-                          return ServiceWidget(
-                            id: services[index].id,
-                            readerId: widget.readerId!,
-                            imageUrl: services[index].book!.smallThumbnailUrl,
-                            book: services[index].book!.title,
-                            duration: services[index].duration,
-                            createdAt: services[index].createdAt!,
-                            serviceTypeId: services[index].serviceType!.id,
-                            serviceType: services[index].serviceType!.name ,
-                            serviceName: services[index].description,
-                            bookDescription: services[index].book!.description,
-                            price: services[index].price,
-                            rating: services[index].rating.toString(),
-                            totalOfRating:
-                                services[index].totalOfReview.toString(),
-                            onDeleted: (value) {
-                              if (value != null && value) {
-                                setState(() {
-                                  services.clear();
-                                  currentPage = 0;
-                                  hasMorePages = true;
-                                  _fetchServices();
-                                });
-                              }
-                            },
-                          );
-                        }
-                      },
-                    )),
+                  : services.first.id == null
+                      ? const Center(
+                          child: Text('No services found'),
+                        )
+                      : ListView.builder(
+                          controller: _scrollController,
+                          itemCount:
+                              services.length + (isLoadingNextPage ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            if (index == services.length) {
+                              // Show loading indicator at the bottom
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: LoadingAnimationWidget.prograssiveDots(
+                                    color:
+                                        ColorHelper.getColor(ColorHelper.green),
+                                    size: 50,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return ServiceWidget(
+                                id: services[index].id,
+                                readerId: widget.readerId!,
+                                imageUrl:
+                                    services[index].book!.smallThumbnailUrl,
+                                book: services[index].book!.title,
+                                duration: services[index].duration,
+                                createdAt: services[index].createdAt!,
+                                serviceTypeId: services[index].serviceType!.id,
+                                serviceType: services[index].serviceType!.name,
+                                serviceName: services[index].description,
+                                bookDescription:
+                                    services[index].book!.description,
+                                price: services[index].price,
+                                rating: services[index].rating.toString(),
+                                totalOfRating:
+                                    services[index].totalOfReview.toString(),
+                                onDeleted: (value) {
+                                  if (value != null && value) {
+                                    setState(() {
+                                      services.clear();
+                                      currentPage = 0;
+                                      hasMorePages = true;
+                                      _fetchServices();
+                                    });
+                                  }
+                                },
+                              );
+                            }
+                          },
+                        )),
           Positioned(
             top: 0,
             left: 0,

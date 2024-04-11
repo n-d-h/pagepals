@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
+import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/favorite_button.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/overview_screen.dart';
 
 class PopularReaderBox extends StatefulWidget {
   final PopularReader reader;
   final int index;
-  final IconButton iconButton;
+  final FavoriteButton iconButton;
 
   const PopularReaderBox({
     super.key,
@@ -22,13 +23,6 @@ class PopularReaderBox extends StatefulWidget {
 }
 
 class PopularReaderBoxState extends State<PopularReaderBox> {
-  late List<bool> _clickedList;
-
-  @override
-  void initState() {
-    super.initState();
-    _clickedList = [];
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
+import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/favorite_button.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/popular_reader_box.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/popular_readers_widgets/popular_reader_shimmer.dart';
 import 'package:pagepals/services/reader_service.dart';
@@ -12,13 +13,11 @@ class PopularReaderWidget extends StatefulWidget {
 }
 
 class _PopularReaderWidgetState extends State<PopularReaderWidget> {
-  late List<bool> _clickedList;
   List<PopularReader> readers = [];
 
   @override
   void initState() {
     super.initState();
-    _clickedList = [];
     getListPopularReaders();
   }
 
@@ -26,7 +25,6 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
     var list = await ReaderService.getPopularReaders();
     setState(() {
       readers = list;
-      _clickedList = List.generate(readers.length, (index) => false);
     });
   }
 
@@ -56,21 +54,9 @@ class _PopularReaderWidgetState extends State<PopularReaderWidget> {
                 return PopularReaderBox(
                   reader: reader,
                   index: index,
-                  iconButton: IconButton(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onPressed: () {
-                      setState(() {
-                        _clickedList[index] = !_clickedList[index];
-                      });
-                    },
-                    icon: Icon(
-                      _clickedList[index]
-                          ? Icons.favorite
-                          : Icons.favorite_border_sharp,
-                      size: 25,
-                      color: _clickedList[index] ? Colors.red : Colors.black12,
-                    ),
+                  iconButton: FavoriteButton(
+                    readers: readers,
+                    index: index,
                   ),
                 );
               },

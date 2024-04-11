@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/working_time_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
@@ -11,17 +11,19 @@ import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/time_picker_widget.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/request_schedule.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/review_summary_screen.dart';
+import 'package:pagepals/services/service_service.dart';
+import 'package:pagepals/services/service_type_service.dart';
 import 'package:pagepals/services/working_time_service.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 
 class BookingTimeScreen extends StatefulWidget {
   final ReaderProfile? reader;
-  final List<BookModel> bookModels;
+  final BookModel bookModel;
 
   const BookingTimeScreen({
     super.key,
     required this.reader,
-    required this.bookModels,
+    required this.bookModel,
   });
 
   @override
@@ -37,6 +39,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
 
   List<ServiceType> serviceTypesByBook = [];
   ServiceType? _selectServiceType;
+  ServiceType? _oldSelectServiceType;
 
   List<Services> servicesByBook = [];
   List<Services> servicesByServiceType = [];
@@ -65,8 +68,9 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   // Function to handle book selection
   void handleBookSelected(String? bookId) {
     // Get the selected book model
-    final BookModel selectedBookModel =
-        widget.bookModels.firstWhere((element) => element.book!.id == bookId);
+    final Books selectedBookModel =
+        // widget.bookModel!.list.firstWhere((element) => element.book!.id == bookId);
+        widget.bookModel.list!.firstWhere((element) => element.book!.id == bookId);
     // Set the selected book
     setState(() {
       if (_oldSelectedBook != null) {
@@ -75,7 +79,10 @@ class _BookingTimeState extends State<BookingTimeScreen> {
         }
       }
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () async {
+      var serviceTypes = await ServiceTypeService.getListServiceTypesByService(
+          selectedBookModel.services!.map((e) => e.id!).toList());
+
       setState(() {
         _selectedBook = selectedBookModel.book;
 
@@ -83,16 +90,19 @@ class _BookingTimeState extends State<BookingTimeScreen> {
         final List<Services> services = selectedBookModel.services!;
 
         if (services.isNotEmpty) {
+          // reloading page if the book is changed
           _oldSelectedBook = _selectedBook;
           _selectServiceType = null;
+          _oldSelectServiceType = null;
           _selectedService = null;
           servicesByServiceType = [];
           isReloading = false;
+
           // Get the unique ServiceType from the services
           servicesByBook = services;
-          serviceTypesByBook =
-              Set<ServiceType>.from(services.map((e) => e.serviceType!))
-                  .toList();
+
+          // Set the service types by book
+          serviceTypesByBook = serviceTypes;
         }
       });
     });
@@ -104,11 +114,25 @@ class _BookingTimeState extends State<BookingTimeScreen> {
       // Set the selected service type
       _selectServiceType = serviceTypesByBook
           .firstWhere((serviceType) => serviceType.id == selectedTypeId);
+    });
 
-      // Filter services in book by the selected service type
-      servicesByServiceType = servicesByBook
-          .where((service) => service.serviceType!.id == selectedTypeId)
-          .toList();
+      if (_oldSelectServiceType != null) {
+        if (_oldSelectServiceType!.id != _selectServiceType!.id) {
+          setState(() {
+            servicesByServiceType = [];
+            print("hieeafas00");
+          });
+        }
+      }
+    Future.delayed(const Duration(seconds: 1), ()
+    {
+      setState(() {
+        _oldSelectServiceType = _selectServiceType;
+        // Filter services in book by the selected service type
+        servicesByServiceType = servicesByBook
+            .where((service) => service.serviceType!.id == selectedTypeId)
+            .toList();
+      });
     });
   }
 
@@ -145,7 +169,8 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   Widget build(BuildContext context) {
     print('selectedBook: ${_selectedBook?.id ?? ''}');
     print('old selected book: ${_oldSelectedBook?.id ?? ''}');
-    print('service types: ${serviceTypesByBook.length}');
+    print('service types by book: ${serviceTypesByBook.length}');
+    print('service by service type: ${servicesByServiceType.length}');
     return isReloading
         ? Scaffold(
             body: Center(
@@ -181,7 +206,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                     DropdownButtonWidget(
                       value: _selectedBook?.id,
                       title: 'Book',
-                      items: widget.bookModels.map((e) => e.book!).toList(),
+                      items: widget.bookModel.list!.map((e) => e.book!).toList(),
                       onValueChanged: handleBookSelected,
                     ),
                     if (serviceTypesByBook.isNotEmpty)
@@ -257,10 +282,6 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                     DatePickerWidget(
                       onDateSelected: handleDateSelected,
                     ),
-                    // TimeSlotPicker(
-                    //   selectedDate: selectedDate,
-                    //   onTimeSlotSelected: handleDateSelected,
-                    // ),
                     TimePickerWidget(
                       selectedDate: selectedDate,
                       workingTimeModels:

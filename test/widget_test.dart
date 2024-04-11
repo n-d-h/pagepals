@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pagepals/main.dart';
-import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/book_models/customer_book.dart';
 import 'package:pagepals/services/book_service.dart';
 

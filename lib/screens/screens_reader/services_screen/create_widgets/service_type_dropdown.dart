@@ -1,7 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/models/service_model.dart';
+import 'package:pagepals/models/service_models/service_model.dart';
 import 'package:pagepals/services/service_service.dart';
 
 class ServiceTypeDropdown extends StatefulWidget {

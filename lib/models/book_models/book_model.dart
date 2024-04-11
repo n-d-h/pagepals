@@ -1,10 +1,39 @@
 class BookModel {
+  List<Books>? list;
+  Paging? paging;
+
+  BookModel({this.list, this.paging});
+
+  BookModel.fromJson(Map<String, dynamic> json) {
+    if (json['list'] != null) {
+      list = <Books>[];
+      json['list'].forEach((v) {
+        list!.add(new Books.fromJson(v));
+      });
+    }
+    paging =
+        json['paging'] != null ? new Paging.fromJson(json['paging']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.list != null) {
+      data['list'] = this.list!.map((v) => v.toJson()).toList();
+    }
+    if (this.paging != null) {
+      data['paging'] = this.paging!.toJson();
+    }
+    return data;
+  }
+}
+
+class Books {
   Book? book;
   List<Services>? services;
 
-  BookModel({this.book, this.services});
+  Books({this.book, this.services});
 
-  BookModel.fromJson(Map<String, dynamic> json) {
+  Books.fromJson(Map<String, dynamic> json) {
     book = json['book'] != null ? new Book.fromJson(json['book']) : null;
     if (json['services'] != null) {
       services = <Services>[];
@@ -40,15 +69,15 @@ class Book {
 
   Book(
       {this.id,
-        this.title,
-        this.publisher,
-        this.language,
-        this.authors,
-        this.categories,
-        this.description,
-        this.pageCount,
-        this.smallThumbnailUrl,
-        this.thumbnailUrl});
+      this.title,
+      this.publisher,
+      this.language,
+      this.authors,
+      this.categories,
+      this.description,
+      this.pageCount,
+      this.smallThumbnailUrl,
+      this.thumbnailUrl});
 
   Book.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -137,13 +166,13 @@ class Services {
 
   Services(
       {this.id,
-        this.description,
-        this.duration,
-        this.price,
-        this.rating,
-        this.totalOfBooking,
-        this.totalOfReview,
-        this.serviceType});
+      this.description,
+      this.duration,
+      this.price,
+      this.rating,
+      this.totalOfBooking,
+      this.totalOfReview,
+      this.serviceType});
 
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -189,6 +218,39 @@ class ServiceType {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    return data;
+  }
+}
+
+class Paging {
+  int? currentPage;
+  int? pageSize;
+  String? sort;
+  int? totalOfElements;
+  int? totalOfPages;
+
+  Paging(
+      {this.currentPage,
+      this.pageSize,
+      this.sort,
+      this.totalOfElements,
+      this.totalOfPages});
+
+  Paging.fromJson(Map<String, dynamic> json) {
+    currentPage = json['currentPage'];
+    pageSize = json['pageSize'];
+    sort = json['sort'];
+    totalOfElements = json['totalOfElements'];
+    totalOfPages = json['totalOfPages'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['currentPage'] = this.currentPage;
+    data['pageSize'] = this.pageSize;
+    data['sort'] = this.sort;
+    data['totalOfElements'] = this.totalOfElements;
+    data['totalOfPages'] = this.totalOfPages;
     return data;
   }
 }

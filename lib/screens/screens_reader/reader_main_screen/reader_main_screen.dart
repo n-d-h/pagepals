@@ -55,8 +55,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
         await BookingService.getBookingByReader(readerId, 0, 10, 'COMPLETE');
     var cancel =
         await BookingService.getBookingByReader(readerId, 0, 10, 'CANCEL');
-    var comment =
-        await ReaderService.getListReaderComment(readerId, 0, 10);
+    var comment = await ReaderService.getListReaderComment(readerId, 0, 10);
     setState(() {
       pendingBooking = pending;
       completedBooking = done;
@@ -306,6 +305,14 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                     type: PageTransitionType.rightToLeft,
                                     child: WaitingScreen(
                                       bookingModel: pendingBooking,
+                                      onLoading: (value) {
+                                        if (value) {
+                                          setState(() {
+                                            pendingBooking = null;
+                                          });
+                                          getBooking(readerId);
+                                        }
+                                      },
                                     ),
                                   ),
                                 );
@@ -329,7 +336,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                       'Waiting',
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 13,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],
@@ -368,7 +375,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                       'Completed',
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 13,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],
@@ -407,7 +414,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                       'Canceled',
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 13,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],
@@ -443,10 +450,10 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                     Text(
                                         '${commentModel!.pagination!.totalOfElements!}'),
                                     const Text(
-                                      'Comment',
+                                      'Comments',
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 13,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],

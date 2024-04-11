@@ -1,7 +1,8 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/google_book.dart';
-import 'package:pagepals/models/service_model.dart';
+import 'package:pagepals/models/service_models/book_service_model.dart';
+import 'package:pagepals/models/service_models/service_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ServiceService {
@@ -72,9 +73,10 @@ class ServiceService {
     }
 
     final servicesData = result.data?['getServicesByReader']['services'];
-    return servicesData
+    var list = servicesData
         .map<ServiceModel>((service) => ServiceModel.fromJson(service))
         .toList();
+    return list.isEmpty ? [ServiceModel()] : list;
   }
 
   static Future<List<ServiceType>> getListServiceType() async {
@@ -236,5 +238,53 @@ class ServiceService {
     }
 
     return result.data?['deleteService'] != null;
+  }
+
+  static Future<BookServiceModel> getBookService(
+      String bookId, String search, int pageSize, int page, String sort) async {
+    String query = '''
+      query {
+        getServicesByBook(
+          bookId: "$bookId",
+          filter: {search: "$search", pageSize: $pageSize, page: $page, sort: "$sort"}
+        ) {
+          services {
+            id
+            description
+            duration
+            price
+            rating
+            reader {
+              id
+              nickname
+              avatarUrl
+              language
+            }
+            totalOfBooking
+            totalOfReview
+          }
+          paging {
+            currentPage
+            pageSize
+            sort
+            totalOfElements
+            totalOfPages
+          }
+        }
+      }
+    ''';
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to get book service');
+    }
+
+    final bookServiceData = result.data?['getServicesByBook'];
+    return BookServiceModel.fromJson(bookServiceData);
   }
 }
