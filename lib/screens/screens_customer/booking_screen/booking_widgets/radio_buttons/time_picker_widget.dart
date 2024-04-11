@@ -34,6 +34,8 @@ class _TimeSlotPickerState extends State<TimePickerWidget> {
   void initializeDate() {
     // flag to check if there is no work date for the selected date
     bool noWorkDateForSelectedDate = true;
+    var now = DateTime.now();
+    var today = DateTime(now.year, now.month, now.day);
 
     setState(() {
       // Get all the working dates from reader
@@ -44,7 +46,8 @@ class _TimeSlotPickerState extends State<TimePickerWidget> {
         // Loop through the working dates to find the selected working date
         for (var element in workingDates) {
           DateTime workingDate = DateTime.parse(element.date!);
-          if (workingDate.day == widget.selectedDate.day &&
+          if (widget.selectedDate.isAfter(today) &&
+              workingDate.day == widget.selectedDate.day &&
               workingDate.month == widget.selectedDate.month &&
               workingDate.year == widget.selectedDate.year) {
             // Set the selected working date
@@ -68,21 +71,12 @@ class _TimeSlotPickerState extends State<TimePickerWidget> {
   @override
   Widget build(BuildContext context) {
     initializeDate();
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 30),
-        // const Text(
-        //   'Time slot',
-        //   style: TextStyle(
-        //     fontSize: 18,
-        //     fontWeight: FontWeight.w600,
-        //     color: Colors.black,
-        //   ),
-        // ),
         RichText(
           softWrap: true,
           text: TextSpan(

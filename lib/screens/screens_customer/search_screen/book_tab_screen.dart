@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -8,7 +10,9 @@ import 'package:pagepals/screens/screens_customer/book_screen/book_detail_screen
 import 'package:pagepals/services/book_service.dart';
 
 class BookTabScreen extends StatefulWidget {
-  const BookTabScreen({super.key});
+  final String? search;
+
+  const BookTabScreen({super.key, this.search});
 
   @override
   State<BookTabScreen> createState() => _BookTabScreenState();
@@ -19,6 +23,8 @@ class _BookTabScreenState extends State<BookTabScreen> {
   List<Book> books = [];
   bool isLoadingNextPage = false;
   bool hasMorePages = true;
+  Timer? _debounce;
+  String search = '';
 
   final ScrollController _scrollController = ScrollController();
 
@@ -36,6 +42,7 @@ class _BookTabScreenState extends State<BookTabScreen> {
     super.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
+    _debounce?.cancel();
   }
 
   void _scrollListener() {
@@ -47,8 +54,8 @@ class _BookTabScreenState extends State<BookTabScreen> {
 
   Future<void> _fetchCustomerBooks() async {
     try {
-      CustomerBook result =
-          await BookService.getAllBooks("", "", currentPage, 10, "", "desc");
+      CustomerBook result = await BookService.getAllBooks(
+          "", "", currentPage, 10, "${widget.search ?? ''}", "desc");
       setState(() {
         books.addAll(result.list!);
         currentPage++;
@@ -67,8 +74,8 @@ class _BookTabScreenState extends State<BookTabScreen> {
         isLoadingNextPage = true;
       });
       try {
-        CustomerBook result =
-            await BookService.getAllBooks("", "", currentPage, 10, "", "desc");
+        CustomerBook result = await BookService.getAllBooks(
+            "", "", currentPage, 10, "${widget.search ?? ''}", "desc");
         if (result.list!.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -92,6 +99,18 @@ class _BookTabScreenState extends State<BookTabScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      if (search != widget.search) {
+        setState(() {
+          currentPage = 0;
+          books.clear();
+          hasMorePages = true;
+          search = widget.search ?? '';
+        });
+        _fetchCustomerBooks();
+      }
+    });
     return books.isEmpty
         ? Scaffold(
             backgroundColor: Colors.white,

@@ -17,7 +17,8 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
   late bool isSearching;
-  late int tabIndex; // Track the current tab index
+  late int tabIndex;
+  String search = '';
 
   @override
   void initState() {
@@ -63,7 +64,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             isSearching = false;
                           });
                         }
-                        print('Searching for: $value');
+                        setState(() {
+                          search = value;
+                        });
                       },
                       onSubmitted: (value) {
                         print('Submit Searching for: $value');
@@ -157,12 +160,14 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               bottom: TabBar(
                 onTap: (index) {
+                  if(index == tabIndex) return; // Do nothing if the same tab is selected
                   setState(() {
+                    searchController.clear();
+                    search = '';
                     tabIndex =
                         index; // Update the tab index when a tab is selected
                   });
                 },
-                splashFactory: NoSplash.splashFactory,
                 indicatorColor: ColorHelper.getColor(ColorHelper.green),
                 indicatorSize: TabBarIndicatorSize.tab,
                 labelColor: ColorHelper.getColor(ColorHelper.green),
@@ -177,11 +182,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
               ),
             ),
-            body: const TabBarView(
+            body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
                 ReaderTabScreen(),
-                BookTabScreen(),
+                BookTabScreen(search: search,),
               ],
             ),
           ),

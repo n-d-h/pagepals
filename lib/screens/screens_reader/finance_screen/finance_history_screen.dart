@@ -137,7 +137,13 @@ class _FinanceHistoryScreenState extends State<FinanceHistoryScreen> {
                                     ),
                                   ],
                                 ),
-                                Text(description),
+                                Text(
+                                  description,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ],
                             ),
                             Column(
