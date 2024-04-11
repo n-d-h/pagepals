@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_time_screen.dart';
 
 class ProfileBookingButton extends StatelessWidget {
   final ReaderProfile? reader;
   final Function pauseVideo;
-  final List<BookModel> bookModels;
+  final BookModel bookModel;
 
   const ProfileBookingButton(
-      {super.key, this.reader, required this.pauseVideo, required this.bookModels});
+      {super.key, this.reader, required this.pauseVideo, required this.bookModel});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ProfileBookingButton extends StatelessWidget {
               PageTransition(
                 child: BookingTimeScreen(
                   reader: reader,
-                  bookModels: bookModels,
+                  bookModel: bookModel,
                 ),
                 type: PageTransitionType.rightToLeft,
                 duration: const Duration(milliseconds: 300),

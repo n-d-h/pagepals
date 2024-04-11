@@ -2,7 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:unicons/unicons.dart';
 
 class DropdownButtonWidget extends StatefulWidget {

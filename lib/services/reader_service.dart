@@ -97,6 +97,7 @@ class ReaderService {
     ''';
     final QueryResult result = await graphQLClient.query(QueryOptions(
       document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
     ));
 
     if (result.hasException) {
@@ -137,8 +138,12 @@ class ReaderService {
     }
     ''';
 
-    final QueryResult result =
-        await graphQLClient.query(QueryOptions(document: gql(query)));
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
 
     if (result.hasException) {
       throw Exception('Failed to load readers');

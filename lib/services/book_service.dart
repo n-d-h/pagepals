@@ -1,6 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
-import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/book_models/customer_book.dart';
 import 'package:pagepals/models/google_book.dart';
 
@@ -70,38 +70,48 @@ class BookService {
     }
   }
 
-  static Future<List<BookModel>> getReaderBooks(String readerId) async {
+  static Future<BookModel> getReaderBooks(String readerId) async {
     var query = '''
         query {
-          getReaderBooks(id: "$readerId") {
-            book {
-              id
-              title
-              publisher
-              language
-              authors {
-                name
-              }
-              categories {
-                name
-              }
-              description
-              pageCount
-              smallThumbnailUrl
-              thumbnailUrl
-            }
-            services {
-              id
-              description
-              duration
-              price
-              rating
-              totalOfBooking
-              totalOfReview
-              serviceType {
+          getReaderBooks(id: "8bd6001e-c19d-4e89-8be0-7f89e7cdaba8", 
+            filter: {title: "", page: 0, pageSize: 10}) {
+            list {
+              book {
                 id
-                name
+                title
+                publisher
+                language
+                authors {
+                  name
+                }
+                categories {
+                  name
+                }
+                description
+                pageCount
+                smallThumbnailUrl
+                thumbnailUrl
               }
+              services {
+                id
+                description
+                duration
+                price
+                rating
+                totalOfBooking
+                totalOfReview
+                serviceType {
+                  id
+                  name
+                }
+              }
+            }
+            paging {
+              currentPage
+              pageSize
+              sort
+              totalOfElements
+              totalOfPages
             }
           }
         }
@@ -116,13 +126,16 @@ class BookService {
       throw Exception('Failed to load books');
     }
 
-    final List<dynamic>? booksData = result.data?['getReaderBooks'];
+    var booksData = result.data?['getReaderBooks'];
     if (booksData != null) {
-      return booksData.isNotEmpty
-          ? booksData.map((bookJson) => BookModel.fromJson(bookJson)).toList()
-          : [BookModel(book: null, services: [])];
+      BookModel data = BookModel.fromJson(booksData);
+      if (data.list!.isNotEmpty) {
+        return data;
+      } else {
+        return BookModel(list: [Books(book: null, services: [])]);
+      }
     } else {
-      return [BookModel(book: null, services: [])];
+      return BookModel(list: [Books(book: null, services: [])]);
     }
   }
 

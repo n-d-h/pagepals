@@ -120,7 +120,7 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
                               ),
                               RatingRow(
                                 rating: reader.profile?.rating ?? 0,
-                                reviews: reader.profile?.totalOfReviews ?? '0',
+                                reviews: reader.profile?.totalOfReviews ?? 0,
                                 color: Colors.white,
                               )
                             ],

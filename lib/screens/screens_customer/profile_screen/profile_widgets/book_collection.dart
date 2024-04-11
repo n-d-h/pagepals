@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProfileBookCollection extends StatelessWidget {
@@ -10,7 +10,6 @@ class ProfileBookCollection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('books: ${books.length}');
     return Container(
       height: 230,
       decoration: const BoxDecoration(color: Colors.white),

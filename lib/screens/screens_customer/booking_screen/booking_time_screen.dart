@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/models/book_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/working_time_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
@@ -16,12 +16,12 @@ import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 
 class BookingTimeScreen extends StatefulWidget {
   final ReaderProfile? reader;
-  final List<BookModel> bookModels;
+  final BookModel bookModel;
 
   const BookingTimeScreen({
     super.key,
     required this.reader,
-    required this.bookModels,
+    required this.bookModel,
   });
 
   @override
@@ -65,8 +65,9 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   // Function to handle book selection
   void handleBookSelected(String? bookId) {
     // Get the selected book model
-    final BookModel selectedBookModel =
-        widget.bookModels.firstWhere((element) => element.book!.id == bookId);
+    final Books selectedBookModel =
+        // widget.bookModel!.list.firstWhere((element) => element.book!.id == bookId);
+        widget.bookModel.list!.firstWhere((element) => element.book!.id == bookId);
     // Set the selected book
     setState(() {
       if (_oldSelectedBook != null) {
@@ -145,7 +146,8 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   Widget build(BuildContext context) {
     print('selectedBook: ${_selectedBook?.id ?? ''}');
     print('old selected book: ${_oldSelectedBook?.id ?? ''}');
-    print('service types: ${serviceTypesByBook.length}');
+    print('service types by book: ${serviceTypesByBook.length}');
+    print('service by service type: ${servicesByServiceType.length}');
     return isReloading
         ? Scaffold(
             body: Center(
@@ -181,7 +183,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                     DropdownButtonWidget(
                       value: _selectedBook?.id,
                       title: 'Book',
-                      items: widget.bookModels.map((e) => e.book!).toList(),
+                      items: widget.bookModel.list!.map((e) => e.book!).toList(),
                       onValueChanged: handleBookSelected,
                     ),
                     if (serviceTypesByBook.isNotEmpty)
@@ -257,10 +259,6 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                     DatePickerWidget(
                       onDateSelected: handleDateSelected,
                     ),
-                    // TimeSlotPicker(
-                    //   selectedDate: selectedDate,
-                    //   onTimeSlotSelected: handleDateSelected,
-                    // ),
                     TimePickerWidget(
                       selectedDate: selectedDate,
                       workingTimeModels:
