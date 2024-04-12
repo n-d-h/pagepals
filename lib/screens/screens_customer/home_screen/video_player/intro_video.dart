@@ -1,11 +1,9 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_about/video_player_screen.dart';
 import 'package:video_player/video_player.dart';
 
-final tempVideoController = VideoPlayerController.networkUrl(Uri.parse(''));
-
-// abc
 class IntroVideo extends StatefulWidget {
   final String videoUrl;
   final Function()? pauseVideo;
@@ -23,42 +21,42 @@ class IntroVideo extends StatefulWidget {
 }
 
 class IntroVideoState extends State<IntroVideo> {
-  VideoPlayerController videoPlayerController = tempVideoController;
-  ChewieController chewieController =
-      ChewieController(videoPlayerController: tempVideoController);
+  VideoPlayerController tempVideoController = VideoPlayerController.networkUrl(Uri.parse(''));
+  late VideoPlayerController videoPlayerController;
+  late ChewieController chewieController;
 
-  void _initializeChewieController(String videoUrl) {
+  void _initializeChewieController(String videoUrl) async{
     videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(videoUrl));
-    videoPlayerController.initialize().then((_) {
-      setState(() {
-        chewieController = ChewieController(
-          videoPlayerController: videoPlayerController,
-          autoInitialize: true,
-          autoPlay: false,
-          aspectRatio: widget.width == null ? 300 / 160 : widget.width! / 200,
-          showControlsOnInitialize: true,
-          looping: false,
-          placeholder: Container(
-            color: Colors.grey[300]!,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: ColorHelper.getColor(ColorHelper.green),
-                strokeWidth: 3,
-              ),
-            ),
+    chewieController = ChewieController(videoPlayerController: tempVideoController);
+    await videoPlayerController.initialize();
+    tempVideoController = videoPlayerController;
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+      autoInitialize: true,
+      autoPlay: false,
+      aspectRatio: widget.width == null ? 300 / 160 : widget.width! / 200,
+      showControlsOnInitialize: true,
+      looping: false,
+      placeholder: Container(
+        color: Colors.grey[300]!,
+        child: Center(
+          child: CircularProgressIndicator(
+            color: ColorHelper.getColor(ColorHelper.green),
+            strokeWidth: 3,
           ),
-          errorBuilder: (context, errorMessage) {
-            return Center(
-              child: Text(
-                errorMessage,
-                style: const TextStyle(color: Colors.white),
-              ),
-            );
-          },
+        ),
+      ),
+      errorBuilder: (context, errorMessage) {
+        return Center(
+          child: Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.white),
+          ),
         );
-      });
-    });
+      },
+    );
+    setState(() {});
   }
 
   void pauseVideo() {
@@ -74,7 +72,7 @@ class IntroVideoState extends State<IntroVideo> {
   }
 
   // Check if ChewieController is initialized
-  bool isChewieControllerInitialized() {
+  bool isChewieControllerVideoInitialized() {
     return chewieController.videoPlayerController.value.isInitialized;
   }
 
@@ -95,7 +93,7 @@ class IntroVideoState extends State<IntroVideo> {
 
   @override
   Widget build(BuildContext context) {
-    if (isChewieControllerInitialized()) {
+    if (isChewieControllerVideoInitialized()) {
       return widget.width == null
           ? Container(
               alignment: Alignment.topCenter,

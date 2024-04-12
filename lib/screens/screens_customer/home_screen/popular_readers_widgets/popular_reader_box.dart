@@ -11,12 +11,14 @@ class PopularReaderBox extends StatefulWidget {
   final PopularReader reader;
   final int index;
   final FavoriteButton iconButton;
+  final GlobalKey<IntroVideoState> introVideoKey;
 
   const PopularReaderBox({
     super.key,
     required this.reader,
     required this.index,
     required this.iconButton,
+    required this.introVideoKey,
   });
 
   @override
@@ -24,19 +26,16 @@ class PopularReaderBox extends StatefulWidget {
 }
 
 class PopularReaderBoxState extends State<PopularReaderBox> {
+  void pauseVideo() {
+    final IntroVideoState? introVideoState = widget.introVideoKey.currentState;
+    if (introVideoState != null) {
+      introVideoState.pauseVideo();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<IntroVideoState> introVideoKey =
-        GlobalKey<IntroVideoState>();
-
-    void pauseVideo() {
-      final IntroVideoState? introVideoState = introVideoKey.currentState;
-      if (introVideoState != null) {
-        introVideoState.pauseVideo();
-      }
-    }
-
+    print('PopularReaderBoxState mounted');
     return Container(
       width: 300,
       margin: const EdgeInsets.fromLTRB(2, 10, 25, 10),
@@ -69,7 +68,7 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
           children: [
             IntroVideo(
               videoUrl: widget.reader.introductionVideoUrl!,
-              key: introVideoKey,
+              key: widget.introVideoKey,
             ),
             Container(
               alignment: Alignment.topLeft,
