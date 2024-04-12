@@ -44,6 +44,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
 
   String videoUrl = '';
   String imageUrl = '';
+  String audioUrl = '';
 
   void setReaderVideoUpload(value) {
     setState(() {
@@ -54,6 +55,12 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
   void setReaderImageUpload(value) {
     setState(() {
       imageUrl = value;
+    });
+  }
+
+  void setReaderAudioUpload(value) {
+    setState(() {
+      audioUrl = value;
     });
   }
 
@@ -91,6 +98,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
       ReaderRequestStep3(
         videoUploadCallback: setReaderVideoUpload,
         imageUploadCallback: setReaderImageUpload,
+        audioUploadCallback: setReaderAudioUpload,
       ),
     ];
 
@@ -310,12 +318,14 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                           await FileStorageService.uploadImage(File(imageUrl));
                       String videoDownloadUrl =
                           await FileStorageService.uploadFile(File(videoUrl));
+                      String audioDownloadUrl =
+                          await FileStorageService.uploadAudio(File(audioUrl));
 
                       if (imageDownloadUrl != "" && videoDownloadUrl != "") {
                         var readerModel =
                             readerRequestProvider.readerRequestModel;
                         readerModel.information?.audioDescriptionUrl =
-                            videoDownloadUrl;
+                            audioDownloadUrl;
                         readerModel.information?.avatarUrl = imageDownloadUrl;
                         readerModel.information?.introductionVideoUrl =
                             videoDownloadUrl;
