@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -53,7 +54,6 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
       ),
       child: InkWell(
         onTap: () {
-          // _initializeChewieController(reader.introductionVideoUrl!);
           pauseVideo();
           Navigator.of(context).push(
             PageTransition(
@@ -151,7 +151,7 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
                 horizontal: 14,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -185,26 +185,6 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
                         ),
                       ),
                     ],
-                  ),
-                  RichText(
-                    text: const TextSpan(
-                      text: 'From   ',
-                      style: TextStyle(
-                        color: Colors.black26,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "15000 VND",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),

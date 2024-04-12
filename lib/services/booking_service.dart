@@ -5,7 +5,6 @@ import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/booking_model.dart';
-import 'package:pagepals/services/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingService {

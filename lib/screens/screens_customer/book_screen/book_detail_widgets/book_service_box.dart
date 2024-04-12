@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/service_models/book_service_model.dart';
 import 'package:pagepals/screens/screens_customer/book_screen/service_relate_to_book_screen.dart';
+import 'package:pagepals/screens/screens_customer/profile_screen/overview_screen.dart';
 import 'package:pagepals/services/service_service.dart';
 
 class BookServiceBox extends StatefulWidget {
@@ -50,17 +51,28 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                   vertical: 15,
                 ),
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black45,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      )
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black45,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    )
+                  ],
+                ),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        child: ProfileOverviewScreen(
+                          readerId: service?.reader?.id ?? "",
+                        ),
+                      ),
+                    );
+                  },
                   child: Stack(
                     children: [
                       Container(

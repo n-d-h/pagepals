@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepals/screens/screens_reader/report_screen/chart.dart';
 
@@ -19,6 +20,7 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   int activeDay = 3;
   bool showAvg = false;
+  String selectType = "Day";
 
   List expenses = [
     {
@@ -71,7 +73,54 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                margin: const EdgeInsets.only(right: 20, top: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.01),
+                      spreadRadius: 10,
+                      blurRadius: 3,
+                      // changes position of shadow
+                    ),
+                  ],
+                  border: Border.all(
+                    color: Colors.grey.withOpacity(0.1),
+                  ),
+                ),
+                child: DropdownButton<String>(
+                  value: selectType,
+                  style: const TextStyle(color: Colors.black),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectType = newValue!;
+                    });
+                  },
+                  underline: Container(),
+                  items: [
+                    DropdownMenuItem<String>(
+                      value: "Day",
+                      child: Text("Day"),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: "Month",
+                      child: Text("Month"),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: "Year",
+                      child: Text("Year"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
@@ -138,6 +187,7 @@ class _ReportScreenState extends State<ReportScreen> {
               spacing: 20,
               children: [
                 Container(
+                  margin: const EdgeInsets.only(left: 20),
                   width: (size.width - 60) / 2,
                   height: 170,
                   decoration: BoxDecoration(
@@ -269,7 +319,6 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

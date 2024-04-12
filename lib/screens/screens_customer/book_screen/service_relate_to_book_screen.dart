@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/service_models/book_service_model.dart';
+import 'package:pagepals/screens/screens_customer/profile_screen/overview_screen.dart';
 import 'package:pagepals/services/service_service.dart';
 
 class ServiceRelateToBookScreen extends StatefulWidget {
@@ -82,7 +84,17 @@ class _ServiceRelateToBookScreenState extends State<ServiceRelateToBookScreen> {
                     ],
                   ),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: ProfileOverviewScreen(
+                            readerId: service?.reader?.id ?? "",
+                          ),
+                        ),
+                      );
+                    },
                     child: Stack(
                       children: [
                         Container(
