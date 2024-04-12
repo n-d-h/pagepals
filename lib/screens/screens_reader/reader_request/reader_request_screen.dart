@@ -109,6 +109,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
               title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
+              surfaceTintColor: Colors.white,
               centerTitle: true,
               leading: IconButton(
                 onPressed: () {
@@ -121,6 +122,8 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                           "Are you sure you want to exit? "
                           "If you exit, all your progress will be lost.",
                         ),
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
                         actions: [
                           TextButton(
                             onPressed: () {

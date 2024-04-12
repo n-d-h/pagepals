@@ -177,36 +177,37 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
       body: Stack(
         children: [
           Container(
-              margin: const EdgeInsets.only(top: 80),
-              child: services.isEmpty
-                  ? Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: ColorHelper.getColor(ColorHelper.green),
-                        size: 60,
-                      ),
-                    )
-                  : services.first.id == null
-                      ? const Center(
-                          child: Text('No services found'),
-                        )
-                      : ListView.builder(
-                          controller: _scrollController,
-                          itemCount:
-                              services.length + (isLoadingNextPage ? 1 : 0),
-                          itemBuilder: (context, index) {
-                            if (index == services.length) {
-                              // Show loading indicator at the bottom
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: LoadingAnimationWidget.prograssiveDots(
-                                    color:
-                                        ColorHelper.getColor(ColorHelper.green),
-                                    size: 50,
-                                  ),
+            margin: const EdgeInsets.only(top: 80),
+            child: services.isEmpty
+                ? Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: ColorHelper.getColor(ColorHelper.green),
+                      size: 60,
+                    ),
+                  )
+                : services.first.id == null
+                    ? const Center(
+                        child: Text('No services found'),
+                      )
+                    : ListView.builder(
+                        controller: _scrollController,
+                        itemCount:
+                            services.length + (isLoadingNextPage ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index == services.length) {
+                            // Show loading indicator at the bottom
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: LoadingAnimationWidget.prograssiveDots(
+                                  color:
+                                      ColorHelper.getColor(ColorHelper.green),
+                                  size: 50,
                                 ),
-                              );
-                            } else {
+                              ),
+                            );
+                          } else {
+                            if (services[index].id != null) {
                               return ServiceWidget(
                                 id: services[index].id,
                                 readerId: widget.readerId!,
@@ -236,8 +237,10 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
                                 },
                               );
                             }
-                          },
-                        )),
+                          }
+                        },
+                      ),
+          ),
           Positioned(
             top: 0,
             left: 0,

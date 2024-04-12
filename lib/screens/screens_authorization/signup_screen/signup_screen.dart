@@ -319,25 +319,25 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        PageTransition(
-                          child: const MenuItemScreen(),
-                          type: PageTransitionType.fade,
-                          duration: const Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Skip',
-                      style: TextStyle(
-                        fontSize: SpaceHelper.fontSize18,
-                        color: ColorHelper.getColor(ColorHelper.green),
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).push(
+                  //       PageTransition(
+                  //         child: const MenuItemScreen(),
+                  //         type: PageTransitionType.fade,
+                  //         duration: const Duration(seconds: 1),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: Text(
+                  //     'Skip',
+                  //     style: TextStyle(
+                  //       fontSize: SpaceHelper.fontSize18,
+                  //       color: ColorHelper.getColor(ColorHelper.green),
+                  //       fontWeight: FontWeight.w800,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             )

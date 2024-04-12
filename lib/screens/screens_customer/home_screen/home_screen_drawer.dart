@@ -106,7 +106,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               Icons.token_sharp,
               color: Colors.deepPurpleAccent.withOpacity(0.7),
             ),
-            title: Text("Token: ${account?.wallet?.tokenAmount} pals"),
+            title: Text("Token: ${account?.wallet?.tokenAmount ?? 0} pals"),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -234,7 +234,9 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               UniconsLine.icons,
               color: Colors.deepPurple,
             ),
-            title: Text(AppLocalizations.of(context)!.appRequestToBeReader),
+            title: account?.reader?.id == null
+                ? Text(AppLocalizations.of(context)!.appRequestToBeReader)
+                : Text('Reader Profile'),
             onTap: () {
               Navigator.pop(context);
               if (account?.accountState?.name == "READER_PENDING") {
