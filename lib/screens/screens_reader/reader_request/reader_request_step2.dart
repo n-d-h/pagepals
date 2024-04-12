@@ -82,17 +82,6 @@ class _QuestionWidgetState extends State<QuestionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final readerProvider = context.watch<ReaderRequestProvider>();
-    // final readerRequestModel = readerProvider.readerRequestModel;
-    // setState(() {
-    //   _controller.text = readerRequestModel.answers
-    //           ?.firstWhere(
-    //             (element) => element?.questionId == widget.question.id,
-    //             orElse: () => null,
-    //           )
-    //           ?.content ??
-    //       '';
-    // });
     return Container(
       padding: const EdgeInsets.fromLTRB(17, 0, 17, 17),
       margin: const EdgeInsets.only(bottom: 10),
