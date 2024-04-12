@@ -163,21 +163,20 @@ class _ReaderRequestStep1State extends State<ReaderRequestStep1> {
                 }
                 return null;
               },
-              // onEditingComplete: () {
-              //   final readerRequestProvider =
-              //       context.read<ReaderRequestProvider>();
-              //
-              //   readerRequestProvider.updateReaderRequestModelAtStep1(
-              //     description: _descriptionController.text,
-              //     countryAccent: selectedCountry,
-              //     genre: selectedGenre,
-              //     languages: selectedCountry,
-              //     nickname: _nicknameController.text,
-              //   );
-              //
-              //   print(readerRequestProvider.readerRequestModel.toString());
-              // }
+              onChanged: (_) {
+                final readerRequestProvider =
+                    context.read<ReaderRequestProvider>();
 
+                readerRequestProvider.updateReaderRequestModelAtStep1(
+                  description: _descriptionController.text,
+                  countryAccent: selectedCountry,
+                  genre: selectedGenre,
+                  languages: selectedCountry,
+                  nickname: _nicknameController.text,
+                );
+
+                print(readerRequestProvider.readerRequestModel.toString());
+              },
               onTapOutside: (PointerDownEvent event) {
                 final readerRequestProvider =
                     context.read<ReaderRequestProvider>();

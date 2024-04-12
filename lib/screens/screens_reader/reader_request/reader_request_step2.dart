@@ -114,6 +114,15 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                     color: ColorHelper.getColor(ColorHelper.green), width: 2),
               ),
             ),
+            onChanged: (value) {
+              final readerRequestProvider =
+                  context.read<ReaderRequestProvider>();
+
+              readerRequestProvider.setAnswer(
+                widget.question.id ?? '',
+                value,
+              );
+            },
             onTapOutside: (value) {
               final readerRequestProvider =
                   context.read<ReaderRequestProvider>();
