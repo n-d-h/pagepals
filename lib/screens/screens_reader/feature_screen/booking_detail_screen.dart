@@ -53,7 +53,7 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        title: const Text('Book appointment'),
+        title: const Text('Booking Detail'),
         centerTitle: true,
         titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700,
@@ -74,8 +74,9 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                 customer: widget.booking.customer,
               ),
               TimeRowWidget(
-                  time: DateTime.parse(
-                      widget.booking.startAt ?? '2024-01-01 00:00:00')),
+                time: DateTime.parse(
+                    widget.booking.startAt ?? '2024-01-01 00:00:00'),
+              ),
               SpaceBetweenRowWidget(
                 start: 'Duration',
                 end:
@@ -133,7 +134,7 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
             return;
           } else {
             // Handle button press action here
-            Future.delayed(const Duration(milliseconds: 100), () {
+            Future.delayed(const Duration(milliseconds: 40), () {
               setState(() {
                 isLoading = false;
               });
