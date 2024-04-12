@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/customer_transaction_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/transaction_money_widget.dart';
@@ -112,7 +113,8 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      showBottomSheet();
+                      // showBottomSheet();
+                      showRechargeDialog(context);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -133,7 +135,7 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                           TransactionMoneyWidget.sendButton(),
                           const SizedBox(width: 16),
                           Text(
-                            'ReCharge',
+                            'Recharge',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -195,49 +197,51 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
     );
   }
 
-  void showBottomSheet() {
+  void showRechargeDialog(BuildContext context) {
     TextEditingController _controller = TextEditingController();
 
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      backgroundColor: Colors.white,
       builder: (context) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
           ),
-          child: Column(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+              Text(
+                'Recharge',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorHelper.getColor(ColorHelper.green),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                keyboardType: TextInputType.number,
+                controller: _controller,
+                decoration: InputDecoration(
+                  hintText: 'Enter amount',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: TextField(
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter amount',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               InkWell(
                 onTap: () async {
                   Future.delayed(const Duration(milliseconds: 500), () {
@@ -276,12 +280,11 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(15),
-                  margin: const EdgeInsets.all(15),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   decoration: BoxDecoration(
                     color: Colors.orange,
                     borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
                         color: Colors.grey,
                         blurRadius: 10,
@@ -289,7 +292,7 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                       ),
                     ],
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -298,7 +301,7 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'ReCharge',
+                        'Recharge',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -315,4 +318,125 @@ class _CustomerWalletScreenState extends State<CustomerWalletScreen> {
       },
     );
   }
+
+// void showBottomSheet() {
+//   TextEditingController _controller = TextEditingController();
+//
+//   showModalBottomSheet(
+//     context: context,
+//     backgroundColor: Colors.white,
+//     builder: (context) {
+//       return Container(
+//         decoration: const BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.only(
+//             topLeft: Radius.circular(20),
+//             topRight: Radius.circular(20),
+//           ),
+//         ),
+//         child: Column(
+//           children: [
+//             Align(
+//               alignment: Alignment.topRight,
+//               child: Container(
+//                 padding: const EdgeInsets.all(10),
+//                 child: IconButton(
+//                   icon: const Icon(Icons.close),
+//                   onPressed: () {
+//                     Navigator.pop(context);
+//                   },
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 20),
+//             Padding(
+//               padding: const EdgeInsets.all(15),
+//               child: TextField(
+//                 controller: _controller,
+//                 decoration: const InputDecoration(
+//                   hintText: 'Enter amount',
+//                   border: OutlineInputBorder(
+//                     borderRadius: BorderRadius.all(Radius.circular(20)),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 20),
+//             InkWell(
+//               onTap: () async {
+//                 Future.delayed(const Duration(milliseconds: 500), () {
+//                   showDialog(
+//                     context: context,
+//                     barrierDismissible: false,
+//                     builder: (BuildContext context) {
+//                       return Center(
+//                         child: LoadingAnimationWidget.staggeredDotsWave(
+//                           color: Colors.greenAccent,
+//                           size: 60,
+//                         ),
+//                       );
+//                     },
+//                   );
+//                 });
+//                 SharedPreferences prefs =
+//                     await SharedPreferences.getInstance();
+//                 String? accountString = prefs.getString('account');
+//                 if (accountString == null) {
+//                   return;
+//                 }
+//                 Map<String, dynamic> accountMap = json.decode(accountString);
+//                 AccountModel account = AccountModel.fromJson(accountMap);
+//                 print(account.customer?.id ?? '');
+//                 var response = await MoMoService.getMoMoResponse(
+//                     int.parse(_controller.text), account.customer?.id ?? '');
+//                 Uri url = Uri.parse(response.payUrl!);
+//
+//                 if (await canLaunchUrl(url)) {
+//                   await launchUrl(url, mode: LaunchMode.externalApplication);
+//                 }
+//
+//                 Future.delayed(const Duration(seconds: 1), () {
+//                   Navigator.pop(context);
+//                 });
+//               },
+//               child: Container(
+//                 padding: const EdgeInsets.all(15),
+//                 margin: const EdgeInsets.all(15),
+//                 decoration: BoxDecoration(
+//                   color: Colors.orange,
+//                   borderRadius: BorderRadius.circular(20),
+//                   boxShadow: const [
+//                     BoxShadow(
+//                       color: Colors.grey,
+//                       blurRadius: 10,
+//                       offset: Offset(0, 5),
+//                     ),
+//                   ],
+//                 ),
+//                 child: const Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Icon(
+//                       Icons.monetization_on,
+//                       color: Colors.white,
+//                     ),
+//                     SizedBox(width: 10),
+//                     Text(
+//                       'ReCharge',
+//                       style: TextStyle(
+//                         fontSize: 20,
+//                         fontWeight: FontWeight.bold,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       );
+//     },
+//   );
+// }
 }
