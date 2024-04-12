@@ -74,12 +74,13 @@ class WaitingScreen extends StatelessWidget {
                             child: BookingDetailScreen(
                               booking: booking,
                               onLoading: onLoading,
-                              title: 'Complete Booking',
+                              title: 'Finish Booking',
                               isEnabled: DateTime.now().isAfter(
                                 DateTime.parse(booking.startAt ??
                                         '2024-01-01 00:00:00')
                                     .add(const Duration(hours: 1)),
                               ),
+                              // isEnabled: true,
                             ),
                             type: PageTransitionType.rightToLeft,
                             duration: const Duration(milliseconds: 300),

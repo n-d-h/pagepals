@@ -336,6 +336,8 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         if (value) {
                                           setState(() {
                                             pendingBooking = null;
+                                            completedBooking = null;
+                                            canceledBooking = null;
                                           });
                                           getBooking(readerId);
                                         }

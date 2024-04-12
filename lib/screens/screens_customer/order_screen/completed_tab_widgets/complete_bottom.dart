@@ -26,6 +26,7 @@ class _CompletedBottomState extends State<CompletedBottom> {
 
   @override
   Widget build(BuildContext context) {
+    print('Rating: ${widget.booking.rating}');
     return Container(
       padding: const EdgeInsets.only(top: 14),
       child: widget.booking.rating != null || isReviewSubmitted

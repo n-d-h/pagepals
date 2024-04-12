@@ -89,13 +89,13 @@ class _ReaderCommentScreenState extends State<ReaderCommentScreen> {
                         children: [
                           for (int i = 0; i < comment!.rating!; i++)
                             const Icon(
-                              Icons.star,
-                              color: Colors.yellow,
+                              Icons.star_rounded,
+                              color: Colors.amber,
                             ),
                           for (int i = 0; i < 5 - comment.rating!; i++)
                             const Icon(
-                              Icons.star,
-                              color: Colors.grey,
+                              Icons.star_border_rounded,
+                              color: Colors.amber,
                             ),
                         ],
                       ),
