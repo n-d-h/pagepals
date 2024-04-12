@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/booking_model.dart';
@@ -36,7 +37,7 @@ class _CompletedBottomState extends State<CompletedBottom> {
                     style: OutlinedButton.styleFrom(
                       backgroundColor: ColorHelper.getColor('#C6F4DE'),
                       side: const BorderSide(color: Colors.transparent),
-                      fixedSize: const Size.fromWidth(148),
+                      // fixedSize: const Size.fromWidth(148),
                     ),
                     child: Text(
                       'Re-book',
@@ -51,42 +52,47 @@ class _CompletedBottomState extends State<CompletedBottom> {
               ],
             )
           : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: ColorHelper.getColor('#C6F4DE'),
-                    side: const BorderSide(color: Colors.transparent),
-                    fixedSize: const Size.fromWidth(148),
-                  ),
-                  child: Text(
-                    'Re-book',
-                    style: GoogleFonts.lexend(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: ColorHelper.getColor(ColorHelper.green),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: ColorHelper.getColor('#C6F4DE'),
+                      side: const BorderSide(color: Colors.transparent),
+                      fixedSize: const Size.fromWidth(148),
+                    ),
+                    child: Text(
+                      'Re-book',
+                      style: GoogleFonts.lexend(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: ColorHelper.getColor(ColorHelper.green),
+                      ),
                     ),
                   ),
                 ),
-                OutlinedButton(
-                  onPressed: () {
-                    showBottomSheetRating(
-                        context, widget.booking, setReviewSubmitted);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: ColorHelper.getColor(ColorHelper.green),
-                    side: const BorderSide(color: Colors.transparent),
-                    fixedSize: const Size.fromWidth(148),
-                  ),
-                  child: Text(
-                    'Review',
-                    style: GoogleFonts.lexend(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      showBottomSheetRating(
+                          context, widget.booking, setReviewSubmitted);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: ColorHelper.getColor(ColorHelper.green),
+                      side: const BorderSide(color: Colors.transparent),
+                      fixedSize: const Size.fromWidth(148),
+                    ),
+                    child: Text(
+                      'Review',
+                      style: GoogleFonts.lexend(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

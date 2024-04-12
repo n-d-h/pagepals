@@ -32,7 +32,16 @@ class SuccessBottomButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    PageTransition(
+                      child: const MenuItemScreen(index: 3),
+                      type: PageTransitionType.rightToLeft,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                    (route) => false,
+                  );
+                },
                 // Disable button if not enabled
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.transparent),

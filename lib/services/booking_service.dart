@@ -92,6 +92,10 @@ class BookingService {
               id
               nickname
               avatarUrl
+              countryAccent
+              language
+              rating
+              totalOfReviews
               account {
                 customer {
                   imageUrl
@@ -186,6 +190,10 @@ class BookingService {
               id
               nickname
               avatarUrl
+              countryAccent
+              language
+              rating
+              totalOfReviews
               account {
                 customer {
                   imageUrl

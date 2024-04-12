@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/widgets/reader_info_widget/booking_badge.dart';
 import 'package:pagepals/widgets/reader_info_widget/rating_row.dart';
 
 class ReaderInfoWidget extends StatelessWidget {
   final ReaderProfile? reader;
+  final Reader? readerInfo;
 
-  const ReaderInfoWidget({super.key, required this.reader});
+  const ReaderInfoWidget({super.key, this.reader, this.readerInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class ReaderInfoWidget extends StatelessWidget {
           CircleAvatar(
             radius: 60,
             backgroundImage: NetworkImage(reader?.profile?.avatarUrl ??
+                readerInfo?.avatarUrl ??
                 'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain'),
           ),
           const SizedBox(
@@ -30,9 +33,12 @@ class ReaderInfoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              BookingBadge(title: reader?.profile?.countryAccent ?? 'reader'),
+              BookingBadge(
+                  title: reader?.profile?.countryAccent ??
+                      readerInfo?.countryAccent ??
+                      'reader'),
               Text(
-                reader?.profile?.nickname ?? 'reader',
+                reader?.profile?.nickname ?? readerInfo?.nickname ?? 'reader',
                 style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -40,15 +46,17 @@ class ReaderInfoWidget extends StatelessWidget {
               ),
               // SizedBox(height: 10,),
               Text(
-                '@${reader?.profile?.account?.username ?? 'reader'}',
+                '@${reader?.profile?.account?.username ?? readerInfo?.account?.username ?? 'reader'}',
                 style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: Colors.black54),
               ),
               RatingRow(
-                  rating: reader?.profile?.rating ?? 0,
-                  reviews: reader?.profile?.totalOfReviews ?? 0),
+                  rating: reader?.profile?.rating ?? readerInfo?.rating ?? 0,
+                  reviews: reader?.profile?.totalOfReviews ??
+                      readerInfo?.totalOfReviews ??
+                      0),
             ],
           )
         ],
