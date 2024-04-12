@@ -76,11 +76,16 @@ class BookingService {
     AccountModel account = AccountModel.fromJson(json.decode(accountJson));
     String customerId = account.customer!.id!;
 
+    String sort = 'desc';
+    if (bookingState == 'PENDING') {
+      sort = 'asc';
+    }
+
     var query = '''
     query {
       getListBookingByCustomer(
         customerId: "$customerId"
-        filter: {page: $page, pageSize: $pageSize, bookingState: "$bookingState"}
+        filter: {page: $page, pageSize: $pageSize, bookingState: "$bookingState", sort: "$sort"}
       ) {
         list {
           id
@@ -174,11 +179,16 @@ class BookingService {
     String token = prefs.getString('accessToken')!;
     print('accessToken: $token');
 
+    String sort = 'desc';
+    if (bookingState == 'PENDING') {
+      sort = 'asc';
+    }
+
     var query = '''
     query {
       getListBookingByReader(
         readerId: "$readerId"
-        filter: {page: $page, pageSize: $pageSize, bookingState: "$bookingState"}
+        filter: {page: $page, pageSize: $pageSize, bookingState: "$bookingState", sort: "$sort"}
       ) {
         list {
           id
