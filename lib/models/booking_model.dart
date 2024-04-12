@@ -115,6 +115,10 @@ class Reader {
   String? id;
   String? nickname;
   String? avatarUrl;
+  String? countryAccent;
+  String? language;
+  int? rating;
+  int? totalOfReviews;
   Account? account;
 
   Reader({this.id, this.nickname, this.avatarUrl, this.account});
@@ -123,6 +127,10 @@ class Reader {
     id = json['id'];
     nickname = json['nickname'];
     avatarUrl = json['avatarUrl'];
+    countryAccent = json['countryAccent'];
+    language = json['language'];
+    rating = json['rating'];
+    totalOfReviews = json['totalOfReviews'];
     account =
         json['account'] != null ? new Account.fromJson(json['account']) : null;
   }
@@ -132,6 +140,10 @@ class Reader {
     data['id'] = this.id;
     data['nickname'] = this.nickname;
     data['avatarUrl'] = this.avatarUrl;
+    data['countryAccent'] = this.countryAccent;
+    data['language'] = this.language;
+    data['rating'] = this.rating;
+    data['totalOfReviews'] = this.totalOfReviews;
     if (this.account != null) {
       data['account'] = this.account!.toJson();
     }

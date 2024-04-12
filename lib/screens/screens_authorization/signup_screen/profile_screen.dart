@@ -47,9 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool allFieldsAreValid() {
     return _userNameController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty &&
-        _fullNameController.text.isNotEmpty &&
-        _phoneController.text.isNotEmpty &&
-        selectedGender != null &&
+        // _fullNameController.text.isNotEmpty &&
+        // _phoneController.text.isNotEmpty &&
+        // selectedGender != null &&
         isChecked;
   }
 
@@ -74,14 +74,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: ColorHelper.getColor(ColorHelper.green),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Information',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
                       margin: const EdgeInsets.only(left: 15),
                       height: 28,
-                      child: const Text(
+                      child: Text(
                         'Email',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: ColorHelper.getColor(ColorHelper.green),
+                        ),
                       ),
                     ),
                     TextField(
@@ -119,12 +140,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       margin: const EdgeInsets.only(left: 15),
                       height: 28,
-                      child: const Text(
+                      child: Text(
                         'Username',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: ColorHelper.getColor(ColorHelper.green),
+                        ),
                       ),
                     ),
                     TextField(
@@ -160,12 +182,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       margin: const EdgeInsets.only(left: 15),
                       height: 28,
-                      child: const Text(
+                      child: Text(
                         'Password',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: ColorHelper.getColor(ColorHelper.green),
+                        ),
                       ),
                     ),
                     TextField(
@@ -198,8 +221,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
                             color: Colors.grey,
                           ),
                           onPressed: () {
@@ -211,182 +234,182 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       obscureText: _obscurePassword,
                     ),
-                    const SizedBox(height: 20),
-                    Container(
-                      margin: const EdgeInsets.only(left: 15),
-                      height: 28,
-                      child: const Text(
-                        'Full Name',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87),
-                      ),
-                    ),
-                    TextField(
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      controller: _fullNameController,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.description),
-                        prefixIconColor: Colors.grey,
-                        // hintText: 'Full Name',
-                        // hintStyle:
-                        //     const TextStyle(fontSize: 16, color: Colors.grey),
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 12),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorHelper.getColor(ColorHelper.grey),
-                              width: 1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorHelper.getColor(ColorHelper.green),
-                              width: 2),
-                          // Customize the focused border color if needed
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      keyboardType: TextInputType.name,
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      margin: const EdgeInsets.only(left: 15),
-                      height: 28,
-                      child: const Text(
-                        'Phone number',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87),
-                      ),
-                    ),
-                    TextField(
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      controller: _phoneController,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.phone),
-                        prefixIconColor: Colors.grey,
-                        // hintText: 'Phone number',
-                        // hintStyle:
-                        //     const TextStyle(fontSize: 16, color: Colors.grey),
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 12),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorHelper.getColor(ColorHelper.grey),
-                              width: 1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorHelper.getColor(ColorHelper.green),
-                              width: 2),
-                          // Customize the focused border color if needed
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      keyboardType: TextInputType.phone,
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      margin: const EdgeInsets.only(left: 15),
-                      height: 28,
-                      child: const Text(
-                        'Gender',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87),
-                      ),
-                    ),
-                    DropdownButtonFormField2<String>(
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        prefixIcon: selectedGender == 'Male'
-                            ? const Icon(
-                                Icons.male_sharp,
-                                color: Colors.grey,
-                              )
-                            : selectedGender == 'Female'
-                                ? const Icon(
-                                    Icons.female_sharp,
-                                    color: Colors.grey,
-                                  )
-                                : null,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 12),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorHelper.getColor(ColorHelper.grey),
-                              width: 1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: ColorHelper.getColor(ColorHelper.green),
-                              width: 2),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      hint: const Text(
-                        'Select Your Gender',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                      items: genderItems
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ))
-                          .toList(),
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select gender.';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        // Update selectedGender to control the visibility of the icon
-                        setState(() {
-                          selectedGender = value.toString();
-                        });
-                      },
-                      onSaved: (value) {
-                        selectedGender = value.toString();
-                      },
-                      buttonStyleData: const ButtonStyleData(
-                        padding: EdgeInsets.only(right: 8),
-                      ),
-                      iconStyleData: const IconStyleData(
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.black45,
-                        ),
-                        iconSize: 24,
-                      ),
-                      dropdownStyleData: DropdownStyleData(
-                        width: MediaQuery.of(context).size.width *
-                            SpaceHelper.spaceNineTenths,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        padding: EdgeInsets.symmetric(horizontal: 48),
-                      ),
-                    ),
+                    // const SizedBox(height: 20),
+                    // Container(
+                    //   margin: const EdgeInsets.only(left: 15),
+                    //   height: 28,
+                    //   child: const Text(
+                    //     'Full Name',
+                    //     style: TextStyle(
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w600,
+                    //         color: Colors.black87),
+                    //   ),
+                    // ),
+                    // TextField(
+                    //   style: const TextStyle(
+                    //     fontSize: 16,
+                    //     fontWeight: FontWeight.w600,
+                    //   ),
+                    //   controller: _fullNameController,
+                    //   decoration: InputDecoration(
+                    //     prefixIcon: const Icon(Icons.description),
+                    //     prefixIconColor: Colors.grey,
+                    //     // hintText: 'Full Name',
+                    //     // hintStyle:
+                    //     //     const TextStyle(fontSize: 16, color: Colors.grey),
+                    //     contentPadding: const EdgeInsets.symmetric(
+                    //         vertical: 15, horizontal: 12),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //           color: ColorHelper.getColor(ColorHelper.grey),
+                    //           width: 1),
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //           color: ColorHelper.getColor(ColorHelper.green),
+                    //           width: 2),
+                    //       // Customize the focused border color if needed
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //   ),
+                    //   keyboardType: TextInputType.name,
+                    // ),
+                    // const SizedBox(height: 20),
+                    // Container(
+                    //   margin: const EdgeInsets.only(left: 15),
+                    //   height: 28,
+                    //   child: const Text(
+                    //     'Phone number',
+                    //     style: TextStyle(
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w600,
+                    //         color: Colors.black87),
+                    //   ),
+                    // ),
+                    // TextField(
+                    //   style: const TextStyle(
+                    //     fontSize: 16,
+                    //     fontWeight: FontWeight.w600,
+                    //   ),
+                    //   controller: _phoneController,
+                    //   decoration: InputDecoration(
+                    //     prefixIcon: const Icon(Icons.phone),
+                    //     prefixIconColor: Colors.grey,
+                    //     // hintText: 'Phone number',
+                    //     // hintStyle:
+                    //     //     const TextStyle(fontSize: 16, color: Colors.grey),
+                    //     contentPadding: const EdgeInsets.symmetric(
+                    //         vertical: 15, horizontal: 12),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //           color: ColorHelper.getColor(ColorHelper.grey),
+                    //           width: 1),
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //           color: ColorHelper.getColor(ColorHelper.green),
+                    //           width: 2),
+                    //       // Customize the focused border color if needed
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //   ),
+                    //   keyboardType: TextInputType.phone,
+                    // ),
+                    // const SizedBox(height: 20),
+                    // Container(
+                    //   margin: const EdgeInsets.only(left: 15),
+                    //   height: 28,
+                    //   child: const Text(
+                    //     'Gender',
+                    //     style: TextStyle(
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w600,
+                    //         color: Colors.black87),
+                    //   ),
+                    // ),
+                    // DropdownButtonFormField2<String>(
+                    //   isExpanded: true,
+                    //   decoration: InputDecoration(
+                    //     prefixIcon: selectedGender == 'Male'
+                    //         ? const Icon(
+                    //             Icons.male_sharp,
+                    //             color: Colors.grey,
+                    //           )
+                    //         : selectedGender == 'Female'
+                    //             ? const Icon(
+                    //                 Icons.female_sharp,
+                    //                 color: Colors.grey,
+                    //               )
+                    //             : null,
+                    //     contentPadding: const EdgeInsets.symmetric(
+                    //         vertical: 15, horizontal: 12),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //           color: ColorHelper.getColor(ColorHelper.grey),
+                    //           width: 1),
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //           color: ColorHelper.getColor(ColorHelper.green),
+                    //           width: 2),
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //   ),
+                    //   hint: const Text(
+                    //     'Select Your Gender',
+                    //     style: TextStyle(fontSize: 16, color: Colors.grey),
+                    //   ),
+                    //   items: genderItems
+                    //       .map((item) => DropdownMenuItem<String>(
+                    //             value: item,
+                    //             child: Text(
+                    //               item,
+                    //               style: const TextStyle(
+                    //                   fontSize: 16,
+                    //                   fontWeight: FontWeight.w600),
+                    //             ),
+                    //           ))
+                    //       .toList(),
+                    //   validator: (value) {
+                    //     if (value == null) {
+                    //       return 'Please select gender.';
+                    //     }
+                    //     return null;
+                    //   },
+                    //   onChanged: (value) {
+                    //     // Update selectedGender to control the visibility of the icon
+                    //     setState(() {
+                    //       selectedGender = value.toString();
+                    //     });
+                    //   },
+                    //   onSaved: (value) {
+                    //     selectedGender = value.toString();
+                    //   },
+                    //   buttonStyleData: const ButtonStyleData(
+                    //     padding: EdgeInsets.only(right: 8),
+                    //   ),
+                    //   iconStyleData: const IconStyleData(
+                    //     icon: Icon(
+                    //       Icons.arrow_drop_down,
+                    //       color: Colors.black45,
+                    //     ),
+                    //     iconSize: 24,
+                    //   ),
+                    //   dropdownStyleData: DropdownStyleData(
+                    //     width: MediaQuery.of(context).size.width *
+                    //         SpaceHelper.spaceNineTenths,
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //   ),
+                    //   menuItemStyleData: const MenuItemStyleData(
+                    //     padding: EdgeInsets.symmetric(horizontal: 48),
+                    //   ),
+                    // ),
                     const SizedBox(height: 10),
                     Row(
                       children: [

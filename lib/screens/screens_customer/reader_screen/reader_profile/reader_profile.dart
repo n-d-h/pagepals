@@ -174,6 +174,7 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
               const ReaderBookTabbar(),
               ReaderReviewTabbar(
                 commentModel: commentModel,
+                reader: reader,
               ),
             ],
           ),

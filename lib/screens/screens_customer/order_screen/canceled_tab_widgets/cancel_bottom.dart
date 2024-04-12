@@ -25,7 +25,6 @@ class CanceledBottom extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                 backgroundColor: ColorHelper.getColor(ColorHelper.green),
                 side: const BorderSide(color: Colors.transparent),
-                fixedSize: const Size.fromWidth(double.infinity),
               ),
               child: Text(
                 title ?? 'Re-book this Reader',

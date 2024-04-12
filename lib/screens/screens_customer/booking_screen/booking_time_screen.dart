@@ -47,7 +47,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
 
   WorkingTimeModel? workingTimeModels = WorkingTimeModel();
   String? selectedTimeSlotId;
-  bool isReloading = false;
+  DateTime selectedTimeSlotDate = DateTime.now();
 
   Future<void> getWorkingTime() async {
     var result =
@@ -70,16 +70,19 @@ class _BookingTimeState extends State<BookingTimeScreen> {
     // Get the selected book model
     final Books selectedBookModel =
         // widget.bookModel!.list.firstWhere((element) => element.book!.id == bookId);
-        widget.bookModel.list!.firstWhere((element) => element.book!.id == bookId);
+        widget.bookModel.list!
+            .firstWhere((element) => element.book!.id == bookId);
     // Set the selected book
     setState(() {
       if (_oldSelectedBook != null) {
         if (_oldSelectedBook!.id != selectedBookModel.book!.id) {
-          isReloading = true;
+          servicesByBook = [];
+          serviceTypesByBook = [];
+          servicesByServiceType = [];
         }
       }
     });
-    Future.delayed(const Duration(seconds: 1), () async {
+    Future.delayed(const Duration(milliseconds: 40), () async {
       var serviceTypes = await ServiceTypeService.getListServiceTypesByService(
           selectedBookModel.services!.map((e) => e.id!).toList());
 
@@ -96,7 +99,6 @@ class _BookingTimeState extends State<BookingTimeScreen> {
           _oldSelectServiceType = null;
           _selectedService = null;
           servicesByServiceType = [];
-          isReloading = false;
 
           // Get the unique ServiceType from the services
           servicesByBook = services;
@@ -116,16 +118,14 @@ class _BookingTimeState extends State<BookingTimeScreen> {
           .firstWhere((serviceType) => serviceType.id == selectedTypeId);
     });
 
-      if (_oldSelectServiceType != null) {
-        if (_oldSelectServiceType!.id != _selectServiceType!.id) {
-          setState(() {
-            servicesByServiceType = [];
-            print("hieeafas00");
-          });
-        }
+    if (_oldSelectServiceType != null) {
+      if (_oldSelectServiceType!.id != _selectServiceType!.id) {
+        setState(() {
+          servicesByServiceType = [];
+        });
       }
-    Future.delayed(const Duration(seconds: 1), ()
-    {
+    }
+    Future.delayed(const Duration(milliseconds: 40), () {
       setState(() {
         _oldSelectServiceType = _selectServiceType;
         // Filter services in book by the selected service type
@@ -153,7 +153,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
     setState(() {
       // Set the selected time slot
       selectedTimeSlotId = timeSlotId;
-      selectedDate = timeSlotDate!;
+      selectedTimeSlotDate = timeSlotDate!;
     });
   }
 
@@ -171,151 +171,141 @@ class _BookingTimeState extends State<BookingTimeScreen> {
     print('old selected book: ${_oldSelectedBook?.id ?? ''}');
     print('service types by book: ${serviceTypesByBook.length}');
     print('service by service type: ${servicesByServiceType.length}');
-    return isReloading
-        ? Scaffold(
-            body: Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-              color: Colors.green,
-              size: 60,
-            )),
-          )
-        : Scaffold(
-            appBar: AppBar(
-              surfaceTintColor: Colors.white,
-              title: const Text('Book appointment'),
-              centerTitle: true,
-              titleTextStyle: const TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-                fontSize: 24,
+    return Scaffold(
+      appBar: AppBar(
+        surfaceTintColor: Colors.white,
+        title: const Text('Book appointment'),
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.w700,
+          color: Colors.black,
+          fontSize: 24,
+        ),
+      ),
+      body: SingleChildScrollView(
+        controller: ScrollController(),
+        physics: const BouncingScrollPhysics(),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ReaderInfoWidget(
+                reader: widget.reader,
               ),
-            ),
-            body: SingleChildScrollView(
-              controller: ScrollController(),
-              physics: const BouncingScrollPhysics(),
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ReaderInfoWidget(
-                      reader: widget.reader,
-                    ),
-                    DropdownButtonWidget(
-                      value: _selectedBook?.id,
-                      title: 'Book',
-                      items: widget.bookModel.list!.map((e) => e.book!).toList(),
-                      onValueChanged: handleBookSelected,
-                    ),
-                    if (serviceTypesByBook.isNotEmpty)
-                      SelectServiceDropdown(
-                        title: 'Service Type',
-                        opt: 1,
-                        selectedItemBuilder: (value) {
-                          return serviceTypesByBook
-                              .map<Widget>(
-                                (e) => Text(
-                                  e.name ?? 'Service Type',
-                                  style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              )
-                              .toList();
-                        },
-                        items: serviceTypesByBook
-                            .map(
-                              (item) => DropdownMenuItem<String>(
-                                value: item.id,
-                                child: Text(
-                                  item.name ?? 'Service',
-                                  style: const TextStyle(
-                                    overflow: TextOverflow.clip,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onValueChanged: handleSelectedTypeSelected,
-                      ),
-                    if (servicesByServiceType.isNotEmpty)
-                      SelectServiceDropdown(
-                        title: 'Service',
-                        opt: 2,
-                        selectedItemBuilder: (value) {
-                          return servicesByServiceType
-                              .map<Widget>(
-                                (e) => Text(
-                                  e.description ?? 'Service',
-                                  style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              )
-                              .toList();
-                        },
-                        items: servicesByServiceType
-                            .map(
-                              (item) => DropdownMenuItem<String>(
-                                value: item.id,
-                                child: Text(
-                                  item.description ?? 'Service',
-                                  style: const TextStyle(
-                                    overflow: TextOverflow.clip,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onValueChanged: handleServiceSelected,
-                      ),
-                    DatePickerWidget(
-                      onDateSelected: handleDateSelected,
-                    ),
-                    TimePickerWidget(
-                      selectedDate: selectedDate,
-                      workingTimeModels:
-                          workingTimeModels ?? WorkingTimeModel(),
-                      onTimeSlotIdSelected: handleTimeSlotIdSelected,
-                    ),
-                    const RequestScheduleWidget(),
-                  ],
-                ),
+              DropdownButtonWidget(
+                value: _selectedBook?.id,
+                title: 'Book',
+                items: widget.bookModel.list!.map((e) => e.book!).toList(),
+                onValueChanged: handleBookSelected,
               ),
-            ),
-            bottomNavigationBar: BottomButton(
-              onPressed: areFieldsSelected()
-                  ? () {
-                      // Handle button press action here
-                      Navigator.of(context).push(
-                        PageTransition(
-                          child: ReviewSummaryScreen(
-                            reader: widget.reader,
-                            time: selectedDate,
-                            timeSlotId: selectedTimeSlotId!,
-                            book: _selectedBook,
-                            service: _selectedService,
-                            serviceType: _selectServiceType,
+              if (serviceTypesByBook.isNotEmpty)
+                SelectServiceDropdown(
+                  title: 'Service Type',
+                  opt: 1,
+                  selectedItemBuilder: (value) {
+                    return serviceTypesByBook
+                        .map<Widget>(
+                          (e) => Text(
+                            e.name ?? 'Service Type',
+                            style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
                           ),
-                          type: PageTransitionType.rightToLeft,
-                          duration: const Duration(milliseconds: 200),
+                        )
+                        .toList();
+                  },
+                  items: serviceTypesByBook
+                      .map(
+                        (item) => DropdownMenuItem<String>(
+                          value: item.id,
+                          child: Text(
+                            item.name ?? 'Service',
+                            style: const TextStyle(
+                              overflow: TextOverflow.clip,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
-                      );
-                    }
-                  : null, // Disable button if fields are not selected
-              title: 'Make appointment',
-              isEnabled: areFieldsSelected(),
-            ),
-          );
+                      )
+                      .toList(),
+                  onValueChanged: handleSelectedTypeSelected,
+                ),
+              if (servicesByServiceType.isNotEmpty)
+                SelectServiceDropdown(
+                  title: 'Service',
+                  opt: 2,
+                  selectedItemBuilder: (value) {
+                    return servicesByServiceType
+                        .map<Widget>(
+                          (e) => Text(
+                            e.description ?? 'Service',
+                            style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )
+                        .toList();
+                  },
+                  items: servicesByServiceType
+                      .map(
+                        (item) => DropdownMenuItem<String>(
+                          value: item.id,
+                          child: Text(
+                            item.description ?? 'Service',
+                            style: const TextStyle(
+                              overflow: TextOverflow.clip,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onValueChanged: handleServiceSelected,
+                ),
+              DatePickerWidget(
+                onDateSelected: handleDateSelected,
+              ),
+              TimePickerWidget(
+                selectedDate: selectedDate,
+                workingTimeModels: workingTimeModels ?? WorkingTimeModel(),
+                onTimeSlotIdSelected: handleTimeSlotIdSelected,
+              ),
+              const RequestScheduleWidget(),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomButton(
+        onPressed: areFieldsSelected()
+            ? () {
+                // Handle button press action here
+                Navigator.of(context).push(
+                  PageTransition(
+                    child: ReviewSummaryScreen(
+                      reader: widget.reader,
+                      time: selectedTimeSlotDate,
+                      timeSlotId: selectedTimeSlotId!,
+                      book: _selectedBook,
+                      service: _selectedService,
+                      serviceType: _selectServiceType,
+                    ),
+                    type: PageTransitionType.rightToLeft,
+                    duration: const Duration(milliseconds: 200),
+                  ),
+                );
+              }
+            : null, // Disable button if fields are not selected
+        title: 'Make appointment',
+        isEnabled: areFieldsSelected(),
+      ),
+    );
   }
 }

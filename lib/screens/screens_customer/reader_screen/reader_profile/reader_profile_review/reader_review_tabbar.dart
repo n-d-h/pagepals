@@ -3,13 +3,15 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/models/comment_model.dart';
+import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/rating_line.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_review/comment_collection_widget.dart';
 
 class ReaderReviewTabbar extends StatefulWidget {
   final CommentModel? commentModel;
+  final ReaderProfile? reader;
 
-  const ReaderReviewTabbar({super.key, this.commentModel});
+  const ReaderReviewTabbar({super.key, this.commentModel, this.reader});
 
   @override
   State<ReaderReviewTabbar> createState() => _ReaderReviewTabbarState();
@@ -40,19 +42,19 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.star_rounded,
-                    color: ColorHelper.getColor('#FFA800')),
-                Icon(Icons.star_rounded,
-                    color: ColorHelper.getColor('#FFA800')),
-                Icon(Icons.star_rounded,
-                    color: ColorHelper.getColor('#FFA800')),
-                Icon(Icons.star_rounded,
-                    color: ColorHelper.getColor('#FFA800')),
-                Icon(Icons.star_rounded,
-                    color: ColorHelper.getColor('#FFA800')),
+                for (int i = 0; i < (widget.reader?.profile?.rating ?? 0); i++)
+                  Icon(
+                    Icons.star_rounded,
+                    color: ColorHelper.getColor('#FFA800'),
+                  ),
+                for (int i = (widget.reader?.profile?.rating ?? 0); i < 5; i++)
+                  Icon(
+                    Icons.star_outline_rounded,
+                    color: ColorHelper.getColor('#FFA800'),
+                  ),
                 const SizedBox(width: SpaceHelper.space8),
-                const Text(
-                  '5.0',
+                Text(
+                  '${widget.reader?.profile?.rating?.toDouble() ?? 0.0}',
                   style: TextStyle(
                     fontSize: SpaceHelper.fontSize16,
                     fontWeight: FontWeight.bold,
@@ -61,23 +63,23 @@ class _ReaderReviewTabbarState extends State<ReaderReviewTabbar> {
               ],
             ),
             const SizedBox(height: SpaceHelper.space16),
-            const RatingLine(
+            RatingLine(
               detail: 'Reader communication level',
-              rating: 5,
+              rating: widget.reader?.profile?.rating ?? 0,
               fontSize: 16,
               ratingIconSize: 25,
             ),
             const SizedBox(height: SpaceHelper.space8),
-            const RatingLine(
-              detail: 'Reader communication level',
-              rating: 5,
+            RatingLine(
+              detail: 'Clear explanation',
+              rating: widget.reader?.profile?.rating ?? 0,
               fontSize: 16,
               ratingIconSize: 25,
             ),
             const SizedBox(height: SpaceHelper.space8),
-            const RatingLine(
-              detail: 'Reader communication level',
-              rating: 5,
+            RatingLine(
+              detail: 'Service as described',
+              rating: widget.reader?.profile?.rating ?? 0,
               fontSize: 16,
               ratingIconSize: 25,
             ),

@@ -21,7 +21,7 @@ class BookingService {
     String customerId = account.customer!.id!;
 
     var mutation = '''
-      mutation MyMutation {
+      mutation {
         createBooking(
           booking: {
             description: "$description", 
@@ -43,6 +43,8 @@ class BookingService {
         }
       }
     ''';
+
+    print(mutation);
 
     GraphQLClient clientWithToken = GraphQLClient(
       link: AuthLink(getToken: () async => 'Bearer $token').concat(
@@ -90,6 +92,10 @@ class BookingService {
               id
               nickname
               avatarUrl
+              countryAccent
+              language
+              rating
+              totalOfReviews
               account {
                 customer {
                   imageUrl
@@ -184,6 +190,10 @@ class BookingService {
               id
               nickname
               avatarUrl
+              countryAccent
+              language
+              rating
+              totalOfReviews
               account {
                 customer {
                   imageUrl

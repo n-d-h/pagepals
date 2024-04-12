@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/comment_model.dart';
 
 class CommentCollectionItem extends StatelessWidget {
@@ -61,15 +62,15 @@ class CommentCollectionItem extends StatelessWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              for (int i = 0; i < comment!.rating!; i++)
-                const Icon(
-                  Icons.star,
-                  color: Colors.yellow,
+              for (int i = 0; i < (comment?.rating ?? 0); i++)
+                Icon(
+                  Icons.star_rounded,
+                  color: ColorHelper.getColor('#FFA800'),
                 ),
-              for (int i = 0; i < 5 - comment!.rating!; i++)
-                const Icon(
-                  Icons.star,
-                  color: Colors.grey,
+              for (int i = (comment?.rating ?? 0); i < 5; i++)
+                Icon(
+                  Icons.star_outline_rounded,
+                  color: ColorHelper.getColor('#FFA800'),
                 ),
             ],
           ),

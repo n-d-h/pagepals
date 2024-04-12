@@ -127,9 +127,15 @@ class _ReaderWidgetState extends State<ReaderWidget> {
                         ),
                       ),
                       const SizedBox(width: 3),
-                      for (int i = 0; i < (widget.reader.rating ?? 4); i++)
+                      for (int i = 0; i < (widget.reader.rating ?? 0); i++)
                         Icon(
                           Icons.star_rounded,
+                          color: ColorHelper.getColor('#FFA800'),
+                          size: 20,
+                        ),
+                      for (int i = (widget.reader.rating ?? 0); i < 5; i++)
+                        Icon(
+                          Icons.star_outline_rounded,
                           color: ColorHelper.getColor('#FFA800'),
                           size: 20,
                         ),

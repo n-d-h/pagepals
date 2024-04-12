@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/booking_model.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/booking_appointment.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booking_body.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_bottom.dart';
@@ -27,7 +29,15 @@ class UpcomingTab extends StatelessWidget {
               child: Column(
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: BookingAppointment(booking: booking),
+                          duration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
