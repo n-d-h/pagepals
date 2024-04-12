@@ -17,7 +17,7 @@ class BookingAppointment extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        title: const Text('Book appointment'),
+        title: const Text('Booking Detail'),
         centerTitle: true,
         titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700,
