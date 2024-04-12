@@ -13,9 +13,11 @@ class ProfileReviewBox extends StatelessWidget {
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        // itemCount: int.tryParse(reader?.profile?.totalOfReviews ?? '') ?? 0,
         itemCount: 5,
         itemBuilder: (BuildContext context, int index) {
+          if(comment!.list!.isEmpty) {
+            return const SizedBox();
+          }
           CommentItem commentItem = comment?.list![index] ?? CommentItem();
           return Container(
             width: 300,

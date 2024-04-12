@@ -313,7 +313,16 @@ class ReaderService {
       throw Exception('Failed to get reader comment');
     }
 
-    final commentData = result.data?['getReaderReviews'] ?? CommentModel();
-    return CommentModel.fromJson(commentData);
+    final commentData = result.data?['getReaderReviews'];
+
+    if(commentData == null) {
+      return CommentModel(
+        list: [],
+        pagination: Pagination(),
+      );
+    } else {
+      var data = CommentModel.fromJson(commentData);
+      return data;
+    }
   }
 }
