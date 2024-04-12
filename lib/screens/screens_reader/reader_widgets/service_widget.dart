@@ -89,7 +89,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                       ),
                     ),
                     Text(
-                      'Duration: ${widget.duration.toString()} hours',
+                      'Duration: ${widget.duration.toString()} minutes',
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.grey,

@@ -246,9 +246,9 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                     ),
                     const SizedBox(height: 20),
                     DropdownMenu<String>(
-                      hintText: 'Country',
+                      hintText: 'Gender',
                       width: MediaQuery.of(context).size.width * 0.95,
-                      label: const Text('Country'),
+                      label: const Text('Gender'),
                       controller: genderController,
                       menuHeight: 300.0,
                       menuStyle: MenuStyle(
