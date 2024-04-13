@@ -97,7 +97,9 @@ class ReaderService {
           }
         }
     ''';
-    final QueryResult result = await graphQLClient.query(QueryOptions(
+
+    GraphQLClient clientWithToken = await AuthService.getGraphQLClientWithToken();
+    final QueryResult result = await clientWithToken.query(QueryOptions(
       document: gql(query),
       fetchPolicy: FetchPolicy.networkOnly,
     ));
