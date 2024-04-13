@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -65,7 +63,8 @@ class UpcomingBottom extends StatelessWidget {
                       return AlertDialog(
                         title: const Text("Meeting\nNot Occurred"),
                         content: const Text(
-                            "The meeting has not yet occurred. Please come back at the right time."),
+                          "The meeting has not yet occurred. Please come back at the right time.",
+                        ),
                         actions: <Widget>[
                           ElevatedButton(
                             onPressed: () {
@@ -81,7 +80,8 @@ class UpcomingBottom extends StatelessWidget {
                   Navigator.of(context).push(
                     PageTransition(
                       child: VideoConferencePage(
-                          conferenceID: booking.meeting!.meetingCode!),
+                        conferenceID: booking.meeting!.meetingCode!,
+                      ),
                       type: PageTransitionType.fade,
                       duration: const Duration(milliseconds: 300),
                     ),

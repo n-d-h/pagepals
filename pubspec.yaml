@@ -19,6 +19,7 @@ dependencies:
   open_filex:
   path_provider:
   zego_uikit_prebuilt_video_conference: ^2.6.9
+#  zego_uikit_prebuilt_call: ^4.7.3
   flutter_dotenv: ^5.1.0
   dropdown_button2: ^2.3.8
   flutter_verification_code_field: ^1.0.4
@@ -52,7 +53,7 @@ dependencies:
   url_launcher: ^6.2.5
   fl_chart: ^0.66.2
   flutter_slidable: ^3.1.0
-  audioplayers: ^6.0.0
+  audioplayers: ^5.2.0
   flutter_localizations:
     sdk: flutter
   flutter_rating_bar: ^4.0.1

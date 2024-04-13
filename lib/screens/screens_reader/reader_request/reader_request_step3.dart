@@ -18,7 +18,6 @@ class ReaderRequestStep3 extends StatefulWidget {
     required this.audioUploadCallback,
   });
 
-
   @override
   State<ReaderRequestStep3> createState() => _ReaderRequestStep3State();
 }
@@ -49,7 +48,7 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: VideoPlayerFromFile(
             videoFile: _selectedVideo!,
@@ -80,6 +79,11 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
       context: context,
       builder: (context) {
         return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: Image.file(
             _selectedImage!,
           ),
@@ -89,15 +93,38 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
   }
 
   void _handleAudioSelection() async {
-    final result = await ImagePicker().pickVideo(
+    final XFile? result = await ImagePicker().pickVideo(
       source: ImageSource.gallery,
     );
 
-    if (result != null) {
-      setState(() {
-        _selectedAudio = File(result.path);
-      });
-      widget.audioUploadCallback(result.path);
+    String extension = result?.path.split('.').last ?? '';
+    if (extension != 'mp3') {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            surfaceTintColor: Colors.white,
+            title: const Text('Error'),
+            content: const Text('Audio must be in MP3 format'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    } else {
+      if (result != null) {
+        setState(() {
+          _selectedAudio = File(result.path);
+        });
+        widget.audioUploadCallback(result.path);
+      }
     }
   }
 
@@ -109,12 +136,25 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Container(
             height: 200,
-            child: AudioPlayerFromFile(
-              audioFile: _selectedAudio!,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+                Center(
+                  child: AudioPlayerFromFile(
+                    audioFile: _selectedAudio!,
+                  ),
+                ),
+              ],
             ),
           ),
         );
@@ -290,7 +330,7 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
             ),
           ),
           const Text(
-            'After uploading the audo, you can click the image to preview the image',
+            'After uploading the audio, you can click the image to preview the image',
             style: TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.normal,

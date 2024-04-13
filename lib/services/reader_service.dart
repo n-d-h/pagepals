@@ -320,7 +320,6 @@ class ReaderService {
     if(commentData == null) {
       return CommentModel(
         list: [],
-        pagination: Pagination(),
       );
     } else {
       var data = CommentModel.fromJson(commentData);
