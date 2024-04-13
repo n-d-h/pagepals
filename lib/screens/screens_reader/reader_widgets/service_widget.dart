@@ -104,7 +104,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                       ),
                     ),
                     Text(
-                      'Price: \$${widget.price.toString()}',
+                      'Price: ${widget.price.toString()} pals',
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.green,

@@ -38,7 +38,7 @@ class WaitingScreen extends StatelessWidget {
               return;
             }
             try {
-              Map<String, dynamic> accountMap = json.decode(accountString);
+              Map<String, dynamic> accountMap = json.decoder.convert(accountString);
               account = AccountModel.fromJson(accountMap);
             } catch (e) {
               print('Error decoding account data: $e');

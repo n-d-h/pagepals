@@ -145,6 +145,7 @@ class ServiceService {
         }
       }
     ''';
+    print(mutation);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('accessToken')!;
 
