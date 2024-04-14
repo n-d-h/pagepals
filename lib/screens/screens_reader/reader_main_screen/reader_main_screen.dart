@@ -17,6 +17,7 @@ import 'package:pagepals/screens/screens_reader/feature_screen/reader_settings_s
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
 import 'package:pagepals/screens/screens_reader/promotion_screen/promotion_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_post_screen/reader_post_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
@@ -814,53 +815,6 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                       ),
                                     ),
                                   ),
-                                  // const SizedBox(width: 10),
-                                  // InkWell(
-                                  //   onTap: () {
-                                  //     Navigator.push(
-                                  //       context,
-                                  //       PageTransition(
-                                  //         type: PageTransitionType.rightToLeft,
-                                  //         child: const HelpScreen(),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  //   borderRadius: BorderRadius.circular(10),
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(10),
-                                  //     width: width / 3,
-                                  //     height: 100,
-                                  //     child: Column(
-                                  //       mainAxisAlignment:
-                                  //           MainAxisAlignment.center,
-                                  //       crossAxisAlignment:
-                                  //           CrossAxisAlignment.center,
-                                  //       children: [
-                                  //         Container(
-                                  //           padding: const EdgeInsets.all(10),
-                                  //           decoration: BoxDecoration(
-                                  //             color: Colors.green,
-                                  //             borderRadius:
-                                  //                 BorderRadius.circular(6),
-                                  //           ),
-                                  //           child: const Icon(
-                                  //             UniconsLine.question_circle,
-                                  //             color: Colors.white,
-                                  //             size: 25,
-                                  //           ),
-                                  //         ),
-                                  //         const SizedBox(height: 5),
-                                  //         const Text(
-                                  //           'Help Center',
-                                  //           style: TextStyle(
-                                  //             color: Colors.black,
-                                  //             fontSize: 13,
-                                  //           ),
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //   ),
-                                  // ),
                                   const SizedBox(width: 10),
                                   InkWell(
                                     onTap: () {
@@ -868,7 +822,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: const HelpScreen(),
+                                          child: ReaderPostScreen(
+                                            accountModel: account,
+                                          )
                                         ),
                                       );
                                     },
