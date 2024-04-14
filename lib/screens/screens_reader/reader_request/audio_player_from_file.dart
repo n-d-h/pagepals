@@ -21,7 +21,7 @@ class _AudioPlayerFromFileState extends State<AudioPlayerFromFile> {
     super.initState();
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
-    var source = DeviceFileSource(widget.audioFile.path, mimeType: 'audio/mp3');
+    var source = DeviceFileSource(widget.audioFile.path);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await player.play(source);

@@ -88,6 +88,7 @@ class AuthenService {
       String username = user.payload['username'];
       AccountModel account = await getAccount(username, loginData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
+      print('account: ${json.encoder.convert(account)}');
 
       return AccountTokens(
         accessToken: loginData?['accessToken'],

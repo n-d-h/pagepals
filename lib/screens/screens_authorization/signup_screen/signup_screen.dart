@@ -167,6 +167,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 });
                               }
                             } catch (error) {
+                              await googleSignInProvider.googleSignIn.signOut();
                               // Show dialog with error message
                               Future.delayed(const Duration(milliseconds: 100),
                                   () {

@@ -18,7 +18,7 @@ class CustomerTransactionScreen extends StatefulWidget {
 }
 
 class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
-  // CustomerTransactionModel? customerTransactionModel;
+  CustomerTransactionModel? customerTransactionModel;
   int currentPage = 0;
   bool isLoadingNextPage = false;
   bool hasMorePages = true;
@@ -35,7 +35,6 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
@@ -61,6 +60,7 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
       );
 
       setState(() {
+        customerTransactionModel = result;
         list.addAll(result.list!);
         currentPage++;
         if (result.list!.isEmpty) {
@@ -110,147 +110,170 @@ class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return list.isEmpty
-        ? Scaffold(
-            body: Center(
-              child: LoadingAnimationWidget.staggeredDotsWave(
-                color: ColorHelper.getColor(ColorHelper.green),
-                size: 60,
-              ),
+    if (customerTransactionModel == null) {
+      return Scaffold(
+        body: Center(
+          child: LoadingAnimationWidget.staggeredDotsWave(
+            color: ColorHelper.getColor(ColorHelper.green),
+            size: 60,
+          ),
+        ),
+      );
+    } else if (customerTransactionModel!.list!.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Transaction History'),
+          centerTitle: true,
+          surfaceTintColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: Center(
+          child: Text(
+            'No transaction history',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 30,
             ),
-          )
-        : Scaffold(
-            appBar: AppBar(
-              title: const Text('Transaction History'),
-              centerTitle: true,
-              surfaceTintColor: Colors.white,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            body: ListView.builder(
-              controller: _scrollController,
-              itemCount: list.length + (isLoadingNextPage ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == list.length) {
-                  return Center(
-                    child: LoadingAnimationWidget.prograssiveDots(
-                      color: ColorHelper.getColor(ColorHelper.green),
-                      size: 50,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Transaction History'),
+          centerTitle: true,
+          surfaceTintColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: ListView.builder(
+          controller: _scrollController,
+          itemCount: list.length + (isLoadingNextPage ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index == list.length) {
+              return Center(
+                child: LoadingAnimationWidget.prograssiveDots(
+                  color: ColorHelper.getColor(ColorHelper.green),
+                  size: 50,
+                ),
+              );
+            } else {
+              var transaction = list[index];
+
+              if (transaction.transactionType == 'WITHDRAW_MONEY' ||
+                  transaction.transactionType == 'BOOKING_DONE_RECEIVE') {
+                return Container();
+              }
+
+              String dateTime = transaction.createAt?.toString() ?? '';
+              String date = dateTime.split(' ')[0];
+              String time = dateTime.split(' ')[1].split('.')[0];
+              String dateFormatted = Utils.formatDate(date);
+
+              String currency = '';
+              if (transaction.currency == 'DOLLAR') {
+                currency = '\$';
+              } else {
+                currency = 'pals';
+              }
+              Color color = Colors.red;
+              var prefix = '';
+              var description = '';
+              Icon icon = const Icon(Icons.arrow_upward, color: Colors.red);
+              switch (transaction.transactionType) {
+                case 'DEPOSIT_TOKEN':
+                  description = 'Deposit token';
+                  color = Colors.green;
+                  prefix = '+';
+                  icon = const Icon(Icons.arrow_downward, color: Colors.green);
+                  break;
+                case 'BOOKING_PAYMENT':
+                  description = 'Booking payment';
+                  color = Colors.red;
+                  prefix = '-';
+                  icon = const Icon(Icons.arrow_upward, color: Colors.red);
+                  break;
+                case 'BOOKING_REFUND':
+                  description = 'Booking refund';
+                  color = Colors.green;
+                  prefix = '+';
+                  icon = const Icon(Icons.arrow_downward, color: Colors.green);
+                  break;
+                default:
+                  description = '';
+              }
+              return Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
                     ),
-                  );
-                } else {
-                  var transaction = list[index];
-
-                  if (transaction.transactionType == 'WITHDRAW_MONEY' ||
-                      transaction.transactionType == 'BOOKING_DONE_RECEIVE') {
-                    return Container();
-                  }
-
-                  String dateTime = transaction.createAt?.toString() ?? '';
-                  String date = dateTime.split(' ')[0];
-                  String time = dateTime.split(' ')[1].split('.')[0];
-                  String dateFormatted = Utils.formatDate(date);
-
-                  String currency = '';
-                  if (transaction.currency == 'DOLLAR') {
-                    currency = '\$';
-                  } else {
-                    currency = 'pals';
-                  }
-                  Color color = Colors.red;
-                  var prefix = '';
-                  var description = '';
-                  Icon icon = const Icon(Icons.arrow_upward, color: Colors.red);
-                  switch (transaction.transactionType) {
-                    case 'DEPOSIT_TOKEN':
-                      description = 'Deposit token';
-                      color = Colors.green;
-                      prefix = '+';
-                      icon =
-                          const Icon(Icons.arrow_downward, color: Colors.green);
-                      break;
-                    case 'BOOKING_PAYMENT':
-                      description = 'Booking payment';
-                      color = Colors.red;
-                      prefix = '-';
-                      icon = const Icon(Icons.arrow_upward, color: Colors.red);
-                      break;
-                    case 'BOOKING_REFUND':
-                      description = 'Booking refund';
-                      color = Colors.green;
-                      prefix = '+';
-                      icon =
-                          const Icon(Icons.arrow_downward, color: Colors.green);
-                      break;
-                    default:
-                      description = '';
-                  }
-                  return Container(
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.all(10),
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        icon,
-                        const SizedBox(width: 50),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    icon,
+                    const SizedBox(width: 50),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '$prefix${transaction.amount?.toStringAsFixed(0) ?? ''} $currency',
-                                        style: TextStyle(color: color),
-                                      ),
-                                    ],
-                                  ),
                                   Text(
-                                    description,
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                    ),
+                                    '$prefix${transaction.amount?.toStringAsFixed(0) ?? ''} $currency',
+                                    style: TextStyle(color: color),
                                   ),
                                 ],
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Date: $dateFormatted'),
-                                  Text('Time: $time'),
-                                ],
+                              Text(
+                                description,
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Date: $dateFormatted'),
+                              Text('Time: $time'),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                }
-              },
-            ),
-          );
+                  ],
+                ),
+              );
+            }
+          },
+        ),
+      );
+    }
   }
 }

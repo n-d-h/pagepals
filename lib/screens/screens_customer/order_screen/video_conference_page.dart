@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
@@ -27,11 +26,12 @@ class VideoConferencePage extends StatefulWidget {
 class _VideoConferencePageState extends State<VideoConferencePage> {
   String userId = Random().nextInt(1000000).toString();
   String userName = 'Anonymous';
+  AccountModel? accountModel;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    getCustomerInfo();
   }
 
   Future<void> getCustomerInfo() async {
@@ -42,6 +42,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
     setState(() {
       userId = account.id ?? userId;
       userName = account.username ?? userName;
+      accountModel = account;
     });
   }
 
@@ -54,7 +55,60 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
         userID: userId,
         userName: userName,
         conferenceID: widget.conferenceID,
-        config: ZegoUIKitPrebuiltVideoConferenceConfig(),
+        config: ZegoUIKitPrebuiltVideoConferenceConfig(
+          avatarBuilder: (context, size, user, extraInfo) {
+            return Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: NetworkImage(accountModel?.customer?.imageUrl ?? ''),
+                ),
+              ),
+            );
+          },
+          onError: (ZegoUIKitError onError) {
+            print('onError: ${onError.message}');
+          },
+          onLeave: () {
+            // Check if the user is the host
+          },
+          onLeaveConfirmation: (BuildContext context) async {
+            return true;
+          },
+          leaveConfirmDialogInfo: ZegoLeaveConfirmDialogInfo(
+            title: 'Leave the conference?',
+            message: 'Are you sure you want to leave the conference?',
+          ),
+          memberListConfig: ZegoMemberListConfig(
+            itemBuilder: (context, size, user, extraInfo) {
+              return ListTile(
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        accountModel?.customer?.imageUrl ?? '',
+                      ),
+                    ),
+                  ),
+                ),
+                title: Text(user.name ?? ''),
+                subtitle: Text(user.id ?? ''),
+              );
+            },
+          ),
+          audioVideoViewConfig: ZegoPrebuiltAudioVideoViewConfig(),
+          notificationViewConfig: ZegoInRoomNotificationViewConfig(
+            userLeaveItemBuilder: (context, user, extraInfo) {
+              return Container();
+            },
+            userJoinItemBuilder: (context, user, extraInfo) {
+              return Container();
+            },
+          ),
+        ),
       ),
     );
   }

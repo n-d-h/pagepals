@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
@@ -13,17 +11,17 @@ import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/reader_comment_screen.dart';
-import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
-import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
-import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
-import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
+import 'package:pagepals/screens/screens_reader/feature_screen/reader_comment_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_settings_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
 import 'package:pagepals/screens/screens_reader/promotion_screen/promotion_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
 import 'package:pagepals/screens/screens_reader/report_screen/report_screen.dart';
+import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:pagepals/services/reader_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -481,7 +479,8 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                        '${commentModel!.pagination!.totalOfElements!}'),
+                                      '${commentModel?.pagination?.totalOfElements ?? 0}',
+                                    ),
                                     const Text(
                                       'Comments',
                                       style: TextStyle(
@@ -819,6 +818,53 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                       ),
                                     ),
                                   ),
+                                  // const SizedBox(width: 10),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     Navigator.push(
+                                  //       context,
+                                  //       PageTransition(
+                                  //         type: PageTransitionType.rightToLeft,
+                                  //         child: const HelpScreen(),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  //   borderRadius: BorderRadius.circular(10),
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(10),
+                                  //     width: width / 3,
+                                  //     height: 100,
+                                  //     child: Column(
+                                  //       mainAxisAlignment:
+                                  //           MainAxisAlignment.center,
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.center,
+                                  //       children: [
+                                  //         Container(
+                                  //           padding: const EdgeInsets.all(10),
+                                  //           decoration: BoxDecoration(
+                                  //             color: Colors.green,
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(6),
+                                  //           ),
+                                  //           child: const Icon(
+                                  //             UniconsLine.question_circle,
+                                  //             color: Colors.white,
+                                  //             size: 25,
+                                  //           ),
+                                  //         ),
+                                  //         const SizedBox(height: 5),
+                                  //         const Text(
+                                  //           'Help Center',
+                                  //           style: TextStyle(
+                                  //             color: Colors.black,
+                                  //             fontSize: 13,
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   const SizedBox(width: 10),
                                   InkWell(
                                     onTap: () {
@@ -856,7 +902,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                           ),
                                           const SizedBox(height: 5),
                                           const Text(
-                                            'Help Center',
+                                            'My Posts',
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 13,
@@ -867,7 +913,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),

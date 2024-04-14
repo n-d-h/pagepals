@@ -1,6 +1,19 @@
-- Performance load video: Chỉnh sửa loading video của Chewie (làm sau)
-- Làm create / update / delete Service
-- Call api for waiting and Cancel (Booking State) - Done
-- MoMo Payment
-- API for wallet
-- Check notification in background / foreground
+-------PRIORITY-------
+- Finish Interview Flow
+- Record meeting
+- Complete Meeting (booking)
+- Update Reader
+
+-------TODO----------  
+- Notification
+- Reader Report (API + Screen)
+
+- Filter/Search
+- Pagination Booking **All State**
+- Reader create Seminar + Post
+- Redesign Profile Screen
+- Redesign work Schedule
+- Redesign customer booking
+
+ --- OPTIONAL ---
+- Create Promotion

@@ -236,14 +236,18 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
             ),
             title: account?.reader?.id == null
                 ? Text(AppLocalizations.of(context)!.appRequestToBeReader)
-                : Text('Reader Profile'),
+                : account?.accountState?.name == "READER_PENDING"
+                    ? Text('Reader Pending')
+                    : Text('Reader Profile'),
             onTap: () {
               Navigator.pop(context);
               if (account?.accountState?.name == "READER_PENDING") {
                 Navigator.push(
                   context,
                   PageTransition(
-                    child: const ReaderPendingScreen(),
+                    child: ReaderPendingScreen(
+                      readerId: account?.reader?.id
+                    ),
                     type: PageTransitionType.rightToLeft,
                     duration: const Duration(milliseconds: 300),
                   ),
