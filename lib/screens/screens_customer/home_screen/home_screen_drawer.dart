@@ -245,7 +245,9 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 Navigator.push(
                   context,
                   PageTransition(
-                    child: const ReaderPendingScreen(),
+                    child: ReaderPendingScreen(
+                      readerId: account?.reader?.id
+                    ),
                     type: PageTransitionType.rightToLeft,
                     duration: const Duration(milliseconds: 300),
                   ),

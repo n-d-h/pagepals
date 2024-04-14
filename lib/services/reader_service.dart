@@ -8,6 +8,7 @@ import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/reader_request_model.dart';
 import 'package:pagepals/models/reader_transaction_model.dart';
+import 'package:pagepals/models/request_model.dart';
 import 'package:pagepals/services/auth_service.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -325,5 +326,35 @@ class ReaderService {
       var data = CommentModel.fromJson(commentData);
       return data;
     }
+  }
+
+  static Future<RequestModel> getRequestByReaderId(String readerId) async {
+    String query = '''
+      query MyQuery {
+        getRequestByReaderId(readerId: "$readerId") {
+          createdAt
+          description
+          id
+          interviewAt
+          meetingCode
+          staffId
+          staffName
+          state
+          updatedAt
+        }
+      }
+    ''';
+
+    final QueryResult result = await graphQLClient.query(QueryOptions(
+      document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+
+    if (result.hasException) {
+      throw Exception('Failed to get reader comment');
+    }
+
+    final requestData = result.data?['getRequestByReaderId'];
+    return RequestModel.fromJson(requestData);
   }
 }
