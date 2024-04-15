@@ -11,6 +11,7 @@ class PostDetailScreen extends StatefulWidget {
   final String timeAgo;
   final String postText;
   final List<String> imageUrls;
+  final String avatarUrl;
 
   const PostDetailScreen({
     super.key,
@@ -18,6 +19,7 @@ class PostDetailScreen extends StatefulWidget {
     required this.timeAgo,
     required this.postText,
     required this.imageUrls,
+    required this.avatarUrl,
   });
 
   @override
@@ -103,27 +105,27 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         ),
         title: SizedBox(
           width: MediaQuery.of(context).size.width * 0.6,
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
                 radius: 24,
-                backgroundImage: AssetImage('assets/image_reader.png'),
+                backgroundImage: NetworkImage(widget.avatarUrl),
               ),
               SizedBox(width: 12.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Jone Doe',
+                    widget.username,
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    '2 hours ago',
+                    widget.timeAgo,
                     style: TextStyle(
                       fontSize: 12.0,
                       color: Colors.grey,

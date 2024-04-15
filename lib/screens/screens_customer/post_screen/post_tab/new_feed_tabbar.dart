@@ -1,10 +1,10 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/post_model.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/post_item.dart';
-import 'package:pagepals/screens/screens_customer/post_screen/post_status_screen.dart';
+import 'package:pagepals/services/post_service.dart';
 import 'package:unicons/unicons.dart';
 
 class NewFeedTabbar extends StatefulWidget {
@@ -15,13 +15,90 @@ class NewFeedTabbar extends StatefulWidget {
 }
 
 class _NewFeedTabbarState extends State<NewFeedTabbar> {
+  PostModel? postModel;
+
+  final ScrollController _scrollController = ScrollController();
+  List<PostItemModel> list = [];
+  int currentPage = 0;
+  bool isLoadingNextPage = false;
+  bool hasMorePages = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+    getAllPosts();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      getNextPosts();
+    }
+  }
+
+  Future<void> getAllPosts() async {
+    var data = await PostService.getAllPosts(currentPage, 10);
+    setState(() {
+      postModel = data;
+      list.addAll(data.list!);
+      currentPage++;
+      if (data.list!.isEmpty) {
+        hasMorePages = false;
+      }
+    });
+  }
+
+  Future<void> getNextPosts() async {
+    if (!isLoadingNextPage && hasMorePages) {
+      setState(() {
+        isLoadingNextPage = true;
+      });
+      try {
+        var data = await PostService.getAllPosts(currentPage, 10);
+        if (data.list!.isEmpty) {
+          setState(() {
+            hasMorePages = false;
+            isLoadingNextPage = false;
+          });
+        } else {
+          setState(() {
+            list.addAll(data.list!);
+            currentPage++;
+            isLoadingNextPage = false;
+          });
+        }
+      } catch (e) {
+        print(e);
+        setState(() {
+          isLoadingNextPage = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomMaterialIndicator(
-      backgroundColor: Colors.grey[100]!,
+      backgroundColor: Colors.grey[100],
       displacement: 20,
-      onRefresh: () {
-        return Future<void>.delayed(const Duration(seconds: 1));
+      onRefresh: () async {
+        Future.delayed(const Duration(seconds: 7));
+        setState(() {
+          postModel = null;
+          list.clear();
+          currentPage = 0;
+          hasMorePages = true;
+          isLoadingNextPage = false;
+        });
+        getAllPosts();
       },
       indicatorBuilder: (BuildContext context, IndicatorController controller) {
         return const Icon(
@@ -31,126 +108,46 @@ class _NewFeedTabbarState extends State<NewFeedTabbar> {
           semanticLabel: 'Pull to refresh',
         );
       },
-      child: SingleChildScrollView(
-        controller: ScrollController(),
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-          ),
-          child: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
+      child: postModel == null
+          ? Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: ColorHelper.getColor(ColorHelper.green),
+                  size: 60,
                 ),
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 24,
-                      backgroundImage: AssetImage('assets/image_reader.png'),
-                    ),
-                    const SizedBox(width: 16),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(10),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            PageTransition(
-                              child: const PostStatusScreen(),
-                              type: PageTransitionType.fade,
-                              duration: const Duration(milliseconds: 300),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(9),
-                          child: Text(
-                            AppLocalizations.of(context)!.appWhatAreYouThinking,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+              ),
+            )
+          : postModel?.list?.isEmpty == true
+              ? Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: Text(
+                      'No Posts Found',
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: postModel!.list!.length,
+                  itemBuilder: (context, index) {
+                    return PostItem(
+                      username: postModel!.list![index].reader?.nickname ??
+                          'John Doe',
+                      timeAgo: postModel!.list![index].createdAt ?? '',
+                      postText: postModel!.list![index].content ?? '',
+                      imageUrls: postModel!.list![index].postImages ?? [],
+                      avatarUrl: postModel!.list![index].reader?.avatarUrl ??
+                          'https://via.placeholder.com/150',
+                    );
+                  },
                 ),
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    PostItem(
-                      username: 'John Doe',
-                      timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                      postText:
-                          'This is a post text sdklfjhskdjhffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdklfjhgsdlgdgggggggggggdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgd',
-                      imageUrls: const [
-                        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-                      ],
-                    ),
-                    PostItem(
-                      username: 'John Doe',
-                      timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                      postText: 'This is a post text',
-                      imageUrls: const [
-                        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-                        'https://imgv3.fotor.com/images/slider-image/Female-portrait-picture-enhanced-with-better-clarity-and-higher-quality-using-Fotors-free-online-AI-photo-enhancer.jpg',
-                      ],
-                    ),
-                    PostItem(
-                      username: 'John Doe',
-                      timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                      postText: 'This is a post text',
-                      imageUrls: const [
-                        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-                        'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg',
-                        'https://imgv3.fotor.com/images/slider-image/Female-portrait-picture-enhanced-with-better-clarity-and-higher-quality-using-Fotors-free-online-AI-photo-enhancer.jpg',
-                      ],
-                    ),
-                    PostItem(
-                      username: 'John Doe',
-                      timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                      postText: 'This is a post text',
-                      imageUrls: const [
-                        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                        'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-                        'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg',
-                        'https://imgv3.fotor.com/images/slider-image/Female-portrait-picture-enhanced-with-better-clarity-and-higher-quality-using-Fotors-free-online-AI-photo-enhancer.jpg',
-                      ],
-                    ),
-                    PostItem(
-                      username: 'John Doe',
-                      timeAgo: '2 ${AppLocalizations.of(context)!.appHoursAgo}',
-                      postText: 'This is a post text',
-                      imageUrls: const [
-                        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-                      ],
-                    ),
-                    const SizedBox(height: 35),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

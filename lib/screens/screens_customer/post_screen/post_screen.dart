@@ -20,8 +20,6 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 0;
-
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(

@@ -61,7 +61,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     String photoUrl = user?.photoURL ??
-        'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain';
+        'https://via.placeholder.com/150';
     String displayName = user?.displayName ?? 'Anonymous';
     String email = user?.email ?? 'anonymous@gmail.com';
     String accountState = account?.accountState?.name ?? 'Anonymous';

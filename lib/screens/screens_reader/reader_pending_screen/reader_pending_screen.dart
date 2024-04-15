@@ -119,6 +119,28 @@ class _ReaderPendingScreenState extends State<ReaderPendingScreen> {
                     requestModel?.state == 'INTERVIEW_PENDING'
                         ? InkWell(
                             onTap: () {
+                              // String interviewAt = requestModel?.interviewAt ??
+                              //     DateTime.now().toString();
+                              // DateTime interviewDateTime =
+                              // DateTime.parse(interviewAt);
+                              //
+                              // if (DateTime.now().isAfter(interviewDateTime
+                              //     .add(Duration(minutes: 60))) ||
+                              //     DateTime.now().isBefore(interviewDateTime)) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(
+                              //       content: Text(
+                              //         "Interview time has passed",
+                              //         style: GoogleFonts.roboto(
+                              //           color: Colors.white,
+                              //         ),
+                              //       ),
+                              //       backgroundColor: Colors.red,
+                              //     ),
+                              //   );
+                              //   return;
+                              // }
+
                               Navigator.push(
                                 context,
                                 PageTransition(
@@ -140,7 +162,7 @@ class _ReaderPendingScreenState extends State<ReaderPendingScreen> {
                               ),
                               child: Center(
                                 child: const Text(
-                                  "Start Meeting",
+                                  "Join Meeting Interview",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,

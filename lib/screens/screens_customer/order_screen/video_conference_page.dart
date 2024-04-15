@@ -49,64 +49,94 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ZegoUIKitPrebuiltVideoConference(
-        appID: int.parse(appID),
-        appSign: appSign,
-        userID: userId,
-        userName: userName,
-        conferenceID: widget.conferenceID,
-        config: ZegoUIKitPrebuiltVideoConferenceConfig(
-          avatarBuilder: (context, size, user, extraInfo) {
-            return Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: NetworkImage(accountModel?.customer?.imageUrl ?? ''),
+      child: Theme(
+        data: ThemeData(
+          brightness: Brightness.light,
+        ),
+        child: ZegoUIKitPrebuiltVideoConference(
+          appID: int.parse(appID),
+          appSign: appSign,
+          userID: userId,
+          userName: userName,
+          conferenceID: widget.conferenceID,
+          config: ZegoUIKitPrebuiltVideoConferenceConfig(
+            avatarBuilder: (context, size, user, extraInfo) {
+              return Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage(accountModel?.customer?.imageUrl ?? ''),
+                  ),
                 ),
-              ),
-            );
-          },
-          onError: (ZegoUIKitError onError) {
-            print('onError: ${onError.message}');
-          },
-          onLeave: () {
-            // Check if the user is the host
-          },
-          onLeaveConfirmation: (BuildContext context) async {
-            return true;
-          },
-          leaveConfirmDialogInfo: ZegoLeaveConfirmDialogInfo(
-            title: 'Leave the conference?',
-            message: 'Are you sure you want to leave the conference?',
-          ),
-          memberListConfig: ZegoMemberListConfig(
-            itemBuilder: (context, size, user, extraInfo) {
-              return ListTile(
-                leading: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        accountModel?.customer?.imageUrl ?? '',
+              );
+            },
+            onError: (ZegoUIKitError onError) {
+              print('onError: ${onError.message}');
+            },
+            onLeaveConfirmation: (context) async {
+              return await showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Leave the meeting?'),
+                    content: const Text(
+                      'Are you sure you want to leave the meeting?',
+                    ),
+                    backgroundColor: Colors.white,
+                    surfaceTintColor: Colors.white,
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text('Leave'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            topMenuBarConfig: ZegoTopMenuBarConfig(
+              hideAutomatically: false,
+            ),
+            bottomMenuBarConfig: ZegoBottomMenuBarConfig(
+              hideAutomatically: false,
+            ),
+            memberListConfig: ZegoMemberListConfig(
+              itemBuilder: (context, size, user, extraInfo) {
+                return ListTile(
+                  leading: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          accountModel?.customer?.imageUrl ?? '',
+                        ),
                       ),
                     ),
                   ),
-                ),
-                title: Text(user.name ?? ''),
-                subtitle: Text(user.id ?? ''),
-              );
-            },
-          ),
-          audioVideoViewConfig: ZegoPrebuiltAudioVideoViewConfig(),
-          notificationViewConfig: ZegoInRoomNotificationViewConfig(
-            userLeaveItemBuilder: (context, user, extraInfo) {
-              return Container();
-            },
-            userJoinItemBuilder: (context, user, extraInfo) {
-              return Container();
-            },
+                  title: Text(user.name ?? ''),
+                  subtitle: Text(user.id ?? ''),
+                );
+              },
+            ),
+            audioVideoViewConfig: ZegoPrebuiltAudioVideoViewConfig(),
+            notificationViewConfig: ZegoInRoomNotificationViewConfig(
+              userLeaveItemBuilder: (context, user, extraInfo) {
+                return Container();
+              },
+              userJoinItemBuilder: (context, user, extraInfo) {
+                return Container();
+              },
+            ),
           ),
         ),
       ),
