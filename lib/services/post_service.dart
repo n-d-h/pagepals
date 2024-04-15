@@ -97,17 +97,18 @@ class PostService {
     return PostModel.fromJson(data);
   }
 
-  static Future<void> createPost(
-      String content, List<String> postImages, String readerId, String title) async {
+  static Future<void> createPost(String content, List<String> postImages,
+      String readerId, String title) async {
     var mutation = '''
       mutation MyMutation {
-        savePost(post: {
-            content: "$content", 
-            postImages: [
-              ${postImages.map((e) => '"$e"').join(',')}
-            ],
-            readerId: "$readerId", 
-            title: "$title"
+        createPost(
+            post: {
+              content: "$content", 
+              postImages: [
+                ${postImages.map((e) => '"$e"').join(',')}
+              ],
+              readerId: "$readerId", 
+              title: "$title"
         }) {
           content
           createdAt

@@ -22,7 +22,7 @@ class _VideoPlayerFromFileState extends State<VideoPlayerFromFile> {
       videoPlayerController: VideoPlayerController.file(videoFile),
       autoInitialize: true,
       autoPlay: false,
-      aspectRatio: 16 / 9,
+      aspectRatio: 300 / 500,
       showControlsOnInitialize: false,
       looping: false,
       errorBuilder: (context, errorMessage) {
@@ -57,7 +57,7 @@ class _VideoPlayerFromFileState extends State<VideoPlayerFromFile> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 500,
       child: Chewie(
         controller: _chewieController,
       ),

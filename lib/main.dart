@@ -12,6 +12,7 @@ import 'package:pagepals/providers/cart_provider.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/providers/reader_request_provider.dart';
+import 'package:pagepals/providers/reader_update_provider.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/payment_response_screen.dart';
 import 'package:pagepals/services/firebase_message_service.dart';
 import 'package:pagepals/splash_screen.dart';
@@ -79,6 +80,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => ReaderRequestProvider()),
+        ChangeNotifierProvider(create: (_) => ReaderUpdateProvider()),
       ],
       child: const MyApp(),
     ),

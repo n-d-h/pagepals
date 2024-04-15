@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/providers/reader_update_provider.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/edit_utils.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_field.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/upload_button.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/video_player_from_file.dart';
 import 'package:pagepals/services/reader_service.dart';
+import 'package:provider/provider.dart';
 
 class ReaderColumnEditField extends StatefulWidget {
   final ReaderProfile? readerProfile;
@@ -47,7 +49,7 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
     description = widget.readerProfile?.profile?.description ?? description;
   }
 
-  void _handleVideoSelection() async {
+  void _handleVideoSelection(ReaderUpdateProvider update) async {
     final result = await ImagePicker().pickVideo(
       source: ImageSource.gallery,
     );
@@ -55,6 +57,8 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
     if (result != null) {
       setState(() {
         _selectedVideo = File(result.path);
+        update.updateReaderUpdateModel(
+            introductionVideoUrl: _selectedVideo!.path);
       });
     }
   }
@@ -70,6 +74,7 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
             borderRadius: BorderRadius.circular(0),
           ),
           child: VideoPlayerFromFile(
+            key: UniqueKey(),
             videoFile: _selectedVideo!,
           ),
         );
@@ -79,6 +84,7 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
 
   @override
   Widget build(BuildContext context) {
+    final readerUpdateProvider = context.read<ReaderUpdateProvider>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -107,6 +113,8 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
                               {
                                 setState(() {
                                   nickname = value['value'];
+                                  readerUpdateProvider.updateReaderUpdateModel(
+                                      nickname: nickname);
                                 }),
                               }
                           });
@@ -128,6 +136,8 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
                                 setState(() {
                                   genres = value['value'];
                                 }),
+                                readerUpdateProvider.updateReaderUpdateModel(
+                                    genres: genres),
                               }
                           });
                 },
@@ -148,6 +158,8 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
                                 setState(() {
                                   languages = value['value'];
                                 }),
+                                readerUpdateProvider.updateReaderUpdateModel(
+                                    languages: languages),
                               }
                           });
                 },
@@ -169,6 +181,8 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
                                 setState(() {
                                   countryAccent = value['value'];
                                 }),
+                                readerUpdateProvider.updateReaderUpdateModel(
+                                    countryAccent: countryAccent),
                               }
                           });
                 },
@@ -190,6 +204,8 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
                                 setState(() {
                                   description = value['value'];
                                 }),
+                                readerUpdateProvider.updateReaderUpdateModel(
+                                    description: description),
                               }
                           });
                 },
@@ -202,20 +218,42 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
           margin: const EdgeInsets.only(bottom: 30),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               UploadButton(
                 onTap: () {
-                  EditUtils.showBottomSheetForUpload(context, () {});
+                  _selectedVideo != null
+                      ? _handleViewVideo()
+                      : _handleVideoSelection(readerUpdateProvider);
                 },
-                iconColor: Colors.blue,
-                title: 'Change Video',
+                icon: Icon(
+                  _selectedVideo != null
+                      ? Icons.play_circle_fill
+                      : Icons.cloud_upload,
+                  size: 50,
+                  color: Colors.blueAccent,
+                ),
+                title: _selectedVideo != null ? 'View Video' : 'Change Video',
+                onCanceled: _selectedVideo != null
+                    ? () {
+                        setState(() {
+                          _selectedVideo = null;
+                          readerUpdateProvider
+                              .clearField('introductionVideoUrl');
+                        });
+                      }
+                    : null,
               ),
               const SizedBox(width: 30),
               UploadButton(
                 onTap: () {
-                  EditUtils.showBottomSheetForUpload(context, () {});
+                  // EditUtils.showBottomSheetForUpload(context, () {});
                 },
-                iconColor: Colors.deepOrange,
+                icon: Icon(
+                  Icons.cloud_upload,
+                  size: 50,
+                  color: Colors.deepOrange,
+                ),
                 title: 'Change Audio',
               )
             ],
