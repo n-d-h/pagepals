@@ -6,8 +6,10 @@ import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 
 class ReaderEditAvatar extends StatefulWidget {
   final ReaderProfile? readerProfile;
+  final Function(String) onAvatarChanged;
 
-  const ReaderEditAvatar({super.key, this.readerProfile});
+  const ReaderEditAvatar(
+      {super.key, this.readerProfile, required this.onAvatarChanged});
 
   @override
   State<ReaderEditAvatar> createState() => _ReaderEditAvatarState();
@@ -36,6 +38,7 @@ class _ReaderEditAvatarState extends State<ReaderEditAvatar> {
     if (result != null) {
       setState(() {
         _selectedImage = File(result.path);
+        widget.onAvatarChanged(result.path);
       });
     }
   }
