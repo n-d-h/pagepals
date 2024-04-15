@@ -103,14 +103,18 @@ class Profile {
 class Account {
   String? username;
   Customer? customer;
+  String? email;
+  String? phoneNumber;
 
-  Account({this.username, this.customer});
+  Account({this.username, this.customer, this.email, this.phoneNumber});
 
   Account.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     customer = json['customer'] != null
         ? new Customer.fromJson(json['customer'])
         : null;
+    email = json['email'];
+    phoneNumber = json['phoneNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -119,22 +123,27 @@ class Account {
     if (this.customer != null) {
       data['customer'] = this.customer!.toJson();
     }
+    data['email'] = this.email;
+    data['phoneNumber'] = this.phoneNumber;
     return data;
   }
 }
 
 class Customer {
   String? imageUrl;
+  String? dob;
 
-  Customer({this.imageUrl});
+  Customer({this.imageUrl, this.dob});
 
   Customer.fromJson(Map<String, dynamic> json) {
     imageUrl = json['imageUrl'];
+    dob = json['dob'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['imageUrl'] = this.imageUrl;
+    data['dob'] = this.dob;
     return data;
   }
 }

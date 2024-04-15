@@ -71,6 +71,11 @@ class ReaderService {
             profile {
               account {
                 username
+                email
+                phoneNumber
+                customer {
+                  dob
+                }
               }
               nickname
               audioDescriptionUrl
@@ -99,7 +104,8 @@ class ReaderService {
         }
     ''';
 
-    GraphQLClient clientWithToken = await AuthService.getGraphQLClientWithToken();
+    GraphQLClient clientWithToken =
+        await AuthService.getGraphQLClientWithToken();
     final QueryResult result = await clientWithToken.query(QueryOptions(
       document: gql(query),
       fetchPolicy: FetchPolicy.networkOnly,
@@ -318,7 +324,7 @@ class ReaderService {
 
     final commentData = result.data?['getReaderReviews'];
 
-    if(commentData == null) {
+    if (commentData == null) {
       return CommentModel(
         list: [],
       );
@@ -356,5 +362,54 @@ class ReaderService {
 
     final requestData = result.data?['getRequestByReaderId'];
     return RequestModel.fromJson(requestData);
+  }
+
+  static Future<void> updateReader(
+      String readerId,
+      String nickname,
+      String avatarUrl,
+      String countryAccent,
+      String description,
+      String genres,
+      String languages,
+      String introUrl,
+      String audioUrl) async {
+    String mutation = '''
+      mutation {
+        updateReader(
+          id: "$readerId"
+          data: {
+            audioDescriptionUrl: "$audioUrl",
+            avatarUrl: "$avatarUrl",
+            countryAccent: "$countryAccent",
+            description: "$description",
+            genres: "$genres",
+            languages: "$languages", 
+            introductionVideoUrl: "$introUrl",
+            nickname: "$nickname";
+          }
+        )
+    ''';
+
+    final GraphQLClient clientWithToken =
+        await AuthService.getGraphQLClientWithToken();
+
+    final QueryResult result = await clientWithToken.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to update customer');
+    }
+
+    final customerData = result.data?['updateReader'];
+    if (customerData != null) {
+      AuthenService.updateAccountToSharedPreferences();
+    } else {
+      return;
+    }
   }
 }

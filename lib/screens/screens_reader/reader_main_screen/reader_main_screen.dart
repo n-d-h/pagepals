@@ -330,6 +330,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
                                     child: WaitingScreen(
+                                      readerId: readerId,
                                       bookingModel: pendingBooking,
                                       onLoading: (value) {
                                         if (value) {
@@ -337,6 +338,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                             pendingBooking = null;
                                             completedBooking = null;
                                             canceledBooking = null;
+                                            commentModel = null;
                                           });
                                           getBooking(readerId);
                                         }
@@ -379,6 +381,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
                                     child: CompletedBookingScreen(
+                                      readerId: readerId,
                                       bookingModel: completedBooking,
                                     ),
                                   ),
@@ -418,6 +421,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   PageTransition(
                                     type: PageTransitionType.rightToLeft,
                                     child: ReaderCancelScreen(
+                                      readerId: readerId,
                                       bookingModel: canceledBooking,
                                     ),
                                   ),

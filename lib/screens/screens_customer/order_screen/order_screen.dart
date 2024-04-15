@@ -8,6 +8,7 @@ import 'package:pagepals/screens/screens_customer/order_screen/canceled_tab_widg
 import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/completed_tab.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_tab.dart';
 import 'package:pagepals/services/booking_service.dart';
+import 'package:unicons/unicons.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -129,7 +130,7 @@ class _OrderScreenState extends State<OrderScreen> {
             IconButton(
               onPressed: () {},
               icon: const Icon(
-                Icons.search_rounded,
+                UniconsLine.search,
                 color: Colors.black,
               ),
             ),

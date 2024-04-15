@@ -1,19 +1,17 @@
--------PRIORITY-------
+# -------`[PRIORITY]`-------
 - Finish Interview Flow
 - Record meeting
 - Complete Meeting (booking)
-- Update Reader
+- `Update Reader` [PENDING]
 
--------TODO----------  
+# ---------`[TODO]`---------  
 - Notification
 - Reader Report (API + Screen)
-
-- Filter/Search
-- Pagination Booking **All State**
+- `Filter/Search` [PENDING]
 - Reader create Seminar + Post
 - Redesign Profile Screen
 - Redesign work Schedule
 - Redesign customer booking
 
- --- OPTIONAL ---
+#  --- `[OPTIONAL]` ---
 - Create Promotion

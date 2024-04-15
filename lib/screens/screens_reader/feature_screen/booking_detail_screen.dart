@@ -15,8 +15,10 @@ import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/service_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/time_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/wallet_widget.dart';
+import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/customer_info_widget.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
@@ -134,27 +136,32 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
             return;
           } else {
             // Handle button press action here
-            Future.delayed(const Duration(milliseconds: 40), () {
+            Future.delayed(const Duration(milliseconds: 200), () async {
               setState(() {
                 isLoading = false;
               });
               widget.onLoading?.call(true);
+
+              // get account
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              String accountJson = prefs.getString('account')!;
+              AccountModel account =
+                  AccountModel.fromJson(json.decoder.convert(accountJson));
+              String readerId = account.reader!.id!;
+
+              // Navigate to the next screen
               Navigator.of(context).pushAndRemoveUntil(
                 PageTransition(
-                  child: WaitingScreen(),
+                  child: WaitingScreen(
+                    readerId: readerId,
+                    bookingModel: await BookingService.getBookingByReader(
+                        readerId, 0, 10, 'PENDING'),
+                    isFinished: true,
+                  ),
                   type: PageTransitionType.rightToLeft,
-                  duration: const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 0),
                 ),
                 (route) => false,
-              );
-            });
-            Future.delayed(const Duration(milliseconds: 300), () {
-              QuickAlert.show(
-                context: context,
-                type: QuickAlertType.success,
-                title: 'Success',
-                text: 'Booking completed successfully.',
-                autoCloseDuration: const Duration(seconds: 3),
               );
             });
           }
