@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -109,6 +110,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
     }
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text('Waiting Booking'),
         centerTitle: true,
         surfaceTintColor: Colors.white,
@@ -139,97 +141,133 @@ class _WaitingScreenState extends State<WaitingScreen> {
           },
         ),
       ),
-      body: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        controller: _scrollController,
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: bookings.length + (isLoadingNextPage ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index == bookings.length) {
-            return Center(
-              child: LoadingAnimationWidget.prograssiveDots(
-                color: ColorHelper.getColor(ColorHelper.green),
-                size: 50,
+      body: bookings.isEmpty
+          ? Center(
+              child: Container(
+                // margin appbar height + 20
+                margin: const EdgeInsets.only(bottom: 80),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/no_booking.png',
+                      width: 250,
+                      height: 250,
+                      fit: BoxFit.fill,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Empty List',
+                      style: GoogleFonts.caveatBrush(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'You have no booking yet.',
+                      overflow: TextOverflow.clip,
+                      style: GoogleFonts.openSans(
+                        color: Colors.black54,
+                        fontSize: 18,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            );
-          } else {
-            Booking booking = bookings[index];
-            return Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.fromLTRB(20, 25, 20, 0),
-                  padding: const EdgeInsets.only(bottom: 27),
-                  child: Column(
+            )
+          : ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: _scrollController,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: bookings.length + (isLoadingNextPage ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == bookings.length) {
+                  return Center(
+                    child: LoadingAnimationWidget.prograssiveDots(
+                      color: ColorHelper.getColor(ColorHelper.green),
+                      size: 50,
+                    ),
+                  );
+                } else {
+                  Booking booking = bookings[index];
+                  return Column(
                     children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            PageTransition(
-                              child: BookingDetailScreen(
-                                booking: booking,
-                                onLoading: widget.onLoading,
-                                title: 'Finish Booking',
-                                isEnabled: DateTime.now().isAfter(
-                                  DateTime.parse(booking.startAt ??
-                                          '2024-01-01 00:00:00')
-                                      .add(const Duration(hours: 1)),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(20, 25, 20, 0),
+                        padding: const EdgeInsets.only(bottom: 27),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  PageTransition(
+                                    child: BookingDetailScreen(
+                                      booking: booking,
+                                      onLoading: widget.onLoading,
+                                      title: 'Finish Booking',
+                                      isEnabled: DateTime.now().isAfter(
+                                        DateTime.parse(booking.startAt ??
+                                                '2024-01-01 00:00:00')
+                                            .add(const Duration(hours: 1)),
+                                      ),
+                                      // isEnabled: true,
+                                    ),
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: const Duration(milliseconds: 300),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(18),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(8)),
+                                  border: Border.all(
+                                      width: 0.3,
+                                      color: Colors.black.withOpacity(0.4)),
+                                  // boxShadow: [
+                                  //   BoxShadow(color: Colors.black12, spreadRadius: 2, blurRadius: 3),
+                                  // ],
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12.withOpacity(0.2),
+                                      // spreadRadius: 2,
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 5),
+                                    )
+                                  ],
                                 ),
-                                // isEnabled: true,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    UpcomingLeading(
+                                      booking: booking,
+                                    ),
+                                    BookingBody(
+                                      booking: booking,
+                                      isReader: true,
+                                    ),
+                                    UpcomingBottom(
+                                      booking: booking,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              type: PageTransitionType.rightToLeft,
-                              duration: const Duration(milliseconds: 300),
                             ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(
-                                width: 0.3,
-                                color: Colors.black.withOpacity(0.4)),
-                            // boxShadow: [
-                            //   BoxShadow(color: Colors.black12, spreadRadius: 2, blurRadius: 3),
-                            // ],
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12.withOpacity(0.2),
-                                // spreadRadius: 2,
-                                blurRadius: 3,
-                                offset: const Offset(0, 5),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              UpcomingLeading(
-                                booking: booking,
-                              ),
-                              BookingBody(
-                                booking: booking,
-                                isReader: true,
-                              ),
-                              UpcomingBottom(
-                                booking: booking,
-                              ),
-                            ],
-                          ),
+                          ],
                         ),
                       ),
+                      const DashedSeparator(),
                     ],
-                  ),
-                ),
-                const DashedSeparator(),
-              ],
-            );
-          }
-        },
-      ),
+                  );
+                }
+              },
+            ),
     );
   }
 }

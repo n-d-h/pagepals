@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
@@ -108,13 +109,26 @@ class ProfileBookCollection extends StatelessWidget {
             Container(
               height: 150,
               margin: const EdgeInsets.only(right: 25),
-              child: const Center(
-                child: Text(
-                  'No book found',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/no_book.png',
+                      height: 100,
+                      width: 100,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Reader is still building their collection',
+                      style: TextStyle(
+                        overflow: TextOverflow.clip,
+                        color: Colors.grey,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

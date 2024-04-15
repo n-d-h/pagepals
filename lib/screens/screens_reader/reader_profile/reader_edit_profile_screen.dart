@@ -2,7 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
+import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_field.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/video_player_from_file.dart';
 
 class ReaderEditProfileScreen extends StatefulWidget {
@@ -78,12 +82,41 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    String avatarUrl = widget.readerProfile?.profile?.avatarUrl ??
+        'https://via.placeholder.com/150';
+    String nickname = widget.readerProfile?.profile?.nickname ?? 'Nick name';
+    String email = widget.readerProfile?.profile?.account?.email ??
+        'reader.account@email.com';
+    String phoneNumber =
+        widget.readerProfile?.profile?.account?.phoneNumber ?? '09xxx78580';
+
+    String dob = widget.readerProfile?.profile?.account?.customer?.dob ??
+        '03/07/2002 00:00:00';
+    String formatDOB = DateFormat('dd/MM/yyyy').format(DateTime.parse(dob));
+
+    String language = widget.readerProfile?.profile?.language ?? 'English';
+    String videoUrl = widget.readerProfile?.profile?.introductionVideoUrl ??
+        'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4';
+    String audioUrl = widget.readerProfile?.profile?.audioDescriptionUrl ??
+        'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+    String countryAccent =
+        widget.readerProfile?.profile?.countryAccent ?? 'Spanish';
+    String description = widget.readerProfile?.profile?.description ??
+        'I am a reader who loves to read books and share my thoughts with others.';
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text('Edit Profile'),
         centerTitle: true,
-        surfaceTintColor: Colors.white,
+        surfaceTintColor: Colors.grey[100],
+        backgroundColor: Colors.grey[100],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -107,11 +140,38 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                 children: [
                   Stack(
                     children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: NetworkImage(
-                          widget.readerProfile?.profile?.avatarUrl ??
-                              'https://via.placeholder.com/150',
+                      Container(
+                        height: 120,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.grey[500]!,
+                          //     blurRadius: 5,
+                          //     spreadRadius: 2,
+                          //     // offset: Offset(0, 2),
+                          //   ),
+                          // ],
+                          border: Border.fromBorderSide(
+                            BorderSide(
+                              color: Colors.white,
+                              width: 3,
+                            ),
+                          ),
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(100),
+                          onTap: () {
+                            _handleImageSelection();
+                          },
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: _selectedImage != null
+                                ? FileImage(_selectedImage!)
+                                    as ImageProvider<Object>
+                                : NetworkImage(avatarUrl),
+                          ),
                         ),
                       ),
                       Positioned(
@@ -136,25 +196,19 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Change Profile Picture',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Container(
+              // padding: const EdgeInsets.only(left: 20),
+              width: double.infinity,
               child: Text(
+                textAlign: TextAlign.center,
                 'Personal Information',
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black45,
                 ),
               ),
             ),
@@ -163,72 +217,95 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildDataField('Full Name', 'John Doe', () {
-                    showBottomSheet(
-                      context,
-                      initialValue: 'John Doe',
-                      title: 'Full Name',
-                    ).then(
-                      (value) => {
-                        if (value != null) {print(value)}
-                      },
-                    );
-                  }),
-                  buildDataField('Email', 'john@gmail.com', () {
-                    showBottomSheet(
-                      context,
-                      initialValue: 'Email',
-                      title: 'Email',
-                    ).then(
-                      (value) => {
-                        if (value != null) {print(value)}
-                      },
-                    );
-                  }),
-                  buildDataField('Phone Number', '08012345678', () {
-                    showBottomSheet(
-                      context,
-                      initialValue: '08012345678',
-                      title: 'Phone Number',
-                    ).then(
-                      (value) => {
-                        if (value != null) {print(value)}
-                      },
-                    );
-                  }),
-                  buildDataField('Date of Birth', '12/12/1990', () {
-                    showBottomSheet(
-                      context,
-                      initialValue: '12/12/1990',
-                      title: 'Date of Birth',
-                    ).then(
-                      (value) => {
-                        if (value != null) {print(value)}
-                      },
-                    );
-                  }),
-                  buildDataField('Location', 'Lagos', () {
-                    showBottomSheet(
-                      context,
-                      initialValue: 'Lagos',
-                      title: 'Location',
-                    ).then(
-                      (value) => {
-                        if (value != null) {print(value)}
-                      },
-                    );
-                  }),
-                  buildDataField('Language', 'English', () {
-                    showBottomSheet(
-                      context,
-                      initialValue: 'English',
-                      title: 'Language',
-                    ).then(
-                      (value) => {
-                        if (value != null) {print(value)}
-                      },
-                    );
-                  }),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey[300]!,
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        ReaderEditField(
+                          title: 'Nick Name',
+                          value: nickname,
+                          onTap: () {
+                            showBottomSheet(
+                              context,
+                              initialValue: nickname,
+                              title: 'Nick name',
+                            ).then(
+                              (value) => {
+                                if (value != null) {print(value)}
+                              },
+                            );
+                          },
+                        ),
+                        Container(
+                          height: 1,
+                          width: double.infinity,
+                          color: Colors.grey[300],
+                        ),
+                        buildDataField('Email', email, () {
+                          // Email field is not editable
+                        }),
+                        Container(
+                          height: 1,
+                          width: double.infinity,
+                          color: Colors.grey[200],
+                        ),
+                        buildDataField('Phone Number', phoneNumber, () {
+                          showBottomSheet(
+                            context,
+                            initialValue: phoneNumber,
+                            title: 'Phone Number',
+                          ).then(
+                            (value) => {
+                              if (value != null) {print(value)}
+                            },
+                          );
+                        }),
+                        Container(
+                          height: 1,
+                          width: double.infinity,
+                          color: Colors.grey[300],
+                        ),
+                        buildDataField('Date of Birth', formatDOB, () {
+                          showBottomSheet(
+                            context,
+                            initialValue: formatDOB,
+                            title: 'Date of Birth',
+                          ).then(
+                            (value) => {
+                              if (value != null) {print(value)}
+                            },
+                          );
+                        }),
+                        Container(
+                          height: 1,
+                          width: double.infinity,
+                          color: Colors.grey[300],
+                        ),
+                        buildDataField('Language', language, () {
+                          showBottomSheet(
+                            context,
+                            initialValue: language,
+                            title: 'Language',
+                          ).then(
+                            (value) => {
+                              if (value != null) {print(value)}
+                            },
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
                   Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(bottom: 30),
@@ -238,22 +315,32 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Update Video',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
+                            // const Text(
+                            //   'Update Video',
+                            //   style: TextStyle(
+                            //     fontSize: 17,
+                            //     fontWeight: FontWeight.w500,
+                            //   ),
+                            // ),
+                            const SizedBox(height: 20),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                showBottomSheetForUpload(context);
+                              },
                               child: Container(
                                 height: 120,
                                 width: 120,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[200],
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey[300]!,
+                                      blurRadius: 5,
+                                      spreadRadius: 2,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
                                 child: const Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -261,6 +348,7 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                                     Icon(
                                       Icons.cloud_upload,
                                       size: 50,
+                                      color: Colors.blue,
                                     ),
                                     Text('Change Video'),
                                   ],
@@ -273,29 +361,40 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Update Audio',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
+                            // const Text(
+                            //   'Update Audio',
+                            //   style: TextStyle(
+                            //     fontSize: 17,
+                            //     fontWeight: FontWeight.w500,
+                            //   ),
+                            // ),
+                            const SizedBox(height: 20),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                showBottomSheetForUpload(context);
+                              },
                               child: Container(
                                 height: 120,
                                 width: 120,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[200],
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey[300]!,
+                                      blurRadius: 5,
+                                      spreadRadius: 2,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                                child: const Column(
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
                                       Icons.cloud_upload,
                                       size: 50,
+                                      color: Colors.deepOrange,
                                     ),
                                     Text('Change Audio'),
                                   ],
@@ -313,6 +412,11 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
           ],
         ),
       ),
+      // bottomNavigationBar: BottomButton(
+      //   isEnabled: true,
+      //   onPressed: () {},
+      //   title: 'Save Changes',
+      // ),
     );
   }
 
@@ -321,40 +425,44 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
     String value,
     Function() onTap,
   ) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w500,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        color: Colors.transparent,
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        // margin: const EdgeInsets.only(bottom: 2),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          InkWell(
-            borderRadius: BorderRadius.circular(10),
-            radius: 10,
-            splashColor: Colors.white,
-            onTap: onTap,
-            child: Row(
+            Row(
               children: [
                 Text(
                   value,
                   style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
+                    fontSize: 14,
+                    color: Colors.grey,
                     fontWeight: FontWeight.w200,
                   ),
                 ),
                 const SizedBox(width: 10),
-                const Icon(Icons.arrow_forward_ios),
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 12,
+                  color: Colors.grey,
+                ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -365,28 +473,30 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
         TextEditingController(text: initialValue);
 
     return showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Stack(
-            children: [
-              Column(
+        return Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              padding: const EdgeInsets.all(10),
+              alignment: Alignment.bottomCenter,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 20),
                   TextField(
                     controller: controller,
                     decoration: InputDecoration(
-                      labelText: title ?? 'Full Name',
+                      labelText: title ?? 'Nick Name',
                       hintText: 'John Doe',
                     ),
                   ),
@@ -424,20 +534,20 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
                   ),
                 ],
               ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.pop(context, {
-                      'value': controller.text,
-                    });
-                  },
-                ),
+            ),
+            Positioned(
+              top: 0,
+              right: 2,
+              child: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context, {
+                    'value': controller.text,
+                  });
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
