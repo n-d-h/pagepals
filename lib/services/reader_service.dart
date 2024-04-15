@@ -364,7 +364,7 @@ class ReaderService {
     return RequestModel.fromJson(requestData);
   }
 
-  static Future<bool> updateReader(
+  static Future<void> updateReader(
       String readerId,
       String nickname,
       String avatarUrl,
@@ -375,7 +375,7 @@ class ReaderService {
       String introUrl,
       String audioUrl) async {
     String mutation = '''
-      mutation MyMutation {
+      mutation {
         updateReader(
           id: "$readerId"
           data: {
@@ -406,6 +406,10 @@ class ReaderService {
     }
 
     final customerData = result.data?['updateReader'];
-    return customerData != null;
+    if (customerData != null) {
+      AuthenService.updateAccountToSharedPreferences();
+    } else {
+      return;
+    }
   }
 }

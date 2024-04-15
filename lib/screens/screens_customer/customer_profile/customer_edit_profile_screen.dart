@@ -61,10 +61,12 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: Text('${widget.account?.username}'),
         centerTitle: true,
-        surfaceTintColor: Colors.white,
+        surfaceTintColor: Colors.grey[100],
+        backgroundColor: Colors.grey[100],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {

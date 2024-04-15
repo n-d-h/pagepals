@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ReaderEditField extends StatelessWidget {
   final String title;
@@ -23,31 +25,40 @@ class ReaderEditField extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis,
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
-            Row(
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w200,
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Text(
+                      textAlign: TextAlign.end,
+                      value,
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w200,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 12,
-                  color: Colors.grey,
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 12,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
