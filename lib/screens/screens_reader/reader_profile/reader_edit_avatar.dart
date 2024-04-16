@@ -3,13 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/models/reader_models/reader_update_model.dart';
 
 class ReaderEditAvatar extends StatefulWidget {
   final ReaderProfile? readerProfile;
+  final ReaderUpdate? readerUpdate;
   final Function(String) onAvatarChanged;
 
   const ReaderEditAvatar(
-      {super.key, this.readerProfile, required this.onAvatarChanged});
+      {super.key,
+      this.readerProfile,
+      required this.onAvatarChanged,
+      this.readerUpdate});
 
   @override
   State<ReaderEditAvatar> createState() => _ReaderEditAvatarState();
@@ -24,7 +29,9 @@ class _ReaderEditAvatarState extends State<ReaderEditAvatar> {
     // TODO: implement initState
     super.initState();
 
-    avatarUrl = widget.readerProfile?.profile?.avatarUrl ?? avatarUrl;
+    avatarUrl = widget.readerUpdate?.avatarUrl ??
+        widget.readerProfile?.profile?.avatarUrl ??
+        avatarUrl;
   }
 
   void _handleImageSelection() async {
@@ -96,7 +103,10 @@ class _ReaderEditAvatarState extends State<ReaderEditAvatar> {
                     radius: 50,
                     backgroundImage: _selectedImage != null
                         ? FileImage(_selectedImage!) as ImageProvider<Object>
-                        : NetworkImage(avatarUrl),
+                        : widget.readerUpdate?.avatarUrl != null
+                            ? FileImage(File(avatarUrl))
+                                as ImageProvider<Object>
+                            : NetworkImage(avatarUrl),
                   ),
                 ),
               ),

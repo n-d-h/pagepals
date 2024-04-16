@@ -364,7 +364,7 @@ class ReaderService {
     return RequestModel.fromJson(requestData);
   }
 
-  static Future<void> updateReader(
+  static Future<bool> updateReader(
       String readerId,
       String nickname,
       String avatarUrl,
@@ -386,9 +386,10 @@ class ReaderService {
             genres: "$genres",
             languages: "$languages", 
             introductionVideoUrl: "$introUrl",
-            nickname: "$nickname";
+            nickname: "$nickname",
           }
         )
+      }
     ''';
 
     final GraphQLClient clientWithToken =
@@ -408,8 +409,9 @@ class ReaderService {
     final customerData = result.data?['updateReader'];
     if (customerData != null) {
       AuthenService.updateAccountToSharedPreferences();
+      return true;
     } else {
-      return;
+      return false;
     }
   }
 }

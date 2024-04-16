@@ -2,51 +2,66 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/models/reader_models/reader_update_model.dart';
 import 'package:pagepals/providers/reader_update_provider.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/edit_utils.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_field.dart';
+import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/upload_button.dart';
+import 'package:pagepals/screens/screens_reader/reader_request/audio_player_from_file.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/video_player_from_file.dart';
-import 'package:pagepals/services/reader_service.dart';
 import 'package:provider/provider.dart';
 
 class ReaderColumnEditField extends StatefulWidget {
   final ReaderProfile? readerProfile;
+  final ReaderUpdate? readerUpdate;
 
-  const ReaderColumnEditField({super.key, this.readerProfile});
+  const ReaderColumnEditField(
+      {super.key, this.readerProfile, this.readerUpdate});
 
   @override
   State<ReaderColumnEditField> createState() => _ReaderColumnEditFieldState();
 }
 
 class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
-  String nickname = 'Nick name';
-  String genres = 'Fiction, Non-fiction';
-  String languages = 'English';
-  String videoUrl =
-      'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4';
-  String audioUrl =
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
-  String countryAccent = 'Spanish';
-  String description =
-      'I am a reader who loves to read books and share my thoughts with others.';
+  late String nickname;
+  late String genres;
+  late String languages;
+  late String videoUrl;
+  late String audioUrl;
+  late String countryAccent;
+  late String description;
 
   File? _selectedVideo;
+  File? _selectedAudio;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    nickname = widget.readerProfile?.profile?.nickname ?? nickname;
-    genres = widget.readerProfile?.profile?.genre ?? genres;
-    languages = widget.readerProfile?.profile?.language ?? languages;
-    videoUrl = widget.readerProfile?.profile?.introductionVideoUrl ?? videoUrl;
-    audioUrl = widget.readerProfile?.profile?.audioDescriptionUrl ?? audioUrl;
-    countryAccent =
-        widget.readerProfile?.profile?.countryAccent ?? countryAccent;
-    description = widget.readerProfile?.profile?.description ?? description;
+    nickname = widget.readerUpdate?.nickname ??
+        widget.readerProfile?.profile?.nickname ??
+        '';
+    genres = widget.readerUpdate?.genres ??
+        widget.readerProfile?.profile?.genre ??
+        '';
+    languages = widget.readerUpdate?.languages ??
+        widget.readerProfile?.profile?.language ??
+        '';
+    videoUrl = widget.readerUpdate?.videoUrl ??
+        widget.readerProfile?.profile?.introductionVideoUrl ??
+        '';
+    audioUrl = widget.readerUpdate?.audioUrl ??
+        widget.readerProfile?.profile?.audioDescriptionUrl ??
+        '';
+    countryAccent = widget.readerUpdate?.countryAccent ??
+        widget.readerProfile?.profile?.countryAccent ??
+        '';
+    description = widget.readerUpdate?.description ??
+        widget.readerProfile?.profile?.description ??
+        '';
   }
 
   void _handleVideoSelection(ReaderUpdateProvider update) async {
@@ -63,7 +78,64 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
     }
   }
 
-  void _handleViewVideo() {
+  void _handleViewVideo() async {
+    if (_selectedVideo != null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            child: VideoPlayerFromFile(
+              videoFile: _selectedVideo!,
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _handleAudioSelection(ReaderUpdateProvider update) async {
+    final XFile? result = await ImagePicker().pickVideo(
+      source: ImageSource.gallery,
+    );
+
+    String extension = result?.path.split('.').last ?? '';
+    if (extension != 'mp3') {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            surfaceTintColor: Colors.white,
+            title: const Text('Error'),
+            content: const Text('Audio must be in MP3 format'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    } else {
+      if (result != null) {
+        setState(() {
+          _selectedAudio = File(result.path);
+          update.updateReaderUpdateModel(
+              audioDescriptionUrl: _selectedAudio!.path);
+        });
+      }
+    }
+  }
+
+  void _handleViewAudio() {
     showDialog(
       context: context,
       builder: (context) {
@@ -71,11 +143,26 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+            borderRadius: BorderRadius.circular(10),
           ),
-          child: VideoPlayerFromFile(
-            key: UniqueKey(),
-            videoFile: _selectedVideo!,
+          child: Container(
+            height: 200,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+                Center(
+                  child: AudioPlayerFromFile(
+                    audioFile: _selectedAudio!,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -240,6 +327,17 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
                           _selectedVideo = null;
                           readerUpdateProvider
                               .clearField('introductionVideoUrl');
+                          Navigator.of(context).pushAndRemoveUntil(
+                            PageTransition(
+                              child: ReaderEditProfileScreen(
+                                readerUpdate: readerUpdateProvider.readerUpdate,
+                                readerProfile: widget.readerProfile,
+                              ),
+                              type: PageTransitionType.fade,
+                              duration: const Duration(milliseconds: 300),
+                            ),
+                            (route) => false,
+                          );
                         });
                       }
                     : null,
@@ -247,14 +345,39 @@ class _ReaderColumnEditFieldState extends State<ReaderColumnEditField> {
               const SizedBox(width: 30),
               UploadButton(
                 onTap: () {
-                  // EditUtils.showBottomSheetForUpload(context, () {});
+                  _selectedAudio != null
+                      ? _handleViewAudio()
+                      : _handleAudioSelection(readerUpdateProvider);
                 },
                 icon: Icon(
-                  Icons.cloud_upload,
+                  _selectedAudio != null
+                      ? Icons.play_circle_fill
+                      : Icons.cloud_upload,
                   size: 50,
                   color: Colors.deepOrange,
                 ),
-                title: 'Change Audio',
+                title: _selectedAudio != null
+                    ? 'View Audio'
+                    : 'Change Audio',
+                onCanceled: _selectedAudio != null
+                    ? () {
+                        setState(() {
+                          _selectedAudio = null;
+                          readerUpdateProvider.clearField('audioDescriptionUrl');
+                          Navigator.of(context).pushAndRemoveUntil(
+                            PageTransition(
+                              child: ReaderEditProfileScreen(
+                                readerUpdate: readerUpdateProvider.readerUpdate,
+                                readerProfile: widget.readerProfile,
+                              ),
+                              type: PageTransitionType.fade,
+                              duration: const Duration(milliseconds: 300),
+                            ),
+                            (route) => false,
+                          );
+                        });
+                      }
+                    : null,
               )
             ],
           ),

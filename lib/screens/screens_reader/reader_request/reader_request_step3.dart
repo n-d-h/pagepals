@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/audio_player_from_file.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/video_player_from_file.dart';
 import 'package:unicons/unicons.dart';
+import 'package:video_player/video_player.dart';
 
 class ReaderRequestStep3 extends StatefulWidget {
   final Function(dynamic value) videoUploadCallback;
@@ -40,7 +41,10 @@ class _ReaderRequestStep3State extends State<ReaderRequestStep3> {
     }
   }
 
-  void _handleViewVideo() {
+  void _handleViewVideo() async{
+    final VideoPlayerController videoPlayerController =
+        VideoPlayerController.file(_selectedVideo!);
+    await videoPlayerController.initialize();
     showDialog(
       context: context,
       builder: (context) {
