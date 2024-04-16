@@ -35,7 +35,6 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
 
   @override
   Widget build(BuildContext context) {
-    print('PopularReaderBoxState mounted');
     return Container(
       width: 300,
       margin: const EdgeInsets.fromLTRB(2, 10, 25, 10),
