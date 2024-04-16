@@ -113,6 +113,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
             backgroundColor: Colors.grey[200],
             appBar: AppBar(
               surfaceTintColor: Colors.white,
+              backgroundColor: Colors.white,
               title: const Text(
                 'Reader Screen',
                 style: TextStyle(
@@ -215,7 +216,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.accountModel!.email!,
+                                          widget.accountModel?.reader?.nickname ??"",
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 20,

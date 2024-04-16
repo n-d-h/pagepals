@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -7,10 +8,14 @@ import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/reader_models/reader_update_model.dart';
 import 'package:pagepals/providers/reader_update_provider.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
+import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_column_edit_field.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_avatar.dart';
+import 'package:pagepals/services/file_storage_service.dart';
+import 'package:pagepals/services/reader_service.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReaderEditProfileScreen extends StatefulWidget {
@@ -34,6 +39,8 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
   late String audioUrl;
   late String countryAccent;
   late String description;
+
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -148,13 +155,84 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
       ),
       bottomNavigationBar: BottomButton(
         title: 'Save Changes',
-        onPressed: () {
+        onPressed: () async {
+          setState(() {
+            isLoading = true;
+          });
           final readerUpdate = readerUpdateProvider.readerUpdate;
-          print(readerUpdate);
-          // readerUpdateProvider.clearReaderUpdateModel();
+
+          // Upload video
+          final String? updateIntro = readerUpdate.videoUrl;
+          final String? oldIntroUrl =
+              widget.readerProfile?.profile?.introductionVideoUrl;
+          String uploadUrl = '';
+          if (updateIntro != null && updateIntro.isNotEmpty) {
+            // if (oldIntroUrl != null && oldIntroUrl.isNotEmpty) {
+            //   print('oldIntroUrl: $oldIntroUrl');
+            //   await FileStorageService.deleteFile(oldIntroUrl);
+            // }
+            uploadUrl = await FileStorageService.uploadFile(File(updateIntro));
+          } else {
+            uploadUrl = oldIntroUrl ?? '';
+          }
+
+          // Upload image
+          final String? updateImage = readerUpdate.avatarUrl;
+          final String? oldImageUrl =
+              widget.readerProfile?.profile?.avatarUrl;
+          String uploadImage = '';
+          if (updateImage != null && updateImage.isNotEmpty) {
+            if (oldImageUrl != null && oldImageUrl.isNotEmpty) {
+              print('oldImageUrl: $oldImageUrl');
+              await FileStorageService.deleteFile(oldImageUrl);
+            }
+            uploadImage = await FileStorageService.uploadFile(File(updateImage));
+          } else {
+            uploadImage = oldImageUrl ?? '';
+          }
+          print('uploadImage: $uploadImage');
+          print('uploadUrl: $uploadUrl');
+
+          bool isCreated = await ReaderService.updateReader(
+            widget.readerProfile?.profile?.id ?? '',
+            readerUpdate.nickname ?? nickname,
+            uploadImage,
+            readerUpdate.countryAccent ?? countryAccent,
+            readerUpdate.description ?? description,
+            readerUpdate.genres ?? genres,
+            readerUpdate.languages ?? languages,
+            uploadUrl,
+            readerUpdate.audioUrl ?? audioUrl,
+          );
+          if (isCreated) {
+            setState(() {
+              isLoading = false;
+            });
+            Future.delayed(const Duration(milliseconds: 300), () {
+              Navigator.of(context).pushAndRemoveUntil(
+                  PageTransition(
+                    child: MenuItemScreen(),
+                    type: PageTransitionType.leftToRight,
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                  (route) => false);
+            });
+          } else {
+            setState(() {
+              isLoading = false;
+            });
+            Future.delayed(const Duration(milliseconds: 300), () {
+              QuickAlert.show(
+                context: context,
+                title: 'Error',
+                text: 'Failed to update profile',
+                type: QuickAlertType.error,
+              );
+            });
+          }
         },
         isEnabled: true,
-        isLoading: false,
+        isLoading: isLoading,
       ),
     );
   }
