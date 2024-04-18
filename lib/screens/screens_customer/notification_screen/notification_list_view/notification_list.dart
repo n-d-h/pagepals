@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pagepals/screens/screens_customer/notification_screen/notification_helpers/notification_model.dart';
+import 'package:pagepals/models/notification_model.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_list_view/notification_tile.dart';
 
 class NotificationList extends StatelessWidget {
-  final List<NotificationModel> notifications;
+  final List<NotificationItem> notifications;
   final int unreadCount;
-  final Function(int) onNotificationRead;
+  final Function(int, String) onNotificationRead;
 
   const NotificationList({
     super.key,
@@ -26,7 +26,7 @@ class NotificationList extends StatelessWidget {
               final notification = notifications[index];
               return NotificationTile(
                 notification: notification,
-                onRead: () => onNotificationRead(index),
+                onRead: () => onNotificationRead(index, notification.id ?? ""),
               );
             },
           ),

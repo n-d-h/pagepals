@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/custom_icons.dart';
+import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/bottom_tab_bar.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/post_screen.dart';
 import 'package:pagepals/screens/screens_customer/search_screen/search_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 class MenuItemScreen extends StatefulWidget {
@@ -45,6 +47,8 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   }
 
   List<BottomNavigationBarItem> get _navigatorItems {
+    final notification = context.watch<NotificationProvider>();
+
     return [
       BottomNavigationBarItem(
         icon: const Icon(UniconsLine.home_alt),
@@ -57,7 +61,21 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         label: AppLocalizations.of(context)!.appSearch,
       ),
       BottomNavigationBarItem(
-        icon: const Icon(Icons.notifications_none),
+        icon: Badge(
+          backgroundColor: Colors.orange,
+          isLabelVisible: context.watch<NotificationProvider>().count > 0,
+          alignment: Alignment.topRight,
+          largeSize: 20,
+          padding: const EdgeInsets.symmetric(horizontal: 7),
+          label: Text(
+            notification.count.toString(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 8,
+            ),
+          ),
+          child: const Icon(Icons.notifications_none),
+        ),
         activeIcon: const Icon(Icons.notifications),
         label: AppLocalizations.of(context)!.appNotification,
       ),

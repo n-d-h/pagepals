@@ -11,6 +11,7 @@ import 'package:pagepals/firebase_options.dart';
 import 'package:pagepals/providers/cart_provider.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
+import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/providers/reader_request_provider.dart';
 import 'package:pagepals/providers/reader_update_provider.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/payment_response_screen.dart';
@@ -81,6 +82,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => ReaderRequestProvider()),
         ChangeNotifierProvider(create: (_) => ReaderUpdateProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: const MyApp(),
     ),

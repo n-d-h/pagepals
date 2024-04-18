@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pagepals/models/notification_model.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_helpers/notification_helper.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_helpers/notification_model.dart';
 
 class NotificationTile extends StatelessWidget {
-  final NotificationModel notification;
+  final NotificationItem notification;
   final VoidCallback onRead;
 
   const NotificationTile({
@@ -14,6 +15,9 @@ class NotificationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isRead = notification.isRead == true;
+    String createdAt = notification.createdAt ?? "";
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: ListTile(
@@ -29,27 +33,23 @@ class NotificationTile extends StatelessWidget {
           vertical: 8.0,
         ),
         leading: CircleAvatar(
-          backgroundColor:
-              notification.isRead ? Colors.grey : Colors.greenAccent,
+          backgroundColor: isRead ? Colors.grey : Colors.greenAccent,
           child: Icon(
-            notification.isRead
-                ? notification.icon
-                : Icons.notifications_active,
-            color: notification.isRead ? Colors.white : Colors.black,
+            isRead ? Icons.notifications_off : Icons.notifications_active,
+            color: isRead ? Colors.white : Colors.black,
           ),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              notification.title,
+              "Pagepal Notification",
               style: TextStyle(
-                fontWeight:
-                    notification.isRead ? FontWeight.normal : FontWeight.bold,
+                fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
                 fontSize: 14,
               ),
             ),
-            if (!notification.isRead)
+            if (!isRead)
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -77,17 +77,16 @@ class NotificationTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              notification.message,
+              notification.content ?? "",
               style: TextStyle(
-                color: notification.isRead ? Colors.grey : Colors.black,
+                color: isRead ? Colors.grey : Colors.black,
                 fontSize: 12,
-                fontWeight:
-                    notification.isRead ? FontWeight.normal : FontWeight.bold,
+                fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              formatTime(notification.time),
+              formatTime(createdAt),
               style: const TextStyle(
                 fontSize: 10,
                 color: Colors.grey,

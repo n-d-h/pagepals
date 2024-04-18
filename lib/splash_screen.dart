@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/models/notification_model.dart';
+import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
+import 'package:pagepals/services/notification_service.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,12 +22,15 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  NotificationModel? notificationModel;
+  int? unreadCount;
   String? accessToken;
 
   @override
   void initState() {
     super.initState();
     setupPageTransition();
+    _fetchNotificationByAccountId();
   }
 
   setupPageTransition() async {
@@ -54,6 +64,20 @@ class _SplashScreenState extends State<SplashScreen> {
         (route) => false,
       );
     });
+  }
+
+  Future<void> _fetchNotificationByAccountId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var account = prefs.getString('account');
+    AccountModel accountModel = AccountModel.fromJson(json.decode(account!));
+
+    var result = await NotificationService.getAllNotificationByAccountId(
+        accountModel.id ?? "", 0, 10);
+    setState(() {
+      notificationModel = result;
+      unreadCount = result.total;
+    });
+    context.read<NotificationProvider>().setCount(unreadCount!);
   }
 
   @override
