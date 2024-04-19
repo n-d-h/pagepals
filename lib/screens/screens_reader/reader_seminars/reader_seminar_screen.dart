@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/seminar_model.dart';
 import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_create_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_seminars/seminar_widgets/seminar_post_detail.dart';
@@ -11,7 +12,9 @@ import 'package:pagepals/services/seminar_service.dart';
 import 'package:unicons/unicons.dart';
 
 class ReaderSeminarScreen extends StatefulWidget {
-  const ReaderSeminarScreen({super.key});
+  const ReaderSeminarScreen({super.key, this.accountModel});
+
+  final AccountModel? accountModel;
 
   @override
   State<ReaderSeminarScreen> createState() => _ReaderSeminarScreenState();
@@ -47,7 +50,9 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
   }
 
   Future<void> _fetchAllSeminar() async {
-    var data = await SeminarService.getAllSeminars(currentPage, 10);
+    String readerId = widget.accountModel?.reader?.id ?? '';
+    var data = await SeminarService.getAllSeminarsByReaderId(
+        readerId, currentPage, 10);
     setState(() {
       seminarModel = data;
       list.addAll(data.list!);
@@ -59,12 +64,14 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
   }
 
   Future<void> _fetchNextSeminar() async {
+    String readerId = widget.accountModel?.reader?.id ?? '';
     if (!isLoadingNextPage && hasMorePages) {
       setState(() {
         isLoadingNextPage = true;
       });
       try {
-        var data = await SeminarService.getAllSeminars(currentPage, 10);
+        var data = await SeminarService.getAllSeminarsByReaderId(
+            readerId, currentPage, 10);
         if (data.list!.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -130,10 +137,21 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
                 Navigator.push(
                   context,
                   PageTransition(
-                    child: ReaderSeminarCreateScreen(),
+                    child: ReaderSeminarCreateScreen(
+                      accountModel: widget.accountModel,
+                    ),
                     type: PageTransitionType.rightToLeft,
                   ),
-                );
+                ).then((value) {
+                  setState(() {
+                    seminarModel = null;
+                    list.clear();
+                    currentPage = 0;
+                    hasMorePages = true;
+                    isLoadingNextPage = false;
+                  });
+                  _fetchAllSeminar();
+                });
               },
             ),
           ],
@@ -197,6 +215,7 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
                             );
                           },
                           child: SeminarPostItem(
+                            id: seminarItem.id ?? '',
                             hostName: seminarItem.reader?.nickname ?? '',
                             seminarTitle: seminarItem.title ?? '',
                             date: date,
@@ -209,6 +228,29 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
                             activeSlot: seminarItem.activeSlot ?? 0,
                             limitCustomer: seminarItem.limitCustomer ?? 0,
                             price: seminarItem.price ?? 0,
+                            duration: seminarItem.duration ?? 0,
+                            bookTitle: seminarItem.book?.title ?? '',
+                            onDeleteDone: () {
+                              setState(() {
+                                seminarModel = null;
+                                list.clear();
+                                currentPage = 0;
+                                hasMorePages = true;
+                                isLoadingNextPage = false;
+                              });
+                              _fetchAllSeminar();
+                            },
+                            onUpdateDone: () {
+                              setState(() {
+                                seminarModel = null;
+                                list.clear();
+                                currentPage = 0;
+                                hasMorePages = true;
+                                isLoadingNextPage = false;
+                              });
+                              _fetchAllSeminar();
+                            },
+                            accountModel: widget.accountModel,
                           ),
                         );
                       },

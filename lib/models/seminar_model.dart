@@ -1,21 +1,111 @@
 class Book {
+  List<Category>? categories;
+  List<Author>? authors;
   String? id;
+  String? externalId;
+  String? description;
+  String? language;
+  int? pageCount;
+  String? publishedDate;
+  String? publisher;
+  String? smallThumbnailUrl;
   String? thumbnailUrl;
   String? title;
 
-  Book({this.id, this.thumbnailUrl, this.title});
+  Book(
+      {this.categories,
+      this.authors,
+      this.id,
+      this.externalId,
+      this.description,
+      this.language,
+      this.pageCount,
+      this.publishedDate,
+      this.publisher,
+      this.smallThumbnailUrl,
+      this.thumbnailUrl,
+      this.title});
 
   Book.fromJson(Map<String, dynamic> json) {
+    if (json['categories'] != null) {
+      categories = <Category>[];
+      json['categories'].forEach((v) {
+        categories!.add(Category.fromJson(v));
+      });
+    }
+    if (json['authors'] != null) {
+      authors = <Author>[];
+      json['authors'].forEach((v) {
+        authors!.add(Author.fromJson(v));
+      });
+    }
     id = json['id'];
+    externalId = json['externalId'];
+    description = json['description'];
+    language = json['language'];
+    pageCount = json['pageCount'];
+    publishedDate = json['publishedDate'];
+    publisher = json['publisher'];
+    smallThumbnailUrl = json['smallThumbnailUrl'];
     thumbnailUrl = json['thumbnailUrl'];
     title = json['title'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
+    data['categories'] = categories != null
+        ? categories!.map((v) => v?.toJson()).toList()
+        : null;
+    data['authors'] =
+        authors != null ? authors!.map((v) => v?.toJson()).toList() : null;
     data['id'] = id;
+    data['externalId'] = externalId;
+    data['description'] = description;
+    data['language'] = language;
+    data['pageCount'] = pageCount;
+    data['publishedDate'] = publishedDate;
+    data['publisher'] = publisher;
+    data['smallThumbnailUrl'] = smallThumbnailUrl;
     data['thumbnailUrl'] = thumbnailUrl;
     data['title'] = title;
+    return data;
+  }
+}
+
+class Category {
+  String? id;
+  String? name;
+
+  Category({this.id, this.name});
+
+  Category.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['name'] = name;
+    return data;
+  }
+}
+
+class Author {
+  String? id;
+  String? name;
+
+  Author({this.id, this.name});
+
+  Author.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }

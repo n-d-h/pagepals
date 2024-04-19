@@ -11,6 +11,7 @@ import 'package:quickalert/quickalert.dart';
 class CreateService extends StatefulWidget {
   final String readerId;
   final Function(bool?)? onCreated;
+
   const CreateService({super.key, required this.readerId, this.onCreated});
 
   @override
@@ -24,7 +25,6 @@ class _CreateServiceState extends State<CreateService> {
 
   final TextEditingController serviceNameController = TextEditingController();
 
-  // final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController bookController = TextEditingController();
 
@@ -74,21 +74,20 @@ class _CreateServiceState extends State<CreateService> {
                   ));
                 },
               ),
-
               const SizedBox(height: 20),
               ServiceTypeDropdown(
-                  onChanged: (value) {
-                    setState(() {
-                      selectedServiceType = value;
-                    });
-                  },
-                  value: selectedServiceType),
+                onChanged: (value) {
+                  setState(() {
+                    selectedServiceType = value;
+                  });
+                },
+                value: selectedServiceType,
+              ),
               const SizedBox(height: 20),
               CustomTextFormField(
-                  controller: serviceNameController, label: 'Service Name'),
-              // const SizedBox(height: 20),
-              // CustomTextFormField(
-              //     controller: descriptionController, label: 'Description'),
+                controller: serviceNameController,
+                label: 'Service Name',
+              ),
               const SizedBox(height: 20),
               CustomTextFormField(
                 controller: priceController,
@@ -122,12 +121,13 @@ class _CreateServiceState extends State<CreateService> {
                   String description = serviceNameController.text;
                   // create service
                   bool created = await ServiceService.createService(
-                      widget.readerId,
-                      selectedServiceType!,
-                      selectedGoogleBook!,
-                      description,
-                      price,
-                      60);
+                    widget.readerId,
+                    selectedServiceType!,
+                    selectedGoogleBook!,
+                    description,
+                    price,
+                    60,
+                  );
                   if (created) {
                     Future.delayed(const Duration(milliseconds: 100), () {
                       Navigator.pop(context);

@@ -8,6 +8,9 @@ class CustomTextFormField extends StatelessWidget {
   final bool? isDigit;
   final String? initValue;
   final bool? readOnly;
+  final int? maxLines;
+  final String? suffixText;
+  final bool? isDate;
   final Function()? onTap;
 
   const CustomTextFormField({
@@ -16,7 +19,11 @@ class CustomTextFormField extends StatelessWidget {
     required this.label,
     this.isDigit,
     this.initValue,
-    this.readOnly, this.onTap,
+    this.readOnly,
+    this.onTap,
+    this.maxLines = 1,
+    this.suffixText = '',
+    this.isDate = false,
   }) : super(key: key);
 
   @override
@@ -33,8 +40,12 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: isDigit != null && isDigit == true
           ? TextInputType.number
           : TextInputType.text,
-      inputFormatters:
-          isDigit == true ? [FilteringTextInputFormatter.digitsOnly] : null,
+      inputFormatters: isDigit == true
+          ? [FilteringTextInputFormatter.digitsOnly]
+          : isDate == true
+              ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9/]'))]
+              : null,
+      maxLines: maxLines,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(
@@ -54,6 +65,7 @@ class CustomTextFormField extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(12),
         ),
+        suffixText: suffixText,
       ),
     );
   }

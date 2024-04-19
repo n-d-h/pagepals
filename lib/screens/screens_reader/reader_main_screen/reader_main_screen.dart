@@ -10,7 +10,6 @@ import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_comment_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_settings_screen.dart';
@@ -780,7 +779,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: const ReaderSeminarScreen(),
+                                          child: ReaderSeminarScreen(
+                                              accountModel: account
+                                          ),
                                         ),
                                       );
                                     },

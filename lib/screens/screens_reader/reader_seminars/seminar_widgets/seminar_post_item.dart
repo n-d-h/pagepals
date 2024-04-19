@@ -3,9 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
+import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_edit_screen.dart';
+import 'package:pagepals/services/seminar_service.dart';
 
 class SeminarPostItem extends StatefulWidget {
+  final String id;
   final String hostName;
   final String seminarTitle;
   final String date;
@@ -16,9 +20,15 @@ class SeminarPostItem extends StatefulWidget {
   final int price;
   final int limitCustomer;
   final int activeSlot;
+  final int duration;
+  final String bookTitle;
+  final Function() onDeleteDone;
+  final Function() onUpdateDone;
+  final AccountModel? accountModel;
 
   const SeminarPostItem({
     Key? key,
+    required this.id,
     required this.hostName,
     required this.seminarTitle,
     required this.time,
@@ -29,6 +39,11 @@ class SeminarPostItem extends StatefulWidget {
     required this.price,
     required this.limitCustomer,
     required this.activeSlot,
+    required this.duration,
+    required this.bookTitle,
+    required this.onDeleteDone,
+    required this.onUpdateDone,
+    this.accountModel,
   }) : super(key: key);
 
   @override
@@ -147,8 +162,35 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                 ),
               ),
               InkWell(
-                onTap: () {
-                  // Handle the second action
+                onTap: () async {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Delete Seminar'),
+                        content: Text(
+                          'Are you sure you want to delete this seminar?',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              String seminarId = widget.id;
+                              await SeminarService.deleteSeminar(seminarId);
+                              widget.onDeleteDone();
+                              Navigator.pop(context, true);
+                            },
+                            child: Text('Delete'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
                 child: Container(
                   height: 50,
@@ -171,8 +213,30 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
               ),
               const SizedBox(width: 8.0),
               InkWell(
-                onTap: () {
-                  // Handle the second action
+                onTap: () async {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                        child: ReaderSeminarEditScreen(
+                          onUpdateDone: widget.onUpdateDone,
+                          accountModel: widget.accountModel,
+                          id: widget.id,
+                          hostName: widget.hostName,
+                          seminarTitle: widget.seminarTitle,
+                          date: widget.date,
+                          time: widget.time,
+                          description: widget.description,
+                          hostAvatarUrl: widget.hostAvatarUrl,
+                          bannerImageUrl: widget.bannerImageUrl,
+                          activeSlot: widget.activeSlot,
+                          limitCustomer: widget.limitCustomer,
+                          price: widget.price,
+                          duration: widget.duration,
+                          bookTitle: widget.bookTitle,
+                        ),
+                        type: PageTransitionType.rightToLeft,
+                      )
+                  );
                 },
                 child: Container(
                   height: 50,

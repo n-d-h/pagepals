@@ -1,30 +1,59 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/google_book.dart';
-import 'package:pagepals/screens/screens_reader/services_screen/create_widgets/search_book_screen.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/create_widgets/text_form.dart';
 import 'package:pagepals/services/file_storage_service.dart';
 import 'package:pagepals/services/seminar_service.dart';
 import 'package:unicons/unicons.dart';
 
-class ReaderSeminarCreateScreen extends StatefulWidget {
-  const ReaderSeminarCreateScreen({super.key, this.accountModel});
+class ReaderSeminarEditScreen extends StatefulWidget {
+  const ReaderSeminarEditScreen({
+    super.key,
+    this.accountModel,
+    required this.onUpdateDone,
+    required this.id,
+    required this.hostName,
+    required this.seminarTitle,
+    required this.date,
+    required this.time,
+    required this.description,
+    required this.hostAvatarUrl,
+    required this.bannerImageUrl,
+    required this.activeSlot,
+    required this.limitCustomer,
+    required this.price,
+    required this.duration,
+    required this.bookTitle,
+  });
 
+  final Function() onUpdateDone;
   final AccountModel? accountModel;
+  final String id;
+  final String hostName;
+  final String seminarTitle;
+  final String date;
+  final String time;
+  final String description;
+  final String hostAvatarUrl;
+  final String bannerImageUrl;
+  final int activeSlot;
+  final int limitCustomer;
+  final int price;
+  final int duration;
+  final String bookTitle;
 
   @override
-  State<ReaderSeminarCreateScreen> createState() =>
-      _ReaderSeminarCreateScreenState();
+  State<ReaderSeminarEditScreen> createState() =>
+      _ReaderSeminarEditScreenState();
 }
 
-class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
-  GoogleBookModel? selectedGoogleBook;
+class _ReaderSeminarEditScreenState extends State<ReaderSeminarEditScreen> {
   final TextEditingController activeSlotController = TextEditingController();
   final TextEditingController bookController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -36,6 +65,24 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   File? _selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController.text = widget.seminarTitle;
+    activeSlotController.text = widget.activeSlot.toString();
+    bookController.text = widget.bookTitle;
+    descriptionController.text = widget.description;
+    durationController.text = widget.duration.toString();
+    limitCustomerController.text = widget.limitCustomer.toString();
+    priceController.text = widget.price.toString();
+    selectedDate = DateTime.parse(widget.date);
+    selectedTime = TimeOfDay(
+      hour: int.parse(widget.time.split(':')[0]),
+      minute: int.parse(widget.time.split(':')[1]),
+    );
+    bookController.text = widget.bookTitle;
+  }
 
   void selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -88,15 +135,6 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
       setState(() {
         selectedTime = picked;
       });
-  }
-
-  void handleSelectedBook(value) {
-    print('selectedGGBook : ${value.toString()}');
-    GoogleBookModel book = value;
-    setState(() {
-      selectedGoogleBook = book;
-      bookController.text = book.volumeInfo!.title!;
-    });
   }
 
   void _handleImageSelection() async {
@@ -175,16 +213,6 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
                   label: 'Book',
                   controller: bookController,
                   readOnly: true,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        child: SearchBookScreen(onTap: handleSelectedBook),
-                        type: PageTransitionType.fade,
-                        duration: const Duration(milliseconds: 300),
-                      ),
-                    );
-                  },
                 ),
                 const SizedBox(height: 20),
                 CustomTextFormField(
@@ -231,10 +259,9 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : const Icon(
-                                Icons.image,
-                                size: 30.0,
-                                color: Colors.grey,
+                            : Image.network(
+                                widget.bannerImageUrl,
+                                fit: BoxFit.cover,
                               ),
                       ),
                     ),
@@ -329,6 +356,7 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
         ),
         bottomNavigationBar: InkWell(
           onTap: () async {
+            // show loading
             showDialog(
                 context: context,
                 builder: (context) {
@@ -341,9 +369,9 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
                 }
             );
 
+            String id = widget.id;
             String readerId = widget.accountModel!.reader!.id!;
             int activeSlot = int.parse(activeSlotController.text);
-            GoogleBookModel book = selectedGoogleBook!;
             String description = descriptionController.text;
             int duration = int.parse(durationController.text);
             int limitCustomer = int.parse(limitCustomerController.text);
@@ -356,13 +384,15 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
             String startTime = date + ' ' + hour + ':' + minute + ':00';
             String title = titleController.text;
 
-            String imageUrl =
-                await FileStorageService.uploadImage(_selectedImage!);
+            String imageUrl = widget.bannerImageUrl;
+            if(_selectedImage != null) {
+                imageUrl = await FileStorageService.uploadImage(_selectedImage!);
+            }
 
-            bool result = await SeminarService.createSeminar(
+            bool result = await SeminarService.updateSeminar(
+              id,
               readerId,
               activeSlot,
-              book,
               description,
               duration,
               imageUrl,
@@ -374,7 +404,8 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
 
             if (result) {
               Navigator.pop(context);
-              Navigator.pop(context, true);
+              Navigator.pop(context);
+              widget.onUpdateDone();
             }
           },
           child: Container(
@@ -386,7 +417,7 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
             ),
             child: const Center(
               child: Text(
-                'Create Seminar',
+                'Save Changes',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

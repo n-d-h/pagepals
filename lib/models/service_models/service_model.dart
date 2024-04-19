@@ -31,7 +31,20 @@ class Book {
   String? thumbnailUrl;
   String? title;
 
-  Book({this.categories, this.authors, this.id, this.externalId, this.description, this.language, this.pageCount, this.publishedDate, this.publisher, this.smallThumbnailUrl, this.thumbnailUrl, this.title});
+  Book({
+    this.categories,
+    this.authors,
+    this.id,
+    this.externalId,
+    this.description,
+    this.language,
+    this.pageCount,
+    this.publishedDate,
+    this.publisher,
+    this.smallThumbnailUrl,
+    this.thumbnailUrl,
+    this.title,
+  });
 
   Book.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
@@ -60,8 +73,11 @@ class Book {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['categories'] =categories != null ? categories!.map((v) => v?.toJson()).toList() : null;
-    data['authors'] =authors != null ? authors!.map((v) => v?.toJson()).toList() : null;
+    data['categories'] = categories != null
+        ? categories!.map((v) => v?.toJson()).toList()
+        : null;
+    data['authors'] =
+        authors != null ? authors!.map((v) => v?.toJson()).toList() : null;
     data['id'] = id;
     data['externalId'] = externalId;
     data['description'] = description;
@@ -108,7 +124,18 @@ class ServiceModel {
   int? totalOfBooking;
   int? totalOfReview;
 
-  ServiceModel({this.book, this.id, this.duration, this.description, this.createdAt, this.price, this.rating, this.serviceType, this.status, this.totalOfBooking, this.totalOfReview});
+  ServiceModel(
+      {this.book,
+      this.id,
+      this.duration,
+      this.description,
+      this.createdAt,
+      this.price,
+      this.rating,
+      this.serviceType,
+      this.status,
+      this.totalOfBooking,
+      this.totalOfReview});
 
   ServiceModel.fromJson(Map<String, dynamic> json) {
     book = json['book'] != null ? Book?.fromJson(json['book']) : null;
@@ -118,7 +145,9 @@ class ServiceModel {
     createdAt = json['createdAt'];
     price = json['price'];
     rating = json['rating'];
-    serviceType = json['serviceType'] != null ? ServiceType?.fromJson(json['serviceType']) : null;
+    serviceType = json['serviceType'] != null
+        ? ServiceType?.fromJson(json['serviceType'])
+        : null;
     status = json['status'];
     totalOfBooking = json['totalOfBooking'];
     totalOfReview = json['totalOfReview'];
@@ -162,4 +191,3 @@ class ServiceType {
     return data;
   }
 }
-

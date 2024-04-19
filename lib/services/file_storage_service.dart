@@ -19,14 +19,6 @@ class FileStorageService {
     return url;
   }
 
-  static Future<void> saveVideoData(String videoUrl) async {
-    await _firebaseStore.collection('videos').add({
-      'url': videoUrl,
-      'createdAt': FieldValue.serverTimestamp(),
-      'name': 'Reader Video',
-    });
-  }
-
   static Future<void> deleteFile(String filePath) async {
     Reference ref = _firebaseStorage.refFromURL(filePath);
     await ref.delete();
@@ -44,14 +36,6 @@ class FileStorageService {
     return url;
   }
 
-  static Future<void> saveAudioData(String audioUrl) async {
-    await _firebaseStore.collection('audios').add({
-      'url': audioUrl,
-      'createdAt': FieldValue.serverTimestamp(),
-      'name': 'Reader Audio',
-    });
-  }
-
   // IMAGE
   static Future<String> uploadImage(File filePath) async {
     Reference ref =
@@ -62,14 +46,6 @@ class FileStorageService {
     await ref.putFile(filePath, metadata);
     String url = await ref.getDownloadURL();
     return url;
-  }
-
-  static Future<void> saveImageData(String imageUrl) async {
-    await _firebaseStore.collection('images').add({
-      'url': imageUrl,
-      'createdAt': FieldValue.serverTimestamp(),
-      'name': 'Reader Image',
-    });
   }
 
   static Future<void> deleteImage(String imageUrl) async {

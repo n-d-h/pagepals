@@ -253,7 +253,17 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                   ),
                 );
               } else if (account?.reader?.id != null) {
-                Navigator.push(
+                // Navigator.push(
+                //   context,
+                //   PageTransition(
+                //     child: ReaderMainScreen(
+                //       accountModel: account!,
+                //     ),
+                //     type: PageTransitionType.rightToLeft,
+                //     duration: const Duration(milliseconds: 300),
+                //   ),
+                // );
+                Navigator.pushAndRemoveUntil(
                   context,
                   PageTransition(
                     child: ReaderMainScreen(
@@ -262,6 +272,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                     type: PageTransitionType.rightToLeft,
                     duration: const Duration(milliseconds: 300),
                   ),
+                  (route) => false,
                 );
               } else {
                 Navigator.push(
