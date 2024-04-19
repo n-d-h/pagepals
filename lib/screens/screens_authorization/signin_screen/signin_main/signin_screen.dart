@@ -11,6 +11,7 @@ import 'package:pagepals/screens/screens_authorization/signin_screen/signin_main
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_main/signin_platforms/signin_platform_buttons.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
+import 'package:pagepals/services/firebase_message_service.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -202,17 +203,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             barrierDismissible: false,
                             builder: (BuildContext context) {
                               return Center(
-                                child:
-                                // SizedBox(
-                                //   height: 50,
-                                //   width: 50,
-                                //   child: CircularProgressIndicator(
-                                //     valueColor: AlwaysStoppedAnimation(
-                                //       ColorHelper.getColor(ColorHelper.green),
-                                //     ),
-                                //   ),
-                                // ),
-                                LoadingAnimationWidget.staggeredDotsWave(
+                                child: LoadingAnimationWidget.staggeredDotsWave(
                                   color: Colors.greenAccent,
                                   size: 60,
                                 ),
@@ -220,15 +211,24 @@ class _SigninScreenState extends State<SigninScreen> {
                             },
                           );
 
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          String? fcmToken = prefs.getString('fcmToken');
+
+                          if (fcmToken == null) {
+                            FirebaseMessageService firebaseMessageService =
+                                FirebaseMessageService();
+                            await firebaseMessageService.initialize();
+                            fcmToken =
+                                await firebaseMessageService.getFCMToken();
+                            prefs.setString('fcmToken', fcmToken!);
+                          }
+
                           try {
                             AccountTokens? accountTokens =
                                 await AuthenService.login(loginModel);
                             // Handle successful login here
                             if (accountTokens != null) {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              String fcmToken =
-                                  prefs.getString('fcmToken') ?? '';
                               String accountId = accountTokens.accountId ?? '';
                               await AuthenService.updateFcmToken(
                                   fcmToken, accountId, false);

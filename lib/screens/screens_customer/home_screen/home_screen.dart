@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -80,33 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              GoogleSignInProvider googleSignInProvider =
-                  GoogleSignInProvider();
-              await googleSignInProvider.googleLogout();
-
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.clear();
-
-              Future.delayed(const Duration(milliseconds: 0), () {
-                Navigator.pop(context);
-                Navigator.of(context).pushAndRemoveUntil(
-                  PageTransition(
-                    child: const SigninHomeScreen(),
-                    type: PageTransitionType.fade,
-                  ),
-                  (route) => false,
-                );
-              });
-            },
-            icon: const Icon(
-              Icons.notifications_none_outlined,
-              color: Colors.black,
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         controller: ScrollController(),

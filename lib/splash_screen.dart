@@ -30,7 +30,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     setupPageTransition();
-    _fetchNotificationByAccountId();
   }
 
   setupPageTransition() async {
@@ -38,20 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       accessToken = prefs.getString('accessToken');
     });
-    // if (accessToken != null) {
-    //   print('accessToken: $accessToken');
-    //   // get expiration time
-    //   int exp = JWT.decode(accessToken!).payload['exp'];
-    //   DateTime expirationDateTime =
-    //       DateTime.fromMillisecondsSinceEpoch(exp * 1000);
-    //   print('expirationDateTime: $expirationDateTime');
-    //   if (DateTime.now().isAfter(expirationDateTime)) {
-    //     prefs.clear();
-    //     setState(() {
-    //       accessToken = null;
-    //     });
-    //   }
-    // }
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushAndRemoveUntil(
         context,
@@ -64,20 +49,6 @@ class _SplashScreenState extends State<SplashScreen> {
         (route) => false,
       );
     });
-  }
-
-  Future<void> _fetchNotificationByAccountId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var account = prefs.getString('account');
-    AccountModel accountModel = AccountModel.fromJson(json.decode(account!));
-
-    var result = await NotificationService.getAllNotificationByAccountId(
-        accountModel.id ?? "", 0, 10);
-    setState(() {
-      notificationModel = result;
-      unreadCount = result.total;
-    });
-    context.read<NotificationProvider>().setCount(unreadCount!);
   }
 
   @override

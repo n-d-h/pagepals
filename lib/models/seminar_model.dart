@@ -36,21 +36,22 @@ class SeminarItem {
   Reader? reader;
   Book? book;
 
-  SeminarItem(
-      {this.activeSlot,
-      this.createdAt,
-      this.description,
-      this.duration,
-      this.id,
-      this.imageUrl,
-      this.limitCustomer,
-      this.price,
-      this.startTime,
-      this.status,
-      this.title,
-      this.updatedAt,
-      this.reader,
-      this.book});
+  SeminarItem({
+    this.activeSlot,
+    this.createdAt,
+    this.description,
+    this.duration,
+    this.id,
+    this.imageUrl,
+    this.limitCustomer,
+    this.price,
+    this.startTime,
+    this.status,
+    this.title,
+    this.updatedAt,
+    this.reader,
+    this.book,
+  });
 
   SeminarItem.fromJson(Map<String, dynamic> json) {
     activeSlot = json['activeSlot'];

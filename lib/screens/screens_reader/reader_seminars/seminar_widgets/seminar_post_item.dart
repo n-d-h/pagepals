@@ -36,9 +36,6 @@ class SeminarPostItem extends StatefulWidget {
 }
 
 class _SeminarPostItemState extends State<SeminarPostItem> {
-  int interestedCount = 0;
-  bool interested = false;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -149,6 +146,53 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                   ],
                 ),
               ),
+              InkWell(
+                onTap: () {
+                  // Handle the second action
+                },
+                child: Container(
+                  height: 50,
+                  width: 70,
+                  padding: const EdgeInsets.only(right: 8, left: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Delete',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              InkWell(
+                onTap: () {
+                  // Handle the second action
+                },
+                child: Container(
+                  height: 50,
+                  width: 70,
+                  padding: const EdgeInsets.only(right: 8, left: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Update',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8.0),
@@ -206,82 +250,6 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
             fit: BoxFit.cover,
           ),
           const SizedBox(height: 8.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    interested = !interested;
-                    interested ? interestedCount++ : interestedCount--;
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      interested
-                          ? const Icon(
-                              Icons.star_rounded,
-                              color: Colors.orange,
-                            )
-                          : const Icon(Icons.star_border_rounded),
-                      const SizedBox(width: 4.0),
-                      Text(
-                        '$interestedCount Interested',
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Join Seminar'),
-                          surfaceTintColor: Colors.white,
-                          content: Text(
-                              'Are you sure you want to join this seminar?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('No'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Yes'),
-                            ),
-                          ],
-                        );
-                      });
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.add),
-                      SizedBox(width: 4.0),
-                      Text(
-                        'Join Seminar',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );

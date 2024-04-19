@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/screens/screens_customer/post_screen/message_screen/message_screen.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/post_tab/new_feed_tabbar.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/post_tab/seminar_tabbar.dart';
-import 'package:unicons/unicons.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -42,27 +39,6 @@ class _PostScreenState extends State<PostScreen> {
               stretch: true,
               pinned: true,
               surfaceTintColor: Colors.white,
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        PageTransition(
-                          child: const MessageScreen(),
-                          type: PageTransitionType.bottomToTop,
-                          duration: const Duration(milliseconds: 500),
-                        ),
-                      );
-                    },
-                    splashRadius: 24,
-                    icon: const Icon(
-                      UniconsLine.comment_lines,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
             ),
             SliverToBoxAdapter(
               child: DefaultTabController(

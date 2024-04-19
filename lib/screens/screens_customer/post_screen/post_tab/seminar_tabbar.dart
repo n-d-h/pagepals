@@ -2,8 +2,10 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/seminar_model.dart';
+import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_item.dart';
 import 'package:pagepals/services/seminar_service.dart';
 import 'package:unicons/unicons.dart';
@@ -63,14 +65,18 @@ class _SeminarTabbarState extends State<SeminarTabbar> {
       });
       try {
         var data = await SeminarService.getAllSeminars(currentPage, 10);
-        setState(() {
-          seminarModel = data;
-          list.addAll(data.list!);
-          currentPage++;
-          if (data.list!.isEmpty) {
+        if (data.list!.isEmpty) {
+          setState(() {
             hasMorePages = false;
-          }
-        });
+            isLoadingNextPage = false;
+          });
+        } else {
+          setState(() {
+            list.addAll(data.list!);
+            currentPage++;
+            isLoadingNextPage = false;
+          });
+        }
       } catch (e) {
         print(e);
       } finally {
@@ -97,7 +103,7 @@ class _SeminarTabbarState extends State<SeminarTabbar> {
         });
         _fetchAllSeminar();
       },
-      indicatorBuilder: (BuildContext context, IndicatorController controller) {
+      indicatorBuilder: (context, controller) {
         return const Icon(
           UniconsLine.book_open,
           color: Colors.blueAccent,
@@ -130,25 +136,55 @@ class _SeminarTabbarState extends State<SeminarTabbar> {
                     ),
                   ),
                 )
-              : ListView.builder(
-                  controller: _scrollController,
-                  itemCount: list.length,
-                  itemBuilder: (context, index) {
-                    var seminarItem = list[index];
-                    String date = seminarItem.startTime!.split(' ')[0];
-                    String time = seminarItem.startTime!.split(' ')[1];
-                    return SeminarPostItem(
-                      hostName: seminarItem.reader?.nickname ?? '',
-                      seminarTitle: seminarItem.title ?? '',
-                      date: date,
-                      time: time,
-                      description: seminarItem.description ?? '',
-                      hostAvatarUrl: seminarItem.reader?.avatarUrl ??
-                          'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-                      bannerImageUrl: seminarItem.imageUrl ??
-                          'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-                    );
-                  },
+              : Container(
+                  margin: const EdgeInsets.only(bottom: 50),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      var seminarItem = list[index];
+                      String date = seminarItem.startTime!.split(' ')[0];
+                      String time = seminarItem.startTime!.split(' ')[1];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              child: SeminarPostDetailScreen(
+                                hostName: seminarItem.reader?.nickname ?? '',
+                                seminarTitle: seminarItem.title ?? '',
+                                date: date,
+                                time: time,
+                                description: seminarItem.description ?? '',
+                                hostAvatarUrl: seminarItem.reader?.avatarUrl ??
+                                    'https://via.placeholder.com/150',
+                                bannerImageUrl: seminarItem.imageUrl ??
+                                    'https://via.placeholder.com/150',
+                                activeSlot: seminarItem.activeSlot ?? 0,
+                                limitCustomer: seminarItem.limitCustomer ?? 0,
+                                price: seminarItem.price ?? 0,
+                              ),
+                              type: PageTransitionType.rightToLeft,
+                            ),
+                          );
+                        },
+                        child: SeminarPostItem(
+                          hostName: seminarItem.reader?.nickname ?? '',
+                          seminarTitle: seminarItem.title ?? '',
+                          date: date,
+                          time: time,
+                          description: seminarItem.description ?? '',
+                          hostAvatarUrl: seminarItem.reader?.avatarUrl ??
+                              'https://via.placeholder.com/150',
+                          bannerImageUrl: seminarItem.imageUrl ??
+                              'https://via.placeholder.com/150',
+                          activeSlot: seminarItem.activeSlot ?? 0,
+                          limitCustomer: seminarItem.limitCustomer ?? 0,
+                          price: seminarItem.price ?? 0,
+                        ),
+                      );
+                    },
+                  ),
                 ),
     );
   }

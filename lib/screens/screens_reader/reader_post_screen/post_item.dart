@@ -107,7 +107,9 @@ class _PostItemState extends State<PostItem> {
                       // Handle the second action
                     },
                     child: Container(
-                      padding: const EdgeInsets.only(right: 8),
+                      height: 50,
+                      width: 70,
+                      padding: const EdgeInsets.only(right: 8, left: 8),
                       decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(5.0),
@@ -128,7 +130,9 @@ class _PostItemState extends State<PostItem> {
                       // Handle the second action
                     },
                     child: Container(
-                      padding: const EdgeInsets.only(right: 8),
+                      height: 50,
+                      width: 70,
+                      padding: const EdgeInsets.only(right: 8, left: 8),
                       decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(5.0),

@@ -100,7 +100,7 @@ class _NewFeedTabbarState extends State<NewFeedTabbar> {
         });
         getAllPosts();
       },
-      indicatorBuilder: (BuildContext context, IndicatorController controller) {
+      indicatorBuilder: (context, controller) {
         return const Icon(
           UniconsLine.book_open,
           color: Colors.blueAccent,
@@ -134,19 +134,22 @@ class _NewFeedTabbarState extends State<NewFeedTabbar> {
                     ),
                   ),
                 )
-              : ListView.builder(
-                  itemCount: postModel!.list!.length,
-                  itemBuilder: (context, index) {
-                    return PostItem(
-                      username: postModel!.list![index].reader?.nickname ??
-                          'John Doe',
-                      timeAgo: postModel!.list![index].createdAt ?? '',
-                      postText: postModel!.list![index].content ?? '',
-                      imageUrls: postModel!.list![index].postImages ?? [],
-                      avatarUrl: postModel!.list![index].reader?.avatarUrl ??
-                          'https://via.placeholder.com/150',
-                    );
-                  },
+              : Container(
+                  margin: const EdgeInsets.only(bottom: 50),
+                  child: ListView.builder(
+                    itemCount: postModel!.list!.length,
+                    itemBuilder: (context, index) {
+                      return PostItem(
+                        username: postModel!.list![index].reader?.nickname ??
+                            'John Doe',
+                        timeAgo: postModel!.list![index].createdAt ?? '',
+                        postText: postModel!.list![index].content ?? '',
+                        imageUrls: postModel!.list![index].postImages ?? [],
+                        avatarUrl: postModel!.list![index].reader?.avatarUrl ??
+                            'https://via.placeholder.com/150',
+                      );
+                    },
+                  ),
                 ),
     );
   }

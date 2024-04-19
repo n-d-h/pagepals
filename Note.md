@@ -1,17 +1,11 @@
 # -------`[PRIORITY]`-------
-- Finish Interview Flow
-- Record meeting
-- Complete Meeting (booking)
-- `Update Reader` [PENDING]
+- Record meeting (Apply Zoom)
+- Complete Meeting (booking, Config zoom)
 
-# ---------`[TODO]`---------  
-- Notification
+# ---------`[TODO]`---------
 - Reader Report (API + Screen)
 - `Filter/Search` [PENDING]
 - Reader create Seminar + Post
-- Redesign Profile Screen
-- Redesign work Schedule
-- Redesign customer booking
-
-#  --- `[OPTIONAL]` ---
-- Create Promotion
+- Redesign work Schedule (Working time)
+- Analysis Reader (API + Screen)
+- Step 3 upload video

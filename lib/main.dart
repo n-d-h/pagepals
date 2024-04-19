@@ -66,8 +66,6 @@ Future<void> main() async {
     }
   }
 
-  prefs.setString('fcmToken', fcmToken);
-
   client = ValueNotifier(
     GraphQLClient(
       link: httpLink,

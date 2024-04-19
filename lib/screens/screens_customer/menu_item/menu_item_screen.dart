@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/custom_icons.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/bottom_tab_bar.dart';
@@ -8,7 +11,9 @@ import 'package:pagepals/screens/screens_customer/notification_screen/notificati
 import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/post_screen.dart';
 import 'package:pagepals/screens/screens_customer/search_screen/search_screen.dart';
+import 'package:pagepals/services/notification_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 class MenuItemScreen extends StatefulWidget {
@@ -23,11 +28,26 @@ class MenuItemScreen extends StatefulWidget {
 class _MenuItemScreenState extends State<MenuItemScreen> {
   int _currentIndex = 0;
   bool _isDrawerOpen = false;
+  int? unreadCount;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.index ?? 0;
+    _fetchNotificationByAccountId();
+  }
+
+  Future<void> _fetchNotificationByAccountId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var account = prefs.getString('account');
+    AccountModel accountModel = AccountModel.fromJson(json.decode(account!));
+
+    var result = await NotificationService.getAllNotificationByAccountId(
+        accountModel.id ?? "", 0, 10);
+    setState(() {
+      unreadCount = result.total;
+    });
+    context.read<NotificationProvider>().setCount(unreadCount!);
   }
 
   void _handleDrawerChange(bool isOpen) {
