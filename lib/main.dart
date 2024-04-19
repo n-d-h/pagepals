@@ -45,15 +45,16 @@ Future<void> main() async {
     'https://pagepals.azurewebsites.net/graphql',
   );
 
-  FirebaseMessageService firebaseMessageService = FirebaseMessageService();
-  await firebaseMessageService.initialize();
-  String? fcmToken = await firebaseMessageService.getFCMToken();
-
-  print('FCM Token: $fcmToken');
-
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('accessToken');
   print('Token: $token');
+
+  FirebaseMessageService firebaseMessageService = FirebaseMessageService();
+  await firebaseMessageService.initialize();
+  String? fcmToken = await firebaseMessageService.getFCMToken();
+  prefs.setString('fcmToken', fcmToken!);
+  print('FCM Token: $fcmToken');
+
   if (token != null) {
     int exp = JWT.decode(token).payload['exp'];
     DateTime expirationDateTime =
@@ -65,7 +66,7 @@ Future<void> main() async {
     }
   }
 
-  prefs.setString('fcmToken', fcmToken!);
+  prefs.setString('fcmToken', fcmToken);
 
   client = ValueNotifier(
     GraphQLClient(

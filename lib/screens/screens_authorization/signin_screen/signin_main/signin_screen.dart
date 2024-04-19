@@ -12,6 +12,7 @@ import 'package:pagepals/screens/screens_authorization/signin_screen/signin_main
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -224,6 +225,14 @@ class _SigninScreenState extends State<SigninScreen> {
                                 await AuthenService.login(loginModel);
                             // Handle successful login here
                             if (accountTokens != null) {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              String fcmToken =
+                                  prefs.getString('fcmToken') ?? '';
+                              String accountId = accountTokens.accountId ?? '';
+                              await AuthenService.updateFcmToken(
+                                  fcmToken, accountId, false);
+
                               // Navigate to Dashboard screen on successful login
                               Future.delayed(const Duration(seconds: 2), () {
                                 Navigator.pop(context);

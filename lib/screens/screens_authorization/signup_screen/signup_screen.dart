@@ -12,6 +12,7 @@ import 'package:pagepals/screens/screens_authorization/signup_screen/verify_emai
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -153,6 +154,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                       googleIdToken!);
                               // Handle successful login here
                               if (accountTokens!.accessToken != null) {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                String fcmToken =
+                                    prefs.getString('fcmToken') ?? '';
+                                String accountId =
+                                    accountTokens.accountId ?? '';
+                                await AuthenService.updateFcmToken(
+                                    fcmToken, accountId, false);
+
                                 // Navigate to Dashboard screen on successful login
                                 Future.delayed(const Duration(seconds: 2), () {
                                   Navigator.pop(context);

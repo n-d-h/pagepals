@@ -52,6 +52,7 @@ class AuthenService {
       return AccountTokens(
         accessToken: loginData?['accessToken'],
         refreshToken: loginData?['refreshToken'],
+        accountId: account.id,
       );
     }
   }
@@ -93,6 +94,7 @@ class AuthenService {
       return AccountTokens(
         accessToken: loginData?['accessToken'],
         refreshToken: loginData?['refreshToken'],
+        accountId: account.id,
       );
     }
   }
@@ -274,5 +276,43 @@ class AuthenService {
     }
   }
 
+  static Future<void> updateFcmToken(
+      String fcmToken, String id, bool isWebToken) async {
+    var mutation = '''
+      mutation MyMutation {
+        updateFcmToken(
+          fcmToken: "$fcmToken", 
+          id: "$id", 
+          isWebToken: $isWebToken
+        ) {
+          createdAt
+          deletedAt
+          email
+          fullName
+          id
+          password
+          phoneNumber
+          updatedAt
+          username
+        }
+      }
+    ''';
 
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to update FCM token');
+    }
+
+    print('FCM token updated');
+    var data = result.data?['updateFcmToken'];
+    if (data != null) {
+      print('FCM token updated: ${json.encode(data)}');
+    }
+  }
 }
