@@ -8,6 +8,7 @@ import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/authen_models/account_tokens.dart';
 import 'package:pagepals/models/authen_models/login_model.dart';
+import 'package:pagepals/models/zoom_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenService {
@@ -44,7 +45,8 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account = await getAccount(username, loginData?['accessToken']);
+      AccountModel account =
+          await getAccount(username, loginData?['accessToken']);
       print('account: ${json.encoder.convert(account)}');
       print('account: ${loginData?['accessToken']}');
       prefs.setString('account', json.encoder.convert(account));
@@ -87,7 +89,8 @@ class AuthenService {
 
       // save account
       String username = user.payload['username'];
-      AccountModel account = await getAccount(username, loginData?['accessToken']);
+      AccountModel account =
+          await getAccount(username, loginData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
       print('account: ${json.encoder.convert(account)}');
 
@@ -246,7 +249,8 @@ class AuthenService {
       prefs.setString('refreshToken', registerData?['refreshToken']);
 
       // save account
-      AccountModel account = await getAccount(username, registerData?['accessToken']);
+      AccountModel account =
+          await getAccount(username, registerData?['accessToken']);
       prefs.setString('account', json.encoder.convert(account));
 
       return true;
@@ -264,10 +268,12 @@ class AuthenService {
       return;
     }
     try {
-      AccountModel account = AccountModel.fromJson(json.decoder.convert(accountString));
+      AccountModel account =
+          AccountModel.fromJson(json.decoder.convert(accountString));
       String userName = account.username!;
 
-      AccountModel updatedAccount = await AuthenService.getAccount(userName, accessToken);
+      AccountModel updatedAccount =
+          await AuthenService.getAccount(userName, accessToken);
       prefs.remove('account');
       print('account: ${json.encode(updatedAccount)}');
       prefs.setString('account', json.encode(updatedAccount));
@@ -314,5 +320,35 @@ class AuthenService {
     if (data != null) {
       print('FCM token updated: ${json.encode(data)}');
     }
+  }
+
+  static Future<ZoomAuth> getZoomAuth() async {
+    String query = '''
+      query MyQuery {
+        getAuthZoom {
+          access_token
+          expires_in
+          scope
+          token_type
+        }
+      }
+    ''';
+
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to get Zoom auth');
+    }
+
+    var data = result.data?['getAuthZoom'];
+    if (data != null) {
+      return ZoomAuth.fromJson(data);
+    }
+    return ZoomAuth();
   }
 }

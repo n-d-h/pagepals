@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/models/zoom_auth.dart';
+import 'package:pagepals/services/authen_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
 
@@ -21,11 +22,13 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
   String userId = Random().nextInt(1000000).toString();
   String userName = 'Anonymous';
   AccountModel? accountModel;
+  ZoomAuth? zoomAuth;
 
   @override
   void initState() {
     super.initState();
     getCustomerInfo();
+    getZoomAuthToken();
   }
 
   Future<void> getCustomerInfo() async {
@@ -37,6 +40,13 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
       userId = account.id ?? userId;
       userName = account.username ?? userName;
       accountModel = account;
+    });
+  }
+
+  Future<void> getZoomAuthToken() async {
+    var zoom = await AuthenService.getZoomAuth();
+    setState(() {
+      zoomAuth = zoom;
     });
   }
 
@@ -109,8 +119,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
         {
           "meetingID": "84378732333",
           "displayName": userName,
-          "zoomAccessToken":
-              "eyJzdiI6IjAwMDAwMSIsImFsZyI6IkhTNTEyIiwidiI6IjIuMCIsImtpZCI6ImJhMmRjOWE0LTUzYTItNDM1MC04NjVhLTNmZmQzNTJhOTdjZiJ9.eyJhdWQiOiJodHRwczovL29hdXRoLnpvb20udXMiLCJ1aWQiOiJmQWJTWEVJTVRmcVNmNFNMUU5fN2lBIiwidmVyIjo5LCJhdWlkIjoiMzc3NGQ2MzYxMGJiMmNjZTNhNWU0NzNkNWU3NTBhMzkiLCJuYmYiOjE3MTM1OTc3MDEsImNvZGUiOiI5U05pOW1QNVFSVzNHS0RBZ193bWNRWW1SRTc1ck5VNVUiLCJpc3MiOiJ6bTpjaWQ6dno5MjFUYTNRQ1dlZU9yQnFvX3FTdyIsImdubyI6MCwiZXhwIjoxNzEzNjAxMzAxLCJ0eXBlIjozLCJpYXQiOjE3MTM1OTc3MDEsImFpZCI6ImdPRmlqZEw5VHJXQVdzVTJCVkpITWc",
+          "zoomAccessToken": zoomAuth?.accesstoken,
         },
       );
       debugPrint("$version");
