@@ -1,5 +1,6 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -71,7 +72,7 @@ class _ReaderPostScreenState extends State<ReaderPostScreen> {
       try {
         String readerId = widget.accountModel?.reader?.id ?? '';
         var data =
-            await PostService.getPostByReaderId(readerId, currentPage, 10);
+        await PostService.getPostByReaderId(readerId, currentPage, 10);
         if (data.list!.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -167,7 +168,10 @@ class _ReaderPostScreenState extends State<ReaderPostScreen> {
                     ),
                     const SizedBox(width: 16),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.7,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.7,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
                         onTap: () {
@@ -180,16 +184,17 @@ class _ReaderPostScreenState extends State<ReaderPostScreen> {
                               type: PageTransitionType.fade,
                               duration: const Duration(milliseconds: 300),
                             ),
-                          ).then((value) => {
-                                setState(() {
-                                  postModel = null;
-                                  list.clear();
-                                  currentPage = 0;
-                                  hasMorePages = true;
-                                  isLoadingNextPage = false;
-                                }),
-                                getAllPosts(),
-                              });
+                          ).then((value) =>
+                          {
+                            setState(() {
+                              postModel = null;
+                              list.clear();
+                              currentPage = 0;
+                              hasMorePages = true;
+                              isLoadingNextPage = false;
+                            }),
+                            getAllPosts(),
+                          });
                         },
                         child: Container(
                           padding: const EdgeInsets.all(9),
@@ -210,42 +215,79 @@ class _ReaderPostScreenState extends State<ReaderPostScreen> {
               const SizedBox(height: 10),
               postModel == null
                   ? Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(
-                        child: LoadingAnimationWidget.staggeredDotsWave(
-                          color: ColorHelper.getColor(ColorHelper.green),
-                          size: 60,
-                        ),
-                      ),
-                    )
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: ColorHelper.getColor(ColorHelper.green),
+                    size: 60,
+                  ),
+                ),
+              )
                   : postModel?.list?.isEmpty == true
-                      ? Container(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: Text(
-                              'No Posts Found',
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                  ? Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: Center(
+                  child: Container(
+                    // margin appbar height + 20
+                    margin: const EdgeInsets.only(bottom: 80),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/no_booking.png',
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.fill,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Empty list',
+                          style: GoogleFonts.caveatBrush(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'No Post Found.',
+                          overflow: TextOverflow.clip,
+                          style: GoogleFonts.openSans(
+                            color: Colors.black54,
+                            fontSize: 18,
                           ),
                         )
-                      : Column(
-                          children: postModel!.list!.map((e) {
-                            return PostItem(
-                              username: e.reader?.nickname ?? 'John Doe',
-                              timeAgo: e.createdAt ?? '',
-                              postText: e.content ?? '',
-                              imageUrls: e.postImages ?? [],
-                              avatarUrl: e.reader?.avatarUrl ??
-                                  'https://via.placeholder.com/150',
-                            );
-                          }).toList(),
-                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+                  : Column(
+                children: postModel!.list!.map((e) {
+                  return PostItem(
+                    username: e.reader?.nickname ?? 'John Doe',
+                    timeAgo: e.createdAt ?? '',
+                    postText: e.content ?? '',
+                    imageUrls: e.postImages ?? [],
+                    avatarUrl: e.reader?.avatarUrl ??
+                        'https://via.placeholder.com/150',
+                  );
+                }).toList(),
+              ),
             ],
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/google_book.dart';
+import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/create_widgets/search_book_screen.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/create_widgets/text_form.dart';
 import 'package:pagepals/services/file_storage_service.dart';
@@ -25,13 +26,14 @@ class ReaderSeminarCreateScreen extends StatefulWidget {
 
 class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
   GoogleBookModel? selectedGoogleBook;
-  final TextEditingController activeSlotController = TextEditingController();
   final TextEditingController bookController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
   final TextEditingController limitCustomerController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
+
+  bool isLoading = false;
 
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
@@ -188,12 +190,6 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
                 ),
                 const SizedBox(height: 20),
                 CustomTextFormField(
-                  controller: activeSlotController,
-                  label: 'Active Slot',
-                  isDigit: true,
-                ),
-                const SizedBox(height: 20),
-                CustomTextFormField(
                   controller: descriptionController,
                   label: 'Description',
                   isDigit: false,
@@ -259,7 +255,7 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
                 const SizedBox(height: 20),
                 CustomTextFormField(
                   controller: limitCustomerController,
-                  label: 'Limit Customer',
+                  label: 'Limit Spectator',
                   isDigit: true,
                 ),
                 const SizedBox(height: 20),
@@ -327,22 +323,15 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: InkWell(
-          onTap: () async {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(
-                      color: ColorHelper.getColor(ColorHelper.green),
-                      size: 60,
-                    ),
-                  );
-                }
-            );
+        bottomNavigationBar: BottomButton(
+          onPressed: () async {
+
+            setState(() {
+              isLoading = true;
+            });
 
             String readerId = widget.accountModel!.reader!.id!;
-            int activeSlot = int.parse(activeSlotController.text);
+            int activeSlot = int.parse(limitCustomerController.text);
             GoogleBookModel book = selectedGoogleBook!;
             String description = descriptionController.text;
             int duration = int.parse(durationController.text);
@@ -357,7 +346,7 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
             String title = titleController.text;
 
             String imageUrl =
-                await FileStorageService.uploadImage(_selectedImage!);
+            await FileStorageService.uploadImage(_selectedImage!);
 
             bool result = await SeminarService.createSeminar(
               readerId,
@@ -373,28 +362,16 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
             );
 
             if (result) {
+              setState(() {
+                isLoading = false;
+              });
               Navigator.pop(context);
               Navigator.pop(context, true);
             }
           },
-          child: Container(
-            height: 55,
-            margin: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: ColorHelper.getColor(ColorHelper.green),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Center(
-              child: Text(
-                'Create Seminar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
+          isEnabled: true,
+          isLoading: isLoading,
+          title: 'Create seminar',
         ),
       ),
     );

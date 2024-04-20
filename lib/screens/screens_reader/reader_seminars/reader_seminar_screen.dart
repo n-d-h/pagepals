@@ -1,5 +1,6 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -172,11 +173,36 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: Center(
-                      child: Text(
-                        'No Posts Found',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 80),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/no_booking.png',
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.fill,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Empty list',
+                              style: GoogleFonts.caveatBrush(
+                                color: Colors.black,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              'No Seminar Found.',
+                              overflow: TextOverflow.clip,
+                              style: GoogleFonts.openSans(
+                                color: Colors.black54,
+                                fontSize: 18,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),

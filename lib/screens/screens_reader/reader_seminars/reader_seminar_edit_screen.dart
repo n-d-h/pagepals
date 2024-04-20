@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
-import 'package:pagepals/models/google_book.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/create_widgets/text_form.dart';
 import 'package:pagepals/services/file_storage_service.dart';
 import 'package:pagepals/services/seminar_service.dart';
@@ -54,7 +53,6 @@ class ReaderSeminarEditScreen extends StatefulWidget {
 }
 
 class _ReaderSeminarEditScreenState extends State<ReaderSeminarEditScreen> {
-  final TextEditingController activeSlotController = TextEditingController();
   final TextEditingController bookController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
@@ -70,7 +68,6 @@ class _ReaderSeminarEditScreenState extends State<ReaderSeminarEditScreen> {
   void initState() {
     super.initState();
     titleController.text = widget.seminarTitle;
-    activeSlotController.text = widget.activeSlot.toString();
     bookController.text = widget.bookTitle;
     descriptionController.text = widget.description;
     durationController.text = widget.duration.toString();
@@ -216,12 +213,6 @@ class _ReaderSeminarEditScreenState extends State<ReaderSeminarEditScreen> {
                 ),
                 const SizedBox(height: 20),
                 CustomTextFormField(
-                  controller: activeSlotController,
-                  label: 'Active Slot',
-                  isDigit: true,
-                ),
-                const SizedBox(height: 20),
-                CustomTextFormField(
                   controller: descriptionController,
                   label: 'Description',
                   isDigit: false,
@@ -286,7 +277,7 @@ class _ReaderSeminarEditScreenState extends State<ReaderSeminarEditScreen> {
                 const SizedBox(height: 20),
                 CustomTextFormField(
                   controller: limitCustomerController,
-                  label: 'Limit Customer',
+                  label: 'Limit Spectator',
                   isDigit: true,
                 ),
                 const SizedBox(height: 20),
@@ -371,7 +362,7 @@ class _ReaderSeminarEditScreenState extends State<ReaderSeminarEditScreen> {
 
             String id = widget.id;
             String readerId = widget.accountModel!.reader!.id!;
-            int activeSlot = int.parse(activeSlotController.text);
+            int activeSlot = int.parse(limitCustomerController.text);
             String description = descriptionController.text;
             int duration = int.parse(durationController.text);
             int limitCustomer = int.parse(limitCustomerController.text);
