@@ -108,6 +108,7 @@ class BookingService {
               }
             }
             meetingCode
+            password
             limitOfPerson
             id
           }
@@ -211,6 +212,7 @@ class BookingService {
               }
             }
             meetingCode
+            password
             limitOfPerson
             id
           }

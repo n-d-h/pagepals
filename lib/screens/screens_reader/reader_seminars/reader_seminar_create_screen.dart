@@ -12,6 +12,7 @@ import 'package:pagepals/screens/screens_reader/services_screen/create_widgets/s
 import 'package:pagepals/screens/screens_reader/services_screen/create_widgets/text_form.dart';
 import 'package:pagepals/services/file_storage_service.dart';
 import 'package:pagepals/services/seminar_service.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:unicons/unicons.dart';
 
 class ReaderSeminarCreateScreen extends StatefulWidget {
@@ -365,8 +366,13 @@ class _ReaderSeminarCreateScreenState extends State<ReaderSeminarCreateScreen> {
               setState(() {
                 isLoading = false;
               });
-              Navigator.pop(context);
               Navigator.pop(context, true);
+              QuickAlert.show(
+                context: context,
+                type: QuickAlertType.success,
+                title: 'Seminar Created',
+                text: 'Seminar has been created successfully',
+              );
             }
           },
           isEnabled: true,

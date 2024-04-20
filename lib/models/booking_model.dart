@@ -86,15 +86,22 @@ class Booking {
 class Meeting {
   Reader? reader;
   String? meetingCode;
+  String? password;
   int? limitOfPerson;
   String? id;
 
-  Meeting({this.reader, this.meetingCode, this.limitOfPerson, this.id});
+  Meeting(
+      {this.reader,
+      this.meetingCode,
+      this.password,
+      this.limitOfPerson,
+      this.id});
 
   Meeting.fromJson(Map<String, dynamic> json) {
     reader =
         json['reader'] != null ? new Reader.fromJson(json['reader']) : null;
     meetingCode = json['meetingCode'];
+    password = json['password'];
     limitOfPerson = json['limitOfPerson'];
     id = json['id'];
   }
@@ -105,6 +112,7 @@ class Meeting {
       data['reader'] = this.reader!.toJson();
     }
     data['meetingCode'] = this.meetingCode;
+    data['password'] = this.password;
     data['limitOfPerson'] = this.limitOfPerson;
     data['id'] = this.id;
     return data;

@@ -254,6 +254,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
                                     ),
                                     UpcomingBottom(
                                       booking: booking,
+                                      isReader: true,
                                     ),
                                   ],
                                 ),

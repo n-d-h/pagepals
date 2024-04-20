@@ -121,10 +121,20 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(0.0),
+            child: Container(
+              height: 1,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+              ),
+            ),
+          ),
           title: const Text('Seminar'),
           elevation: 0,
           centerTitle: true,
           surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
@@ -157,6 +167,7 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
             ),
           ],
         ),
+        backgroundColor: Colors.grey[100],
         body: seminarModel == null
             ? Container(
                 height: MediaQuery.of(context).size.height,
@@ -208,7 +219,7 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
                     ),
                   )
                 : Container(
-                    margin: const EdgeInsets.only(bottom: 50),
+                    margin: const EdgeInsets.only(top: 10),
                     child: ListView.builder(
                       controller: _scrollController,
                       itemCount: list.length,

@@ -183,6 +183,7 @@ class _UpcomingTabState extends State<UpcomingTab> {
                                   ),
                                   UpcomingBottom(
                                     booking: booking,
+                                    isReader: false,
                                   ),
                                 ],
                               ),

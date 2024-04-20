@@ -7,6 +7,7 @@ import 'package:pagepals/models/request_model.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/video_conference_page.dart';
 import 'package:pagepals/services/reader_service.dart';
+import 'package:pagepals/services/video_conference_service.dart';
 
 class ReaderPendingScreen extends StatefulWidget {
   const ReaderPendingScreen({super.key, this.readerId});
@@ -118,7 +119,7 @@ class _ReaderPendingScreenState extends State<ReaderPendingScreen> {
                     ),
                     requestModel?.state == 'INTERVIEW_PENDING'
                         ? InkWell(
-                            onTap: () {
+                            onTap: () async{
                               // String interviewAt = requestModel?.interviewAt ??
                               //     DateTime.now().toString();
                               // DateTime interviewDateTime =
@@ -141,16 +142,21 @@ class _ReaderPendingScreenState extends State<ReaderPendingScreen> {
                               //   return;
                               // }
 
-                              Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: VideoConferencePage(
-                                    conferenceID:
-                                        requestModel?.meetingCode ?? '',
-                                  ),
-                                ),
-                              );
+                              // await VideoConferenceService.joinMeeting(
+                              //   requestModel?.meetingCode ?? '',
+                              //   requestModel?.password ?? '',
+                              // );
+
+                              // Navigator.push(
+                              //   context,
+                              //   PageTransition(
+                              //     type: PageTransitionType.rightToLeft,
+                              //     child: VideoConferencePage(
+                              //       conferenceID:
+                              //           requestModel?.meetingCode ?? '',
+                              //     ),
+                              //   ),
+                              // );
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.9,

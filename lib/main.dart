@@ -16,6 +16,7 @@ import 'package:pagepals/providers/reader_request_provider.dart';
 import 'package:pagepals/providers/reader_update_provider.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/payment_response_screen.dart';
 import 'package:pagepals/services/firebase_message_service.dart';
+import 'package:pagepals/services/video_conference_service.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
