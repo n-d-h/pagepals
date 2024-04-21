@@ -12,6 +12,7 @@ import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart
 import 'package:pagepals/screens/screens_customer/post_screen/post_screen.dart';
 import 'package:pagepals/screens/screens_customer/search_screen/search_screen.dart';
 import 'package:pagepals/services/notification_service.dart';
+import 'package:pagepals/services/video_conference_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
@@ -35,6 +36,12 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     super.initState();
     _currentIndex = widget.index ?? 0;
     _fetchNotificationByAccountId();
+    _initZoom();
+  }
+
+  Future<void> _initZoom() async {
+    // Initialize Zoom SDK
+    await VideoConferenceService.initializeZoomSDK();
   }
 
   Future<void> _fetchNotificationByAccountId() async {

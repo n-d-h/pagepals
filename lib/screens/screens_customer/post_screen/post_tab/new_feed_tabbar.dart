@@ -1,8 +1,10 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/post_model.dart';
+import 'package:pagepals/screens/screens_customer/notification_screen/notification_helpers/notification_helper.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/post_item.dart';
 import 'package:pagepals/services/post_service.dart';
 import 'package:unicons/unicons.dart';
@@ -139,10 +141,14 @@ class _NewFeedTabbarState extends State<NewFeedTabbar> {
                   child: ListView.builder(
                     itemCount: postModel!.list!.length,
                     itemBuilder: (context, index) {
+                      String time = postModel?.list?[index].createdAt ?? '';
+                      String pattern = "E MMM dd HH:mm:ss 'GMT' yyyy";
+                      final dateTime = DateFormat(pattern).parse(time);
+                      final timeString = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
                       return PostItem(
                         username: postModel!.list![index].reader?.nickname ??
                             'John Doe',
-                        timeAgo: postModel!.list![index].createdAt ?? '',
+                        timeAgo: formatTime(timeString),
                         postText: postModel!.list![index].content ?? '',
                         imageUrls: postModel!.list![index].postImages ?? [],
                         avatarUrl: postModel!.list![index].reader?.avatarUrl ??

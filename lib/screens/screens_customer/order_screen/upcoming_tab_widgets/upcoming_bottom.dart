@@ -5,11 +5,13 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/canceled_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/video_conference_page.dart';
+import 'package:pagepals/services/video_conference_service.dart';
 
 class UpcomingBottom extends StatelessWidget {
   final Booking booking;
+  final bool isReader;
 
-  const UpcomingBottom({super.key, required this.booking});
+  const UpcomingBottom({super.key, required this.booking, required this.isReader});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class UpcomingBottom extends StatelessWidget {
                 Navigator.of(context).push(
                   PageTransition(
                     child: CanceledScreen(
+                      isReader: isReader,
                       bookingId: booking.id!,
                       onValueChanged: (value) {
                         print(value);
@@ -54,7 +57,7 @@ class UpcomingBottom extends StatelessWidget {
           const SizedBox(width: 10), // Add this line
           Expanded(
             child: OutlinedButton(
-              onPressed: () {
+              onPressed: () async{
                 DateTime startTime = DateTime.parse(booking.startAt!);
                 if (DateTime.now().isBefore(startTime)) {
                   showDialog(
@@ -77,15 +80,17 @@ class UpcomingBottom extends StatelessWidget {
                     },
                   );
                 } else {
-                  Navigator.of(context).push(
-                    PageTransition(
-                      child: VideoConferencePage(
-                        conferenceID: booking.meeting!.meetingCode!,
-                      ),
-                      type: PageTransitionType.fade,
-                      duration: const Duration(milliseconds: 300),
-                    ),
-                  );
+                  // Navigator.of(context).push(
+                  //   PageTransition(
+                  //     child: VideoConferencePage(
+                  //       conferenceID: booking.meeting!.meetingCode!,
+                  //     ),
+                  //     type: PageTransitionType.fade,
+                  //     duration: const Duration(milliseconds: 300),
+                  //   ),
+                  // );
+                  isReader ? await VideoConferenceService.startMeeting(booking.meeting!.meetingCode!)
+                      : await VideoConferenceService.joinMeeting(booking.meeting!.meetingCode!, booking.meeting!.password!);
                 }
               },
               style: OutlinedButton.styleFrom(

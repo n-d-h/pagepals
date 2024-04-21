@@ -12,6 +12,7 @@ import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dar
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_column_edit_field.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_avatar.dart';
+import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/file_storage_service.dart';
 import 'package:pagepals/services/reader_service.dart';
 import 'package:provider/provider.dart';
@@ -85,20 +86,7 @@ class _ReaderEditProfileScreenState extends State<ReaderEditProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () async {
-            var account;
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            String? accountString = prefs.getString('account');
-            if (accountString == null) {
-              print('No account data found in SharedPreferences');
-              return;
-            }
-            try {
-              Map<String, dynamic> accountMap =
-                  json.decoder.convert(accountString);
-              account = AccountModel.fromJson(accountMap);
-            } catch (e) {
-              print('Error decoding account data: $e');
-            }
+            var account = await AuthenService.getAccountFromSharedPreferences();
             readerUpdateProvider.clear();
             Navigator.of(context).pushAndRemoveUntil(
                 PageTransition(

@@ -64,28 +64,6 @@ public class MainActivity extends FlutterActivity implements MeetingServiceListe
         initParams.jwtToken = jwtToken;
         initParams.enableLog = true;
         initParams.domain = WEB_DOMAIN;
-        ZoomSDKInitializeListener listener = new ZoomSDKInitializeListener() {
-            @Override
-            public void onZoomSDKInitializeResult(int errorCode, int internalErrorCode) {
-                if (errorCode != ZoomError.ZOOM_ERROR_SUCCESS) {
-                    Log.d("Failed", "Failed to initialize Zoom SDK");
-                    Toast.makeText(
-                            MainActivity.this, // Provide a valid Context here
-                            "Failed to initialize Zoom SDK. Error: " + errorCode + ", internalErrorCode=" + internalErrorCode,
-                            Toast.LENGTH_LONG
-                    ).show();
-                } else {
-                    Log.d("Success", "Initialize Zoom SDK successfully.");
-                    Toast.makeText(MainActivity.this, "Initialize Zoom SDK successfully.", Toast.LENGTH_LONG).show();
-                }
-            }
-
-
-            @Override
-            public void onZoomAuthIdentityExpired() {
-
-            }
-        };
         sdk.initialize(this, this, initParams);
     }
 
@@ -115,14 +93,14 @@ public class MainActivity extends FlutterActivity implements MeetingServiceListe
     public void onZoomSDKInitializeResult(int errorCode, int internalErrorCode) {
         if (errorCode != ZoomError.ZOOM_ERROR_SUCCESS) {
             Log.d("Failed", "Failed to initialize Zoom SDK");
-            Toast.makeText(
-                    this,
-                    "Failed to initialize Zoom SDK. Error: " + errorCode + ", internalErrorCode=" + internalErrorCode,
-                    Toast.LENGTH_LONG
-            ).show();
+//            Toast.makeText(
+//                    this,
+//                    "Failed to initialize Zoom SDK. Error: " + errorCode + ", internalErrorCode=" + internalErrorCode,
+//                    Toast.LENGTH_LONG
+//            ).show();
         } else {
             Log.d("Success", "Initialize Zoom SDK successfully.");
-            Toast.makeText(this, "Initialize Zoom SDK successfully.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Initialize Zoom SDK successfully.", Toast.LENGTH_LONG).show();
         }
     }
 

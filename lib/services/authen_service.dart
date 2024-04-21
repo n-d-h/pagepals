@@ -10,6 +10,7 @@ import 'package:pagepals/models/authen_models/account_tokens.dart';
 import 'package:pagepals/models/authen_models/login_model.dart';
 import 'package:pagepals/models/zoom_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AuthenService {
   static GraphQLClient graphQLClient = client!.value;
@@ -282,6 +283,47 @@ class AuthenService {
     }
   }
 
+  static Future<AccountModel?> updateAndGetNewAccountFromSharePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    String accessToken = prefs.getString('accessToken')!;
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return null;
+    }
+    try {
+      AccountModel account =
+          AccountModel.fromJson(json.decoder.convert(accountString));
+      String userName = account.username!;
+
+      AccountModel updatedAccount =
+          await AuthenService.getAccount(userName, accessToken);
+      prefs.remove('account');
+      prefs.setString('account', json.encode(updatedAccount));
+      return updatedAccount;
+    } catch (e) {
+      print('Error decoding account data: $e');
+      return null;
+    }
+  }
+
+  static Future<AccountModel?> getAccountFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return null;
+    }
+    try {
+      AccountModel account =
+          AccountModel.fromJson(json.decoder.convert(accountString));
+      return account;
+    } catch (e) {
+      print('Error decoding account data: $e');
+      return null;
+    }
+  }
+
   static Future<void> updateFcmToken(
       String fcmToken, String id, bool isWebToken) async {
     var mutation = '''
@@ -322,7 +364,7 @@ class AuthenService {
     }
   }
 
-  static Future<ZoomAuth> getZoomAuth() async {
+  static Future<String> getZoomAuth() async {
     String query = '''
       query MyQuery {
         getAuthZoom {
@@ -347,8 +389,22 @@ class AuthenService {
 
     var data = result.data?['getAuthZoom'];
     if (data != null) {
-      return ZoomAuth.fromJson(data);
+      String accessToken = ZoomAuth.fromJson(data).accesstoken ?? '';
+      var url = Uri.parse('https://api.zoom.us/v2/users/me/token?type=zak');
+      var response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return data['token'];
+      } else {
+        throw Exception('Failed to get Zoom token');
+      }
     }
-    return ZoomAuth();
+    return '';
   }
 }
