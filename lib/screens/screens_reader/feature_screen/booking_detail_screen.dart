@@ -9,6 +9,7 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_success_screen.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/book_row.dart';
@@ -23,6 +24,7 @@ import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -135,6 +137,9 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
             });
             return;
           } else {
+            // update notification provider
+            context.read<NotificationProvider>().increment();
+
             // Handle button press action here
             Future.delayed(const Duration(milliseconds: 200), () async {
               setState(() {

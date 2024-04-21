@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/models/notification_model.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_helpers/notification_helper.dart';
-import 'package:pagepals/screens/screens_customer/notification_screen/notification_helpers/notification_model.dart';
 
 class NotificationTile extends StatelessWidget {
   final NotificationItem notification;

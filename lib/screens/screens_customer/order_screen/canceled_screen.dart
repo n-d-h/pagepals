@@ -1,22 +1,33 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/radio_button.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
+import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/booking_service.dart';
+import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CanceledScreen extends StatefulWidget {
   final Function(int)? onValueChanged;
   final String bookingId;
+  final bool isReader;
 
   const CanceledScreen(
-      {super.key, this.onValueChanged, required this.bookingId});
+      {super.key,
+      this.onValueChanged,
+      required this.bookingId,
+      required this.isReader});
 
   @override
   State<CanceledScreen> createState() => _CanceledScreenState();
@@ -208,13 +219,21 @@ class _CanceledScreenState extends State<CanceledScreen> {
           );
           bool isCanceled =
               await BookingService.cancelBooking(widget.bookingId);
+
           if (isCanceled) {
-            Future.delayed(Duration.zero, () {
-              AuthenService.updateAccountToSharedPreferences();
+            context.read<NotificationProvider>().increment();
+            Future.delayed(Duration.zero, () async {
+              // await AuthenService.updateAccountToSharedPreferences();
+              var account = await AuthenService
+                  .updateAndGetNewAccountFromSharePreference();
               Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(
                 PageTransition(
-                  child: const MenuItemScreen(index: 3),
+                  child: widget.isReader
+                      ? ReaderMainScreen(
+                          accountModel: account,
+                        )
+                      : const MenuItemScreen(index: 3),
                   type: PageTransitionType.leftToRight,
                   duration: const Duration(milliseconds: 300),
                 ),

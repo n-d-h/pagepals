@@ -28,6 +28,7 @@ class UpcomingBottom extends StatelessWidget {
                 Navigator.of(context).push(
                   PageTransition(
                     child: CanceledScreen(
+                      isReader: isReader,
                       bookingId: booking.id!,
                       onValueChanged: (value) {
                         print(value);

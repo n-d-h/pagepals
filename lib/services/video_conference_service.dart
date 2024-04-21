@@ -18,8 +18,9 @@ class VideoConferenceService {
   }
 
   static Future<String> getZoomAuthToken() async {
-    var zoom = await AuthenService.getZoomAuth();
-    return zoom.accesstoken ?? '';
+    var zak = await AuthenService.getZoomAuth();
+    print('Zoom token: ${zak}');
+    return zak;
   }
 
   static Future<void> initializeZoomSDK() async {
@@ -88,7 +89,7 @@ class VideoConferenceService {
           DateTime.now().add(Duration(days: 1)).millisecondsSinceEpoch ~/ 1000,
       'tokenExp':
           DateTime.now().add(Duration(days: 1)).millisecondsSinceEpoch ~/ 1000,
-      // 'role': 1,
+      'role': 1,
     };
 
     // Encode header and payload to base64Url
