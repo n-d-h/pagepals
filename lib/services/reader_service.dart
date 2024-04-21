@@ -343,6 +343,7 @@ class ReaderService {
           id
           interviewAt
           meetingCode
+          meetingPassword
           staffId
           staffName
           state

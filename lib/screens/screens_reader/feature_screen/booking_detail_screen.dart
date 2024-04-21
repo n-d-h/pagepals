@@ -1,32 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/helpers/utils.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
-import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/booking_model.dart';
-import 'package:pagepals/models/reader_models/reader_profile_model.dart';
-import 'package:pagepals/providers/notification_provider.dart';
-import 'package:pagepals/screens/screens_customer/booking_screen/booking_success_screen.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/book_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/service_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/time_row.dart';
-import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/wallet_widget.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/customer_info_widget.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
-import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
-import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/booking_service.dart';
-import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 
 class BookingDetailScreen extends StatefulWidget {
   final Booking booking;
@@ -110,6 +97,49 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                 start: 'Total',
                 end: '$total pals',
               ),
+              if (widget.booking.state!.name == 'CANCEL')
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      'Cancel Reason',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black87.withOpacity(0.5),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: DashedBorder.fromBorderSide(
+                          dashLength: 5,
+                          side: BorderSide(
+                            color: Colors.redAccent.shade200,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.booking.cancelReason ?? '',
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -137,9 +167,6 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
             });
             return;
           } else {
-            // update notification provider
-            context.read<NotificationProvider>().increment();
-
             // Handle button press action here
             Future.delayed(const Duration(milliseconds: 200), () async {
               setState(() {

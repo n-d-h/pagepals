@@ -3,8 +3,15 @@ import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pagepals/main.dart';
+import 'package:pagepals/providers/notification_provider.dart';
+import 'package:provider/provider.dart';
 
 class FirebaseMessageService {
+  final BuildContext? context;
+
+  FirebaseMessageService({this.context});
+
   Future<void> initialize() async {
     await FirebaseMessaging.instance.requestPermission(
       alert: true,
@@ -28,6 +35,7 @@ class FirebaseMessageService {
       AndroidNotification android = message.notification!.android!;
       if (notification != null && android != null) {
         sendNotification(title: notification.title, body: notification.body);
+        if (context != null) context!.read<NotificationProvider>().increment();
       }
     });
 
@@ -36,6 +44,7 @@ class FirebaseMessageService {
       AndroidNotification android = message.notification!.android!;
       if (notification != null && android != null) {
         sendNotification(title: notification.title, body: notification.body);
+        print('onMessageOpenedApp: $message');
       }
     });
 

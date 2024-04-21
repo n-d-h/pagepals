@@ -6,6 +6,7 @@ import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/time_row.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
+import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 
 class BookingAppointment extends StatelessWidget {
   final Booking? booking;
@@ -68,6 +69,49 @@ class BookingAppointment extends StatelessWidget {
                 start: 'Total',
                 end: '${booking?.service?.price?.toInt() ?? 0} pals',
               ),
+              if (booking!.state!.name == 'CANCEL')
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      'Cancel Reason',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black87.withOpacity(0.5),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: DashedBorder.fromBorderSide(
+                          dashLength: 5,
+                          side: BorderSide(
+                            color: Colors.redAccent.shade200,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          booking?.cancelReason ?? '',
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
             ],
           ),
         ),

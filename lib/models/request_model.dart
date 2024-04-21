@@ -4,6 +4,7 @@ class RequestModel {
   String? id;
   String? interviewAt;
   String? meetingCode;
+  String? meetingPassword;
   String? staffId;
   String? staffName;
   String? state;
@@ -17,6 +18,7 @@ class RequestModel {
     id = json['id'];
     interviewAt = json['interviewAt'];
     meetingCode = json['meetingCode'];
+    meetingPassword = json['meetingPassword'];
     staffId = json['staffId'];
     staffName = json['staffName'];
     state = json['state'];
@@ -30,6 +32,7 @@ class RequestModel {
     data['id'] = id;
     data['interviewAt'] = interviewAt;
     data['meetingCode'] = meetingCode;
+    data['meetingPassword'] = meetingPassword;
     data['staffId'] = staffId;
     data['staffName'] = staffName;
     data['state'] = state;
