@@ -193,7 +193,6 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
                   duration: const Duration(milliseconds: 300),
                 ),
               );
-              context.read<NotificationProvider>().increment();
             });
             Future.delayed(const Duration(milliseconds: 300), () {
               QuickAlert.show(
@@ -203,7 +202,6 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
                 text: 'Thank you for booking!',
                 autoCloseDuration: const Duration(seconds: 3),
               );
-
               AuthenService.updateAccountToSharedPreferences();
             });
           }

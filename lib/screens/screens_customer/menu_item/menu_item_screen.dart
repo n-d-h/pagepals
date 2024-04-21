@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/custom_icons.dart';
+import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
@@ -74,7 +75,8 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   }
 
   List<BottomNavigationBarItem> get _navigatorItems {
-    final notification = context.watch<NotificationProvider>();
+    final notification =
+        context.watch<NotificationProvider>();
 
     return [
       BottomNavigationBarItem(
@@ -90,7 +92,9 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
       BottomNavigationBarItem(
         icon: Badge(
           backgroundColor: Colors.orange,
-          isLabelVisible: context.watch<NotificationProvider>().count > 0,
+          isLabelVisible:
+              context.watch<NotificationProvider>().count >
+                  0,
           alignment: Alignment.topRight,
           largeSize: 20,
           padding: const EdgeInsets.symmetric(horizontal: 7),

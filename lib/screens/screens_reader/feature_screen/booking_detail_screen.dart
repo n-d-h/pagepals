@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/booking_model.dart';
-import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/book_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/service_row.dart';
@@ -13,7 +11,6 @@ import 'package:pagepals/screens/screens_reader/feature_screen/customer_info_wid
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
@@ -183,9 +180,6 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
               AccountModel account =
                   AccountModel.fromJson(json.decoder.convert(accountJson));
               String readerId = account.reader!.id!;
-
-              // update notification provider
-              context.read<NotificationProvider>().increment();
 
               // Navigate to the next screen
               Navigator.of(context).pushAndRemoveUntil(

@@ -119,7 +119,7 @@ class _ReaderPendingScreenState extends State<ReaderPendingScreen> {
                     ),
                     requestModel?.state == 'INTERVIEW_PENDING'
                         ? InkWell(
-                            onTap: () async{
+                            onTap: () async {
                               // String interviewAt = requestModel?.interviewAt ??
                               //     DateTime.now().toString();
                               // DateTime interviewDateTime =
@@ -142,10 +142,10 @@ class _ReaderPendingScreenState extends State<ReaderPendingScreen> {
                               //   return;
                               // }
 
-                              // await VideoConferenceService.joinMeeting(
-                              //   requestModel?.meetingCode ?? '',
-                              //   requestModel?.password ?? '',
-                              // );
+                              await VideoConferenceService.joinMeeting(
+                                requestModel?.meetingCode ?? '',
+                                requestModel?.meetingPassword ?? '',
+                              );
 
                               // Navigator.push(
                               //   context,

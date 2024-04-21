@@ -230,7 +230,6 @@ class _CanceledScreenState extends State<CanceledScreen> {
               var account = await AuthenService
                   .updateAndGetNewAccountFromSharePreference();
               Navigator.pop(context);
-              context.read<NotificationProvider>().increment();
               Navigator.of(context).pushAndRemoveUntil(
                 PageTransition(
                   child: widget.isReader

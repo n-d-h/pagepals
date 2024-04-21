@@ -16,7 +16,6 @@ import 'package:pagepals/providers/reader_request_provider.dart';
 import 'package:pagepals/providers/reader_update_provider.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/payment_response_screen.dart';
 import 'package:pagepals/services/firebase_message_service.dart';
-import 'package:pagepals/services/video_conference_service.dart';
 import 'package:pagepals/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,26 +45,26 @@ Future<void> main() async {
     'https://pagepals.azurewebsites.net/graphql',
   );
 
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('accessToken');
-  print('Token: $token');
-
-  FirebaseMessageService firebaseMessageService = FirebaseMessageService();
-  await firebaseMessageService.initialize();
-  String? fcmToken = await firebaseMessageService.getFCMToken();
-  prefs.setString('fcmToken', fcmToken!);
-  print('FCM Token: $fcmToken');
-
-  if (token != null) {
-    int exp = JWT.decode(token).payload['exp'];
-    DateTime expirationDateTime =
-        DateTime.fromMillisecondsSinceEpoch(exp * 1000);
-    print('expirationDateTime: $expirationDateTime');
-    if (DateTime.now().isAfter(expirationDateTime)) {
-      prefs.clear();
-      token = null;
-    }
-  }
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // String? token = prefs.getString('accessToken');
+  // print('Token: $token');
+  //
+  // FirebaseMessageService firebaseMessageService = FirebaseMessageService();
+  // await firebaseMessageService.initialize();
+  // String? fcmToken = await firebaseMessageService.getFCMToken();
+  // prefs.setString('fcmToken', fcmToken!);
+  // print('FCM Token: $fcmToken');
+  //
+  // if (token != null) {
+  //   int exp = JWT.decode(token).payload['exp'];
+  //   DateTime expirationDateTime =
+  //       DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+  //   print('expirationDateTime: $expirationDateTime');
+  //   if (DateTime.now().isAfter(expirationDateTime)) {
+  //     prefs.clear();
+  //     token = null;
+  //   }
+  // }
 
   client = ValueNotifier(
     GraphQLClient(
@@ -92,8 +91,32 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  void firebaseMessageService(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('accessToken');
+    print('Token: $token');
+
+    FirebaseMessageService firebaseMessageService = FirebaseMessageService(context: context);
+    await firebaseMessageService.initialize();
+    String? fcmToken = await firebaseMessageService.getFCMToken();
+    prefs.setString('fcmToken', fcmToken!);
+    print('FCM Token: $fcmToken');
+
+    if (token != null) {
+      int exp = JWT.decode(token).payload['exp'];
+      DateTime expirationDateTime =
+      DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+      print('expirationDateTime: $expirationDateTime');
+      if (DateTime.now().isAfter(expirationDateTime)) {
+        prefs.clear();
+        token = null;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    firebaseMessageService(context);
     var localeId = context.watch<LocaleProvider>().locale;
 
     return GraphQLProvider(
