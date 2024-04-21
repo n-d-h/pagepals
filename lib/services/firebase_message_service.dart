@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/providers/notification_provider.dart';
+import 'package:pagepals/services/authen_service.dart';
+import 'package:pagepals/services/notification_service.dart';
 import 'package:provider/provider.dart';
 
 class FirebaseMessageService {
@@ -35,7 +37,13 @@ class FirebaseMessageService {
       AndroidNotification android = message.notification!.android!;
       if (notification != null && android != null) {
         sendNotification(title: notification.title, body: notification.body);
-        if (context != null) context!.read<NotificationProvider>().increment();
+        if (context != null){
+          context!.read<NotificationProvider>().increment();
+          // var accountModel = await AuthenService.getAccountFromSharedPreferences();
+          // var result = await NotificationService.getAllNotificationByAccountId(
+          //     accountModel?.id ?? "", 0, 10);
+          // context!.read<NotificationProvider>().setCount(result.total ?? 0);
+        }
       }
     });
 

@@ -14,6 +14,7 @@ class NotificationService {
           page: $page
           pageSize: $pageSize
           sort: "desc"
+          notificationRole: READER
         ) {
           list {
             content
@@ -160,8 +161,7 @@ class NotificationService {
       throw Exception(result.exception.toString());
     }
 
-    final List<Object?>? data =
-        result.data?['readAllNotifications'];
+    final List<Object?>? data = result.data?['readAllNotifications'];
     if (data == null) {
       throw Exception('No data found');
     }

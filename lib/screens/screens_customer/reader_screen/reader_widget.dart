@@ -106,6 +106,7 @@ class _ReaderWidgetState extends State<ReaderWidget> {
                       Expanded(
                         child: Text(
                           widget.reader.language ?? 'English, Vietnamese',
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
