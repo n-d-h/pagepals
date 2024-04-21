@@ -38,7 +38,6 @@ class ReviewSummaryScreen extends StatefulWidget {
     this.reader,
     required this.time,
     required this.book,
-    // required this.chapter,
     required this.serviceType,
     this.service,
     required this.timeSlotId,
@@ -134,7 +133,7 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
                 end: '$total pals',
               ),
               WalletWidget(
-                  accountModel: accountModel,
+                accountModel: accountModel,
               ),
             ],
           ),
@@ -155,7 +154,7 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
             },
           );
 
-          if((accountModel?.wallet?.tokenAmount ?? 0) < total){
+          if ((accountModel?.wallet?.tokenAmount ?? 0) < total) {
             Future.delayed(const Duration(milliseconds: 300), () {
               Navigator.of(context).pop();
               QuickAlert.show(
@@ -169,8 +168,8 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
             return;
           }
 
-          bool bookingCreated =
-              await BookingService.createBooking("", widget.service!, widget.timeSlotId, "");
+          bool bookingCreated = await BookingService.createBooking(
+              "", widget.service!, widget.timeSlotId, "");
           if (!bookingCreated) {
             Future.delayed(const Duration(milliseconds: 300), () {
               Navigator.of(context).pop();
@@ -184,7 +183,6 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
             });
             return;
           } else {
-            context.read<NotificationProvider>().increment();
             // Handle button press action here
             Future.delayed(const Duration(milliseconds: 100), () {
               Navigator.of(context).pop();
@@ -195,6 +193,7 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
                   duration: const Duration(milliseconds: 300),
                 ),
               );
+              context.read<NotificationProvider>().increment();
             });
             Future.delayed(const Duration(milliseconds: 300), () {
               QuickAlert.show(

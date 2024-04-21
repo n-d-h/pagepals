@@ -37,6 +37,8 @@ class Booking {
   String? startAt;
   String? createAt;
   CustomerBooked? customer;
+  String? cancelReason;
+  BookingState? state;
 
   Booking(
       {this.id,
@@ -46,7 +48,9 @@ class Booking {
       this.service,
       this.startAt,
       this.createAt,
-      this.customer});
+      this.customer,
+      this.cancelReason,
+      this.state});
 
   Booking.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -61,6 +65,8 @@ class Booking {
     customer = json['customer'] != null
         ? new CustomerBooked.fromJson(json['customer'])
         : null;
+    cancelReason = json['cancelReason'];
+    state = json['state'] != null ? new BookingState.fromJson(json['state']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +85,23 @@ class Booking {
     if (this.customer != null) {
       data['customer'] = this.customer!.toJson();
     }
+    data['cancelReason'] = this.cancelReason;
+    return data;
+  }
+}
+
+class BookingState {
+  String? name;
+
+  BookingState({this.name});
+
+  BookingState.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
     return data;
   }
 }

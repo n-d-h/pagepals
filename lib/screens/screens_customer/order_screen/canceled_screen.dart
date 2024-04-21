@@ -5,18 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/radio_button.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CanceledScreen extends StatefulWidget {
   final Function(int)? onValueChanged;
@@ -35,6 +32,7 @@ class CanceledScreen extends StatefulWidget {
 
 class _CanceledScreenState extends State<CanceledScreen> {
   int? _selectedValue;
+  String reason = '';
 
   final TextEditingController controller = TextEditingController();
 
@@ -96,6 +94,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedValue = value;
+                          reason = 'Schedule Changed';
                         });
                         widget.onValueChanged!(value!);
                       },
@@ -107,6 +106,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedValue = value;
+                          reason = 'Unexpected event';
                         });
                         widget.onValueChanged!(value!);
                       },
@@ -118,6 +118,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedValue = value;
+                          reason = 'I’ve change my mind';
                         });
                         widget.onValueChanged!(value!);
                       },
@@ -129,6 +130,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedValue = value;
+                          reason = 'Device problems';
                         });
                         widget.onValueChanged!(value!);
                       },
@@ -152,52 +154,54 @@ class _CanceledScreenState extends State<CanceledScreen> {
                   height: 1,
                   color: Colors.black.withOpacity(0.1),
                 ),
-                Container(
-                  margin:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Note:',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black.withOpacity(0.5),
+                if (_selectedValue == 5)
+                  Container(
+                    margin:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Note:',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: const DashedBorder.fromBorderSide(
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            border: const DashedBorder.fromBorderSide(
                               dashLength: 15,
                               side: BorderSide(
                                 color: Colors.grey,
                                 width: 1,
-                              )),
-                          // borderRadius: BorderRadius.all(Radius.circular(10))),
-                        ),
-                        child: TextField(
-                          controller: controller,
-                          maxLines: 7,
-                          decoration: InputDecoration(
-                            hintText: 'Type your note here ...',
-                            hintStyle: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black.withOpacity(0.3),
+                              ),
                             ),
-                            border: InputBorder.none,
+                            // borderRadius: BorderRadius.all(Radius.circular(10))),
+                          ),
+                          child: TextField(
+                            controller: controller,
+                            maxLines: 7,
+                            decoration: InputDecoration(
+                              hintText: 'Type your note here ...',
+                              hintStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.3),
+                              ),
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -217,16 +221,16 @@ class _CanceledScreenState extends State<CanceledScreen> {
               );
             },
           );
-          bool isCanceled =
-              await BookingService.cancelBooking(widget.bookingId);
+          bool isCanceled = await BookingService.cancelBooking(
+              widget.bookingId, _selectedValue == 5 ? controller.text : reason);
 
           if (isCanceled) {
-            context.read<NotificationProvider>().increment();
             Future.delayed(Duration.zero, () async {
               // await AuthenService.updateAccountToSharedPreferences();
               var account = await AuthenService
                   .updateAndGetNewAccountFromSharePreference();
               Navigator.pop(context);
+              context.read<NotificationProvider>().increment();
               Navigator.of(context).pushAndRemoveUntil(
                 PageTransition(
                   child: widget.isReader
@@ -249,7 +253,11 @@ class _CanceledScreenState extends State<CanceledScreen> {
             });
           }
         },
-        isEnabled: _selectedValue != null,
+        isEnabled: _selectedValue == null
+            ? false
+            : _selectedValue == 5
+                ? controller.text.isNotEmpty
+                : true,
         title: 'Submit',
       ),
     );

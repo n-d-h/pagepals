@@ -60,7 +60,7 @@ class BookingService {
     );
 
     if (result.hasException) {
-      return false;
+      throw Exception('Failed to create booking');
     }
     // throw Exception('Failed to create booking');
 
@@ -141,6 +141,10 @@ class BookingService {
               email
               phoneNumber
             }
+          }
+          cancelReason
+          state {
+            name
           }
         }
         pagination {
@@ -246,6 +250,10 @@ class BookingService {
               phoneNumber
             }
           }
+          cancelReason
+          state {
+            name
+          }
         }
         pagination {
           currentPage
@@ -279,11 +287,10 @@ class BookingService {
     return BookingModel.fromJson(result.data!['getListBookingByReader']);
   }
 
-  static Future<bool> cancelBooking(String bookingId) async {
-    print('bookingId: $bookingId');
+  static Future<bool> cancelBooking(String bookingId, String reason) async {
     var mutation = '''
       mutation {
-        cancelBooking(bookingId: "$bookingId") {
+        cancelBooking(bookingId: "$bookingId", reason: "$reason") {
           id
         }
       }
@@ -326,7 +333,8 @@ class BookingService {
     return result.data?['completeBooking']?['id'] != null;
   }
 
-  static Future<bool> reviewBooking(String bookingId, int rating, String review) async {
+  static Future<bool> reviewBooking(
+      String bookingId, int rating, String review) async {
     var mutation = '''
       mutation {
         reviewBooking(

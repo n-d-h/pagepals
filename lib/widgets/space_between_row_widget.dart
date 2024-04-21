@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SpaceBetweenRowWidget extends StatelessWidget {
   final String start;
   final String end;
-  const SpaceBetweenRowWidget({super.key, required this.start, required this.end});
+  final double width;
+
+  const SpaceBetweenRowWidget(
+      {super.key, required this.start, required this.end, this.width = 113});
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +21,28 @@ class SpaceBetweenRowWidget extends StatelessWidget {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              start,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: Colors.black87.withOpacity(0.5),
+            Container(
+              width: width,
+              child: Text(
+                start,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black87.withOpacity(0.5),
+                ),
               ),
             ),
-            Text(
-              end,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
+            Expanded(
+              child: Text(
+                textAlign: TextAlign.end,
+                end,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
               ),
             ),
           ],
