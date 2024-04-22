@@ -47,16 +47,19 @@ class NotificationItem {
   bool? isRead;
   String? status;
   String? updatedAt;
+  String? title;
   Account? account;
 
-  NotificationItem(
-      {this.content,
-      this.createdAt,
-      this.id,
-      this.isRead,
-      this.status,
-      this.updatedAt,
-      this.account});
+  NotificationItem({
+    this.content,
+    this.createdAt,
+    this.id,
+    this.isRead,
+    this.status,
+    this.updatedAt,
+    this.account,
+    this.title,
+  });
 
   NotificationItem.fromJson(Map<String, dynamic> json) {
     content = json['content'];
@@ -65,6 +68,7 @@ class NotificationItem {
     isRead = json['isRead'];
     status = json['status'];
     updatedAt = json['updatedAt'];
+    title = json['title'];
     account =
         json['account'] != null ? Account?.fromJson(json['account']) : null;
   }
@@ -78,6 +82,7 @@ class NotificationItem {
     data['status'] = status;
     data['updatedAt'] = updatedAt;
     data['account'] = account!.toJson();
+    data['title'] = title;
     return data;
   }
 }
@@ -89,12 +94,13 @@ class Pagination {
   int? totalOfElements;
   int? totalOfPages;
 
-  Pagination(
-      {this.currentPage,
-      this.pageSize,
-      this.sort,
-      this.totalOfElements,
-      this.totalOfPages});
+  Pagination({
+    this.currentPage,
+    this.pageSize,
+    this.sort,
+    this.totalOfElements,
+    this.totalOfPages,
+  });
 
   Pagination.fromJson(Map<String, dynamic> json) {
     currentPage = json['currentPage'];

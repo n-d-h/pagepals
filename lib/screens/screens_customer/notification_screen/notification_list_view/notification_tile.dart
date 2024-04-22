@@ -42,7 +42,7 @@ class NotificationTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Pagepal Notification",
+              notification.title ?? "",
               style: TextStyle(
                 fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
                 fontSize: 14,

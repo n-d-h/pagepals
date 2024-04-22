@@ -9,6 +9,7 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/question_model.dart';
 import 'package:pagepals/models/reader_request_model.dart';
 import 'package:pagepals/providers/reader_request_provider.dart';
+import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_pending_screen/reader_pending_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_step1.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_step2.dart';
@@ -343,7 +344,7 @@ class _ReaderRequestScreenState extends State<ReaderRequestScreen> {
                               Navigator.of(context).push(
                                 PageTransition(
                                   type: PageTransitionType.fade,
-                                  child: const ReaderPendingScreen(),
+                                  child: const MenuItemScreen(),
                                   duration: const Duration(milliseconds: 300),
                                 ),
                               );

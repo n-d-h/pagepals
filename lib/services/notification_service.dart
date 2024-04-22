@@ -14,6 +14,7 @@ class NotificationService {
           page: $page
           pageSize: $pageSize
           sort: "desc"
+          notificationRole: CUSTOMER
         ) {
           list {
             content
@@ -22,6 +23,7 @@ class NotificationService {
             isRead
             status
             updatedAt
+            title
             account {
               id
               customer {

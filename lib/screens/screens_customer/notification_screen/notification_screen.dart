@@ -155,7 +155,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   list[index].isRead = true;
                   unreadCount = unreadCount! - 1;
                 });
-                context.read<NotificationProvider>().decrement();
+                context.read<NotificationProvider>().setCount(unreadCount!);
                 Future.delayed(Duration.zero, () async {
                   await readNotification(id);
                 });

@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/helpers/report_reson_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
@@ -13,6 +19,8 @@ import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/review_widgets/review_widget.dart';
 import 'package:pagepals/services/book_service.dart';
 import 'package:pagepals/services/reader_service.dart';
+import 'package:pagepals/widgets/report_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileOverviewScreen extends StatefulWidget {
   final String readerId;
@@ -40,14 +48,15 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
   ReaderProfile? reader = ReaderProfile();
   BookModel? bookModel;
   CommentModel? commentModel;
+  AccountModel? accountModel;
 
   @override
   void initState() {
     super.initState();
-    // readerId = widget.readerId;
     getReaderProfile(widget.readerId);
     getReaderBooks(widget.readerId);
     getListReaderComment(widget.readerId);
+    getAccount();
   }
 
   @override
@@ -77,9 +86,22 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
     });
   }
 
+  Future<void> getAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String accountString = prefs.getString('account') ?? '';
+    if (accountString.isNotEmpty) {
+      var accountMap = json.decoder.convert(accountString);
+      if (accountMap['id'] != null) {
+        var account = AccountModel.fromJson(accountMap);
+        setState(() {
+          accountModel = account;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // List<Book> books = bookModels.map((e) => e.book!).toList();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -98,35 +120,48 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
           ),
           centerTitle: true,
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 0.0),
-              child: DropdownButton(
-                icon: const Icon(Icons.more_vert_outlined),
-                iconSize: 30,
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Main Page',
-                    child: Text('Go to Main Page'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Report',
-                    child: Text('Report'),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value == 'Report') {
-                    // Handle the first action
-                  } else if (value == 'Main Page') {
-                    pauseVideo();
-                    // Navigator.of(context).pop();
-                    Navigator.of(context).push(PageTransition(
-                      type: PageTransitionType.fade,
-                      child: const MenuItemScreen(index: 0),
-                      duration: const Duration(milliseconds: 300),
-                    ));
-                  }
-                },
-                underline: Container(),
+            Visibility(
+              visible: accountModel != null,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 0.0),
+                child: DropdownButton(
+                  icon: const Icon(Icons.more_vert_outlined),
+                  iconSize: 30,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'Main Page',
+                      child: Text('Go to Main Page'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Report',
+                      child: Text('Report'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value == 'Report') {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ReportDialogWidget(
+                            readerId: widget.readerId,
+                            accountModel: accountModel,
+                            listReportReasons: reportReasons,
+                            type: 'READER',
+                          );
+                        },
+                      );
+                    } else if (value == 'Main Page') {
+                      pauseVideo();
+                      // Navigator.of(context).pop();
+                      Navigator.of(context).push(PageTransition(
+                        type: PageTransitionType.fade,
+                        child: const MenuItemScreen(index: 0),
+                        duration: const Duration(milliseconds: 300),
+                      ));
+                    }
+                  },
+                  underline: Container(),
+                ),
               ),
             ),
             Padding(
@@ -146,7 +181,9 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           controller: ScrollController(),
           // padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: reader?.profile == null || bookModel == null
+          child: reader?.profile == null ||
+                  bookModel == null ||
+                  accountModel == null
               ? SizedBox(
                   height: MediaQuery.of(context).size.height - 100,
                   child: Column(
@@ -172,12 +209,13 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                     ),
                     ProfileInfoLine(reader: reader, pauseVideo: pauseVideo),
                     if (bookModel != null)
-                    ProfileBookCollection(
-                        books: bookModel!.list!
-                            .map((e) => e.book ?? Book(id: ''))
-                            .toList()),
+                      ProfileBookCollection(
+                          books: bookModel!.list!
+                              .map((e) => e.book ?? Book(id: ''))
+                              .toList()),
                     ProfileReviewWidget(reader: reader, comment: commentModel),
-                    if (bookModel!.list!.isNotEmpty && bookModel!.list!.first.book != null)
+                    if (bookModel!.list!.isNotEmpty &&
+                        bookModel!.list!.first.book != null)
                       ProfileBookingButton(
                         reader: reader,
                         pauseVideo: pauseVideo,
