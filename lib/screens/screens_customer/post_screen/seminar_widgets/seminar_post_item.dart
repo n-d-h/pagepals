@@ -207,36 +207,8 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
           ),
           const SizedBox(height: 8.0),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    interested = !interested;
-                    interested ? interestedCount++ : interestedCount--;
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      interested
-                          ? const Icon(
-                              Icons.star_rounded,
-                              color: Colors.orange,
-                            )
-                          : const Icon(Icons.star_border_rounded),
-                      const SizedBox(width: 4.0),
-                      Text(
-                        '$interestedCount Interested',
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               InkWell(
                 onTap: () {
                   showDialog(

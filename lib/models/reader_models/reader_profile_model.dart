@@ -30,13 +30,11 @@ class Profile {
   String? audioDescriptionUrl;
   String? countryAccent;
   String? description;
-  double? experience;
   String? genre;
   String? id;
   String? introductionVideoUrl;
   String? language;
   int? rating;
-  String? tags;
   int? totalOfBookings;
   int? totalOfReviews;
   String? avatarUrl;
@@ -47,13 +45,11 @@ class Profile {
       this.audioDescriptionUrl,
       this.countryAccent,
       this.description,
-      this.experience,
       this.genre,
       this.id,
       this.introductionVideoUrl,
       this.language,
       this.rating,
-      this.tags,
       this.totalOfBookings,
       this.totalOfReviews,
       this.avatarUrl});
@@ -65,13 +61,11 @@ class Profile {
     audioDescriptionUrl = json['audioDescriptionUrl'];
     countryAccent = json['countryAccent'];
     description = json['description'];
-    experience = json['experience'];
     genre = json['genre'];
     id = json['id'];
     introductionVideoUrl = json['introductionVideoUrl'];
     language = json['language'];
     rating = json['rating'];
-    tags = json['tags'];
     totalOfBookings = json['totalOfBookings'];
     totalOfReviews = json['totalOfReviews'];
     avatarUrl = json['avatarUrl'];
@@ -86,13 +80,11 @@ class Profile {
     data['audioDescriptionUrl'] = this.audioDescriptionUrl;
     data['countryAccent'] = this.countryAccent;
     data['description'] = this.description;
-    data['experience'] = this.experience;
     data['genre'] = this.genre;
     data['id'] = this.id;
     data['introductionVideoUrl'] = this.introductionVideoUrl;
     data['language'] = this.language;
     data['rating'] = this.rating;
-    data['tags'] = this.tags;
     data['totalOfBookings'] = this.totalOfBookings;
     data['totalOfReviews'] = this.totalOfReviews;
     data['avatarUrl'] = this.avatarUrl;

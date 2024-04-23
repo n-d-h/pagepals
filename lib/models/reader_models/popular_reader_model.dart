@@ -3,7 +3,6 @@ class PopularReader {
   int? rating;
   String? countryAccent;
   String? description;
-  double? experience;
   String? genre;
   String? id;
   String? avatarUrl;
@@ -13,27 +12,26 @@ class PopularReader {
   int? totalOfReviews;
   Account? account;
 
-  PopularReader(
-      {this.language,
-        this.rating,
-        this.countryAccent,
-        this.description,
-        this.experience,
-        this.genre,
-        this.id,
-        this.avatarUrl,
-        this.nickname,
-        this.services,
-        this.introductionVideoUrl,
-        this.totalOfReviews,
-        this.account});
+  PopularReader({
+    this.language,
+    this.rating,
+    this.countryAccent,
+    this.description,
+    this.genre,
+    this.id,
+    this.avatarUrl,
+    this.nickname,
+    this.services,
+    this.introductionVideoUrl,
+    this.totalOfReviews,
+    this.account,
+  });
 
   PopularReader.fromJson(Map<String, dynamic> json) {
     language = json['language'];
     rating = json['rating'];
     countryAccent = json['countryAccent'];
     description = json['description'];
-    experience = json['experience'];
     genre = json['genre'];
     id = json['id'];
     avatarUrl = json['avatarUrl'];
@@ -47,7 +45,7 @@ class PopularReader {
     introductionVideoUrl = json['introductionVideoUrl'];
     totalOfReviews = json['totalOfReviews'];
     account =
-    json['account'] != null ? new Account.fromJson(json['account']) : null;
+        json['account'] != null ? new Account.fromJson(json['account']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -56,7 +54,6 @@ class PopularReader {
     data['rating'] = this.rating;
     data['countryAccent'] = this.countryAccent;
     data['description'] = this.description;
-    data['experience'] = this.experience;
     data['genre'] = this.genre;
     data['id'] = this.id;
     data['avatarUrl'] = this.avatarUrl;
