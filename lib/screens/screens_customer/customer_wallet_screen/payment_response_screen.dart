@@ -25,7 +25,6 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
   void initState() {
     super.initState();
     handleUpdateWallet(widget.data);
-    updateAccount();
   }
 
   void handleUpdateWallet(Map<String, String>? data) async {
@@ -58,9 +57,7 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
       signature,
       transId,
     );
-  }
 
-  Future<void> updateAccount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accountString = prefs.getString('account');
     String accessToken = prefs.getString('accessToken')!;

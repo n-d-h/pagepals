@@ -51,8 +51,11 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    dob = Utils.formatDateTime(widget.account?.customer?.dob?.substring(0, 10) ?? '');
-    fullNameController.text = widget.account?.fullName ?? '';
+    dob = widget.account?.customer?.dob == null
+        ? ''
+        : Utils.formatDateTime(
+            widget.account?.customer?.dob?.substring(0, 10) ?? '');
+    fullNameController.text = widget.account?.customer?.fullName ?? '';
     dobController.text = dob ?? '';
     genderController.text = widget.account?.customer?.gender ?? '';
     fullName = widget.account?.fullName ?? '';
@@ -296,7 +299,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
 
                         String url = widget.account?.customer?.imageUrl ?? '';
 
-                        if(_selectedImage != null) {
+                        if (_selectedImage != null) {
                           url = await FileStorageService.uploadImage(
                             _selectedImage!,
                           );

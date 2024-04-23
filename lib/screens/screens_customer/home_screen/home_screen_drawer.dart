@@ -137,17 +137,6 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
-            title: Text(AppLocalizations.of(context)!.appInterest),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigate to interests screen
-            },
-          ),
           const Divider(),
           ListTile(
             title: Text(
@@ -208,17 +197,6 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.settings,
-              color: Colors.grey,
-            ),
-            title: Text(AppLocalizations.of(context)!.appGeneral),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigate to general settings screen
-            },
-          ),
-          ListTile(
-            leading: const Icon(
               Icons.notifications,
               color: Colors.brown,
             ),
@@ -253,17 +231,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                   ),
                 );
               } else if (account?.reader?.id != null) {
-                // Navigator.push(
-                //   context,
-                //   PageTransition(
-                //     child: ReaderMainScreen(
-                //       accountModel: account!,
-                //     ),
-                //     type: PageTransitionType.rightToLeft,
-                //     duration: const Duration(milliseconds: 300),
-                //   ),
-                // );
-                Navigator.pushAndRemoveUntil(
+                Navigator.push(
                   context,
                   PageTransition(
                     child: ReaderMainScreen(
@@ -272,7 +240,6 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                     type: PageTransitionType.rightToLeft,
                     duration: const Duration(milliseconds: 300),
                   ),
-                  (route) => false,
                 );
               } else {
                 Navigator.push(

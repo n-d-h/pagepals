@@ -11,6 +11,7 @@ import 'package:pagepals/screens/screens_authorization/signin_screen/signin_main
 import 'package:pagepals/screens/screens_authorization/signup_screen/verify_email.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
+import 'package:pagepals/services/firebase_message_service.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -152,6 +153,20 @@ class _SignupScreenState extends State<SignupScreen> {
                               AccountTokens? accountTokens =
                                   await AuthenService.loginWithGoogle(
                                       googleIdToken!);
+
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              String? fcmToken = prefs.getString('fcmToken');
+
+                              if (fcmToken == null) {
+                                FirebaseMessageService firebaseMessageService =
+                                    FirebaseMessageService();
+                                await firebaseMessageService.initialize();
+                                fcmToken =
+                                    await firebaseMessageService.getFCMToken();
+                                prefs.setString('fcmToken', fcmToken!);
+                              }
+
                               // Handle successful login here
                               if (accountTokens!.accessToken != null) {
                                 SharedPreferences prefs =

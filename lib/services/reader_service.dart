@@ -24,7 +24,6 @@ class ReaderService {
           rating
           countryAccent
           description
-          experience
           genre
           id
           avatarUrl
@@ -81,13 +80,11 @@ class ReaderService {
               audioDescriptionUrl
               countryAccent
               description
-              experience
               genre
               id
               introductionVideoUrl
               language
               rating
-              tags
               totalOfBookings
               totalOfReviews
               avatarUrl
@@ -132,7 +129,6 @@ class ReaderService {
         createdAt
         deletedAt
         description
-        experience
         genre
         id
         avatarUrl
@@ -141,7 +137,6 @@ class ReaderService {
         nickname
         rating
         status
-        tags
         totalOfBookings
         totalOfReviews
         updatedAt

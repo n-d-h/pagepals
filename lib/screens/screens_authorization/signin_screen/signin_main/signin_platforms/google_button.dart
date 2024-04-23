@@ -9,6 +9,7 @@ import 'package:pagepals/models/authen_models/account_tokens.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
+import 'package:pagepals/services/firebase_message_service.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,6 +57,19 @@ class GoogleSignIn extends StatelessWidget {
 
               AccountTokens? accountTokens =
                   await AuthenService.loginWithGoogle(googleIdToken!);
+
+              SharedPreferences prefs =
+              await SharedPreferences.getInstance();
+              String? fcmToken = prefs.getString('fcmToken');
+
+              if (fcmToken == null) {
+                FirebaseMessageService firebaseMessageService =
+                    FirebaseMessageService();
+                await firebaseMessageService.initialize();
+                fcmToken = await firebaseMessageService.getFCMToken();
+                prefs.setString('fcmToken', fcmToken!);
+              }
+
               // Handle successful login here
               if (accountTokens!.accessToken != null) {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
