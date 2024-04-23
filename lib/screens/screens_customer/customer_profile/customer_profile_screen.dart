@@ -33,8 +33,10 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
           AccountModel.fromJson(json.decoder.convert(accountString));
       setState(() {
         account = accountModel;
-        dob = Utils.formatDate(
-            accountModel.customer?.dob?.substring(0, 10) ?? '');
+        dob = accountModel.customer?.dob == null
+            ? ''
+            : Utils.formatDate(
+                accountModel.customer?.dob?.substring(0, 10) ?? '');
       });
     }
   }

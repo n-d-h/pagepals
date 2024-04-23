@@ -137,17 +137,6 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
-            title: Text(AppLocalizations.of(context)!.appInterest),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigate to interests screen
-            },
-          ),
           const Divider(),
           ListTile(
             title: Text(
@@ -205,17 +194,6 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 );
               }).toList(),
             ),
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.settings,
-              color: Colors.grey,
-            ),
-            title: Text(AppLocalizations.of(context)!.appGeneral),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigate to general settings screen
-            },
           ),
           ListTile(
             leading: const Icon(

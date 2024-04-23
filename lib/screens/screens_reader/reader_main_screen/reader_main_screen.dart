@@ -860,7 +860,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                           ),
                                           const SizedBox(height: 5),
                                           const Text(
-                                            'My Posts',
+                                            'Help Center',
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 13,
