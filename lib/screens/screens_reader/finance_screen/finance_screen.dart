@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_history_screen.dart';
+import 'package:pagepals/screens/screens_reader/finance_screen/finance_withdraw_scren.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/transaction_money_widget.dart';
 
 class FinanceScreen extends StatefulWidget {
@@ -89,10 +90,11 @@ class _FinanceScreenState extends State<FinanceScreen> {
                       const Text(
                         ' VND',
                         style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.yellow),
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.yellow,
+                        ),
                       ),
                     ],
                   ),
@@ -107,7 +109,15 @@ class _FinanceScreenState extends State<FinanceScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      print('Receive');
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.bottomToTop,
+                          child: FinanceWithdrawScreen(
+                            accountModel: widget.accountModel,
+                          ),
+                        ),
+                      );
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -127,11 +137,11 @@ class _FinanceScreenState extends State<FinanceScreen> {
                         children: [
                           Transform.rotate(
                             angle: 3.14,
-                            child: TransactionMoneyWidget.sendButton(),
+                            child: TransactionMoneyWidget.receiveButton(),
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            'Receive',
+                            'Withdraw',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
