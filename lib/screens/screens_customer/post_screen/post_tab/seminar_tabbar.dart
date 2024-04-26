@@ -151,6 +151,7 @@ class _SeminarTabbarState extends State<SeminarTabbar> {
                             context,
                             PageTransition(
                               child: SeminarPostDetailScreen(
+                                seminarId: seminarItem.id ?? '',
                                 hostName: seminarItem.reader?.nickname ?? '',
                                 seminarTitle: seminarItem.title ?? '',
                                 date: date,
@@ -169,6 +170,7 @@ class _SeminarTabbarState extends State<SeminarTabbar> {
                           );
                         },
                         child: SeminarPostItem(
+                          seminarId: seminarItem.id ?? '',
                           hostName: seminarItem.reader?.nickname ?? '',
                           seminarTitle: seminarItem.title ?? '',
                           date: date,

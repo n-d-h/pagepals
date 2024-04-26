@@ -132,15 +132,6 @@ class AuthenService {
               id
               cash
               tokenAmount
-              transactions {
-                amount
-                transactionType
-                status
-                id
-                description
-                currency
-                createAt
-              }
             }
           }
         }

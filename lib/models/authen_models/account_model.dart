@@ -135,20 +135,13 @@ class Wallet {
   String? id;
   double? cash;
   int? tokenAmount;
-  List<Transaction?>? transactions;
 
-  Wallet({this.id, this.cash, this.tokenAmount, this.transactions});
+  Wallet({this.id, this.cash, this.tokenAmount});
 
   Wallet.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     cash = json['cash'];
     tokenAmount = json['tokenAmount'];
-    if (json['transactions'] != null) {
-      transactions = <Transaction>[];
-      json['transactions'].forEach((v) {
-        transactions!.add(Transaction.fromJson(v));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
@@ -156,9 +149,6 @@ class Wallet {
     data['id'] = id;
     data['cash'] = cash;
     data['tokenAmount'] = tokenAmount;
-    data['transactions'] = transactions != null
-        ? transactions!.map((v) => v?.toJson()).toList()
-        : null;
     return data;
   }
 }
@@ -172,14 +162,15 @@ class Transaction {
   String? currency;
   String? createAt;
 
-  Transaction(
-      {this.amount,
-      this.transactionType,
-      this.status,
-      this.id,
-      this.description,
-      this.currency,
-      this.createAt});
+  Transaction({
+    this.amount,
+    this.transactionType,
+    this.status,
+    this.id,
+    this.description,
+    this.currency,
+    this.createAt,
+  });
 
   Transaction.fromJson(Map<String, dynamic> json) {
     amount = json['amount'];
