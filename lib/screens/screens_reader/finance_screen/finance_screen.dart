@@ -75,28 +75,13 @@ class _FinanceScreenState extends State<FinanceScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${widget.accountModel?.wallet?.cash ?? 0}',
-                        style: const TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 45,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Text(
-                        ' VND',
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.yellow,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    '\$ ${widget.accountModel?.wallet?.cash ?? 0}',
+                    style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: 45,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),

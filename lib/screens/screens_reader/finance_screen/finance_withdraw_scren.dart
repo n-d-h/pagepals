@@ -183,7 +183,7 @@ class _FinanceWithdrawScreenState extends State<FinanceWithdrawScreen> {
                       ),
                     ),
                     Text(
-                      '${accountModelInside?.wallet?.cash ?? 0} Pals',
+                      '\$ ${accountModelInside?.wallet?.cash ?? 0}',
                       style: const TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 20,
@@ -390,7 +390,7 @@ class _FinanceWithdrawScreenState extends State<FinanceWithdrawScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Amount: ${item.amount} Pals',
+                                          'Amount: \$ ${item.amount}',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
