@@ -86,6 +86,83 @@ class SeminarService {
     return SeminarModel.fromJson(data);
   }
 
+  static Future<SeminarModel> getAllSeminarsNotJoinedByCustomer(
+      int page, int pageSize, String customerId) async {
+    String query = '''
+      query MyQuery {
+        getAllSeminarsNotJoinByCustomerId(
+          customerId: "$customerId",
+          page: $page, 
+          pageSize: $pageSize, 
+          sort: "desc"
+        ) {
+          list {
+            activeSlot
+            createdAt
+            description
+            duration
+            id
+            imageUrl
+            limitCustomer
+            price
+            startTime
+            status
+            title
+            updatedAt
+            reader {
+              id
+              nickname
+              avatarUrl
+            }
+            book {
+              id
+              authors {
+                id
+                name
+              }
+              categories {
+                id
+                name
+              }
+              description
+              language
+              pageCount
+              publishedDate
+              publisher
+              thumbnailUrl
+              smallThumbnailUrl
+              title
+            }
+          }
+          pagination {
+            currentPage
+            pageSize
+            sort
+            totalOfElements
+            totalOfPages
+          }
+        }
+        
+      }
+    ''';
+
+    QueryResult queryResult = await graphQLClient.query(QueryOptions(
+      document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+
+    if (queryResult.hasException) {
+      throw Exception('Error: ${queryResult.exception.toString()}');
+    }
+
+    var data = queryResult.data!['getAllSeminarsNotJoinByCustomerId'];
+    if (data == null) {
+      throw Exception('Error: No data found');
+    }
+
+    return SeminarModel.fromJson(data);
+  }
+
   static Future<SeminarModel> getAllSeminars(int page, int pageSize) async {
     String query = '''
       query MyQuery {
@@ -150,7 +227,7 @@ class SeminarService {
 
     var data = queryResult.data!['getAllSeminars'];
     if (data == null) {
-      throw Exception('Error: No data found');
+      return SeminarModel(list: [], pagination: null);
     }
 
     return SeminarModel.fromJson(data);

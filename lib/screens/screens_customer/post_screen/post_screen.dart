@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/seminar_model.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_item.dart';
 import 'package:pagepals/services/seminar_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 class PostScreen extends StatefulWidget {
@@ -46,7 +50,13 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Future<void> _fetchAllSeminar() async {
-    var data = await SeminarService.getAllSeminars(currentPage, 10);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String accountString = prefs.getString('account') ?? '';
+    AccountModel accountModel = AccountModel.fromJson(jsonDecode(accountString));
+    String customerId = accountModel.customer?.id ?? '';
+
+    var data = await SeminarService.getAllSeminarsNotJoinedByCustomer(
+        currentPage, 10, customerId);
     setState(() {
       seminarModel = data;
       list.addAll(data.list!);
@@ -58,12 +68,18 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Future<void> _fetchNextSeminar() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String accountString = prefs.getString('account') ?? '';
+    AccountModel accountModel = AccountModel.fromJson(jsonDecode(accountString));
+    String customerId = accountModel.customer?.id ?? '';
+
     if (!isLoadingNextPage && hasMorePages) {
       setState(() {
         isLoadingNextPage = true;
       });
       try {
-        var data = await SeminarService.getAllSeminars(currentPage, 10);
+        var data = await SeminarService.getAllSeminarsNotJoinedByCustomer(
+            currentPage, 10, customerId);
         if (data.list!.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -167,8 +183,7 @@ class _PostScreenState extends State<PostScreen> {
                               PageTransition(
                                 child: SeminarPostDetailScreen(
                                   seminarId: seminarItem.id ?? '',
-                                  hostName:
-                                      seminarItem.reader?.nickname ?? '',
+                                  hostName: seminarItem.reader?.nickname ?? '',
                                   seminarTitle: seminarItem.title ?? '',
                                   date: date,
                                   time: time,
@@ -179,8 +194,7 @@ class _PostScreenState extends State<PostScreen> {
                                   bannerImageUrl: seminarItem.imageUrl ??
                                       'https://via.placeholder.com/150',
                                   activeSlot: seminarItem.activeSlot ?? 0,
-                                  limitCustomer:
-                                      seminarItem.limitCustomer ?? 0,
+                                  limitCustomer: seminarItem.limitCustomer ?? 0,
                                   price: seminarItem.price ?? 0,
                                 ),
                                 type: PageTransitionType.rightToLeft,
@@ -201,6 +215,18 @@ class _PostScreenState extends State<PostScreen> {
                             activeSlot: seminarItem.activeSlot ?? 0,
                             limitCustomer: seminarItem.limitCustomer ?? 0,
                             price: seminarItem.price ?? 0,
+                            onSeminarJoinedDone: (bool result) {
+                              if(result) {
+                                setState(() {
+                                  seminarModel = null;
+                                  list.clear();
+                                  currentPage = 0;
+                                  hasMorePages = true;
+                                  isLoadingNextPage = false;
+                                });
+                                _fetchAllSeminar();
+                              }
+                            },
                           ),
                         );
                       },

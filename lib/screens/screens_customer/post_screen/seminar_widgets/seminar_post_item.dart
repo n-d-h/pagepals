@@ -22,6 +22,7 @@ class SeminarPostItem extends StatefulWidget {
   final int price;
   final int limitCustomer;
   final int activeSlot;
+  final Function(bool) onSeminarJoinedDone;
 
   const SeminarPostItem({
     Key? key,
@@ -36,6 +37,7 @@ class SeminarPostItem extends StatefulWidget {
     required this.price,
     required this.limitCustomer,
     required this.activeSlot,
+    required this.onSeminarJoinedDone,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
 
     bool results = await SeminarService.joinSeminar(customerId, widget.seminarId);
     if (results) {
+      widget.onSeminarJoinedDone(true);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Join seminar successfully'),
