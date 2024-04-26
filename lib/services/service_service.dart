@@ -205,10 +205,53 @@ class ServiceService {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to update service');
+      return false;
     }
 
     return result.data?['updateService']?['id'] != null;
+  }
+
+  static Future<bool> keepBookingAndUpdateService(
+      String serviceId,
+      String serviceTypeId,
+      String description,
+      double price,
+      ) async {
+    String mutation = '''
+      mutation {
+        keepBookingAndUpdateService(
+          id: "$serviceId", 
+          service: {
+            description: "$description", 
+            price: $price, 
+            serviceTypeId: "$serviceTypeId",
+          }
+        ) {
+          id
+        }
+      }
+    ''';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('accessToken')!;
+
+    GraphQLClient clientWithToken = GraphQLClient(
+      link: AuthLink(getToken: () async => 'Bearer $token')
+          .concat(graphQLClient.link),
+      cache: GraphQLCache(store: HiveStore()),
+    );
+
+    final QueryResult result = await clientWithToken.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to update service');
+    }
+
+    return result.data?['keepBookingAndUpdateService']?['id'] != null;
   }
 
   static Future<bool> deleteService(String serviceId) async {
@@ -234,10 +277,39 @@ class ServiceService {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to delete service');
+      return false;
     }
 
     return result.data?['deleteService'] != null;
+  }
+
+  static Future<bool> keepBookingAndDeleteService(String serviceId) async {
+    String mutation = '''
+      mutation {
+        keepBookingAndDeleteService(id: "$serviceId")
+      }
+    ''';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('accessToken')!;
+
+    GraphQLClient clientWithToken = GraphQLClient(
+      link: AuthLink(getToken: () async => 'Bearer $token')
+          .concat(graphQLClient.link),
+      cache: GraphQLCache(store: HiveStore()),
+    );
+
+    final QueryResult result = await clientWithToken.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to delete service');
+    }
+
+    return result.data?['keepBookingAndDeleteService'] != null;
   }
 
   static Future<BookServiceModel> getBookService(

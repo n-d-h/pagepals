@@ -17,6 +17,7 @@ class UpdateServiceScreen extends StatefulWidget {
   final String serviceName;
   final String price;
   final String readerId;
+  final Function(bool?)? onUpdated;
 
   const UpdateServiceScreen(
       {super.key,
@@ -25,7 +26,9 @@ class UpdateServiceScreen extends StatefulWidget {
       required this.serviceType,
       required this.serviceName,
       required this.price,
-      required this.serviceId, required this.serviceTypeId});
+      required this.serviceId,
+      required this.serviceTypeId,
+      this.onUpdated});
 
   @override
   State<UpdateServiceScreen> createState() => _CreateServiceState();
@@ -148,6 +151,8 @@ class _CreateServiceState extends State<UpdateServiceScreen> {
                   if (updated) {
                     Future.delayed(const Duration(milliseconds: 100), () {
                       Navigator.pop(context);
+                      widget.onUpdated!(true);
+                      Navigator.pop(context);
                       QuickAlert.show(
                         context: context,
                         type: QuickAlertType.success,
@@ -156,15 +161,69 @@ class _CreateServiceState extends State<UpdateServiceScreen> {
                       );
                     });
                   } else {
-                    Future.delayed(const Duration(milliseconds: 100), () {
-                      Navigator.pop(context);
-                      QuickAlert.show(
+                    showDialog(
                         context: context,
-                        type: QuickAlertType.error,
-                        title: 'Update Failed',
-                        text: 'Failed to update service. Please try again.',
-                      );
-                    });
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Pending Booking found'),
+                            content: const Text(
+                                'You will still have to complete all the '
+                                'pending booking after updating this service.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return Center(
+                                        child: LoadingAnimationWidget
+                                            .staggeredDotsWave(
+                                          color: Colors.greenAccent,
+                                          size: 60,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  ServiceService.keepBookingAndUpdateService(
+                                          widget.serviceId,
+                                          widget.serviceTypeId,
+                                          description,
+                                          price)
+                                      .then((value) {
+                                    Navigator.of(context).pop();
+                                    if (value) {
+                                      widget.onUpdated!(true);
+                                      Navigator.pop(context);
+                                      QuickAlert.show(
+                                        context: context,
+                                        type: QuickAlertType.success,
+                                        title: 'Service Deleted',
+                                        text:
+                                            'Service has been deleted successfully',
+                                      );
+                                    } else {
+                                      QuickAlert.show(
+                                        context: context,
+                                        type: QuickAlertType.error,
+                                        title: 'Failed to update service',
+                                        text: 'Failed to update service',
+                                      );
+                                    }
+                                  });
+                                },
+                                child: const Text('OK'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                            ],
+                          );
+                        });
                   }
                 },
                 child: const Text('Update Service'),

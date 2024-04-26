@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_history_screen.dart';
@@ -92,89 +94,96 @@ class _FinanceScreenState extends State<FinanceScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.bottomToTop,
-                          child: FinanceWithdrawScreen(
-                            accountModel: widget.accountModel,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 10,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(15),
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: Row(
-                        children: [
-                          Transform.rotate(
-                            angle: 3.14,
-                            child: TransactionMoneyWidget.receiveButton(),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Withdraw',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
                           context,
                           PageTransition(
                             type: PageTransitionType.bottomToTop,
-                            child: FinanceHistoryScreen(
+                            child: FinanceWithdrawScreen(
                               accountModel: widget.accountModel,
                             ),
-                          ));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 10,
-                            offset: Offset(0, 5),
                           ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(15),
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: Row(
-                        children: [
-                          TransactionMoneyWidget.transactionButton(),
-                          const SizedBox(width: 20),
-                          Text(
-                            'History',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade700,
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
                             ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(15),
+                        // width: MediaQuery.of(context).size.width * 0.4,
+                        child: Row(
+                          children: [
+                            Transform.rotate(
+                              angle: 3.14,
+                              child: TransactionMoneyWidget.receiveButton(),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Withdraw',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 30),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: FinanceHistoryScreen(
+                                accountModel: widget.accountModel,
+                              ),
+                            ));
+                      },
+                      child: Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 10,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
                           ),
-                        ],
+                          padding: const EdgeInsets.all(15),
+                          // width: MediaQuery.of(context).size.width * 0.4,
+                          child: Row(
+                            children: [
+                              TransactionMoneyWidget.transactionButton(),
+                              const SizedBox(width: 20),
+                              Text(
+                                'History',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),

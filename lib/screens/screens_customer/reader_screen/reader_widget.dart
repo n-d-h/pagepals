@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/models/reader_models/popular_reader_model.dart';
+import 'package:pagepals/models/reader_models/search_reader_model.dart';
 
 class ReaderWidget extends StatefulWidget {
   final Function() onTap;
-  final PopularReader reader;
+  final Reader reader;
 
   // String? teacherImage;
   // String? teacherName;

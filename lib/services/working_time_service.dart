@@ -81,4 +81,41 @@ class WorkingTimeService {
 
     return result.data?['createReaderWorkingTime'] != null;
   }
+
+  static Future<WorkingTimeModel?> getReaderWorkingTime(String readerId) async {
+    var query = '''
+    query {
+      getReaderWorkingTimes(readerId: "$readerId") {
+        workingDates {
+          date
+          timeSlots {
+            id
+            startTime
+          }
+        }
+      }
+    }
+    ''';
+
+    final clientWithToken = await AuthService.getGraphQLClientWithToken();
+
+    final QueryResult result = await clientWithToken.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to get working time');
+    }
+
+    var workingTimeData = result.data?['getReaderWorkingTimes'];
+
+    if (workingTimeData != null) {
+      return WorkingTimeModel.fromJson(workingTimeData);
+    }
+
+    return null;
+  }
 }
