@@ -183,6 +183,7 @@ class _SeminarTabbarState extends State<SeminarTabbar> {
                           activeSlot: seminarItem.activeSlot ?? 0,
                           limitCustomer: seminarItem.limitCustomer ?? 0,
                           price: seminarItem.price ?? 0,
+                          onSeminarJoinedDone: (bool result) {},
                         ),
                       );
                     },
