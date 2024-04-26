@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
+import 'package:pagepals/services/seminar_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SeminarPostItem extends StatefulWidget {
+  final String seminarId;
   final String hostName;
   final String seminarTitle;
   final String date;
@@ -19,6 +25,7 @@ class SeminarPostItem extends StatefulWidget {
 
   const SeminarPostItem({
     Key? key,
+    required this.seminarId,
     required this.hostName,
     required this.seminarTitle,
     required this.time,
@@ -38,6 +45,29 @@ class SeminarPostItem extends StatefulWidget {
 class _SeminarPostItemState extends State<SeminarPostItem> {
   int interestedCount = 0;
   bool interested = false;
+
+  Future<void> joinSeminar() async {
+    // Implement join seminar logic here
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? account = prefs.getString('account');
+    AccountModel? accountModel = AccountModel.fromJson(jsonDecode(account!));
+    String customerId = accountModel.customer?.id ?? '';
+
+    bool results = await SeminarService.joinSeminar(customerId, widget.seminarId);
+    if (results) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Join seminar successfully'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Join seminar failed'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +198,7 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                 Navigator.of(context).push(
                   PageTransition(
                     child: SeminarPostDetailScreen(
+                      seminarId: widget.seminarId,
                       hostName: widget.hostName,
                       seminarTitle: widget.seminarTitle,
                       date: widget.date,
@@ -215,10 +246,42 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Join Seminar'),
+                          title: Text(
+                            'Join Seminar',
+                            textAlign: TextAlign.center,
+                          ),
                           surfaceTintColor: Colors.white,
-                          content: Text(
-                              'Are you sure you want to join this seminar?'),
+                          content: Container(
+                            height: 150,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Are you sure you want to join this seminar?',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  'Price: \$${widget.price}',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  'Available: ${widget.activeSlot}/${widget.limitCustomer}',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -227,7 +290,8 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                               child: Text('No'),
                             ),
                             TextButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                await joinSeminar();
                                 Navigator.of(context).pop();
                               },
                               child: Text('Yes'),

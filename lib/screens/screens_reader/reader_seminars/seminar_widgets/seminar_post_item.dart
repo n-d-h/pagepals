@@ -276,6 +276,7 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                 Navigator.of(context).push(
                   PageTransition(
                     child: SeminarPostDetailScreen(
+                      seminarId: widget.id,
                       hostName: widget.hostName,
                       seminarTitle: widget.seminarTitle,
                       date: widget.date,

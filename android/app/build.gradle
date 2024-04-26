@@ -45,14 +45,14 @@ android {
         multiDexEnabled true
     }
 
-    signingConfigs {
-        release {
-            storeFile file('C:/Users/Lenovo/key.keystore')
-            storePassword 'android'
-            keyAlias 'key'
-            keyPassword 'android'
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file('C:/Users/Lenovo/key.keystore')
+//            storePassword 'android'
+//            keyAlias 'key'
+//            keyPassword 'android'
+//        }
+//    }
 
 //    signingConfigs {
 //        release {

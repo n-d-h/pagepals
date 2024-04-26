@@ -5,6 +5,7 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:unicons/unicons.dart';
 
 class SeminarPostDetailScreen extends StatelessWidget {
+  final String seminarId;
   final String hostName;
   final String seminarTitle;
   final String date;
@@ -18,6 +19,7 @@ class SeminarPostDetailScreen extends StatelessWidget {
 
   const SeminarPostDetailScreen({
     Key? key,
+    required this.seminarId,
     required this.hostName,
     required this.seminarTitle,
     required this.time,

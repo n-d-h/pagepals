@@ -166,6 +166,7 @@ class _PostScreenState extends State<PostScreen> {
                               context,
                               PageTransition(
                                 child: SeminarPostDetailScreen(
+                                  seminarId: seminarItem.id ?? '',
                                   hostName:
                                       seminarItem.reader?.nickname ?? '',
                                   seminarTitle: seminarItem.title ?? '',
@@ -187,6 +188,7 @@ class _PostScreenState extends State<PostScreen> {
                             );
                           },
                           child: SeminarPostItem(
+                            seminarId: seminarItem.id ?? '',
                             hostName: seminarItem.reader?.nickname ?? '',
                             seminarTitle: seminarItem.title ?? '',
                             date: date,

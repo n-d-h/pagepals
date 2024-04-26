@@ -313,4 +313,57 @@ class SeminarService {
 
     return result.data!['updateSeminar']?['id'] != null;
   }
+
+  static Future<bool> joinSeminar(String customerId, String seminarId) async {
+    String mutation = '''
+      mutation MyMutation {
+        joinSeminar(
+          customerId: "$customerId", 
+          seminarId: "$seminarId"
+        ) {
+          booking {
+            id
+            cancelReason
+            createAt
+            description
+            promotionCode
+            rating
+            review
+            startAt
+            totalPrice
+            updateAt
+          }
+          seminar {
+            activeSlot
+            createdAt
+            description
+            duration
+            id
+            imageUrl
+            limitCustomer
+            price
+            startTime
+            status
+            title
+            updatedAt
+          }
+        }
+      }
+    ''';
+    QueryResult queryResult = await graphQLClient.query(QueryOptions(
+      document: gql(mutation),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+
+    if (queryResult.hasException) {
+      throw Exception('Error: ${queryResult.exception.toString()}');
+    }
+
+    var data = queryResult.data!['joinSeminar'];
+    if (data == null) {
+      throw Exception('Error: No data found');
+    }
+
+    return data['booking'] != null;
+  }
 }
