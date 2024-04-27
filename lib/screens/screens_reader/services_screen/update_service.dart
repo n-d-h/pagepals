@@ -161,6 +161,7 @@ class _CreateServiceState extends State<UpdateServiceScreen> {
                       );
                     });
                   } else {
+                    Navigator.pop(context);
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -168,11 +169,24 @@ class _CreateServiceState extends State<UpdateServiceScreen> {
                             title: const Text('Pending Booking found'),
                             content: const Text(
                                 'You will still have to complete all the '
-                                'pending booking after updating this service.'),
+                                'pending bookings after updating this service.'),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.red,
+                                ),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: Colors.black,
+                                ),
+                                onPressed: () async {
                                   showDialog(
                                     context: context,
                                     barrierDismissible: false,
@@ -186,40 +200,43 @@ class _CreateServiceState extends State<UpdateServiceScreen> {
                                       );
                                     },
                                   );
-                                  ServiceService.keepBookingAndUpdateService(
+                                  bool result = await ServiceService
+                                      .keepBookingAndUpdateService(
                                           widget.serviceId,
                                           widget.serviceTypeId,
                                           description,
-                                          price)
-                                      .then((value) {
-                                    Navigator.of(context).pop();
-                                    if (value) {
+                                          price);
+                                  if (result) {
+                                    Future.delayed(
+                                        const Duration(milliseconds: 100), () {
                                       widget.onUpdated!(true);
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
                                       Navigator.pop(context);
                                       QuickAlert.show(
                                         context: context,
                                         type: QuickAlertType.success,
-                                        title: 'Service Deleted',
+                                        title: 'Service Updated',
                                         text:
-                                            'Service has been deleted successfully',
+                                            'Service has been updated successfully',
                                       );
-                                    } else {
+                                    });
+                                  } else {
+                                    Future.delayed(
+                                        const Duration(milliseconds: 100), () {
+                                      Navigator.pop(context);
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
                                       QuickAlert.show(
                                         context: context,
                                         type: QuickAlertType.error,
                                         title: 'Failed to update service',
                                         text: 'Failed to update service',
                                       );
-                                    }
-                                  });
+                                    });
+                                  }
                                 },
                                 child: const Text('OK'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Cancel'),
                               ),
                             ],
                           );

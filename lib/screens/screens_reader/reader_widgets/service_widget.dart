@@ -129,7 +129,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 OutlinedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Save the context in a variable
                     BuildContext dialogContext = context;
                     showDialog(
@@ -183,20 +183,28 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                                     widget.onUpdated!(true);
                                   } else {
                                     showDialog(
-                                        context: context,
+                                        context: dialogContext,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
                                             title: const Text(
                                                 'Pending Booking found'),
                                             content: const Text(
                                                 'You will still have to complete all the '
-                                                'pending booking after deleting this service.'),
+                                                'pending bookings after deleting this service.'),
                                             actions: [
                                               TextButton(
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.red,
+                                                ),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
                                                   showDialog(
-                                                    context: dialogContext,
+                                                    context: context,
                                                     barrierDismissible: false,
                                                     builder:
                                                         (BuildContext context) {
@@ -210,13 +218,17 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                                                       );
                                                     },
                                                   );
-                                                  ServiceService
-                                                          .keepBookingAndDeleteService(
-                                                              widget.id!)
-                                                      .then((value) {
-                                                    Navigator.of(dialogContext)
-                                                        .pop();
-                                                    if (value) {
+                                                  bool result = await ServiceService
+                                                      .keepBookingAndDeleteService(
+                                                          widget.id!);
+                                                  if (result) {
+                                                    Future.delayed(
+                                                        const Duration(
+                                                            milliseconds: 100),
+                                                        () {
+                                                      widget.onUpdated!(true);
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
                                                       QuickAlert.show(
                                                         context: dialogContext,
                                                         type: QuickAlertType
@@ -226,8 +238,14 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                                                         text:
                                                             'Service has been deleted successfully',
                                                       );
-                                                      widget.onUpdated!(true);
-                                                    } else {
+                                                    });
+                                                  } else {
+                                                    Future.delayed(
+                                                        const Duration(
+                                                            milliseconds: 100),
+                                                        () {
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
                                                       QuickAlert.show(
                                                         context: dialogContext,
                                                         type: QuickAlertType
@@ -237,16 +255,14 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                                                         text:
                                                             'Failed to delete service',
                                                       );
-                                                    }
-                                                  });
+                                                    });
+                                                  }
                                                 },
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.black,
+                                                  backgroundColor: Colors.white,
+                                                ),
                                                 child: const Text('OK'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text('Cancel'),
                                               ),
                                             ],
                                           );

@@ -1,15 +1,19 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
-import 'package:pagepals/models/book_models/customer_book.dart';
+import 'package:pagepals/models/book_models/customer_book.dart' as CusBook;
 import 'package:pagepals/models/google_book.dart';
 
 class BookService {
   static GraphQLClient graphQLClient = client!.value;
 
-  static Future<CustomerBook> getAllBooks(
-      String author, String categoryId,
-      int page, int pageSize, String search, String sort) async {
+  static Future<CusBook.CustomerBook> getAllBooks(
+      String author,
+      String categoryId,
+      int page,
+      int pageSize,
+      String search,
+      String sort) async {
     var query = '''
       query {
         getListBookForCustomer(
@@ -65,7 +69,13 @@ class BookService {
     final Map<String, dynamic>? booksData =
         result.data?['getListBookForCustomer'];
     if (booksData != null) {
-      return CustomerBook.fromJson(booksData);
+      if (booksData['list'].isEmpty) {
+        return CusBook.CustomerBook(
+          list: [CusBook.Book(id: null)],
+          pagination: null,
+        );
+      }
+      return CusBook.CustomerBook.fromJson(booksData);
     } else {
       throw Exception('Failed to parse books data');
     }

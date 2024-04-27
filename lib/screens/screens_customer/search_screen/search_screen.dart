@@ -96,6 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 if (isSearching) {
                                   // Clear the search text
                                   searchController.clear();
+                                  search = "";
                                   // Stop searching
                                   isSearching = false;
                                 } else {

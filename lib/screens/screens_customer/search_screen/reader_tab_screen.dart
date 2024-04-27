@@ -122,38 +122,45 @@ class _ReaderTabScreenState extends State<ReaderTabScreen> {
               ),
             ),
           )
-        : Scaffold(
-            backgroundColor: Colors.white,
-            body: ListView.builder(
-              controller: _scrollController,
-              itemCount: readers.length + (isLoadingNextPage ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == readers.length) {
-                  return Center(
-                    child: LoadingAnimationWidget.prograssiveDots(
-                      color: ColorHelper.getColor(ColorHelper.green),
-                      size: 50,
-                    ),
-                  );
-                } else {
-                  var reader = readers[index];
-                  return ReaderWidget(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: ProfileOverviewScreen(
-                            readerId: reader.id!,
-                          ),
+        : readers.first.id == null
+            ? Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: Text("No results found"),
+                ),
+              )
+            : Scaffold(
+                backgroundColor: Colors.white,
+                body: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: readers.length + (isLoadingNextPage ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == readers.length) {
+                      return Center(
+                        child: LoadingAnimationWidget.prograssiveDots(
+                          color: ColorHelper.getColor(ColorHelper.green),
+                          size: 50,
                         ),
                       );
-                    },
-                    reader: reader,
-                  );
-                }
-              },
-            ),
-          );
+                    } else {
+                      var reader = readers[index];
+                      return ReaderWidget(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: ProfileOverviewScreen(
+                                readerId: reader.id!,
+                              ),
+                            ),
+                          );
+                        },
+                        reader: reader,
+                      );
+                    }
+                  },
+                ),
+              );
   }
 }

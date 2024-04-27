@@ -6,7 +6,7 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
-import 'package:pagepals/models/reader_models/search_reader_model.dart';
+import 'package:pagepals/models/reader_models/search_reader_model.dart' as SearchReader;
 import 'package:pagepals/models/reader_request_model.dart';
 import 'package:pagepals/models/reader_transaction_model.dart';
 import 'package:pagepals/models/request_model.dart';
@@ -121,7 +121,7 @@ class ReaderService {
     }
   }
 
-  static Future<SearchReaderModel> getListReaders(
+  static Future<SearchReader.SearchReaderModel> getListReaders(
       String sort,
       String nickname,
       String language,
@@ -183,7 +183,13 @@ class ReaderService {
 
     final readersData = result.data?['getListReaders'];
     if (readersData != null) {
-      return SearchReaderModel.fromJson(readersData);
+      if(readersData?['list'].isEmpty) {
+        return SearchReader.SearchReaderModel(
+          list: [SearchReader.Reader(id: null)],
+          pagination: null,
+        );
+      }
+      return SearchReader.SearchReaderModel.fromJson(readersData);
     } else {
       throw Exception('Failed to load read Data');
     }
