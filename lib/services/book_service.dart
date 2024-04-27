@@ -84,7 +84,7 @@ class BookService {
   static Future<BookModel> getReaderBooks(String readerId) async {
     var query = '''
         query {
-          getReaderBooks(id: "8bd6001e-c19d-4e89-8be0-7f89e7cdaba8", 
+          getReaderBooks(id: "$readerId", 
             filter: {title: "", page: 0, pageSize: 10}) {
             list {
               book {
