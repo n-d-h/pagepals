@@ -22,7 +22,7 @@ class ServiceWidget extends StatefulWidget {
   final int? price;
   final String? rating;
   final String? totalOfRating;
-  final Function(bool?)? onDeleted;
+  final Function(bool?)? onUpdated;
 
   const ServiceWidget({
     super.key,
@@ -39,7 +39,7 @@ class ServiceWidget extends StatefulWidget {
     this.price,
     this.rating,
     this.totalOfRating,
-    this.onDeleted,
+    this.onUpdated,
   });
 
   @override
@@ -129,7 +129,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 OutlinedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Save the context in a variable
                     BuildContext dialogContext = context;
                     showDialog(
@@ -180,15 +180,93 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                                       text:
                                           'Service has been deleted successfully',
                                     );
-                                    widget.onDeleted!(true);
+                                    widget.onUpdated!(true);
                                   } else {
-                                    QuickAlert.show(
-                                      context: dialogContext,
-                                      type: QuickAlertType.error,
-                                      title: 'Delete Failed',
-                                      text:
-                                          'Failed to delete service. Please try again.',
-                                    );
+                                    showDialog(
+                                        context: dialogContext,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                'Pending Booking found'),
+                                            content: const Text(
+                                                'You will still have to complete all the '
+                                                'pending bookings after deleting this service.'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.red,
+                                                ),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  showDialog(
+                                                    context: context,
+                                                    barrierDismissible: false,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Center(
+                                                        child: LoadingAnimationWidget
+                                                            .staggeredDotsWave(
+                                                          color: Colors
+                                                              .greenAccent,
+                                                          size: 60,
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                  bool result = await ServiceService
+                                                      .keepBookingAndDeleteService(
+                                                          widget.id!);
+                                                  if (result) {
+                                                    Future.delayed(
+                                                        const Duration(
+                                                            milliseconds: 100),
+                                                        () {
+                                                      widget.onUpdated!(true);
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                      QuickAlert.show(
+                                                        context: dialogContext,
+                                                        type: QuickAlertType
+                                                            .success,
+                                                        title:
+                                                            'Service Deleted',
+                                                        text:
+                                                            'Service has been deleted successfully',
+                                                      );
+                                                    });
+                                                  } else {
+                                                    Future.delayed(
+                                                        const Duration(
+                                                            milliseconds: 100),
+                                                        () {
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                      QuickAlert.show(
+                                                        context: dialogContext,
+                                                        type: QuickAlertType
+                                                            .error,
+                                                        title:
+                                                            'Failed to delete service',
+                                                        text:
+                                                            'Failed to delete service',
+                                                      );
+                                                    });
+                                                  }
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.black,
+                                                  backgroundColor: Colors.white,
+                                                ),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   }
                                 });
                               },
@@ -231,6 +309,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                           serviceName: widget.serviceName!,
                           price: widget.price!.toString(),
                           readerId: widget.readerId!,
+                          onUpdated: widget.onUpdated,
                         ),
                         type: PageTransitionType.rightToLeft,
                         duration: const Duration(milliseconds: 300),

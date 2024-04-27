@@ -6,6 +6,7 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/popular_reader_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/models/reader_models/search_reader_model.dart' as SearchReader;
 import 'package:pagepals/models/reader_request_model.dart';
 import 'package:pagepals/models/reader_transaction_model.dart';
 import 'package:pagepals/models/request_model.dart';
@@ -120,26 +121,51 @@ class ReaderService {
     }
   }
 
-  static Future<List<PopularReader>> getListActiveReader() async {
+  static Future<SearchReader.SearchReaderModel> getListReaders(
+      String sort,
+      String nickname,
+      String language,
+      String genre,
+      String countryAccent,
+      int? rating,
+      int page,
+      int pageSize) async {
     String query = '''
-    query {
-      getReadersActive {
-        audioDescriptionUrl
-        countryAccent
-        createdAt
-        deletedAt
-        description
-        genre
-        id
-        avatarUrl
-        introductionVideoUrl
-        language
-        nickname
-        rating
-        status
-        totalOfBookings
-        totalOfReviews
-        updatedAt
+    query searchReaders {
+      getListReaders(
+        query: {
+          sort: "$sort",
+          nickname: "$nickname",
+          language: "$language",
+          genre: "$genre",
+          countryAccent: "$countryAccent",
+          rating: $rating,
+          page: $page,
+          pageSize: $pageSize
+        }
+      ) {
+        list {
+          audioDescriptionUrl
+            countryAccent
+            createdAt
+            description
+            genre
+            id
+            avatarUrl
+            introductionVideoUrl
+            language
+            nickname
+            rating
+            totalOfBookings
+            totalOfReviews
+        }
+        pagination {
+          currentPage
+          pageSize
+          sort
+          totalOfElements
+          totalOfPages
+        }
       }
     }
     ''';
@@ -155,11 +181,15 @@ class ReaderService {
       throw Exception('Failed to load readers');
     }
 
-    final List<dynamic>? readersData = result.data?['getReadersActive'];
+    final readersData = result.data?['getListReaders'];
     if (readersData != null) {
-      return readersData
-          .map((readerJson) => PopularReader.fromJson(readerJson))
-          .toList();
+      if(readersData?['list'].isEmpty) {
+        return SearchReader.SearchReaderModel(
+          list: [SearchReader.Reader(id: null)],
+          pagination: null,
+        );
+      }
+      return SearchReader.SearchReaderModel.fromJson(readersData);
     } else {
       throw Exception('Failed to load read Data');
     }

@@ -125,11 +125,12 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
                       horizontal: 16,
                       vertical: 0,
                     ),
-                    child: const Text(
-                      'Đẹp trai, 6 múi, giọng trầm ấm, '
-                      'với chất giọng miền Bắc cực chảy nước, '
-                      'đọc được nhiều thể loại sách khác nhau. '
-                      'Có thể đáp ứng mọi yêu cầu của User',
+                    child: Text(
+                      widget.reader.description ??
+                          'Đẹp trai, 6 múi, giọng trầm ấm, '
+                              'với chất giọng miền Bắc cực chảy nước, '
+                              'đọc được nhiều thể loại sách khác nhau. '
+                              'Có thể đáp ứng mọi yêu cầu của User',
                       textAlign: TextAlign.start,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,

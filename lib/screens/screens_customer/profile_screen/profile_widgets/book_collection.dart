@@ -115,11 +115,11 @@ class ProfileBookCollection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/no_book.png',
-                      height: 100,
-                      width: 100,
+                      'assets/no_book.png',
+                      height: 125,
+                      width: 170,
                     ),
-                    const SizedBox(height: 5),
+                    // const SizedBox(height: 5),
                     Text(
                       'Reader is still building their collection',
                       style: TextStyle(

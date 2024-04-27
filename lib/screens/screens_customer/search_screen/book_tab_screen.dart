@@ -121,119 +121,129 @@ class _BookTabScreenState extends State<BookTabScreen> {
               ),
             ),
           )
-        : Scaffold(
-            backgroundColor: Colors.grey[200]!,
-            body: ListView.builder(
-              controller: _scrollController,
-              itemCount: books.length + (isLoadingNextPage ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == books.length) {
-                  return Center(
-                    child: LoadingAnimationWidget.prograssiveDots(
-                      color: ColorHelper.getColor(ColorHelper.green),
-                      size: 50,
-                    ),
-                  );
-                } else {
-                  var book = books[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: BookDetailScreen(book: book),
-                          duration: const Duration(milliseconds: 300),
+        : books.first.id == null
+            ? Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: Text("No results found"),
+                ),
+              )
+            : Scaffold(
+                backgroundColor: Colors.grey[200]!,
+                body: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: books.length + (isLoadingNextPage ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == books.length) {
+                      return Center(
+                        child: LoadingAnimationWidget.prograssiveDots(
+                          color: ColorHelper.getColor(ColorHelper.green),
+                          size: 50,
                         ),
                       );
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.all(8),
-                      margin: const EdgeInsets.only(bottom: 2),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 140,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: NetworkImage(book.smallThumbnailUrl ??
-                                    "https://via.placeholder.com/150"),
-                                fit: BoxFit.fill,
+                    } else {
+                      var book = books[index];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: BookDetailScreen(book: book),
+                              duration: const Duration(milliseconds: 300),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.all(8),
+                          margin: const EdgeInsets.only(bottom: 2),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 140,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                        book.smallThumbnailUrl ??
+                                            "https://via.placeholder.com/150"),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  book.title ?? '',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                  softWrap: false,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 5),
-                                  child: Wrap(
-                                    alignment: WrapAlignment.start,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.start,
-                                    spacing: 6.0,
-                                    runSpacing: 6.0,
-                                    children: book.categories!
-                                        .map(
-                                          (category) => Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              border: Border.all(
-                                                color: ColorHelper.getColor(
-                                                    ColorHelper.green),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      book.title ?? '',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                      softWrap: false,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 5),
+                                      child: Wrap(
+                                        alignment: WrapAlignment.start,
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.start,
+                                        spacing: 6.0,
+                                        runSpacing: 6.0,
+                                        children: book.categories!
+                                            .map(
+                                              (category) => Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                    color: ColorHelper.getColor(
+                                                        ColorHelper.green),
+                                                  ),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 3),
+                                                child: Text(
+                                                  category.name ?? '',
+                                                  style: GoogleFonts.openSans(
+                                                    color: ColorHelper.getColor(
+                                                        ColorHelper.green),
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 3),
-                                            child: Text(
-                                              category.name ?? '',
-                                              style: GoogleFonts.openSans(
-                                                color: ColorHelper.getColor(
-                                                    ColorHelper.green),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
-          );
+                        ),
+                      );
+                    }
+                  },
+                ),
+              );
   }
 }
 

@@ -224,7 +224,7 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
                                 rating: services[index].rating.toString(),
                                 totalOfRating:
                                     services[index].totalOfReview.toString(),
-                                onDeleted: (value) {
+                                onUpdated: (value) {
                                   if (value != null && value) {
                                     setState(() {
                                       services.clear();

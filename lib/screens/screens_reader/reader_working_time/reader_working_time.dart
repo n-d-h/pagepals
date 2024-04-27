@@ -32,7 +32,7 @@ class _ReaderWorkingTimeState extends State<ReaderWorkingTime> {
   bool isCheck = false;
 
   Future<void> getWorkingTime() async {
-    var result = await WorkingTimeService.getWorkingTime(widget.readerId);
+    var result = await WorkingTimeService.getReaderWorkingTime(widget.readerId);
     setState(() {
       // Set the working time models for loading
       workingTimeModels = result;
