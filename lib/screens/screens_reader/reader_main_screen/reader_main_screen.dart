@@ -680,7 +680,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: const ReportScreen(),
+                                          child: ReportScreen(
+                                            accountModel: account,
+                                          ),
                                         ),
                                       );
                                     },
