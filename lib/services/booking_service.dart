@@ -212,7 +212,12 @@ class BookingService {
     query {
       getListBookingByReader(
         readerId: "$readerId"
-        filter: {page: $page, pageSize: $pageSize, bookingState: "$bookingState", sort: "$sort"}
+        filter: {
+          page: $page, 
+          pageSize: $pageSize, 
+          bookingState: "$bookingState", 
+          sort: "$sort"
+        }
       ) {
         list {
           id
@@ -272,6 +277,25 @@ class BookingService {
           cancelReason
           state {
             name
+          }
+          seminar {
+            id
+            imageUrl
+            limitCustomer
+            duration
+            description
+            createdAt
+            price
+            book {
+              id
+              smallThumbnailUrl
+              thumbnailUrl
+              title
+            }
+            startTime
+            status
+            title
+            updatedAt
           }
         }
         pagination {
