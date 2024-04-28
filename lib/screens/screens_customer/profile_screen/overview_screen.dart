@@ -73,7 +73,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
   }
 
   Future<void> getReaderBooks(String id) async {
-    var result = await BookService.getReaderBooks(id);
+    var result = await BookService.getReaderBooks(id, '', 0, 10);
     setState(() {
       bookModel = result;
     });

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_models/customer_book.dart';
 import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_description.dart';
 import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_image_widget.dart';

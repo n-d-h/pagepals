@@ -81,11 +81,12 @@ class BookService {
     }
   }
 
-  static Future<BookModel> getReaderBooks(String readerId) async {
+  static Future<BookModel> getReaderBooks(
+      String readerId, String title, int page, int pageSize) async {
     var query = '''
         query {
           getReaderBooks(id: "$readerId", 
-            filter: {title: "", page: 0, pageSize: 10}) {
+            filter: {title: "$title", page: $page, pageSize: $pageSize}) {
             list {
               book {
                 id
@@ -192,5 +193,44 @@ class BookService {
 
     final List<dynamic> bookData = result.data?['searchBook']?['items'] ?? [];
     return bookData.map((item) => GoogleBookModel.fromJson(item)).toList();
+  }
+
+  static Future<Book> getBookById(String bookId) async {
+    final String query = """
+    query {
+      getBookById(id: "$bookId") {
+        id
+        title
+        publisher
+        language
+        authors {
+          name
+        }
+        categories {
+          name
+        }
+        description
+        pageCount
+        smallThumbnailUrl
+        thumbnailUrl
+      }
+    }
+    """;
+
+    final QueryResult result = await graphQLClient.query(QueryOptions(
+      document: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+
+    if (result.hasException) {
+      throw Exception('Failed to load book: ${result.exception.toString()}');
+    }
+
+    final Map<String, dynamic>? bookData = result.data?['getBookById'];
+    if (bookData != null) {
+      return Book.fromJson(bookData);
+    } else {
+      throw Exception('Failed to parse book data');
+    }
   }
 }

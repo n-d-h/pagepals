@@ -38,6 +38,7 @@ class Profile {
   int? totalOfBookings;
   int? totalOfReviews;
   String? avatarUrl;
+  String? createdAt;
 
   Profile(
       {this.account,
@@ -52,7 +53,8 @@ class Profile {
       this.rating,
       this.totalOfBookings,
       this.totalOfReviews,
-      this.avatarUrl});
+      this.avatarUrl,
+      this.createdAt});
 
   Profile.fromJson(Map<String, dynamic> json) {
     account =
@@ -69,6 +71,7 @@ class Profile {
     totalOfBookings = json['totalOfBookings'];
     totalOfReviews = json['totalOfReviews'];
     avatarUrl = json['avatarUrl'];
+    createdAt = json['createdAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,6 +91,7 @@ class Profile {
     data['totalOfBookings'] = this.totalOfBookings;
     data['totalOfReviews'] = this.totalOfReviews;
     data['avatarUrl'] = this.avatarUrl;
+    data['createdAt'] = this.createdAt;
     return data;
   }
 }
@@ -124,18 +128,21 @@ class Account {
 class Customer {
   String? imageUrl;
   String? dob;
+  String? gender;
 
-  Customer({this.imageUrl, this.dob});
+  Customer({this.imageUrl, this.dob, this.gender});
 
   Customer.fromJson(Map<String, dynamic> json) {
     imageUrl = json['imageUrl'];
     dob = json['dob'];
+    gender = json['gender'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['imageUrl'] = this.imageUrl;
     data['dob'] = this.dob;
+    data['gender'] = this.gender;
     return data;
   }
 }

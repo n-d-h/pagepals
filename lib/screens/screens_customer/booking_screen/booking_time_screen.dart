@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/working_time_model.dart';
+import 'package:pagepals/screens/screens_customer/book_screen/search_reader_book_screen.dart';
+import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/book_text_form.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/day_picker_widget.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/dropdown_buttons/dropdown_button_widget.dart';
@@ -11,7 +12,7 @@ import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/time_picker_widget.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/request_schedule.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/review_summary_screen.dart';
-import 'package:pagepals/services/service_service.dart';
+import 'package:pagepals/services/book_service.dart';
 import 'package:pagepals/services/service_type_service.dart';
 import 'package:pagepals/services/working_time_service.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
@@ -49,6 +50,8 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   String? selectedTimeSlotId;
   DateTime selectedTimeSlotDate = DateTime.now();
 
+  TextEditingController controller = TextEditingController();
+
   Future<void> getWorkingTime() async {
     var result =
         await WorkingTimeService.getWorkingTime(widget.reader!.profile!.id!);
@@ -66,16 +69,13 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   }
 
   // Function to handle book selection
-  void handleBookSelected(String? bookId) {
+  void handleBookSelected(String bookId) async {
     // Get the selected book model
-    final Books selectedBookModel =
-        // widget.bookModel!.list.firstWhere((element) => element.book!.id == bookId);
-        widget.bookModel.list!
-            .firstWhere((element) => element.book!.id == bookId);
+    var bookModel = await BookService.getBookById(bookId);
     // Set the selected book
     setState(() {
       if (_oldSelectedBook != null) {
-        if (_oldSelectedBook!.id != selectedBookModel.book!.id) {
+        if (_oldSelectedBook!.id != bookId) {
           servicesByBook = [];
           serviceTypesByBook = [];
           servicesByServiceType = [];
@@ -83,25 +83,21 @@ class _BookingTimeState extends State<BookingTimeScreen> {
       }
     });
     Future.delayed(const Duration(milliseconds: 40), () async {
-      var serviceTypes = await ServiceTypeService.getListServiceTypesByService(
-          selectedBookModel.services!.map((e) => e.id!).toList());
+      var serviceTypes =
+          await ServiceTypeService.getListServiceTypesByServicesOfReaderBook(
+              bookId, widget.reader!.profile!.id!);
 
       setState(() {
-        _selectedBook = selectedBookModel.book;
+        _selectedBook = bookModel;
+        controller.text = _selectedBook!.title!;
 
-        // Get the services from the selected book model
-        final List<Services> services = selectedBookModel.services!;
-
-        if (services.isNotEmpty) {
+        if (serviceTypes.isNotEmpty) {
           // reloading page if the book is changed
           _oldSelectedBook = _selectedBook;
           _selectServiceType = null;
           _oldSelectServiceType = null;
           _selectedService = null;
           servicesByServiceType = [];
-
-          // Get the unique ServiceType from the services
-          servicesByBook = services;
 
           // Set the service types by book
           serviceTypesByBook = serviceTypes;
@@ -111,7 +107,11 @@ class _BookingTimeState extends State<BookingTimeScreen> {
   }
 
   // Function to handle chapter selection
-  void handleSelectedTypeSelected(String? selectedTypeId) {
+  void handleSelectedTypeSelected(String? selectedTypeId) async {
+    // Get the services from the selected book model
+    var services =
+        await ServiceTypeService.getListServiceByServiceTypeAndBookAndReader(
+            widget.reader!.profile!.id!, _selectedBook!.id!, selectedTypeId!);
     setState(() {
       // Set the selected service type
       _selectServiceType = serviceTypesByBook
@@ -129,9 +129,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
       setState(() {
         _oldSelectServiceType = _selectServiceType;
         // Filter services in book by the selected service type
-        servicesByServiceType = servicesByBook
-            .where((service) => service.serviceType!.id == selectedTypeId)
-            .toList();
+        servicesByServiceType = services;
       });
     });
   }
@@ -194,12 +192,21 @@ class _BookingTimeState extends State<BookingTimeScreen> {
               ReaderInfoWidget(
                 reader: widget.reader,
               ),
-              DropdownButtonWidget(
-                value: _selectedBook?.id,
-                title: 'Book',
-                items: widget.bookModel.list!.map((e) => e.book!).toList(),
-                onValueChanged: handleBookSelected,
-              ),
+              BookTextFormField(
+                  controller: controller,
+                  hint: 'Select Item',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        child: SearchReaderBooks(
+                          readerId: widget.reader!.profile!.id!,
+                          onSelected: handleBookSelected,
+                        ),
+                        type: PageTransitionType.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                      ),
+                    );
+                  }),
               if (serviceTypesByBook.isNotEmpty)
                 SelectServiceDropdown(
                   title: 'Service Type',

@@ -83,16 +83,14 @@ class BookingAppointment extends StatelessWidget {
                     ? '${booking!.service!.price!.toInt()} pals'
                     : '${booking!.seminar!.price!.toInt()} pals',
               ),
-              SpaceBetweenRowWidget(
-                start: 'Promotion',
-                end: '0 %',
-              ),
-              SpaceBetweenRowWidget(
-                start: 'Total',
-                end: booking?.service != null
-                  ? '${booking?.service?.price?.toInt() ?? 0} pals'
-                  : '${booking?.seminar?.price?.toInt() ?? 0} pals',
-              ),
+              // SpaceBetweenRowWidget(
+              //   start: 'Promotion',
+              //   end: '0 %',
+              // ),
+              // SpaceBetweenRowWidget(
+              //   start: 'Total',
+              //   end: '${booking?.service?.price?.toInt() ?? 0} pals',
+              // ),
               if (booking!.state!.name == 'CANCEL')
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -124,14 +124,14 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
                 start: 'Amount',
                 end: '$amount pals',
               ),
-              SpaceBetweenRowWidget(
-                start: 'Promotion',
-                end: '$promotion %',
-              ),
-              SpaceBetweenRowWidget(
-                start: 'Total',
-                end: '$total pals',
-              ),
+              // SpaceBetweenRowWidget(
+              //   start: 'Promotion',
+              //   end: '$promotion %',
+              // ),
+              // SpaceBetweenRowWidget(
+              //   start: 'Total',
+              //   end: '${total.toInt()} pals',
+              // ),
               WalletWidget(
                 accountModel: accountModel,
               ),

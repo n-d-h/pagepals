@@ -23,6 +23,7 @@ class _BookTabScreenState extends State<BookTabScreen> {
   List<Book> books = [];
   bool isLoadingNextPage = false;
   bool hasMorePages = true;
+  int totalOfElements = 0;
   Timer? _debounce;
   String search = '';
 
@@ -47,7 +48,8 @@ class _BookTabScreenState extends State<BookTabScreen> {
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+            _scrollController.position.maxScrollExtent &&
+        books.length < totalOfElements) {
       _fetchNextPage();
     }
   }
@@ -58,6 +60,7 @@ class _BookTabScreenState extends State<BookTabScreen> {
           "", "", currentPage, 10, "${widget.search ?? ''}", "desc");
       setState(() {
         books.addAll(result.list!);
+        totalOfElements = result.pagination?.totalOfElements ?? 0;
         currentPage++;
         if (result.list!.isEmpty) {
           hasMorePages = false;

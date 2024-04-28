@@ -26,6 +26,7 @@ class _ReaderTabScreenState extends State<ReaderTabScreen> {
   bool hasMorePages = true;
   Timer? _debounce;
   String search = '';
+  int totalElements = 0;
 
   final ScrollController _scrollController = ScrollController();
 
@@ -48,7 +49,8 @@ class _ReaderTabScreenState extends State<ReaderTabScreen> {
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+            _scrollController.position.maxScrollExtent &&
+        readers.length < totalElements) {
       _fetchNextPage();
     }
   }
@@ -59,6 +61,7 @@ class _ReaderTabScreenState extends State<ReaderTabScreen> {
           "", "${widget.search ?? ''}", "", "", "", null, currentPage, 10);
       setState(() {
         readers.addAll(result.list!);
+        totalElements = result.pagination!.totalOfElements!;
         currentPage++;
         if (result.list!.isEmpty) {
           hasMorePages = false;
