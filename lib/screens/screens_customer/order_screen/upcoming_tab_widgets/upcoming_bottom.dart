@@ -11,7 +11,11 @@ class UpcomingBottom extends StatelessWidget {
   final Booking booking;
   final bool isReader;
 
-  const UpcomingBottom({super.key, required this.booking, required this.isReader});
+  const UpcomingBottom({
+    super.key,
+    required this.booking,
+    required this.isReader,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,42 +26,43 @@ class UpcomingBottom extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: OutlinedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  PageTransition(
-                    child: CanceledScreen(
-                      isReader: isReader,
-                      bookingId: booking.id!,
-                      onValueChanged: (value) {
-                        print(value);
-                      },
+          if (booking.service != null)
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    PageTransition(
+                      child: CanceledScreen(
+                        isReader: isReader,
+                        bookingId: booking.id!,
+                        onValueChanged: (value) {
+                          print(value);
+                        },
+                      ),
+                      type: PageTransitionType.rightToLeftWithFade,
+                      duration: const Duration(milliseconds: 300),
                     ),
-                    type: PageTransitionType.rightToLeftWithFade,
-                    duration: const Duration(milliseconds: 300),
+                  );
+                },
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: ColorHelper.getColor('#C6F4DE'),
+                  side: const BorderSide(color: Colors.transparent),
+                  // fixedSize: const Size.fromWidth(148),
+                ),
+                child: Text(
+                  'Cancel',
+                  style: GoogleFonts.lexend(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: ColorHelper.getColor(ColorHelper.green),
                   ),
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                backgroundColor: ColorHelper.getColor('#C6F4DE'),
-                side: const BorderSide(color: Colors.transparent),
-                // fixedSize: const Size.fromWidth(148),
-              ),
-              child: Text(
-                'Cancel',
-                style: GoogleFonts.lexend(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: ColorHelper.getColor(ColorHelper.green),
                 ),
               ),
             ),
-          ),
           const SizedBox(width: 10), // Add this line
           Expanded(
             child: OutlinedButton(
-              onPressed: () async{
+              onPressed: () async {
                 DateTime startTime = DateTime.parse(booking.startAt!);
                 if (DateTime.now().isBefore(startTime)) {
                   showDialog(
@@ -80,26 +85,20 @@ class UpcomingBottom extends StatelessWidget {
                     },
                   );
                 } else {
-                  // Navigator.of(context).push(
-                  //   PageTransition(
-                  //     child: VideoConferencePage(
-                  //       conferenceID: booking.meeting!.meetingCode!,
-                  //     ),
-                  //     type: PageTransitionType.fade,
-                  //     duration: const Duration(milliseconds: 300),
-                  //   ),
-                  // );
-                  isReader ? await VideoConferenceService.startMeeting(booking.meeting!.meetingCode!)
-                      : await VideoConferenceService.joinMeeting(booking.meeting!.meetingCode!, booking.meeting!.password!);
+                  isReader
+                      ? await VideoConferenceService.startMeeting(
+                          booking.meeting!.meetingCode!)
+                      : await VideoConferenceService.joinMeeting(
+                          booking.meeting!.meetingCode!,
+                          booking.meeting!.password!);
                 }
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: ColorHelper.getColor(ColorHelper.green),
                 side: const BorderSide(color: Colors.transparent),
-                // fixedSize: const Size.fromWidth(148),
               ),
               child: Text(
-                'Join meet',
+                booking.service != null ? 'Join meet' : 'Join seminar',
                 style: GoogleFonts.lexend(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,

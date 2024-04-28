@@ -18,7 +18,8 @@ class SeminarService {
           readerId: "$readerId",
           page: $page, 
           pageSize: $pageSize, 
-          sort: "desc"
+          sort: "desc",
+          state: "ACTIVE"
         ) {
           list {
             activeSlot
@@ -94,7 +95,8 @@ class SeminarService {
           customerId: "$customerId",
           page: $page, 
           pageSize: $pageSize, 
-          sort: "desc"
+          sort: "desc",
+          state: "ACTIVE"
         ) {
           list {
             activeSlot
@@ -142,7 +144,6 @@ class SeminarService {
             totalOfPages
           }
         }
-        
       }
     ''';
 
@@ -166,7 +167,12 @@ class SeminarService {
   static Future<SeminarModel> getAllSeminars(int page, int pageSize) async {
     String query = '''
       query MyQuery {
-        getAllSeminars(page: $page, pageSize: $pageSize, sort: "desc") {
+        getAllSeminars(
+          page: $page, 
+          pageSize: $pageSize, 
+          sort: "desc",
+          state: "ACTIVE"
+          ) {
           list {
             activeSlot
             createdAt
@@ -297,7 +303,7 @@ class SeminarService {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to create seminar');
+      throw Exception('Error: ${result.exception.toString()}');
     }
 
     return result.data!['createSeminar']?['id'] != null;
@@ -328,7 +334,7 @@ class SeminarService {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to delete seminar');
+      throw Exception('Error: ${result.exception.toString()}');
     }
 
     var data = result.data!['deleteSeminar'];
@@ -385,7 +391,7 @@ class SeminarService {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to update seminar');
+      throw Exception('Error: ${result.exception.toString()}');
     }
 
     return result.data!['updateSeminar']?['id'] != null;
@@ -442,5 +448,37 @@ class SeminarService {
     }
 
     return data['booking'] != null;
+  }
+
+  Future<bool> completeSeminar(String seminarId) async {
+    String mutation = '''
+      mutation MyMutation {
+        completeSeminar(seminarId: "$seminarId") {
+          id
+          title
+        }
+      }
+    ''';
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('accessToken')!;
+    GraphQLClient clientWithToken = GraphQLClient(
+      link: AuthLink(getToken: () async => 'Bearer $token')
+          .concat(graphQLClient.link),
+      cache: GraphQLCache(store: HiveStore()),
+    );
+
+    final QueryResult result = await clientWithToken.query(
+      QueryOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Error: ${result.exception.toString()}');
+    }
+
+    return result.data!['completeSeminar']?['id'] != null;
   }
 }

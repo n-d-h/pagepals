@@ -146,6 +146,25 @@ class BookingService {
           state {
             name
           }
+          seminar {
+            id
+            imageUrl
+            limitCustomer
+            duration
+            description
+            createdAt
+            price
+            book {
+              id
+              smallThumbnailUrl
+              thumbnailUrl
+              title
+            }
+            startTime
+            status
+            title
+            updatedAt
+          }
         }
         pagination {
           currentPage

@@ -34,23 +34,25 @@ class Booking {
   String? review;
   Meeting? meeting;
   Service? service;
+  Seminar? seminar;
   String? startAt;
   String? createAt;
   CustomerBooked? customer;
   String? cancelReason;
   BookingState? state;
 
-  Booking(
-      {this.id,
-      this.rating,
-      this.review,
-      this.meeting,
-      this.service,
-      this.startAt,
-      this.createAt,
-      this.customer,
-      this.cancelReason,
-      this.state});
+  Booking({
+    this.id,
+    this.rating,
+    this.review,
+    this.meeting,
+    this.service,
+    this.startAt,
+    this.createAt,
+    this.customer,
+    this.cancelReason,
+    this.state,
+  });
 
   Booking.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -60,13 +62,16 @@ class Booking {
         json['meeting'] != null ? new Meeting.fromJson(json['meeting']) : null;
     service =
         json['service'] != null ? new Service.fromJson(json['service']) : null;
+    seminar =
+        json['seminar'] != null ? new Seminar.fromJson(json['seminar']) : null;
     startAt = json['startAt'];
     createAt = json['createdAt'];
     customer = json['customer'] != null
         ? new CustomerBooked.fromJson(json['customer'])
         : null;
     cancelReason = json['cancelReason'];
-    state = json['state'] != null ? new BookingState.fromJson(json['state']) : null;
+    state =
+        json['state'] != null ? new BookingState.fromJson(json['state']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +84,9 @@ class Booking {
     }
     if (this.service != null) {
       data['service'] = this.service!.toJson();
+    }
+    if (this.seminar != null) {
+      data['seminar'] = this.seminar!.toJson();
     }
     data['startAt'] = this.startAt;
     data['createdAt'] = this.createAt;
@@ -113,12 +121,13 @@ class Meeting {
   int? limitOfPerson;
   String? id;
 
-  Meeting(
-      {this.reader,
-      this.meetingCode,
-      this.password,
-      this.limitOfPerson,
-      this.id});
+  Meeting({
+    this.reader,
+    this.meetingCode,
+    this.password,
+    this.limitOfPerson,
+    this.id,
+  });
 
   Meeting.fromJson(Map<String, dynamic> json) {
     reader =
@@ -254,6 +263,68 @@ class Service {
     if (this.serviceType != null) {
       data['serviceType'] = this.serviceType!.toJson();
     }
+    return data;
+  }
+}
+
+class Seminar {
+  String? id;
+  String? imageUrl;
+  int? limitCustomer;
+  int? duration;
+  String? description;
+  String? createdAt;
+  int? price;
+  Book? book;
+  String? startTime;
+  String? status;
+  String? title;
+  String? updatedAt;
+
+  Seminar({
+    this.id,
+    this.imageUrl,
+    this.limitCustomer,
+    this.duration,
+    this.description,
+    this.createdAt,
+    this.price,
+    this.book,
+    this.startTime,
+    this.status,
+    this.title,
+    this.updatedAt,
+  });
+
+  Seminar.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imageUrl = json['imageUrl'];
+    limitCustomer = json['limitCustomer'];
+    duration = json['duration'];
+    description = json['description'];
+    createdAt = json['createdAt'];
+    price = json['price'];
+    book = json['book'] != null ? Book?.fromJson(json['book']) : null;
+    startTime = json['startTime'];
+    status = json['status'];
+    title = json['title'];
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['imageUrl'] = imageUrl;
+    data['limitCustomer'] = limitCustomer;
+    data['duration'] = duration;
+    data['description'] = description;
+    data['createdAt'] = createdAt;
+    data['price'] = price;
+    data['book'] = book!.toJson();
+    data['startTime'] = startTime;
+    data['status'] = status;
+    data['title'] = title;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }

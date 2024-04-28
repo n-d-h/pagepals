@@ -10,8 +10,11 @@ class ColumnDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String title = booking.service?.book?.title ?? 'Unknown';
+    String title = booking.service != null
+        ? booking.service?.book?.title ?? 'Unknown'
+        : booking.seminar?.book?.title ?? 'Unknown';
     String service = booking.service?.description ?? 'Unknown';
+    String seminar = booking.seminar?.description ?? 'Unknown';
     String meetingCode = "#${booking.meeting!.meetingCode!}";
     String duration =
         '${booking.service?.duration != null ? booking.service!.duration!.toInt() : '60'} minutes';
@@ -27,10 +30,15 @@ class ColumnDetail extends StatelessWidget {
             text: 'Book: $title',
           ),
           SizedBox(height: 2),
-          DetailRow(
-            icon: UniconsLine.pen,
-            text: 'Service: $service',
-          ),
+          booking.service != null
+              ? DetailRow(
+                  icon: UniconsLine.pen,
+                  text: 'Service: $service',
+                )
+              : DetailRow(
+                  icon: UniconsLine.pen,
+                  text: 'Seminar: $seminar',
+                ),
           SizedBox(height: 2),
           DetailRow(
             icon: UniconsLine.rocket,

@@ -7,6 +7,7 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
+import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/seminar_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,26 +50,55 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
   bool interested = false;
 
   Future<void> joinSeminar() async {
-    // Implement join seminar logic here
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? account = prefs.getString('account');
-    AccountModel? accountModel = AccountModel.fromJson(jsonDecode(account!));
-    String customerId = accountModel.customer?.id ?? '';
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? account = prefs.getString('account');
+      AccountModel? accountModel = AccountModel.fromJson(jsonDecode(account!));
+      String customerId = accountModel.customer?.id ?? '';
 
-    bool results = await SeminarService.joinSeminar(customerId, widget.seminarId);
-    if (results) {
-      widget.onSeminarJoinedDone(true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Join seminar successfully'),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Join seminar failed'),
-        ),
-      );
+      bool results = await SeminarService.joinSeminar(customerId, widget.seminarId);
+      if (results) {
+        widget.onSeminarJoinedDone(true);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? accountString = prefs.getString('account');
+        String accessToken = prefs.getString('accessToken')!;
+        if (accountString == null) {
+          print('No account data found in SharedPreferences');
+          return;
+        }
+        try {
+          AccountModel account = AccountModel.fromJson(json.decoder.convert(accountString));
+          String userName = account.username!;
+
+          AccountModel updatedAccount = await AuthenService.getAccount(userName, accessToken);
+          prefs.remove('account');
+          print('account: ${json.encode(updatedAccount)}');
+          prefs.setString('account', json.encode(updatedAccount));
+        } catch (e) {
+          print('Error decoding account data: $e');
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Join seminar successfully'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Join seminar failed'),
+          ),
+        );
+      }
+    } catch (e) {
+      if(e.toString().contains('Not enough money')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Not enough money'),
+          ),
+        );
+      }
     }
   }
 

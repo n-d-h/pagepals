@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/booking_model.dart';
 
 class UpcomingLeading extends StatefulWidget {
@@ -28,11 +26,11 @@ class _UpcomingLeadingState extends State<UpcomingLeading> {
         border: Border(bottom: BorderSide(color: Colors.black12, width: 1)),
       ),
       child: SizedBox(
-        height: 20,
+        height: 40,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               '$date - $time',
@@ -42,47 +40,56 @@ class _UpcomingLeadingState extends State<UpcomingLeading> {
                 color: Colors.black.withOpacity(0.7),
               ),
             ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  'Remind me  ',
-                  style: GoogleFonts.lexend(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.black.withOpacity(0.6),
+            const SizedBox(width: 10),
+            widget.booking.service != null
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 35,
+                        width: 70,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Service',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 35,
+                        width: 70,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Seminar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                // FlutterSwitch(
-                //   value: light,
-                //   activeColor: ColorHelper.getColor(ColorHelper.green),
-                //   onChanged: (bool value) {
-                //     setState(() {
-                //       light = value;
-                //     });
-                //   },
-                // ),
-                FlutterSwitch(
-                  width: 40.0,
-                  height: 20.0,
-                  activeColor: ColorHelper.getColor(ColorHelper.green),
-                  inactiveColor: Colors.grey,
-                  // valueFontSize: 25.0,
-                  toggleSize: 18.0,
-                  value: light,
-                  borderRadius: 30.0,
-                  padding: 1.0,
-                  showOnOff: false,
-                  onToggle: (bool val) {
-                    setState(() {
-                      light = val;
-                    });
-                  },
-                )
-              ],
-            ),
           ],
         ),
       ),
