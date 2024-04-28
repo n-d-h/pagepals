@@ -24,8 +24,10 @@ class SeminarPostItem extends StatefulWidget {
   final int activeSlot;
   final int duration;
   final String bookTitle;
+  final String status;
   final Function() onDeleteDone;
   final Function() onUpdateDone;
+  final Function() onCompleteDone;
   final AccountModel? accountModel;
 
   const SeminarPostItem({
@@ -43,8 +45,10 @@ class SeminarPostItem extends StatefulWidget {
     required this.activeSlot,
     required this.duration,
     required this.bookTitle,
+    required this.status,
     required this.onDeleteDone,
     required this.onUpdateDone,
+    required this.onCompleteDone,
     this.accountModel,
   }) : super(key: key);
 
@@ -186,102 +190,6 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                   ],
                 ),
               ),
-              // InkWell(
-              //   onTap: () async {
-              //     showDialog(
-              //       context: context,
-              //       builder: (context) {
-              //         return AlertDialog(
-              //           title: Text('Delete Seminar'),
-              //           content: Text(
-              //             'Are you sure you want to delete this seminar?',
-              //           ),
-              //           actions: [
-              //             TextButton(
-              //               onPressed: () {
-              //                 Navigator.of(context).pop();
-              //               },
-              //               child: Text('Cancel'),
-              //             ),
-              //             TextButton(
-              //               onPressed: () async {
-              //                 String seminarId = widget.id;
-              //                 await SeminarService.deleteSeminar(seminarId);
-              //                 widget.onDeleteDone();
-              //                 Navigator.pop(context, true);
-              //               },
-              //               child: Text('Delete'),
-              //             ),
-              //           ],
-              //         );
-              //       },
-              //     );
-              //   },
-              //   child: Container(
-              //     height: 50,
-              //     width: 70,
-              //     padding: const EdgeInsets.only(right: 8, left: 8),
-              //     decoration: BoxDecoration(
-              //       color: Colors.red,
-              //       borderRadius: BorderRadius.circular(5.0),
-              //     ),
-              //     child: Center(
-              //       child: Text(
-              //         'Delete',
-              //         textAlign: TextAlign.center,
-              //         style: TextStyle(
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(width: 8.0),
-              // InkWell(
-              //   onTap: () async {
-              //     Navigator.push(
-              //         context,
-              //         PageTransition(
-              //           child: ReaderSeminarEditScreen(
-              //             onUpdateDone: widget.onUpdateDone,
-              //             accountModel: widget.accountModel,
-              //             id: widget.id,
-              //             hostName: widget.hostName,
-              //             seminarTitle: widget.seminarTitle,
-              //             date: widget.date,
-              //             time: widget.time,
-              //             description: widget.description,
-              //             hostAvatarUrl: widget.hostAvatarUrl,
-              //             bannerImageUrl: widget.bannerImageUrl,
-              //             activeSlot: widget.activeSlot,
-              //             limitCustomer: widget.limitCustomer,
-              //             price: widget.price,
-              //             duration: widget.duration,
-              //             bookTitle: widget.bookTitle,
-              //           ),
-              //           type: PageTransitionType.rightToLeft,
-              //         )
-              //     );
-              //   },
-              //   child: Container(
-              //     height: 50,
-              //     width: 70,
-              //     padding: const EdgeInsets.only(right: 8, left: 8),
-              //     decoration: BoxDecoration(
-              //       color: Colors.blue,
-              //       borderRadius: BorderRadius.circular(5.0),
-              //     ),
-              //     child: Center(
-              //       child: Text(
-              //         'Update',
-              //         textAlign: TextAlign.center,
-              //         style: TextStyle(
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
           const SizedBox(height: 8.0),
@@ -340,123 +248,239 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
             fit: BoxFit.cover,
           ),
           const SizedBox(height: 8.0),
-          SizedBox(
-            width: double.infinity,
-            child: Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () async {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text('Delete Seminar'),
-                              content: Text(
-                                'Are you sure you want to delete this seminar?',
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    String seminarId = widget.id;
-                                    await SeminarService.deleteSeminar(
-                                        seminarId);
-                                    widget.onDeleteDone();
-                                    Navigator.pop(context, true);
-                                  },
-                                  child: Text('Delete'),
-                                ),
-                              ],
-                            );
-                          },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Delete Seminar'),
+                          content: Text(
+                            'Are you sure you want to delete this seminar?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                String seminarId = widget.id;
+                                await SeminarService.deleteSeminar(
+                                  seminarId,
+                                );
+                                widget.onDeleteDone();
+                                Navigator.pop(context, true);
+                              },
+                              child: Text('Delete'),
+                            ),
+                          ],
                         );
                       },
-                      child: Container(
-                        height: 45,
-                        width: 70,
-                        padding: const EdgeInsets.only(right: 8, left: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(15.0),
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Delete',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
+                    );
+                  },
+                  child: Container(
+                    height: 45,
+                    width: 70,
+                    padding: const EdgeInsets.only(right: 8, left: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(15.0),
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Delete',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 20.0),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () async {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                              child: ReaderSeminarEditScreen(
-                                onUpdateDone: widget.onUpdateDone,
-                                accountModel: widget.accountModel,
-                                id: widget.id,
-                                hostName: widget.hostName,
-                                seminarTitle: widget.seminarTitle,
-                                date: widget.date,
-                                time: widget.time,
-                                description: widget.description,
-                                hostAvatarUrl: widget.hostAvatarUrl,
-                                bannerImageUrl: widget.bannerImageUrl,
-                                activeSlot: widget.activeSlot,
-                                limitCustomer: widget.limitCustomer,
-                                price: widget.price,
-                                duration: widget.duration,
-                                bookTitle: widget.bookTitle,
-                              ),
-                              type: PageTransitionType.rightToLeft,
-                            ));
-                      },
-                      child: Container(
-                        height: 45,
-                        width: 70,
-                        padding: const EdgeInsets.only(right: 8, left: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(15.0),
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Update',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              const SizedBox(width: 20.0),
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        child: ReaderSeminarEditScreen(
+                          onUpdateDone: widget.onUpdateDone,
+                          accountModel: widget.accountModel,
+                          id: widget.id,
+                          hostName: widget.hostName,
+                          seminarTitle: widget.seminarTitle,
+                          date: widget.date,
+                          time: widget.time,
+                          description: widget.description,
+                          hostAvatarUrl: widget.hostAvatarUrl,
+                          bannerImageUrl: widget.bannerImageUrl,
+                          activeSlot: widget.activeSlot,
+                          limitCustomer: widget.limitCustomer,
+                          price: widget.price,
+                          duration: widget.duration,
+                          bookTitle: widget.bookTitle,
+                        ),
+                        type: PageTransitionType.rightToLeft,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 45,
+                    width: 70,
+                    padding: const EdgeInsets.only(right: 8, left: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(15.0),
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Update',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: widget.status == 'ACTIVE'
+                    ? InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                surfaceTintColor: Colors.white,
+                                title: Text('Complete Seminar'),
+                                content: Text(
+                                  'Are you sure you want to complete this seminar?',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      try {
+                                        String seminarId = widget.id;
+                                        await SeminarService.completeSeminar(
+                                          seminarId,
+                                        );
+                                        widget.onCompleteDone();
+                                        Navigator.pop(context, true);
+                                      } catch (e) {
+                                        String errorMessage = e.toString();
+                                        if (errorMessage
+                                            .contains("404 Not Found")) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Meeting not found, and not found meeting to complete',
+                                              ),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        }
+                                        if (errorMessage.contains(
+                                            "Cannot complete booking, recording duration less than 40 minutes")) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Cannot complete booking, recording duration less than 40 minutes'),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        }
+                                      }
+                                    },
+                                    child: Text('Complete'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          height: 45,
+                          width: 70,
+                          padding: const EdgeInsets.only(right: 8, left: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(15.0),
+                            border: Border.all(
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Complete Seminar',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        height: 45,
+                        width: 70,
+                        padding: const EdgeInsets.only(right: 8, left: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(15.0),
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Complete Seminar',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ],
           ),
           const SizedBox(height: 8.0),
         ],

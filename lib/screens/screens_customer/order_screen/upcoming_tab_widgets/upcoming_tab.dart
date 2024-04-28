@@ -30,7 +30,6 @@ class _UpcomingTabState extends State<UpcomingTab> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController.addListener(_scrollListener);
     bookings.addAll(widget.bookingModel!.list!);
@@ -38,7 +37,6 @@ class _UpcomingTabState extends State<UpcomingTab> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
@@ -157,11 +155,9 @@ class _UpcomingTabState extends State<UpcomingTab> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(8)),
                                 border: Border.all(
-                                    width: 0.3,
-                                    color: Colors.black.withOpacity(0.4)),
-                                // boxShadow: [
-                                //   BoxShadow(color: Colors.black12, spreadRadius: 2, blurRadius: 3),
-                                // ],
+                                  width: 0.3,
+                                  color: Colors.black.withOpacity(0.4),
+                                ),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black12.withOpacity(0.2),
