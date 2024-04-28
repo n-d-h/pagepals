@@ -177,7 +177,7 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
                 context: context,
                 type: QuickAlertType.error,
                 title: 'Error',
-                text: 'An error occurred while booking. Please try again.',
+                text: 'You cannot book your own service.',
                 autoCloseDuration: const Duration(seconds: 3),
               );
             });

@@ -15,7 +15,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({Key? key}) : super(key: key);
+  final String role;
+
+  const NotificationScreen({Key? key, required this.role}) : super(key: key);
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -58,7 +60,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     AccountModel accountModel = AccountModel.fromJson(json.decode(account!));
 
     var result = await NotificationService.getAllNotificationByAccountId(
-        accountModel.id ?? "", currentPage, 10);
+        accountModel.id ?? "", currentPage, 10, widget.role);
     setState(() {
       notificationModel = result;
       unreadCount = result.total;
@@ -81,7 +83,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       });
       try {
         var result = await NotificationService.getAllNotificationByAccountId(
-            accountModel.id ?? "", currentPage, 10);
+            accountModel.id ?? "", currentPage, 10, widget.role);
         if (result.list!.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -118,6 +120,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var notificationCount = context.watch<NotificationProvider>().count;
+    if (notificationCount != unreadCount) {
+      setState(() {
+        notificationModel = null;
+      });
+      Future.delayed(const Duration(milliseconds: 40), () {
+        _fetchNotificationByAccountId();
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 90,

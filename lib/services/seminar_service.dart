@@ -13,13 +13,13 @@ class SeminarService {
     int pageSize,
   ) async {
     String query = '''
-      query MyQuery {
+      query {
         getAllSeminarsByReaderId(
           readerId: "$readerId",
           page: $page, 
           pageSize: $pageSize, 
           sort: "desc",
-          state: "ACTIVE"
+          state: ""
         ) {
           list {
             activeSlot
