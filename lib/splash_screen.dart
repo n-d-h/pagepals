@@ -19,7 +19,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   NotificationModel? notificationModel;
   int? unreadCount;
-  String? accessToken;
 
   @override
   void initState() {
@@ -29,26 +28,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   setupPageTransition() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? account = prefs.getString('account');
     String? token = prefs.getString('accessToken');
     if (token != null) {
       int exp = JWT.decode(token).payload['exp'];
       DateTime expirationDateTime =
-      DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+          DateTime.fromMillisecondsSinceEpoch(exp * 1000);
       print('expirationDateTime: $expirationDateTime');
       if (DateTime.now().isAfter(expirationDateTime)) {
         prefs.clear();
         token = null;
       }
     }
-    setState(() {
-      accessToken = token;
-    });
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushAndRemoveUntil(
         context,
         PageTransition(
           type: PageTransitionType.fade,
-          child: accessToken == null
+          child: token == null || account == null
               ? const SigninHomeScreen()
               : const MenuItemScreen(),
         ),
