@@ -11,9 +11,23 @@ class SignInLeadingTexts extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Image(
-          image: AssetImage('assets/signin_logo.png'),
-          fit: BoxFit.cover,
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: const Image(
+            image: AssetImage('assets/signin_logo.png'),
+            fit: BoxFit.cover,
+          ),
         ),
         const SizedBox(height: SpaceHelper.space8),
         Text(

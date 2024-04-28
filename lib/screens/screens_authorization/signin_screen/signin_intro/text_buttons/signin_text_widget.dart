@@ -33,21 +33,18 @@ class _SignInTextWidgetState extends State<SignInTextWidget> {
           widgetText = 'Sign Up';
         }
     }
-    // widgetOpt = widget.opt;
-    // widgetOpt == 0 ? widgetText = "Sign In" : widgetText
   }
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.of(context).pushAndRemoveUntil(
+        Navigator.of(context).push(
           PageTransition(
             child: widgetOpt,
             type: PageTransitionType.bottomToTop,
             duration: const Duration(milliseconds: 400),
           ),
-          (route) => false,
         );
       },
       child: Text(

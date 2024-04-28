@@ -16,6 +16,7 @@ class _SigninHomeScreenState extends State<SigninHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: ColorHelper.getColor(ColorHelper.grayActive),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -24,7 +25,7 @@ class _SigninHomeScreenState extends State<SigninHomeScreen> {
           const SignInIntroText(),
           Container(
             width: double.infinity,
-            height: 290,
+            height: 300,
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
