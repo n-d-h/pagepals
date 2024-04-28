@@ -267,6 +267,7 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
                             price: seminarItem.price ?? 0,
                             duration: seminarItem.duration ?? 0,
                             bookTitle: seminarItem.book?.title ?? '',
+                            status: seminarItem.status ?? '',
                             onDeleteDone: () {
                               setState(() {
                                 seminarModel = null;
@@ -278,6 +279,16 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
                               _fetchAllSeminar();
                             },
                             onUpdateDone: () {
+                              setState(() {
+                                seminarModel = null;
+                                list.clear();
+                                currentPage = 0;
+                                hasMorePages = true;
+                                isLoadingNextPage = false;
+                              });
+                              _fetchAllSeminar();
+                            },
+                            onCompleteDone: () {
                               setState(() {
                                 seminarModel = null;
                                 list.clear();

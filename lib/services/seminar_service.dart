@@ -450,7 +450,7 @@ class SeminarService {
     return data['booking'] != null;
   }
 
-  Future<bool> completeSeminar(String seminarId) async {
+  static Future<bool> completeSeminar(String seminarId) async {
     String mutation = '''
       mutation MyMutation {
         completeSeminar(seminarId: "$seminarId") {
