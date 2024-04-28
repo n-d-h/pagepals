@@ -161,7 +161,7 @@ class _SearchReaderBooksState extends State<SearchReaderBooks> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey[200]!,
+                              color: Colors.white,
                             ),
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.all(8),

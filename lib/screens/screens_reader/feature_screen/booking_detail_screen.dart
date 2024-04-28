@@ -38,8 +38,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
   @override
   Widget build(BuildContext context) {
     int amount = (widget.booking.service?.price ?? 0);
-    int promotion = 0;
-    double total = amount - (amount * promotion / 100);
+    int share = 10;
+    double total = amount * share / 100;
 
     return Scaffold(
       appBar: AppBar(
@@ -90,8 +90,9 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                 end: '$amount pals',
               ),
               SpaceBetweenRowWidget(
-                start: 'Promotion',
-                end: '$promotion %',
+                start: 'Amount share',
+                width: 200,
+                end: '$share %',
               ),
               SpaceBetweenRowWidget(
                 start: 'Total',
