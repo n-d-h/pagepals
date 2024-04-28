@@ -33,7 +33,7 @@ class _CompletedTabState extends State<CompletedTab> {
     // TODO: implement initState
     super.initState();
     _scrollController.addListener(_scrollListener);
-    bookings.addAll(widget.bookingModel!.list!);
+    bookings.addAll(widget.bookingModel?.list ?? []);
   }
 
   @override

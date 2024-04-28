@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_body_widgets/column_detail_rows.dart';
@@ -11,8 +12,11 @@ class BookingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String bookImage = booking.service?.book?.smallThumbnailUrl ??
-        'https://via.placeholder.com/300';
+    String bookImage = booking.service != null
+        ? booking.service?.book?.smallThumbnailUrl ??
+            'https://via.placeholder.com/300'
+        : booking.seminar?.book?.smallThumbnailUrl ??
+            'https://via.placeholder.com/300';
     String readerNickname = booking.meeting!.reader!.nickname!;
     String readerUsername = '@${booking.meeting!.reader!.account!.username!}';
 
@@ -22,11 +26,14 @@ class BookingBody extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black12, width: 1))),
+        border: Border(
+          bottom: BorderSide(color: Colors.black12, width: 1),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 125,
@@ -60,7 +67,7 @@ class BookingBody extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

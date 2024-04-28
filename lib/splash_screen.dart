@@ -1,17 +1,11 @@
-import 'dart:convert';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/notification_model.dart';
-import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
-import 'package:pagepals/services/notification_service.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -34,8 +28,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   setupPageTransition() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessTokenPrep = prefs.getString('accessToken');
+    String? account = prefs.getString('account');
+    if (account == null) {
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushAndRemoveUntil(
+          context,
+          PageTransition(
+            type: PageTransitionType.fade,
+            child: const SigninHomeScreen(),
+          ),
+          (route) => false,
+        );
+      });
+      return;
+    }
+
     setState(() {
-      accessToken = prefs.getString('accessToken');
+      accessToken = accessTokenPrep;
     });
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushAndRemoveUntil(
