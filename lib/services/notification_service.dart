@@ -6,7 +6,7 @@ class NotificationService {
   static GraphQLClient graphQLClient = client!.value;
 
   static Future<NotificationModel> getAllNotificationByAccountId(
-      String accountId, int page, int pageSize) async {
+      String accountId, int page, int pageSize, String role) async {
     var query = '''
       query MyQuery {
         getAllNotificationsByAccountId(
@@ -14,7 +14,7 @@ class NotificationService {
           page: $page
           pageSize: $pageSize
           sort: "desc"
-          notificationRole: CUSTOMER
+          notificationRole: $role
         ) {
           list {
             content

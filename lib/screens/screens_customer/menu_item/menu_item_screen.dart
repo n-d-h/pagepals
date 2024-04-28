@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/custom_icons.dart';
-import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
@@ -51,7 +50,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     AccountModel accountModel = AccountModel.fromJson(json.decode(account!));
 
     var result = await NotificationService.getAllNotificationByAccountId(
-        accountModel.id ?? "", 0, 10);
+        accountModel.id ?? "", 0, 10, "CUSTOMER");
     setState(() {
       unreadCount = result.total;
     });
@@ -67,22 +66,27 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   List<Widget> _listScreens() {
     return [
       HomeScreen(onDrawerChange: _handleDrawerChange),
-      const SearchScreen(),
-      const NotificationScreen(),
       const OrderScreen(),
+      const SearchScreen(),
+      const NotificationScreen(role: "CUSTOMER"),
       const PostScreen(),
     ];
   }
 
   List<BottomNavigationBarItem> get _navigatorItems {
-    final notification =
-        context.watch<NotificationProvider>();
+    final notification = context.watch<NotificationProvider>();
+    final visible = notification.count > 0;
 
     return [
       BottomNavigationBarItem(
         icon: const Icon(UniconsLine.home_alt),
         activeIcon: const Icon(CustomIcons.home_alt),
         label: AppLocalizations.of(context)!.appHome,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(UniconsLine.schedule),
+        activeIcon: const Icon(CustomIcons.schedule),
+        label: AppLocalizations.of(context)!.appBooking,
       ),
       BottomNavigationBarItem(
         icon: const Icon(UniconsLine.search),
@@ -92,9 +96,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
       BottomNavigationBarItem(
         icon: Badge(
           backgroundColor: Colors.orange,
-          isLabelVisible:
-              context.watch<NotificationProvider>().count >
-                  0,
+          isLabelVisible: visible,
           alignment: Alignment.topRight,
           largeSize: 20,
           padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -109,11 +111,6 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
         ),
         activeIcon: const Icon(Icons.notifications),
         label: AppLocalizations.of(context)!.appNotification,
-      ),
-      BottomNavigationBarItem(
-        icon: const Icon(UniconsLine.schedule),
-        activeIcon: const Icon(CustomIcons.schedule),
-        label: AppLocalizations.of(context)!.appBooking,
       ),
       BottomNavigationBarItem(
         icon: const Icon(UniconsLine.users_alt),

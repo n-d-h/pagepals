@@ -60,9 +60,8 @@ class BookingService {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to create booking');
+      return false;
     }
-    // throw Exception('Failed to create booking');
 
     return result.data?['createBooking'] != null;
   }

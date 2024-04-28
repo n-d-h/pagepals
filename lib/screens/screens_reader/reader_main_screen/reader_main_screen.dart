@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
+import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_comment_screen.dart';
@@ -23,7 +26,9 @@ import 'package:pagepals/screens/screens_reader/reader_working_time/reader_worki
 import 'package:pagepals/screens/screens_reader/report_screen/report_screen.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
 import 'package:pagepals/services/booking_service.dart';
+import 'package:pagepals/services/notification_service.dart';
 import 'package:pagepals/services/reader_service.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
@@ -45,6 +50,8 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
   BookingModel? canceledBooking;
   AccountModel? account;
   CommentModel? commentModel;
+
+  int? unreadCount;
 
   Future<void> getBooking(String readerId) async {
     var pending =
@@ -81,6 +88,19 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
     }
   }
 
+  Future<void> _fetchNotificationByAccountId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var account = prefs.getString('account');
+    AccountModel accountModel = AccountModel.fromJson(json.decode(account!));
+
+    var result = await NotificationService.getAllNotificationByAccountId(
+        accountModel.id ?? "", 0, 10, "READER");
+    setState(() {
+      unreadCount = result.total;
+    });
+    context.read<NotificationProvider>().setCount(unreadCount!);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -88,12 +108,15 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
     getBooking(readerId);
     getReaderProfile(readerId);
     getAccount();
+    _fetchNotificationByAccountId();
   }
 
   @override
   Widget build(BuildContext context) {
     print(widget.accountModel!.reader!.nickname!);
     double width = MediaQuery.of(context).size.width - 40;
+    final notification = context.watch<NotificationProvider>();
+    final visible = notification.count > 0;
 
     return pendingBooking == null ||
             completedBooking == null ||
@@ -113,22 +136,24 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
             appBar: AppBar(
               surfaceTintColor: Colors.white,
               backgroundColor: Colors.white,
-              title: const Text(
-                'Reader Screen',
+              title: Text(
+                'pagepals.',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: ColorHelper.getColor(ColorHelper.green),
                   fontSize: 20,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushAndRemoveUntil(
                     PageTransition(
                       child: const MenuItemScreen(),
                       type: PageTransitionType.leftToRight,
                       duration: const Duration(milliseconds: 300),
                     ),
+                    (route) => false,
                   );
                 },
               ),
@@ -146,8 +171,30 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                   icon: const Icon(Icons.settings),
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.bottomToTop,
+                        child: const NotificationScreen(role: "READER"),
+                      ),
+                    );
+                  },
+                  icon: Badge(
+                    backgroundColor: Colors.orange,
+                    isLabelVisible: visible,
+                    alignment: Alignment.topRight,
+                    largeSize: 20,
+                    padding: const EdgeInsets.symmetric(horizontal: 7),
+                    label: Text(
+                      notification.count.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                    ),
+                    child: const Icon(Icons.notifications),
+                  ),
                 ),
                 IconButton(
                   onPressed: () {},
@@ -215,7 +262,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.accountModel?.reader?.nickname ??"",
+                                          widget.accountModel?.reader
+                                                  ?.nickname ??
+                                              "",
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 20,
@@ -526,45 +575,6 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                 fontSize: 20,
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: ReaderWorkingTime(
-                                      title: 'Working Time',
-                                      readerId:
-                                          widget.accountModel?.reader?.id ?? '',
-                                    ),
-                                    duration: const Duration(milliseconds: 300),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: const BoxDecoration(
-                                  color: Colors.transparent,
-                                ),
-                                child: const Row(
-                                  children: [
-                                    Text(
-                                      'work schedule',
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.blue,
-                                      size: 12,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -581,9 +591,11 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: MyServiceScreen(
+                                          child: ReaderWorkingTime(
+                                            title: 'Working Time',
                                             readerId: widget
-                                                .accountModel!.reader!.id!,
+                                                    .accountModel?.reader?.id ??
+                                                '',
                                           ),
                                         ),
                                       );
@@ -602,19 +614,19 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                           Container(
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              color: Colors.deepOrangeAccent,
+                                              color: Colors.blueAccent,
                                               borderRadius:
                                                   BorderRadius.circular(6),
                                             ),
                                             child: const Icon(
-                                              UniconsLine.shopping_cart,
+                                              UniconsLine.clock,
                                               color: Colors.white,
                                               size: 25,
                                             ),
                                           ),
                                           const SizedBox(height: 8),
                                           const Text(
-                                            'My Services',
+                                            'Schedule',
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 13,
@@ -734,7 +746,10 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: const PromotionScreen(),
+                                          child: MyServiceScreen(
+                                            readerId: widget
+                                                .accountModel!.reader!.id!,
+                                          ),
                                         ),
                                       );
                                     },
@@ -752,19 +767,19 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                           Container(
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              color: Colors.blue,
+                                              color: Colors.deepOrangeAccent,
                                               borderRadius:
                                                   BorderRadius.circular(6),
                                             ),
                                             child: const Icon(
-                                              UniconsLine.percentage,
+                                              UniconsLine.shopping_cart,
                                               color: Colors.white,
                                               size: 25,
                                             ),
                                           ),
                                           const SizedBox(height: 8),
                                           const Text(
-                                            'Promotion',
+                                            'My Services',
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 13,
@@ -782,8 +797,7 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
                                           child: ReaderSeminarScreen(
-                                              accountModel: account
-                                          ),
+                                              accountModel: account),
                                         ),
                                       );
                                     },
@@ -829,11 +843,11 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                       Navigator.push(
                                         context,
                                         PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          child: ReaderPostScreen(
-                                            accountModel: account,
-                                          )
-                                        ),
+                                            type:
+                                                PageTransitionType.rightToLeft,
+                                            child: ReaderPostScreen(
+                                              accountModel: account,
+                                            )),
                                       );
                                     },
                                     borderRadius: BorderRadius.circular(10),

@@ -32,7 +32,37 @@ class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Column(
+                children: const [
+                  Text(
+                    'Back',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.black,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: GestureDetector(
         onTap: () {
           // Handle tap on screen to dismiss keyboard
@@ -44,7 +74,7 @@ class _SigninScreenState extends State<SigninScreen> {
           child: Container(
             width:
                 MediaQuery.of(context).size.width * SpaceHelper.spaceNineTenths,
-            margin: const EdgeInsets.fromLTRB(20, 100, 20, 0),
+            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -236,12 +266,13 @@ class _SigninScreenState extends State<SigninScreen> {
                               // Navigate to Dashboard screen on successful login
                               Future.delayed(const Duration(seconds: 2), () {
                                 Navigator.pop(context);
-                                Navigator.of(context).push(
+                                Navigator.of(context).pushAndRemoveUntil(
                                   PageTransition(
                                     child: const MenuItemScreen(),
                                     type: PageTransitionType.bottomToTop,
                                     duration: const Duration(milliseconds: 400),
                                   ),
+                                  (route) => false,
                                 );
                               });
                             }
