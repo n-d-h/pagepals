@@ -75,6 +75,7 @@ class ReaderService {
                 phoneNumber
                 customer {
                   dob
+                  gender
                 }
               }
               nickname
@@ -89,6 +90,7 @@ class ReaderService {
               totalOfBookings
               totalOfReviews
               avatarUrl
+              createdAt
             }
             workingTimeList {
               workingDates {
@@ -102,9 +104,7 @@ class ReaderService {
         }
     ''';
 
-    GraphQLClient clientWithToken =
-        await AuthService.getGraphQLClientWithToken();
-    final QueryResult result = await clientWithToken.query(QueryOptions(
+    final QueryResult result = await graphQLClient.query(QueryOptions(
       document: gql(query),
       fetchPolicy: FetchPolicy.networkOnly,
     ));

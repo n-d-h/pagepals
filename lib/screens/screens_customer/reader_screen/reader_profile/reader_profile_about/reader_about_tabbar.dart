@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pagepals/helpers/space_helper.dart';
+import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_about/reader_info_line.dart';
 import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_about/video_player_screen.dart';
 import 'package:unicons/unicons.dart';
@@ -7,12 +9,24 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReaderAboutTabbar extends StatelessWidget {
   final String videoUrl;
-  const ReaderAboutTabbar({super.key, required this.videoUrl});
+  final ReaderProfile? reader;
+
+  const ReaderAboutTabbar({super.key, required this.videoUrl, this.reader});
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<VideoPlayerScreenState> videoPlayerKey =
         GlobalKey<VideoPlayerScreenState>();
+    String createTime = reader?.profile?.createdAt ?? '';
+    DateTime createDateTime;
+    try {
+      createDateTime = DateTime.parse(createTime);
+    } catch (e) {
+      // Handle the error, such as setting a default value or logging the error.
+      createDateTime = DateTime.now(); // Set a default value
+      print('Error parsing date: $e');
+    }
+    String formattedDate = DateFormat('MMM d, yyyy').format(createDateTime);
     return SingleChildScrollView(
       // controller: ScrollController(),
       // physics: const AlwaysScrollableScrollPhysics(),
@@ -59,16 +73,17 @@ class ReaderAboutTabbar extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 0, 5, 7),
               child: Text(
-                'My name is Minh, I’m 22 years old and I’m currently live '
-                'in Ho Chi Minh City, Viet Nam \n\n'
-                'I really love reading book, my hobby is sipping a cup of tea, '
-                'sit in my garden '
-                'under the morning sunshine and reading book, I also love to '
-                'wrap my read '
-                'book to protect it from dust and  keep it new. I always try '
-                'to deep learning a book so I hope that  '
-                'I can share what I have learned from book to you! \n\nAnd I’d '
-                'love to meet you too! :) ',
+                reader?.profile?.description ??
+                    'My name is Minh, I’m 22 years old and I’m currently live '
+                        'in Ho Chi Minh City, Viet Nam \n\n'
+                        'I really love reading book, my hobby is sipping a cup of tea, '
+                        'sit in my garden '
+                        'under the morning sunshine and reading book, I also love to '
+                        'wrap my read '
+                        'book to protect it from dust and  keep it new. I always try '
+                        'to deep learning a book so I hope that  '
+                        'I can share what I have learned from book to you! \n\nAnd I’d '
+                        'love to meet you too! :) ',
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.black.withOpacity(0.6),
@@ -76,20 +91,20 @@ class ReaderAboutTabbar extends StatelessWidget {
               ),
             ),
             const SizedBox(height: SpaceHelper.space12),
-            const ReaderInfoLine(
-              iconData: UniconsLine.map_marker,
-              title: 'From',
-              content: 'Ho Chi Minh city, Vietnam',
+            ReaderInfoLine(
+              iconData: UniconsLine.language,
+              title: 'Language',
+              content: reader?.profile?.language ?? 'N/A',
             ),
-            const ReaderInfoLine(
+            ReaderInfoLine(
               iconData: UniconsLine.user_circle,
               title: 'Member since',
-              content: 'March 14, 2023',
+              content: formattedDate,
             ),
-            const ReaderInfoLine(
+            ReaderInfoLine(
               iconData: UniconsLine.notes,
               title: 'Genre',
-              content: 'Horror',
+              content: reader?.profile?.genre ?? 'Horror',
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
@@ -102,15 +117,15 @@ class ReaderAboutTabbar extends StatelessWidget {
               ),
             ),
             const SizedBox(height: SpaceHelper.space12),
-            const ReaderInfoLine(
+            ReaderInfoLine(
               iconData: UniconsLine.selfie,
               title: 'gender',
-              content: 'Male',
+              content: reader?.profile?.account?.customer?.gender ?? 'N/A',
             ),
-            const ReaderInfoLine(
+            ReaderInfoLine(
               iconData: UniconsLine.globe,
               title: 'Accent',
-              content: 'Northern Spanish',
+              content: reader?.profile?.countryAccent ?? 'N/A',
             ),
             const SizedBox(height: 20),
           ],

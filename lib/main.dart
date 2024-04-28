@@ -102,16 +102,16 @@ class MyApp extends StatelessWidget {
     prefs.setString('fcmToken', fcmToken!);
     print('FCM Token: $fcmToken');
 
-    if (token != null) {
-      int exp = JWT.decode(token).payload['exp'];
-      DateTime expirationDateTime =
-      DateTime.fromMillisecondsSinceEpoch(exp * 1000);
-      print('expirationDateTime: $expirationDateTime');
-      if (DateTime.now().isAfter(expirationDateTime)) {
-        prefs.clear();
-        token = null;
-      }
-    }
+    // if (token != null) {
+    //   int exp = JWT.decode(token).payload['exp'];
+    //   DateTime expirationDateTime =
+    //   DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+    //   print('expirationDateTime: $expirationDateTime');
+    //   if (DateTime.now().isAfter(expirationDateTime)) {
+    //     prefs.clear();
+    //     token = null;
+    //   }
+    // }
   }
 
   @override

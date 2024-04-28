@@ -46,7 +46,6 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -170,8 +169,9 @@ class _ReaderProfileState extends State<ReaderProfileScreen> {
             children: [
               ReaderAboutTabbar(
                 videoUrl: reader.profile?.introductionVideoUrl ?? '',
+                reader: reader,
               ),
-              const ReaderBookTabbar(),
+              ReaderBookTabbar(readerId: reader.profile?.id ?? ''),
               ReaderReviewTabbar(
                 commentModel: commentModel,
                 reader: reader,
