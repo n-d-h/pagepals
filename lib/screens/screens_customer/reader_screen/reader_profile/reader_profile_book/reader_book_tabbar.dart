@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
-import 'package:pagepals/screens/screens_customer/book_screen/book_detail_screen.dart';
-import 'package:pagepals/screens/screens_customer/reader_screen/reader_profile/reader_profile_book/book_collection_widget.dart';
 import 'package:pagepals/services/book_service.dart';
 
 class ReaderBookTabbar extends StatefulWidget {
@@ -33,7 +28,7 @@ class _ReaderBookTabbarState extends State<ReaderBookTabbar> {
     // TODO: implement initState
     super.initState();
     _scrollController.addListener(_scrollListener);
-    _fetchCustomerBooks();
+    _fetchReaderBooks();
   }
 
   @override
@@ -52,7 +47,7 @@ class _ReaderBookTabbarState extends State<ReaderBookTabbar> {
     }
   }
 
-  Future<void> _fetchCustomerBooks() async {
+  Future<void> _fetchReaderBooks() async {
     try {
       BookModel result = await BookService.getReaderBooks(
           widget.readerId, '', currentPage, 10);
@@ -138,7 +133,7 @@ class _ReaderBookTabbarState extends State<ReaderBookTabbar> {
                         ),
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.all(8),
-                        // margin: const EdgeInsets.only(bottom: 2),
+                        margin: const EdgeInsets.only(bottom: 2),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
