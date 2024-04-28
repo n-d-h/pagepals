@@ -92,8 +92,9 @@ class _ReaderSeminarEditScreenState extends State<ReaderSeminarEditScreen> {
           data: Theme.of(context).copyWith(
             brightness: Brightness.light,
             colorScheme: ColorScheme.light(
-              primary: ColorHelper.getColor(ColorHelper.green),
+              primary: Colors.grey,
               onPrimary: Colors.white,
+              onBackground: Colors.black,
             ).copyWith(background: Colors.white),
           ),
           child: child!,
