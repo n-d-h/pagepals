@@ -18,38 +18,45 @@ class _SigninHomeScreenState extends State<SigninHomeScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: ColorHelper.getColor(ColorHelper.grayActive),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SignInIntroText(),
-          Container(
-            width: double.infinity,
-            height: 300,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        controller: ScrollController(),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SignInIntroText(),
+              Container(
+                width: double.infinity,
+                height: 300,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: SpaceHelper.space24,
+                    vertical: SpaceHelper.space24,
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SignInBoxButtons(),
+                      SignInTextButtons(),
+                    ],
+                  ),
+                ),
               ),
-              margin: const EdgeInsets.symmetric(
-                horizontal: SpaceHelper.space24,
-                vertical: SpaceHelper.space24,
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SignInBoxButtons(),
-                  SignInTextButtons(),
-                ],
-              ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -18,11 +18,19 @@ class _ReaderCommentScreenState extends State<ReaderCommentScreen> {
         title: const Text('Comments'),
         centerTitle: true,
         surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
           },
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            color: Colors.black.withOpacity(0.1),
+            height: 0.5,
+          ),
         ),
       ),
       body: SingleChildScrollView(

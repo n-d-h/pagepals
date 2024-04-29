@@ -50,6 +50,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
           ),
           centerTitle: true,
           surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);

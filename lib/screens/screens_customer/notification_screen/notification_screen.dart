@@ -135,6 +135,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         toolbarHeight: 90,
         centerTitle: true,
         surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
         title: const Text(
           'Notifications',
           style: TextStyle(

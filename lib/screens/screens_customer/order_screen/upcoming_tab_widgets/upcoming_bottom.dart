@@ -26,23 +26,77 @@ class UpcomingBottom extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (booking.service != null)
+          if (booking.service != null || !isReader)
             Expanded(
               child: OutlinedButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    PageTransition(
-                      child: CanceledScreen(
-                        isReader: isReader,
-                        bookingId: booking.id!,
-                        onValueChanged: (value) {
-                          print(value);
-                        },
+                  if (booking.startAt != null &&
+                      DateTime.now().isBefore(
+                        DateTime.parse(booking.startAt!).add(
+                          const Duration(
+                            days: 1,
+                          ),
+                        ),
+                      )) {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        child: CanceledScreen(
+                          isReader: isReader,
+                          bookingId: booking.id!,
+                          onValueChanged: (value) {
+                            print(value);
+                          },
+                        ),
+                        type: PageTransitionType.rightToLeftWithFade,
+                        duration: const Duration(milliseconds: 300),
                       ),
-                      type: PageTransitionType.rightToLeftWithFade,
-                      duration: const Duration(milliseconds: 300),
-                    ),
-                  );
+                    );
+                  } else if (booking.startAt != null &&
+                      DateTime.now().isAfter(
+                        DateTime.parse(booking.startAt!).add(
+                          const Duration(
+                            minutes: 45,
+                          ),
+                        ),
+                      )) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Meeting expired"),
+                            content: const Text(
+                              "The meeting has expired. You can't cancel it now.",
+                            ),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Meeting scheduled"),
+                            content: const Text(
+                              "The meeting is almost starting. You can't cancel it now.",
+                            ),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        });
+                  }
                 },
                 style: OutlinedButton.styleFrom(
                   backgroundColor: ColorHelper.getColor('#C6F4DE'),
@@ -84,6 +138,27 @@ class UpcomingBottom extends StatelessWidget {
                       );
                     },
                   );
+                } else if (DateTime.now()
+                    .isAfter(startTime.add(const Duration(minutes: 45)))) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Meeting Expired"),
+                        content: const Text(
+                          "The meeting has expired. Please contact the service provider for more information.",
+                        ),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 } else {
                   isReader
                       ? await VideoConferenceService.startMeeting(
@@ -94,11 +169,14 @@ class UpcomingBottom extends StatelessWidget {
                 }
               },
               style: OutlinedButton.styleFrom(
-                backgroundColor: ColorHelper.getColor(ColorHelper.green),
+                backgroundColor: booking.service != null
+                    ? ColorHelper.getColor(ColorHelper.green)
+                    : Colors.blueAccent,
                 side: const BorderSide(color: Colors.transparent),
               ),
               child: Text(
-                booking.service != null ? 'Join meet' : 'Join seminar',
+                // booking.service != null ? 'Join meet' : 'Join seminar',
+                'Join meet',
                 style: GoogleFonts.lexend(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,

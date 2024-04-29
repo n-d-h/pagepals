@@ -7,7 +7,6 @@ import 'package:pagepals/screens/screens_customer/book_screen/search_reader_book
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/book_text_form.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/day_picker_widget.dart';
-import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/dropdown_buttons/dropdown_button_widget.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/dropdown_buttons/select_service_dropdown.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/time_picker_widget.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/request_schedule.dart';
@@ -172,6 +171,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
         title: const Text('Booking Detail'),
         centerTitle: true,
         titleTextStyle: const TextStyle(

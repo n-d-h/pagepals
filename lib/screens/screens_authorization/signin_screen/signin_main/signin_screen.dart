@@ -35,6 +35,7 @@ class _SigninScreenState extends State<SigninScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         centerTitle: true,
         title: Column(
@@ -136,15 +137,6 @@ class _SigninScreenState extends State<SigninScreen> {
                         _emailValidated = true;
                       });
                     },
-                    // validator: (value) {
-                    //   setState(() {
-                    //     _emailValidated = value != null && value.isNotEmpty;
-                    //   });
-                    //   // if (!_emailValidated) {
-                    //   //   return 'Please enter your email or username';
-                    //   // }
-                    //   return null;
-                    // },
                   ),
                   const SizedBox(height: 10),
                   TextFormField(

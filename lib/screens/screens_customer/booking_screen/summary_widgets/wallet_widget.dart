@@ -82,7 +82,7 @@ class WalletWidget extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    '${accountModel?.wallet!.tokenAmount.toString()} pals',
+                    '${accountModel?.wallet?.tokenAmount ?? 0} pals',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
