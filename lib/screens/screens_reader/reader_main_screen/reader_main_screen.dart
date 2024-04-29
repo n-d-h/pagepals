@@ -13,13 +13,11 @@ import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/completed_booking_screen.dart';
+import 'package:pagepals/screens/screens_reader/feature_screen/help_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_cancel_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/reader_comment_screen.dart';
-import 'package:pagepals/screens/screens_reader/feature_screen/reader_settings_screen.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
-import 'package:pagepals/screens/screens_reader/promotion_screen/promotion_screen.dart';
-import 'package:pagepals/screens/screens_reader/reader_post_screen/reader_post_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
@@ -164,18 +162,6 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                       context,
                       PageTransition(
                         type: PageTransitionType.bottomToTop,
-                        child: const ReaderSettingScreen(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.settings),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.bottomToTop,
                         child: const NotificationScreen(role: "READER"),
                       ),
                     );
@@ -195,10 +181,6 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                     ),
                     child: const Icon(Icons.notifications),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.message),
                 ),
               ],
             ),
@@ -843,11 +825,9 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                       Navigator.push(
                                         context,
                                         PageTransition(
-                                            type:
-                                                PageTransitionType.rightToLeft,
-                                            child: ReaderPostScreen(
-                                              accountModel: account,
-                                            )),
+                                          type: PageTransitionType.rightToLeft,
+                                          child: HelpScreen(),
+                                        ),
                                       );
                                     },
                                     borderRadius: BorderRadius.circular(10),

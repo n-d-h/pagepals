@@ -58,6 +58,12 @@ class SeminarService {
               smallThumbnailUrl
               title
             }
+            meeting {
+              id
+              meetingCode
+              password
+              limitOfPerson
+            }
           }
           pagination {
             currentPage

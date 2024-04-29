@@ -599,7 +599,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   fontSize: 18,
                                   color: Colors.white,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),

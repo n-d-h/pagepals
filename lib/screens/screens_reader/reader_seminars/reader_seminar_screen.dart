@@ -265,6 +265,7 @@ class _ReaderSeminarScreenState extends State<ReaderSeminarScreen> {
                             activeSlot: seminarItem.activeSlot ?? 0,
                             limitCustomer: seminarItem.limitCustomer ?? 0,
                             price: seminarItem.price ?? 0,
+                            meetingCode: seminarItem.meeting?.meetingCode ?? '',
                             duration: seminarItem.duration ?? 0,
                             bookTitle: seminarItem.book?.title ?? '',
                             status: seminarItem.status ?? '',
