@@ -139,33 +139,13 @@ class UpcomingBottom extends StatelessWidget {
                       );
                     },
                   );
-                } else if (DateTime.now()
-                    .isAfter(startTime.add(const Duration(minutes: 45)))) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Meeting Expired"),
-                        content: const Text(
-                          "The meeting has expired. Please contact the service provider for more information.",
-                        ),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
                 } else {
                   double? duration = booking.service != null
                       ? booking.service!.duration!
                       : booking.seminar!.duration!.toDouble();
+                  duration = duration + 30;
                   if (DateTime.now().isAfter(
-                      startTime.add(Duration(minutes: duration!.toInt())))) {
+                      startTime.add(Duration(minutes: duration.toInt())))) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -173,7 +153,7 @@ class UpcomingBottom extends StatelessWidget {
                           surfaceTintColor: Colors.white,
                           title: const Text("Meeting Expired"),
                           content: const Text(
-                            "The meeting has expired. Please contact the reader for further information.",
+                            "The meeting has expired. You can't join this meeting now.",
                           ),
                           actions: <Widget>[
                             ElevatedButton(
@@ -186,16 +166,15 @@ class UpcomingBottom extends StatelessWidget {
                         );
                       },
                     );
-                    return;
-                  }
-
-                  if(isReader) {
-                    await VideoConferenceService.startMeeting(
-                        booking.meeting!.meetingCode!);
                   } else {
-                    await VideoConferenceService.joinMeeting(
-                        booking.meeting!.meetingCode!,
-                        booking.meeting!.password!);
+                    if (isReader) {
+                      await VideoConferenceService.startMeeting(
+                          booking.meeting!.meetingCode!);
+                    } else {
+                      await VideoConferenceService.joinMeeting(
+                          booking.meeting!.meetingCode!,
+                          booking.meeting!.password!);
+                    }
                   }
                 }
               },
