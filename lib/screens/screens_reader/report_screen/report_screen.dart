@@ -117,11 +117,19 @@ class _ReportScreenState extends State<ReportScreen> {
         title: const Text('Sales Report'),
         centerTitle: true,
         surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () {
             Navigator.pop(context);
           },
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            color: Colors.black.withOpacity(0.1),
+            height: 0.5,
+          ),
         ),
       ),
       body: SingleChildScrollView(

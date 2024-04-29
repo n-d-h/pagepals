@@ -104,6 +104,7 @@ class _SearchBookScreenState extends State<SearchBookScreen> {
       appBar: AppBar(
         title: const Text('Select Book'),
         surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),

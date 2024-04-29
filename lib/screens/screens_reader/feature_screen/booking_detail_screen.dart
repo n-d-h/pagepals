@@ -162,7 +162,7 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                 context: context,
                 type: QuickAlertType.error,
                 title: 'Error',
-                text: 'An error occurred. Please try again.',
+                text: 'Meeting has to surpass 40 minutes from the start time to complete',
                 autoCloseDuration: const Duration(seconds: 3),
               );
             });

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_history_screen.dart';
@@ -78,7 +79,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    '\$ ${widget.accountModel?.wallet?.cash ?? 0}',
+                    '\$ ${NumberFormat("#,##0.00", "en_US").format(widget.accountModel?.wallet?.cash ?? 0)}',
                     style: const TextStyle(
                       overflow: TextOverflow.ellipsis,
                       fontSize: 45,
@@ -141,7 +142,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 30),
+                  SizedBox(width: 25),
                   Expanded(
                     child: InkWell(
                       onTap: () {
@@ -154,35 +155,33 @@ class _FinanceScreenState extends State<FinanceScreen> {
                               ),
                             ));
                       },
-                      child: Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 10,
-                                offset: Offset(0, 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(15),
+                        // width: MediaQuery.of(context).size.width * 0.4,
+                        child: Row(
+                          children: [
+                            TransactionMoneyWidget.transactionButton(),
+                            const SizedBox(width: 20),
+                            Text(
+                              'History',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade700,
                               ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.all(15),
-                          // width: MediaQuery.of(context).size.width * 0.4,
-                          child: Row(
-                            children: [
-                              TransactionMoneyWidget.transactionButton(),
-                              const SizedBox(width: 20),
-                              Text(
-                                'History',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade700,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

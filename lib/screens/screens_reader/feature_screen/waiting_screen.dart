@@ -140,6 +140,13 @@ class _WaitingScreenState extends State<WaitingScreen> {
                 (route) => false);
           },
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            color: Colors.black.withOpacity(0.1),
+            height: 0.5,
+          ),
+        ),
       ),
       body: bookings.isEmpty
           ? Center(

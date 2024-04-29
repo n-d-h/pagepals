@@ -17,6 +17,7 @@ class ReaderReportService {
           readerId: "$readerId",
           startDate: "$startDate",
           endDate: "$endDate"
+          isMobile: true
         ) {
           milestones
           completedBookingData

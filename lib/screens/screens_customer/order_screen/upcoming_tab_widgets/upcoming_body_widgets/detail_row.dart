@@ -5,8 +5,10 @@ import 'package:pagepals/helpers/color_helper.dart';
 class DetailRow extends StatelessWidget {
   final IconData icon;
   final String text;
+  final Color? color;
 
-  const DetailRow({Key? key, required this.icon, required this.text})
+  const DetailRow(
+      {Key? key, required this.icon, required this.text, this.color})
       : super(key: key);
 
   @override
@@ -19,7 +21,7 @@ class DetailRow extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: ColorHelper.getColor(ColorHelper.green),
+          color: color ?? ColorHelper.getColor(ColorHelper.green),
           size: 12,
         ),
         const SizedBox(width: 10),
@@ -40,8 +42,9 @@ class DetailRow extends StatelessWidget {
             style: GoogleFonts.lexend(
               fontSize: 12,
               fontWeight: FontWeight.w300,
-              color: ColorHelper.getColor(
-                  ColorHelper.green), // Part 2: Rest of the text in green
+              color: color ??
+                  ColorHelper.getColor(
+                      ColorHelper.green), // Part 2: Rest of the text in green
             ),
           ),
         ),

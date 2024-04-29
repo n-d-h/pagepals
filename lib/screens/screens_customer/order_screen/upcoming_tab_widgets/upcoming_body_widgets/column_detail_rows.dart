@@ -17,7 +17,8 @@ class ColumnDetail extends StatelessWidget {
     String seminar = booking.seminar?.description ?? 'Unknown';
     String meetingCode = "#${booking.meeting!.meetingCode!}";
     String duration =
-        '${booking.service?.duration != null ? booking.service!.duration!.toInt() : '60'} minutes';
+        '${booking.seminar?.duration != null ? booking.seminar!.duration!.toInt() : booking.service?.duration != null ? booking.service!.duration!.toInt() : '60'} minutes';
+    Color? color = booking.service == null ? Colors.blueAccent : null;
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Column(
@@ -28,26 +29,31 @@ class ColumnDetail extends StatelessWidget {
           DetailRow(
             icon: UniconsLine.book_alt,
             text: 'Book: $title',
+            color: color,
           ),
           SizedBox(height: 2),
           booking.service != null
               ? DetailRow(
                   icon: UniconsLine.pen,
                   text: 'Service: $service',
+                  color: color,
                 )
               : DetailRow(
                   icon: UniconsLine.pen,
                   text: 'Seminar: $seminar',
+                  color: color,
                 ),
           SizedBox(height: 2),
           DetailRow(
             icon: UniconsLine.rocket,
             text: 'Meeting Code: $meetingCode',
+            color: color,
           ),
           SizedBox(height: 2),
           DetailRow(
             icon: UniconsLine.clock,
             text: 'Duration: $duration',
+            color: color,
           ),
         ],
       ),

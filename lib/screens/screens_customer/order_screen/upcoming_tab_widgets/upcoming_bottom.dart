@@ -26,23 +26,77 @@ class UpcomingBottom extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (booking.service != null)
+          if (booking.service != null || !isReader)
             Expanded(
               child: OutlinedButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    PageTransition(
-                      child: CanceledScreen(
-                        isReader: isReader,
-                        bookingId: booking.id!,
-                        onValueChanged: (value) {
-                          print(value);
-                        },
+                  if (booking.startAt != null &&
+                      DateTime.now().isBefore(
+                        DateTime.parse(booking.startAt!).add(
+                          const Duration(
+                            days: 1,
+                          ),
+                        ),
+                      )) {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        child: CanceledScreen(
+                          isReader: isReader,
+                          bookingId: booking.id!,
+                          onValueChanged: (value) {
+                            print(value);
+                          },
+                        ),
+                        type: PageTransitionType.rightToLeftWithFade,
+                        duration: const Duration(milliseconds: 300),
                       ),
-                      type: PageTransitionType.rightToLeftWithFade,
-                      duration: const Duration(milliseconds: 300),
-                    ),
-                  );
+                    );
+                  } else if (booking.startAt != null &&
+                      DateTime.now().isAfter(
+                        DateTime.parse(booking.startAt!).add(
+                          const Duration(
+                            minutes: 45,
+                          ),
+                        ),
+                      )) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Meeting expired"),
+                            content: const Text(
+                              "The meeting has expired. You can't cancel it now.",
+                            ),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Meeting scheduled"),
+                            content: const Text(
+                              "The meeting is almost starting. You can't cancel it now.",
+                            ),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        });
+                  }
                 },
                 style: OutlinedButton.styleFrom(
                   backgroundColor: ColorHelper.getColor('#C6F4DE'),
@@ -89,8 +143,9 @@ class UpcomingBottom extends StatelessWidget {
                   double? duration = booking.service != null
                       ? booking.service!.duration!
                       : booking.seminar!.duration!.toDouble();
+                  duration = duration + 30;
                   if (DateTime.now().isAfter(
-                      startTime.add(Duration(minutes: duration!.toInt())))) {
+                      startTime.add(Duration(minutes: duration.toInt())))) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -98,7 +153,7 @@ class UpcomingBottom extends StatelessWidget {
                           surfaceTintColor: Colors.white,
                           title: const Text("Meeting Expired"),
                           content: const Text(
-                            "The meeting has expired. Please contact the reader for further information.",
+                            "The meeting has expired. You can't join this meeting now.",
                           ),
                           actions: <Widget>[
                             ElevatedButton(
@@ -111,25 +166,27 @@ class UpcomingBottom extends StatelessWidget {
                         );
                       },
                     );
-                    return;
-                  }
-
-                  if(isReader) {
-                    await VideoConferenceService.startMeeting(
-                        booking.meeting!.meetingCode!);
                   } else {
-                    await VideoConferenceService.joinMeeting(
-                        booking.meeting!.meetingCode!,
-                        booking.meeting!.password!);
+                    if (isReader) {
+                      await VideoConferenceService.startMeeting(
+                          booking.meeting!.meetingCode!);
+                    } else {
+                      await VideoConferenceService.joinMeeting(
+                          booking.meeting!.meetingCode!,
+                          booking.meeting!.password!);
+                    }
                   }
                 }
               },
               style: OutlinedButton.styleFrom(
-                backgroundColor: ColorHelper.getColor(ColorHelper.green),
+                backgroundColor: booking.service != null
+                    ? ColorHelper.getColor(ColorHelper.green)
+                    : Colors.blueAccent,
                 side: const BorderSide(color: Colors.transparent),
               ),
               child: Text(
-                booking.service != null ? 'Join meet' : 'Join seminar',
+                // booking.service != null ? 'Join meet' : 'Join seminar',
+                'Join meet',
                 style: GoogleFonts.lexend(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,

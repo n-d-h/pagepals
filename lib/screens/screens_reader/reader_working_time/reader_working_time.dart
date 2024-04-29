@@ -157,6 +157,13 @@ class _ReaderWorkingTimeState extends State<ReaderWorkingTime> {
         centerTitle: true,
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            color: Colors.black.withOpacity(0.1),
+            height: 0.5,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

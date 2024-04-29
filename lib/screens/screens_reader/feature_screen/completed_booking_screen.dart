@@ -89,11 +89,19 @@ class _CompletedBookingScreenState extends State<CompletedBookingScreen> {
         title: const Text('Completed Booking'),
         centerTitle: true,
         surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
           },
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            color: Colors.black.withOpacity(0.1),
+            height: 0.5,
+          ),
         ),
       ),
       body: bookings.isEmpty

@@ -68,6 +68,8 @@ class _OrderScreenState extends State<OrderScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           title: Padding(
             padding: const EdgeInsets.only(left: 20),
             child: Text(
@@ -126,15 +128,15 @@ class _OrderScreenState extends State<OrderScreen> {
               Tab(text: AppLocalizations.of(context)!.appCanceled),
             ],
           ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                UniconsLine.search,
-                color: Colors.black,
-              ),
-            ),
-          ],
+          // actions: [
+          //   IconButton(
+          //     onPressed: () {},
+          //     icon: const Icon(
+          //       UniconsLine.search,
+          //       color: Colors.black,
+          //     ),
+          //   ),
+          // ],
         ),
         body: isLoading
             ? Scaffold(

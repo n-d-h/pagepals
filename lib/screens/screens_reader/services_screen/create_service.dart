@@ -86,7 +86,7 @@ class _CreateServiceState extends State<CreateService> {
               const SizedBox(height: 20),
               CustomTextFormField(
                 controller: serviceNameController,
-                label: 'Service Name',
+                label: 'Service Description',
               ),
               const SizedBox(height: 20),
               CustomTextFormField(

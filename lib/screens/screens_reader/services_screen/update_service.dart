@@ -107,7 +107,7 @@ class _CreateServiceState extends State<UpdateServiceScreen> {
               ),
               const SizedBox(height: 20),
               CustomTextFormField(
-                  controller: serviceNameController, label: 'Service Name'),
+                  controller: serviceNameController, label: 'Service Description'),
               // const SizedBox(height: 20),
               // CustomTextFormField(
               //     controller: descriptionController, label: 'Description'),

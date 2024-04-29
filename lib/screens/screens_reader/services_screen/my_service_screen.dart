@@ -126,6 +126,7 @@ class _MyServiceScreenState extends State<MyServiceScreen> {
         title: const Text('My Services'),
         elevation: 0,
         surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
