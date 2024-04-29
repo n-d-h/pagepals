@@ -178,6 +178,12 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                       width: double.infinity,
                       color: Colors.grey[300],
                     ),
+                    customerDataField('Gender', account?.customer?.gender),
+                    Container(
+                      height: 1,
+                      width: double.infinity,
+                      color: Colors.grey[300],
+                    ),
                     customerDataField('Date of Birth', dob),
                   ],
                 ),

@@ -74,9 +74,9 @@ class _HelpScreenState extends State<HelpScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.email),
-              title: const Text('support@example.com'),
+              title: const Text('pagepals@support.com'),
               onTap: () {
-                _sendEmail('support@example.com');
+                _sendEmail('pagepals@support.com');
               },
             ),
             ListTile(

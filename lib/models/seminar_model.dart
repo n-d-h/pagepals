@@ -12,19 +12,20 @@ class Book {
   String? thumbnailUrl;
   String? title;
 
-  Book(
-      {this.categories,
-      this.authors,
-      this.id,
-      this.externalId,
-      this.description,
-      this.language,
-      this.pageCount,
-      this.publishedDate,
-      this.publisher,
-      this.smallThumbnailUrl,
-      this.thumbnailUrl,
-      this.title});
+  Book({
+    this.categories,
+    this.authors,
+    this.id,
+    this.externalId,
+    this.description,
+    this.language,
+    this.pageCount,
+    this.publishedDate,
+    this.publisher,
+    this.smallThumbnailUrl,
+    this.thumbnailUrl,
+    this.title,
+  });
 
   Book.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
@@ -110,6 +111,36 @@ class Author {
   }
 }
 
+class Meeting {
+  String? meetingCode;
+  String? password;
+  int? limitOfPerson;
+  String? id;
+
+  Meeting({
+    this.meetingCode,
+    this.password,
+    this.limitOfPerson,
+    this.id,
+  });
+
+  Meeting.fromJson(Map<String, dynamic> json) {
+    meetingCode = json['meetingCode'];
+    password = json['password'];
+    limitOfPerson = json['limitOfPerson'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['meetingCode'] = meetingCode;
+    data['password'] = password;
+    data['limitOfPerson'] = limitOfPerson;
+    data['id'] = id;
+    return data;
+  }
+}
+
 class SeminarItem {
   int? activeSlot;
   String? createdAt;
@@ -125,6 +156,7 @@ class SeminarItem {
   String? updatedAt;
   Reader? reader;
   Book? book;
+  Meeting? meeting;
 
   SeminarItem({
     this.activeSlot,
@@ -141,6 +173,7 @@ class SeminarItem {
     this.updatedAt,
     this.reader,
     this.book,
+    this.meeting,
   });
 
   SeminarItem.fromJson(Map<String, dynamic> json) {
@@ -158,6 +191,8 @@ class SeminarItem {
     updatedAt = json['updatedAt'];
     reader = json['reader'] != null ? Reader?.fromJson(json['reader']) : null;
     book = json['book'] != null ? Book?.fromJson(json['book']) : null;
+    meeting =
+        json['meeting'] != null ? Meeting?.fromJson(json['meeting']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -176,6 +211,7 @@ class SeminarItem {
     data['updatedAt'] = updatedAt;
     data['reader'] = reader!.toJson();
     data['book'] = book!.toJson();
+    data['meeting'] = meeting!.toJson();
     return data;
   }
 }
