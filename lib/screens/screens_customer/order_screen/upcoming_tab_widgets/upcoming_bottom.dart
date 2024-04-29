@@ -26,13 +26,13 @@ class UpcomingBottom extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (booking.service != null || !isReader)
+          if (booking.service != null && isReader == false)
             Expanded(
               child: OutlinedButton(
                 onPressed: () {
                   if (booking.startAt != null &&
                       DateTime.now().isBefore(
-                        DateTime.parse(booking.startAt!).add(
+                        DateTime.parse(booking.startAt!).subtract(
                           const Duration(
                             days: 1,
                           ),
@@ -55,7 +55,7 @@ class UpcomingBottom extends StatelessWidget {
                       DateTime.now().isAfter(
                         DateTime.parse(booking.startAt!).add(
                           const Duration(
-                            minutes: 45,
+                            minutes: 90,
                           ),
                         ),
                       )) {
@@ -113,7 +113,8 @@ class UpcomingBottom extends StatelessWidget {
                 ),
               ),
             ),
-          const SizedBox(width: 10), // Add this line
+          if (booking.service != null && isReader == false)
+            const SizedBox(width: 10), // Add this line
           Expanded(
             child: OutlinedButton(
               onPressed: () async {
