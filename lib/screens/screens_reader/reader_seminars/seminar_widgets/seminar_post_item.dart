@@ -9,6 +9,7 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
 import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_edit_screen.dart';
 import 'package:pagepals/services/seminar_service.dart';
+import 'package:pagepals/services/video_conference_service.dart';
 
 class SeminarPostItem extends StatefulWidget {
   final String id;
@@ -25,6 +26,7 @@ class SeminarPostItem extends StatefulWidget {
   final int duration;
   final String bookTitle;
   final String status;
+  final String meetingCode;
   final Function() onDeleteDone;
   final Function() onUpdateDone;
   final Function() onCompleteDone;
@@ -46,6 +48,7 @@ class SeminarPostItem extends StatefulWidget {
     required this.duration,
     required this.bookTitle,
     required this.status,
+    required this.meetingCode,
     required this.onDeleteDone,
     required this.onUpdateDone,
     required this.onCompleteDone,
@@ -370,13 +373,67 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
               Expanded(
                 child: widget.status == 'ACTIVE'
                     ? InkWell(
+                        onTap: () async {
+                          await VideoConferenceService.startMeeting(
+                              widget.meetingCode);
+                        },
+                        child: Container(
+                          height: 45,
+                          width: 70,
+                          padding: const EdgeInsets.only(right: 8, left: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(15.0),
+                            border: Border.all(
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Join',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        height: 45,
+                        width: 70,
+                        padding: const EdgeInsets.only(right: 8, left: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(15.0),
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Join',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+              const SizedBox(width: 20.0),
+              Expanded(
+                child: widget.status == 'ACTIVE'
+                    ? InkWell(
                         onTap: () {
                           showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
                                 surfaceTintColor: Colors.white,
-                                title: Text('Complete Seminar'),
+                                title: Text('Complete'),
                                 content: Text(
                                   'Are you sure you want to complete this seminar?',
                                 ),
@@ -411,14 +468,37 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                                             ),
                                           );
                                           Navigator.pop(context);
-                                        }
-                                        if (errorMessage.contains(
+                                        } else if (errorMessage.contains(
                                             "Cannot complete booking, recording duration less than 40 minutes")) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
                                               content: Text(
                                                   'Cannot complete booking, recording duration less than 40 minutes'),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        } else if (errorMessage.contains(
+                                            "Failed to get recording")) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Failed to get recording'),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'An error occurred, please try again later',
+                                              ),
                                               duration:
                                                   const Duration(seconds: 3),
                                             ),
@@ -447,11 +527,11 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                           ),
                           child: Center(
                             child: Text(
-                              'Complete Seminar',
+                              'Complete',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             ),
                           ),
@@ -470,11 +550,11 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                         ),
                         child: Center(
                           child: Text(
-                            'Complete Seminar',
+                            'Complete',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 18,
                             ),
                           ),
                         ),

@@ -89,6 +89,7 @@ class ReportUtils {
             show: true,
           ),
           preventCurveOverShooting: true,
+          preventCurveOvershootingThreshold: 1.0,
         ),
         LineChartBarData(
           spots: canceledBookingSpots,
@@ -100,6 +101,7 @@ class ReportUtils {
             show: true,
           ),
           preventCurveOverShooting: true,
+          preventCurveOvershootingThreshold: 1.0,
         ),
       ],
     );

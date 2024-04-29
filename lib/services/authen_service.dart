@@ -398,4 +398,27 @@ class AuthenService {
     }
     return '';
   }
+
+  static Future<void> updateAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    String accessToken = prefs.getString('accessToken')!;
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return;
+    }
+    try {
+      AccountModel account =
+          AccountModel.fromJson(json.decoder.convert(accountString));
+      String userName = account.username!;
+
+      AccountModel updatedAccount =
+          await AuthenService.getAccount(userName, accessToken);
+      prefs.remove('account');
+      print('account: ${json.encode(updatedAccount)}');
+      prefs.setString('account', json.encode(updatedAccount));
+    } catch (e) {
+      print('Error decoding account data: $e');
+    }
+  }
 }

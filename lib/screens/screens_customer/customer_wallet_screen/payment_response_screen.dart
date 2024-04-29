@@ -57,30 +57,6 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
       signature,
       transId,
     );
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accountString = prefs.getString('account');
-    String accessToken = prefs.getString('accessToken')!;
-    if (accountString == null) {
-      print('No account data found in SharedPreferences');
-      return;
-    }
-    try {
-      AccountModel account = AccountModel.fromJson(json.decoder.convert(accountString));
-      String userName = account.username!;
-
-      AccountModel updatedAccount = await AuthenService.getAccount(userName, accessToken);
-      prefs.remove('account');
-      print('account: ${json.encode(updatedAccount)}');
-      prefs.setString('account', json.encode(updatedAccount));
-    } catch (e) {
-      print('Error decoding account data: $e');
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -136,7 +112,8 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(10),
         child: OutlinedButton(
-          onPressed: () {
+          onPressed: () async {
+            await AuthenService.updateAccount();
             Navigator.of(context).push(
               PageTransition(
                 child: const MenuItemScreen(),
@@ -145,7 +122,6 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
               ),
             );
           },
-          // Disable button if not enabled
           style: OutlinedButton.styleFrom(
             splashFactory: NoSplash.splashFactory,
             side: const BorderSide(color: Colors.transparent),
