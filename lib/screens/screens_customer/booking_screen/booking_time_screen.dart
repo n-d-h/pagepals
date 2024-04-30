@@ -279,6 +279,7 @@ class _BookingTimeState extends State<BookingTimeScreen> {
                 ),
               DatePickerWidget(
                 onDateSelected: handleDateSelected,
+                isWorkingTime: true,
               ),
               TimePickerWidget(
                 selectedDate: selectedDate,

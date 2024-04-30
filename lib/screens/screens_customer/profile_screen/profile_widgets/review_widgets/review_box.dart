@@ -15,7 +15,7 @@ class ProfileReviewBox extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: 5,
         itemBuilder: (BuildContext context, int index) {
-          if(comment!.list!.isEmpty) {
+          if (comment == null || comment!.list!.isEmpty) {
             return const SizedBox();
           }
           CommentItem commentItem = comment?.list![index] ?? CommentItem();
