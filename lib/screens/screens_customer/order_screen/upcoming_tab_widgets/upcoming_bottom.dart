@@ -168,14 +168,14 @@ class UpcomingBottom extends StatelessWidget {
                       },
                     );
                   } else {
-                    if (isReader) {
-                      await VideoConferenceService.startMeeting(
-                          booking.meeting!.meetingCode!);
-                    } else {
+                    // if (isReader) {
+                    //   await VideoConferenceService.startMeeting(
+                    //       booking.meeting!.meetingCode!);
+                    // } else {
                       await VideoConferenceService.joinMeeting(
                           booking.meeting!.meetingCode!,
                           booking.meeting!.password!);
-                    }
+                    // }
                   }
                 }
               },
