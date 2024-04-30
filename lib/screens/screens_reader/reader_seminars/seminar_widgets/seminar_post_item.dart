@@ -27,6 +27,7 @@ class SeminarPostItem extends StatefulWidget {
   final String bookTitle;
   final String status;
   final String meetingCode;
+  final String password;
   final Function() onDeleteDone;
   final Function() onUpdateDone;
   final Function() onCompleteDone;
@@ -49,6 +50,7 @@ class SeminarPostItem extends StatefulWidget {
     required this.bookTitle,
     required this.status,
     required this.meetingCode,
+    required this.password,
     required this.onDeleteDone,
     required this.onUpdateDone,
     required this.onCompleteDone,
@@ -374,8 +376,9 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                 child: widget.status == 'ACTIVE'
                     ? InkWell(
                         onTap: () async {
-                          await VideoConferenceService.startMeeting(
-                              widget.meetingCode);
+                          await VideoConferenceService.joinMeeting(
+                              widget.meetingCode, widget.password
+                          );
                         },
                         child: Container(
                           height: 45,
