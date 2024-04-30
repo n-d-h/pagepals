@@ -10,6 +10,7 @@ import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets
 import 'package:pagepals/screens/screens_reader/feature_screen/customer_info_widget.dart';
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
 import 'package:pagepals/services/booking_service.dart';
+import 'package:pagepals/services/setting_service.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,12 +35,27 @@ class BookingDetailScreen extends StatefulWidget {
 
 class _BookingDetailScreenState extends State<BookingDetailScreen> {
   bool? isLoading = false;
+  int share = 10;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    init();
+  }
+
+  Future<void> init() async {
+    Map<String, String> settings = await SettingsService.getAllSettings();
+    String? revenueShare = settings['REVENUE_SHARE'];
+    setState(() {
+      share = revenueShare != null ? int.parse(revenueShare) : share;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     int amount = (widget.booking.service?.price ?? 0);
-    int share = 10;
-    double total = amount * share / 100;
+    double total = amount - (amount * share / 100);
 
     return Scaffold(
       appBar: AppBar(
@@ -162,7 +178,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                 context: context,
                 type: QuickAlertType.error,
                 title: 'Error',
-                text: 'Meeting has to surpass 40 minutes from the start time to complete',
+                text:
+                    'Meeting has to surpass 40 minutes from the start time to complete',
                 autoCloseDuration: const Duration(seconds: 3),
               );
             });

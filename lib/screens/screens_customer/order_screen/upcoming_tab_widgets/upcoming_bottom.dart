@@ -186,8 +186,7 @@ class UpcomingBottom extends StatelessWidget {
                 side: const BorderSide(color: Colors.transparent),
               ),
               child: Text(
-                // booking.service != null ? 'Join meet' : 'Join seminar',
-                'Join meet',
+                booking.service != null ? 'Join meet' : 'Join seminar',
                 style: GoogleFonts.lexend(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,

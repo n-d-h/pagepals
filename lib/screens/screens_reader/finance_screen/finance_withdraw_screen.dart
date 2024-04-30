@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/utils.dart';
@@ -138,6 +142,7 @@ class _FinanceWithdrawScreenState extends State<FinanceWithdrawScreen> {
   @override
   Widget build(BuildContext context) {
     TextEditingController _withdrawController = TextEditingController();
+    double cash = accountModelInside?.wallet?.cash ?? 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -173,21 +178,34 @@ class _FinanceWithdrawScreenState extends State<FinanceWithdrawScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      "Total Cash:",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                    Expanded(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "Total Cash:",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
-                    Text(
-                      '\$ ${accountModelInside?.wallet?.cash ?? 0}',
-                      style: const TextStyle(
+                    Expanded(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        // '\$ ${accountModelInside?.wallet?.cash ?? 0}',
+                        '${NumberFormat.currency(
+                          locale: 'en_US',
+                          decimalDigits: 2,
+                          customPattern: '\u00a4###,###,###,###.##',
+                          symbol: '\$',
+                        ).format(cash)}',
                         overflow: TextOverflow.ellipsis,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
+                        style: GoogleFonts.changa(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -333,31 +351,33 @@ class _FinanceWithdrawScreenState extends State<FinanceWithdrawScreen> {
 
                       return GestureDetector(
                         onTap: () {
-                          if(item.state == 'REJECTED') {
+                          if (item.state == 'REJECTED') {
                             showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text('Reason'),
-                                    surfaceTintColor: Colors.white,
-                                    content: Container(
-                                      height: 150,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${item.rejectReason ?? ''}',
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 20,
-                                            ),
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Reason'),
+                                  surfaceTintColor: Colors.white,
+                                  content: Container(
+                                    height: 150,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${item.rejectReason ?? ''}',
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 20,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                },
+                                  ),
+                                );
+                              },
                             );
                           }
                         },
@@ -385,7 +405,8 @@ class _FinanceWithdrawScreenState extends State<FinanceWithdrawScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -400,12 +421,12 @@ class _FinanceWithdrawScreenState extends State<FinanceWithdrawScreen> {
                                           children: [
                                             Text(
                                               'State:',
-                                              style:
-                                                  TextStyle(color: Colors.black),
+                                              style: TextStyle(
+                                                  color: Colors.black),
                                             ),
                                             Container(
-                                              margin:
-                                                  const EdgeInsets.only(left: 10),
+                                              margin: const EdgeInsets.only(
+                                                  left: 10),
                                               padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                 color: color,
@@ -424,7 +445,8 @@ class _FinanceWithdrawScreenState extends State<FinanceWithdrawScreen> {
                                       ],
                                     ),
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [

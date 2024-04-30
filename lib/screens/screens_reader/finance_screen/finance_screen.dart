@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_history_screen.dart';
-import 'package:pagepals/screens/screens_reader/finance_screen/finance_withdraw_scren.dart';
+import 'package:pagepals/screens/screens_reader/finance_screen/finance_withdraw_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_widgets/transaction_money_widget.dart';
 
 class FinanceScreen extends StatefulWidget {
@@ -64,7 +65,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                     children: [
                       Icon(
                         Icons.monetization_on,
-                        color: Colors.grey.shade600,
+                        color: Colors.grey.shade500,
                       ),
                       const SizedBox(width: 10),
                       Text(
@@ -72,7 +73,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade600,
+                          color: Colors.grey.shade500,
                         ),
                       ),
                     ],
@@ -80,9 +81,9 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   const SizedBox(height: 20),
                   Text(
                     '\$ ${NumberFormat("#,##0.00", "en_US").format(widget.accountModel?.wallet?.cash ?? 0)}',
-                    style: const TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 45,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.changa(
+                      fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

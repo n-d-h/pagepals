@@ -24,6 +24,7 @@ class RatingBottomSheet extends StatefulWidget {
 class _RatingBottomSheetState extends State<RatingBottomSheet> {
   int rating = 0;
   final TextEditingController controller = TextEditingController();
+  String review = '';
   double keyboardPadding = 0.0;
   final ScrollController _scrollController = ScrollController();
 
@@ -204,6 +205,9 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                           ),
                           border: InputBorder.none,
                         ),
+                        onChanged: (value) {
+                          review = value != '' ? value.trim() : '';
+                        },
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -234,7 +238,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
           RatingBottomButton(
             bookingId: widget.booking.id!,
             rating: rating,
-            review: controller.text ?? '',
+            review: review,
             setReviewSubmitted: widget.setReviewSubmitted,
           ),
         ],

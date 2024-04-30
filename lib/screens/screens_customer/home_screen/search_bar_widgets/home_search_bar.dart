@@ -57,7 +57,7 @@ class HomeSearchBar extends StatelessWidget {
                       Navigator.of(context).push(
                         PageTransition(
                           type: PageTransitionType.fade,
-                          child: const MenuItemScreen(index: 1),
+                          child: const MenuItemScreen(index: 2),
                           duration: const Duration(milliseconds: 300),
                         ),
                       );
