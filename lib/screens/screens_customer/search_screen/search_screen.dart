@@ -53,7 +53,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       splashFactory: NoSplash.splashFactory,
                     ),
                     child: SearchBar(
-                      autoFocus: true,
                       onChanged: (value) {
                         if (value.isNotEmpty) {
                           setState(() {
