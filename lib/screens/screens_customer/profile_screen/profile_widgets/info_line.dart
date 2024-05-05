@@ -7,10 +7,11 @@ import 'dart:math' as math;
 
 class ProfileInfoLine extends StatelessWidget {
   final ReaderProfile? reader;
-  final Function() pauseVideo;
 
-  const ProfileInfoLine(
-      {super.key, required this.reader, required this.pauseVideo});
+  const ProfileInfoLine({
+    super.key,
+    required this.reader,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,6 @@ class ProfileInfoLine extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  pauseVideo();
                   Navigator.push(
                     context,
                     PageTransition(
@@ -48,7 +48,7 @@ class ProfileInfoLine extends StatelessWidget {
                     image: DecorationImage(
                         image: NetworkImage(
                           reader?.profile?.avatarUrl ??
-                          'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+                              'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
                         ),
                         fit: BoxFit.fill),
                   ),
@@ -95,7 +95,6 @@ class ProfileInfoLine extends StatelessWidget {
             child: IconButton(
               splashColor: Colors.grey,
               onPressed: () {
-                pauseVideo();
                 Navigator.push(
                   context,
                   PageTransition(

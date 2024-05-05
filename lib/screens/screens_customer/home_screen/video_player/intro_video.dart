@@ -71,21 +71,18 @@ class IntroVideoState extends State<IntroVideo> {
     }
   }
 
-  // Check if ChewieController is initialized
   bool isChewieControllerVideoInitialized() {
     return chewieController.videoPlayerController.value.isInitialized;
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initializeChewieController(widget.videoUrl);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     chewieController.dispose();
     videoPlayerController.dispose();
