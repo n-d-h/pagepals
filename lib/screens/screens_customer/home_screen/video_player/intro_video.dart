@@ -79,14 +79,12 @@ class IntroVideoState extends State<IntroVideo> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initializeChewieController(widget.videoUrl);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     if (chewieController != null) {
       chewieController!.dispose();

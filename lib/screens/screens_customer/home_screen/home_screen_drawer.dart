@@ -13,6 +13,7 @@ import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
 import 'package:pagepals/screens/screens_customer/customer_profile/customer_profile_screen.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/customer_wallet_screen.dart';
+import 'package:pagepals/screens/screens_customer/recording_screen/recording_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_pending_screen/reader_pending_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_intro_screen.dart';
@@ -197,13 +198,19 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.notifications,
-              color: Colors.brown,
+              Icons.fiber_manual_record,
+              color: Colors.red,
             ),
-            title: Text(AppLocalizations.of(context)!.appNotification),
+            title: Text('Recording'),
             onTap: () {
-              Navigator.pop(context);
-              // Navigate to notifications settings screen
+              Navigator.push(
+                context,
+                PageTransition(
+                  child: RecordingScreen(),
+                  type: PageTransitionType.rightToLeft,
+                  duration: const Duration(milliseconds: 300),
+                ),
+              );
             },
           ),
           const Divider(),

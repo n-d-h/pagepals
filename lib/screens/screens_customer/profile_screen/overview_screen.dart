@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -13,6 +11,7 @@ import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video_2.dart';
+import 'package:pagepals/screens/screens_customer/home_screen/video_player/video_intro_widget.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/book_collection.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/booking_button.dart';
@@ -36,16 +35,6 @@ class ProfileOverviewScreen extends StatefulWidget {
 }
 
 class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
-  GlobalKey<IntroVideoState2> mainIntroVideoKey = GlobalKey<IntroVideoState2>();
-
-  void pauseVideo() {
-    final IntroVideoState2? mainIntroVideoState = mainIntroVideoKey.currentState;
-    if (mainIntroVideoState != null) {
-      mainIntroVideoState.pauseVideo();
-    }
-  }
-
-  // late String readerId;
   ReaderProfile? reader = ReaderProfile();
   BookModel? bookModel;
   CommentModel? commentModel;
@@ -58,12 +47,6 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
     getReaderBooks(widget.readerId);
     getListReaderComment(widget.readerId);
     getAccount();
-  }
-
-  @override
-  void dispose() {
-    pauseVideo(); // Call the pauseVideo method here
-    super.dispose();
   }
 
   Future<void> getReaderProfile(String id) async {
@@ -113,10 +96,8 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
           surfaceTintColor: Colors.white,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
-            // iconSize: 30,
             onPressed: () {
-              pauseVideo();
-              Navigator.of(context).pop();
+              Navigator.pop(context);
             },
           ),
           centerTitle: true,
@@ -152,13 +133,14 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                         },
                       );
                     } else if (value == 'Main Page') {
-                      pauseVideo();
-                      // Navigator.of(context).pop();
-                      Navigator.of(context).push(PageTransition(
-                        type: PageTransitionType.fade,
-                        child: const MenuItemScreen(index: 0),
-                        duration: const Duration(milliseconds: 300),
-                      ));
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          child: const MenuItemScreen(index: 0),
+                          duration: const Duration(milliseconds: 300),
+                        ),
+                      );
                     }
                   },
                   underline: Container(),
@@ -181,7 +163,6 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           controller: ScrollController(),
-          // padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: reader?.profile == null ||
                   bookModel == null ||
                   accountModel == null
@@ -203,12 +184,41 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    IntroVideo2(
-                      key: mainIntroVideoKey,
-                      videoUrl: reader!.profile!.introductionVideoUrl!,
-                      width: MediaQuery.of(context).size.width,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            child: VideoIntroWidget(
+                              videoUrl:
+                                  reader?.profile?.introductionVideoUrl ?? '',
+                            ),
+                            type: PageTransitionType.rightToLeft,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 200,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.play_circle_fill,
+                            color: Colors.white,
+                            size: 100,
+                          ),
+                        ),
+                      ),
                     ),
-                    ProfileInfoLine(reader: reader, pauseVideo: pauseVideo),
+                    ProfileInfoLine(reader: reader),
                     if (bookModel != null)
                       ProfileBookCollection(
                           books: bookModel!.list!
@@ -219,10 +229,8 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                         bookModel!.list!.first.book != null)
                       ProfileBookingButton(
                         reader: reader,
-                        pauseVideo: pauseVideo,
                         bookModel: bookModel!,
                       ),
-                    // const ProfileReaderCollection(),
                   ],
                 ),
         ),

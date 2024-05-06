@@ -11,14 +11,12 @@ class PopularReaderBox extends StatefulWidget {
   final PopularReader reader;
   final int index;
   final FavoriteButton iconButton;
-  final GlobalKey<IntroVideoState> introVideoKey;
 
   const PopularReaderBox({
     super.key,
     required this.reader,
     required this.index,
     required this.iconButton,
-    required this.introVideoKey,
   });
 
   @override
@@ -26,13 +24,6 @@ class PopularReaderBox extends StatefulWidget {
 }
 
 class PopularReaderBoxState extends State<PopularReaderBox> {
-  void pauseVideo() {
-    final IntroVideoState? introVideoState = widget.introVideoKey.currentState;
-    if (introVideoState != null) {
-      introVideoState.pauseVideo();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,7 +43,6 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
       ),
       child: InkWell(
         onTap: () {
-          pauseVideo();
           Navigator.of(context).push(
             PageTransition(
               child: ProfileOverviewScreen(
@@ -65,9 +55,21 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
         },
         child: Stack(
           children: [
-            IntroVideo(
-              videoUrl: widget.reader.introductionVideoUrl!,
-              key: widget.introVideoKey,
+            Container(
+              width: 300,
+              height: 160,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             Container(
               alignment: Alignment.topLeft,
@@ -89,8 +91,10 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: NetworkImage(widget.reader.avatarUrl ??
-                                    'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain'),
+                                image: NetworkImage(
+                                  widget.reader.avatarUrl ??
+                                      'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+                                ),
                                 fit: BoxFit.fill,
                               ),
                             ),

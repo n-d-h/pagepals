@@ -8,11 +8,13 @@ import 'package:pagepals/screens/screens_customer/booking_screen/booking_time_sc
 
 class ProfileBookingButton extends StatelessWidget {
   final ReaderProfile? reader;
-  final Function pauseVideo;
   final BookModel bookModel;
 
-  const ProfileBookingButton(
-      {super.key, this.reader, required this.pauseVideo, required this.bookModel});
+  const ProfileBookingButton({
+    super.key,
+    this.reader,
+    required this.bookModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,6 @@ class ProfileBookingButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            pauseVideo();
             Navigator.of(context).push(
               PageTransition(
                 child: BookingTimeScreen(

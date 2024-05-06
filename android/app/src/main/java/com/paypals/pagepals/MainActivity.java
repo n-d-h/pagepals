@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class MainActivity extends FlutterActivity implements MeetingServiceListe
 
 
     @Override
-    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+    public void configureFlutterEngine(FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler((call, result) -> {
@@ -102,15 +101,9 @@ public class MainActivity extends FlutterActivity implements MeetingServiceListe
     @Override
     public void onZoomSDKInitializeResult(int errorCode, int internalErrorCode) {
         if (errorCode != ZoomError.ZOOM_ERROR_SUCCESS) {
-            Log.d("Failed", "Failed to initialize Zoom SDK");
-//            Toast.makeText(
-//                    this,
-//                    "Failed to initialize Zoom SDK. Error: " + errorCode + ", internalErrorCode=" + internalErrorCode,
-//                    Toast.LENGTH_LONG
-//            ).show();
+            Log.d("Failed", "Failed to initialize Zoom SDK.");
         } else {
             Log.d("Success", "Initialize Zoom SDK successfully.");
-//            Toast.makeText(this, "Initialize Zoom SDK successfully.", Toast.LENGTH_LONG).show();
         }
     }
 
