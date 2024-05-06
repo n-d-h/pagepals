@@ -12,6 +12,7 @@ import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
+import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video_2.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/book_collection.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/booking_button.dart';
@@ -35,10 +36,10 @@ class ProfileOverviewScreen extends StatefulWidget {
 }
 
 class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
-  GlobalKey<IntroVideoState> mainIntroVideoKey = GlobalKey<IntroVideoState>();
+  GlobalKey<IntroVideoState2> mainIntroVideoKey = GlobalKey<IntroVideoState2>();
 
   void pauseVideo() {
-    final IntroVideoState? mainIntroVideoState = mainIntroVideoKey.currentState;
+    final IntroVideoState2? mainIntroVideoState = mainIntroVideoKey.currentState;
     if (mainIntroVideoState != null) {
       mainIntroVideoState.pauseVideo();
     }
@@ -202,7 +203,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    IntroVideo(
+                    IntroVideo2(
                       key: mainIntroVideoKey,
                       videoUrl: reader!.profile!.introductionVideoUrl!,
                       width: MediaQuery.of(context).size.width,

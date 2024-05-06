@@ -1,14 +1,19 @@
 package com.paypals.pagepals;
 
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
-import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import us.zoom.sdk.IMeetingInviteMenuItem;
+import us.zoom.sdk.InMeetingService;
 import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.JoinMeetingParams;
 import us.zoom.sdk.MeetingError;
@@ -16,12 +21,15 @@ import us.zoom.sdk.MeetingParameter;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingServiceListener;
 import us.zoom.sdk.MeetingStatus;
+import us.zoom.sdk.SimpleZoomUIDelegate;
 import us.zoom.sdk.StartMeetingOptions;
 import us.zoom.sdk.StartMeetingParamsWithoutLogin;
+import us.zoom.sdk.VideoScene;
 import us.zoom.sdk.ZoomError;
 import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKInitParams;
 import us.zoom.sdk.ZoomSDKInitializeListener;
+import us.zoom.sdk.ZoomUIDelegate;
 
 public class MainActivity extends FlutterActivity implements MeetingServiceListener, ZoomSDKInitializeListener {
     private static String JWT_TOKEN = "ZOOM-JWT-TOKEN";
@@ -32,6 +40,7 @@ public class MainActivity extends FlutterActivity implements MeetingServiceListe
     private static String DISPLAY_NAME = "Zoom Demo App";
     private static final String CHANNEL = "zoom_sdk_channel";
     private ZoomSDK sdk;
+
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
@@ -76,6 +85,7 @@ public class MainActivity extends FlutterActivity implements MeetingServiceListe
         params.meetingNo = meetingID;
         params.password = passcode;
         meetingService.joinMeetingWithParams(this, params, opts);
+        meetingService.addListener(this);
     }
 
     private void startMeeting(String meetingID, String displayName, String zoomAccessToken) {
@@ -121,8 +131,28 @@ public class MainActivity extends FlutterActivity implements MeetingServiceListe
 
     @Override
     public void onMeetingStatusChanged(MeetingStatus meetingStatus, int errorCode, int internalErrorCode) {
+        InMeetingService inMeetingService = sdk.getInMeetingService();
         if (meetingStatus == MeetingStatus.MEETING_STATUS_FAILED && errorCode == MeetingError.MEETING_ERROR_CLIENT_INCOMPATIBLE) {
             Toast.makeText(this, "Version of ZoomSDK is too low!", Toast.LENGTH_LONG).show();
+        } else if (meetingStatus == MeetingStatus.MEETING_STATUS_INMEETING) {
+            String userName = inMeetingService.getMyUserInfo().getUserName();
+            Log.d("Meeting", userName);
+            String text = "You are in the meeting!";
+            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+            Log.d("Meeting count", String.valueOf(inMeetingService.getInMeetingUserCount()));
+            sdk.getZoomUIService().setZoomUIDelegate(new SimpleZoomUIDelegate() {
+                @Override
+                public boolean onClickEndButton() {
+                    Toast.makeText(MainActivity.this, "End meeting button clicked", Toast.LENGTH_LONG).show();
+                    return false;  // set to true to do something else
+                }
+            });
+        } else if (meetingStatus == MeetingStatus.MEETING_STATUS_DISCONNECTING) {
+            Toast.makeText(this, "You are disconnecting the meeting!", Toast.LENGTH_LONG).show();
+        } else if (meetingStatus == MeetingStatus.MEETING_STATUS_FAILED) {
+            Toast.makeText(this, "Failed to connect to the meeting!", Toast.LENGTH_LONG).show();
+        } else if (meetingStatus == MeetingStatus.MEETING_STATUS_ENDED) {
+            Toast.makeText(this, "Meeting has ended!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -133,5 +163,6 @@ public class MainActivity extends FlutterActivity implements MeetingServiceListe
     @Override
     public void onMeetingParameterNotification(MeetingParameter meetingParameter) {
     }
+
 }
 
