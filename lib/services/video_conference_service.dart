@@ -38,17 +38,15 @@ class VideoConferenceService {
     }
   }
 
-  static Future<void> joinMeeting(String meetingId, String password) async {
+  static Future<void> joinMeeting(String meetingId, String password, String displayName) async {
     const platformChannel = MethodChannel('zoom_sdk_channel');
-    String userName = await getCustomerAccount()
-        .then((value) => value.username ?? 'Anonymous');
     try {
       await platformChannel.invokeMethod(
         'joinMeeting',
         {
           "meetingID": meetingId,
           "meetingPasscode": password,
-          "displayName": userName,
+          "displayName": displayName,
         },
       );
     } catch (e) {

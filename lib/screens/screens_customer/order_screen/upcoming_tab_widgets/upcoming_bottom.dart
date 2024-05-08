@@ -55,7 +55,7 @@ class UpcomingBottom extends StatelessWidget {
                       DateTime.now().isAfter(
                         DateTime.parse(booking.startAt!).add(
                           const Duration(
-                            minutes: 90,
+                            minutes: 60,
                           ),
                         ),
                       )) {
@@ -144,7 +144,7 @@ class UpcomingBottom extends StatelessWidget {
                   double? duration = booking.service != null
                       ? booking.service!.duration!
                       : booking.seminar!.duration!.toDouble();
-                  duration = duration + 30;
+                  // duration = duration + 30;
                   if (DateTime.now().isAfter(
                       startTime.add(Duration(minutes: duration.toInt())))) {
                     showDialog(
@@ -168,14 +168,13 @@ class UpcomingBottom extends StatelessWidget {
                       },
                     );
                   } else {
-                    // if (isReader) {
-                    //   await VideoConferenceService.startMeeting(
-                    //       booking.meeting!.meetingCode!);
-                    // } else {
-                      await VideoConferenceService.joinMeeting(
-                          booking.meeting!.meetingCode!,
-                          booking.meeting!.password!);
-                    // }
+                    String userName =
+                        await VideoConferenceService.getCustomerAccount()
+                            .then((value) => value.username ?? 'Anonymous');
+                    await VideoConferenceService.joinMeeting(
+                        booking.meeting!.meetingCode!,
+                        booking.meeting!.password!,
+                        userName);
                   }
                 }
               },

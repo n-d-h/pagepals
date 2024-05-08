@@ -376,9 +376,12 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
                 child: widget.status == 'ACTIVE'
                     ? InkWell(
                         onTap: () async {
+                          String nickName =
+                              await VideoConferenceService.getCustomerAccount()
+                                  .then((value) =>
+                                      value.reader?.nickname ?? 'Anonymous');
                           await VideoConferenceService.joinMeeting(
-                              widget.meetingCode, widget.password
-                          );
+                              widget.meetingCode, widget.password, nickName);
                         },
                         child: Container(
                           height: 45,

@@ -167,43 +167,16 @@ class _ReaderPendingScreenState extends State<ReaderPendingScreen> {
                         requestModel?.state == 'INTERVIEW_PENDING'
                             ? InkWell(
                                 onTap: () async {
-                                  // String interviewAt = requestModel?.interviewAt ??
-                                  //     DateTime.now().toString();
-                                  // DateTime interviewDateTime =
-                                  // DateTime.parse(interviewAt);
-                                  //
-                                  // if (DateTime.now().isAfter(interviewDateTime
-                                  //     .add(Duration(minutes: 60))) ||
-                                  //     DateTime.now().isBefore(interviewDateTime)) {
-                                  //   ScaffoldMessenger.of(context).showSnackBar(
-                                  //     SnackBar(
-                                  //       content: Text(
-                                  //         "Interview time has passed",
-                                  //         style: GoogleFonts.roboto(
-                                  //           color: Colors.white,
-                                  //         ),
-                                  //       ),
-                                  //       backgroundColor: Colors.red,
-                                  //     ),
-                                  //   );
-                                  //   return;
-                                  // }
-
+                                  String nickName = await VideoConferenceService
+                                          .getCustomerAccount()
+                                      .then((value) =>
+                                          value.reader?.nickname ??
+                                          'Anonymous');
                                   await VideoConferenceService.joinMeeting(
                                     requestModel?.meetingCode ?? '',
                                     requestModel?.meetingPassword ?? '',
+                                    nickName,
                                   );
-
-                                  // Navigator.push(
-                                  //   context,
-                                  //   PageTransition(
-                                  //     type: PageTransitionType.rightToLeft,
-                                  //     child: VideoConferencePage(
-                                  //       conferenceID:
-                                  //           requestModel?.meetingCode ?? '',
-                                  //     ),
-                                  //   ),
-                                  // );
                                 },
                                 child: Container(
                                   width:

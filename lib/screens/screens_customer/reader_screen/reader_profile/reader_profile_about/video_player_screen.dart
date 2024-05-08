@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:video_player/video_player.dart';
 
-final tempVideoController = VideoPlayerController.networkUrl(Uri.parse(''));
+// final tempVideoController = VideoPlayerController.networkUrl(Uri.parse(''));
 
 class VideoPlayerScreen extends StatefulWidget {
   final double width;
@@ -20,82 +20,104 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  // final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(
-  //     'https://firebasestorage.googleapis.com/v0/b/authen-6cf1b.appspot.com/o/videos%2F2024-03-19%2022%3A10%3A21.900394.mp4?alt=media&token=d49c14d4-c677-4674-b0a5-32d4fa1c2043'));
+  VideoPlayerController? videoPlayerController;
+  ChewieController? chewieController;
 
-  late VideoPlayerController videoPlayerController;
-  ChewieController _chewieController =
-      ChewieController(videoPlayerController: tempVideoController);
+  Future<void> onControllerChange() async {
+    if (videoPlayerController == null) {
+      _initializeChewieController(widget.videoUrl);
+    } else {
+      final oldController = videoPlayerController;
+      await oldController!.dispose();
+      _initializeChewieController(widget.videoUrl);
+    }
+  }
+
+  void _initializeChewieController(String videoUrl) async {
+    videoPlayerController =
+        VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+    await videoPlayerController!.initialize();
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController!,
+      autoInitialize: true,
+      autoPlay: false,
+      aspectRatio: widget.width / 200,
+      showControlsOnInitialize: true,
+      looping: false,
+      placeholder: Container(
+        color: Colors.grey[300]!,
+        child: Center(
+          child: CircularProgressIndicator(
+            color: ColorHelper.getColor(ColorHelper.green),
+            strokeWidth: 3,
+          ),
+        ),
+      ),
+      errorBuilder: (context, errorMessage) {
+        return Center(
+          child: Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.white),
+          ),
+        );
+      },
+    );
+    setState(() {});
+  }
+
+  void pauseVideo() {
+    if (chewieController != null) {
+      if (chewieController!.videoPlayerController.value.isPlaying) {
+        chewieController!.pause();
+      }
+    }
+  }
+
+  bool isChewieControllerVideoInitialized() {
+    return chewieController != null
+        ? chewieController!.videoPlayerController.value.isInitialized
+        : false;
+  }
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    videoPlayerController = VideoPlayerController.networkUrl(
-      Uri.parse(
-        widget.videoUrl,
-      ),
-    );
-    videoPlayerController.initialize().then((_) {
-      setState(() {
-        _chewieController = ChewieController(
-          videoPlayerController: videoPlayerController,
-          autoInitialize: true,
-          looping: true,
-          aspectRatio: widget.width / 200,
-          placeholder: Container(
-            color: Colors.grey[300]!,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: ColorHelper.getColor(ColorHelper.green),
-                strokeWidth: 3,
-              ),
-            ),
-          ),
-          errorBuilder: (context, errorMessage) {
-            return Center(
-              child: Text(
-                errorMessage,
-                style: const TextStyle(color: Colors.white),
-              ),
-            );
-          },
-        );
-      });
-    });
+    _initializeChewieController(widget.videoUrl);
   }
 
   @override
   void dispose() {
-    videoPlayerController.dispose();
-    _chewieController.dispose();
+    // TODO: implement dispose
     super.dispose();
-  }
-
-  // Check if ChewieController is initialized
-  bool isChewieControllerInitialized() {
-    return _chewieController.videoPlayerController.value.isInitialized;
+    if (chewieController != null) {
+      chewieController!.dispose();
+    }
+    if (videoPlayerController != null) {
+      videoPlayerController!.dispose();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return !isChewieControllerInitialized()
-        ? Container(
-            height: 200,
-            width: widget.width,
-            color: Colors.grey[300]!,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: ColorHelper.getColor(ColorHelper.green),
-                strokeWidth: 3,
-              ),
-            ),
-          )
-        : SizedBox(
-            width: widget.width,
-            height: 200,
-            child: Chewie(
-              controller: _chewieController,
-            ),
-          );
+    if (isChewieControllerVideoInitialized()) {
+      return SizedBox(
+        height: 200,
+        child: Chewie(
+          controller: chewieController!,
+        ),
+      );
+    } else {
+      return Container(
+        width: widget.width,
+        height: 200,
+        alignment: Alignment.center,
+        color: Colors.grey[300],
+        child: CircularProgressIndicator(
+          color: ColorHelper.getColor(ColorHelper.green),
+          strokeWidth: 3,
+        ),
+      );
+    }
   }
 }

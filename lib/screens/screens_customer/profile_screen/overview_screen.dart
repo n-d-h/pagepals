@@ -9,6 +9,8 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
+import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video.dart';
+import 'package:pagepals/screens/screens_customer/home_screen/video_player/intro_video_2.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/video_intro_widget.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/book_collection.dart';

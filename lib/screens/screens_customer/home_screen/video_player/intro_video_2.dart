@@ -3,21 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:video_player/video_player.dart';
 
-class IntroVideo extends StatefulWidget {
+class IntroVideo2 extends StatefulWidget {
   final String videoUrl;
   final Function()? pauseVideo;
+  final double width;
 
-  const IntroVideo({
+  const IntroVideo2({
     Key? key,
     required this.videoUrl,
     this.pauseVideo,
+    required this.width,
   }) : super(key: key);
 
   @override
-  State<IntroVideo> createState() => IntroVideoState();
+  State<IntroVideo2> createState() => IntroVideoState2();
 }
 
-class IntroVideoState extends State<IntroVideo> {
+class IntroVideoState2 extends State<IntroVideo2> {
   VideoPlayerController? videoPlayerController;
   ChewieController? chewieController;
 
@@ -39,7 +41,7 @@ class IntroVideoState extends State<IntroVideo> {
       videoPlayerController: videoPlayerController!,
       autoInitialize: true,
       autoPlay: false,
-      aspectRatio: 300 / 160,
+      aspectRatio: widget.width / 200,
       showControlsOnInitialize: true,
       looping: false,
       placeholder: Container(
@@ -79,12 +81,14 @@ class IntroVideoState extends State<IntroVideo> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _initializeChewieController(widget.videoUrl);
   }
 
   @override
   void dispose() {
+    // TODO: implement dispose
     super.dispose();
     if (chewieController != null) {
       chewieController!.dispose();
@@ -97,37 +101,18 @@ class IntroVideoState extends State<IntroVideo> {
   @override
   Widget build(BuildContext context) {
     if (isChewieControllerVideoInitialized()) {
-      return Container(
-        alignment: Alignment.topCenter,
-        height: 160,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-          child: Chewie(
-            controller: chewieController!,
-          ),
+      return SizedBox(
+        height: 200,
+        child: Chewie(
+          controller: chewieController!,
         ),
       );
     } else {
       return Container(
-        width: 300,
-        height: 160,
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-        ),
+        width: widget.width,
+        height: 200,
         alignment: Alignment.center,
+        color: Colors.grey[300],
         child: CircularProgressIndicator(
           color: ColorHelper.getColor(ColorHelper.green),
           strokeWidth: 3,
@@ -136,4 +121,3 @@ class IntroVideoState extends State<IntroVideo> {
     }
   }
 }
-
