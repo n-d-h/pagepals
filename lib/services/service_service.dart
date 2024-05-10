@@ -44,10 +44,19 @@ class ServiceService {
               thumbnailUrl
               title
             }
+            reader {
+              id
+              introductionVideoUrl
+              thumbnailUrl
+              nickname
+              avatarUrl
+              countryAccent
+            }
             id
             duration
             description
             createdAt
+            imageUrl
             price
             rating
             serviceType {
@@ -358,5 +367,70 @@ class ServiceService {
 
     final bookServiceData = result.data?['getServicesByBook'];
     return BookServiceModel.fromJson(bookServiceData);
+  }
+
+  static Future<ServiceModel> getServiceById(
+      String serviceId) async {
+
+    String query = '''
+      query MyQuery {
+        serviceById(id: "$serviceId") {
+          createdAt
+          description
+          duration
+          imageUrl
+          id
+          price
+          rating
+          status
+          totalOfBooking
+          totalOfReview
+          reader {
+            id
+            introductionVideoUrl
+            thumbnailUrl
+            nickname
+            avatarUrl
+            countryAccent
+          }
+          book {
+            id
+            title
+            publisher
+            language
+            authors {
+              name
+            }
+            categories {
+              name
+            }
+            description
+            pageCount
+            smallThumbnailUrl
+            thumbnailUrl
+          }
+          serviceType {
+            id
+            name
+            description
+          }
+        }
+      }
+    ''';
+
+    final QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Error: ${result.exception}');
+    }
+
+    final serviceData = result.data?['serviceById'];
+
+    return ServiceModel.fromJson(serviceData);
   }
 }

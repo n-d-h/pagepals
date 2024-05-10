@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:unicons/unicons.dart';
 
-class SeminarPostDetailScreen extends StatelessWidget {
-  final String seminarId;
+class EventPostDetailScreen extends StatelessWidget {
+  final String eventId;
   final String hostName;
   final String seminarTitle;
   final String date;
@@ -17,9 +17,9 @@ class SeminarPostDetailScreen extends StatelessWidget {
   final int limitCustomer;
   final int activeSlot;
 
-  const SeminarPostDetailScreen({
+  const EventPostDetailScreen({
     Key? key,
-    required this.seminarId,
+    required this.eventId,
     required this.hostName,
     required this.seminarTitle,
     required this.time,

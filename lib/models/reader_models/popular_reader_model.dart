@@ -91,19 +91,24 @@ class Services {
 
 class Account {
   Customer? customer;
+  Reader? reader;
 
-  Account({this.customer});
+  Account({this.customer, this.reader});
 
   Account.fromJson(Map<String, dynamic> json) {
     customer = json['customer'] != null
         ? new Customer.fromJson(json['customer'])
         : null;
+    reader = json['reader'] != null ? new Reader.fromJson(json['reader']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.customer != null) {
       data['customer'] = this.customer!.toJson();
+    }
+    if (this.reader != null) {
+      data['reader'] = this.reader!.toJson();
     }
     return data;
   }
@@ -121,6 +126,22 @@ class Customer {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['imageUrl'] = this.imageUrl;
+    return data;
+  }
+}
+
+class Reader {
+  String? thumbnailUrl;
+
+  Reader({this.thumbnailUrl});
+
+  Reader.fromJson(Map<String, dynamic> json) {
+    thumbnailUrl = json['thumbnailUrl'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['thumbnailUrl'] = this.thumbnailUrl;
     return data;
   }
 }

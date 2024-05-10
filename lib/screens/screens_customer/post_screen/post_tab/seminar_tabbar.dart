@@ -150,8 +150,8 @@ class _SeminarTabbarState extends State<SeminarTabbar> {
                           Navigator.push(
                             context,
                             PageTransition(
-                              child: SeminarPostDetailScreen(
-                                seminarId: seminarItem.id ?? '',
+                              child: EventPostDetailScreen(
+                                eventId: seminarItem.id ?? '',
                                 hostName: seminarItem.reader?.nickname ?? '',
                                 seminarTitle: seminarItem.title ?? '',
                                 date: date,
@@ -169,7 +169,7 @@ class _SeminarTabbarState extends State<SeminarTabbar> {
                             ),
                           );
                         },
-                        child: SeminarPostItem(
+                        child: EventPostItem(
                           seminarId: seminarItem.id ?? '',
                           hostName: seminarItem.reader?.nickname ?? '',
                           seminarTitle: seminarItem.title ?? '',

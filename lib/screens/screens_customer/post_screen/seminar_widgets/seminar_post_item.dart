@@ -11,7 +11,7 @@ import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/seminar_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SeminarPostItem extends StatefulWidget {
+class EventPostItem extends StatefulWidget {
   final String seminarId;
   final String hostName;
   final String seminarTitle;
@@ -25,7 +25,7 @@ class SeminarPostItem extends StatefulWidget {
   final int activeSlot;
   final Function(bool) onSeminarJoinedDone;
 
-  const SeminarPostItem({
+  const EventPostItem({
     Key? key,
     required this.seminarId,
     required this.hostName,
@@ -42,10 +42,10 @@ class SeminarPostItem extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SeminarPostItemState createState() => _SeminarPostItemState();
+  _EventPostItemState createState() => _EventPostItemState();
 }
 
-class _SeminarPostItemState extends State<SeminarPostItem> {
+class _EventPostItemState extends State<EventPostItem> {
   int interestedCount = 0;
   bool interested = false;
 
@@ -230,8 +230,8 @@ class _SeminarPostItemState extends State<SeminarPostItem> {
               onTap: () {
                 Navigator.of(context).push(
                   PageTransition(
-                    child: SeminarPostDetailScreen(
-                      seminarId: widget.seminarId,
+                    child: EventPostDetailScreen(
+                      eventId: widget.seminarId,
                       hostName: widget.hostName,
                       seminarTitle: widget.seminarTitle,
                       date: widget.date,

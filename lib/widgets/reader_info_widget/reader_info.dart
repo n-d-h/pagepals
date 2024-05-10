@@ -37,9 +37,11 @@ class ReaderInfoWidget extends StatelessWidget {
             },
             child: CircleAvatar(
               radius: 60,
-              backgroundImage: NetworkImage(reader?.profile?.avatarUrl ??
-                  readerInfo?.avatarUrl ??
-                  'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain'),
+              backgroundImage: NetworkImage(
+                reader?.profile?.avatarUrl ??
+                    readerInfo?.avatarUrl ??
+                    'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+              ),
             ),
           ),
           const SizedBox(

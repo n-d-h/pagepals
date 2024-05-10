@@ -38,7 +38,10 @@ class ReaderService {
           account {
             customer {
               imageUrl
-            }         
+            }
+            reader {
+              thumbnailUrl
+            }
           }
        }
     }
@@ -76,6 +79,9 @@ class ReaderService {
                 customer {
                   dob
                   gender
+                }
+                reader {
+                  thumbnailUrl
                 }
               }
               nickname

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
@@ -73,30 +75,33 @@ class ProfileReviewWidget extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(top: 7, bottom: 7, right: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${reader?.profile?.totalOfReviews ?? 0} reviews',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'See All',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: ColorHelper.getColor(ColorHelper.green),
-                      fontSize: 14,
+          Visibility(
+            visible: (reader?.profile?.totalOfReviews ?? 0) > 0,
+            child: Container(
+              margin: const EdgeInsets.only(top: 7, bottom: 7, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${reader?.profile?.totalOfReviews ?? 0} reviews',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
                   ),
-                )
-              ],
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'See All',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: ColorHelper.getColor(ColorHelper.green),
+                        fontSize: 14,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           ProfileReviewBox(comment: comment),

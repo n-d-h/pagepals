@@ -40,21 +40,22 @@ class Profile {
   String? avatarUrl;
   String? createdAt;
 
-  Profile(
-      {this.account,
-      this.nickname,
-      this.audioDescriptionUrl,
-      this.countryAccent,
-      this.description,
-      this.genre,
-      this.id,
-      this.introductionVideoUrl,
-      this.language,
-      this.rating,
-      this.totalOfBookings,
-      this.totalOfReviews,
-      this.avatarUrl,
-      this.createdAt});
+  Profile({
+    this.account,
+    this.nickname,
+    this.audioDescriptionUrl,
+    this.countryAccent,
+    this.description,
+    this.genre,
+    this.id,
+    this.introductionVideoUrl,
+    this.language,
+    this.rating,
+    this.totalOfBookings,
+    this.totalOfReviews,
+    this.avatarUrl,
+    this.createdAt,
+  });
 
   Profile.fromJson(Map<String, dynamic> json) {
     account =
@@ -99,6 +100,7 @@ class Profile {
 class Account {
   String? username;
   Customer? customer;
+  ReaderThumbnail? reader;
   String? email;
   String? phoneNumber;
 
@@ -109,6 +111,9 @@ class Account {
     customer = json['customer'] != null
         ? new Customer.fromJson(json['customer'])
         : null;
+    reader = json['reader'] != null
+        ? new ReaderThumbnail.fromJson(json['reader'])
+        : null;
     email = json['email'];
     phoneNumber = json['phoneNumber'];
   }
@@ -118,6 +123,9 @@ class Account {
     data['username'] = this.username;
     if (this.customer != null) {
       data['customer'] = this.customer!.toJson();
+    }
+    if (this.reader != null) {
+      data['reader'] = this.reader!.toJson();
     }
     data['email'] = this.email;
     data['phoneNumber'] = this.phoneNumber;
@@ -143,6 +151,22 @@ class Customer {
     data['imageUrl'] = this.imageUrl;
     data['dob'] = this.dob;
     data['gender'] = this.gender;
+    return data;
+  }
+}
+
+class ReaderThumbnail {
+  String? thumbnailUrl;
+
+  ReaderThumbnail({this.thumbnailUrl});
+
+  ReaderThumbnail.fromJson(Map<String, dynamic> json) {
+    thumbnailUrl = json['thumbnailUrl'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['thumbnailUrl'] = this.thumbnailUrl;
     return data;
   }
 }

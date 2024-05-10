@@ -67,17 +67,18 @@ class Book {
   String? smallThumbnailUrl;
   String? thumbnailUrl;
 
-  Book(
-      {this.id,
-      this.title,
-      this.publisher,
-      this.language,
-      this.authors,
-      this.categories,
-      this.description,
-      this.pageCount,
-      this.smallThumbnailUrl,
-      this.thumbnailUrl});
+  Book({
+    this.id,
+    this.title,
+    this.publisher,
+    this.language,
+    this.authors,
+    this.categories,
+    this.description,
+    this.pageCount,
+    this.smallThumbnailUrl,
+    this.thumbnailUrl,
+  });
 
   Book.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -162,17 +163,20 @@ class Services {
   int? rating;
   int? totalOfBooking;
   int? totalOfReview;
+  String? imageUrl;
   ServiceType? serviceType;
 
-  Services(
-      {this.id,
-      this.description,
-      this.duration,
-      this.price,
-      this.rating,
-      this.totalOfBooking,
-      this.totalOfReview,
-      this.serviceType});
+  Services({
+    this.id,
+    this.description,
+    this.duration,
+    this.price,
+    this.rating,
+    this.totalOfBooking,
+    this.totalOfReview,
+    this.imageUrl,
+    this.serviceType,
+  });
 
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -182,6 +186,7 @@ class Services {
     rating = json['rating'];
     totalOfBooking = json['totalOfBooking'];
     totalOfReview = json['totalOfReview'];
+    imageUrl = json['imageUrl'];
     serviceType = json['serviceType'] != null
         ? new ServiceType.fromJson(json['serviceType'])
         : null;
@@ -196,6 +201,7 @@ class Services {
     data['rating'] = this.rating;
     data['totalOfBooking'] = this.totalOfBooking;
     data['totalOfReview'] = this.totalOfReview;
+    data['imageUrl'] = this.imageUrl;
     if (this.serviceType != null) {
       data['serviceType'] = this.serviceType!.toJson();
     }

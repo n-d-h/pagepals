@@ -65,7 +65,8 @@ class PopularReaderBoxState extends State<PopularReaderBox> {
                 ),
                 image: DecorationImage(
                   image: NetworkImage(
-                    'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
+                    widget.reader.account?.reader?.thumbnailUrl ??
+                        'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
                   ),
                   fit: BoxFit.cover,
                 ),

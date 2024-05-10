@@ -111,12 +111,52 @@ class Category {
   }
 }
 
+class Reader {
+  String? id;
+  String? introductionVideoUrl;
+  String? thumbnailUrl;
+  String? nickname;
+  String? avatarUrl;
+  String? countryAccent;
+
+  Reader({
+    this.id,
+    this.introductionVideoUrl,
+    this.thumbnailUrl,
+    this.nickname,
+    this.avatarUrl,
+    this.countryAccent,
+  });
+
+  Reader.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    introductionVideoUrl = json['introductionVideoUrl'];
+    thumbnailUrl = json['thumbnailUrl'];
+    nickname = json['nickname'];
+    avatarUrl = json['avatarUrl'];
+    countryAccent = json['countryAccent'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['introductionVideoUrl'] = introductionVideoUrl;
+    data['thumbnailUrl'] = thumbnailUrl;
+    data['nickname'] = nickname;
+    data['avatarUrl'] = avatarUrl;
+    data['countryAccent'] = countryAccent;
+    return data;
+  }
+}
+
 class ServiceModel {
   Book? book;
+  Reader? reader;
   String? id;
   double? duration;
   String? description;
   String? createdAt;
+  String? imageUrl;
   int? price;
   int? rating;
   ServiceType? serviceType;
@@ -124,25 +164,30 @@ class ServiceModel {
   int? totalOfBooking;
   int? totalOfReview;
 
-  ServiceModel(
-      {this.book,
-      this.id,
-      this.duration,
-      this.description,
-      this.createdAt,
-      this.price,
-      this.rating,
-      this.serviceType,
-      this.status,
-      this.totalOfBooking,
-      this.totalOfReview});
+  ServiceModel({
+    this.book,
+    this.reader,
+    this.id,
+    this.duration,
+    this.description,
+    this.createdAt,
+    this.imageUrl,
+    this.price,
+    this.rating,
+    this.serviceType,
+    this.status,
+    this.totalOfBooking,
+    this.totalOfReview,
+  });
 
   ServiceModel.fromJson(Map<String, dynamic> json) {
     book = json['book'] != null ? Book?.fromJson(json['book']) : null;
+    reader = json['reader'] != null ? Reader?.fromJson(json['reader']) : null;
     id = json['id'];
     duration = json['duration'];
     description = json['description'];
     createdAt = json['createdAt'];
+    imageUrl = json['imageUrl'];
     price = json['price'];
     rating = json['rating'];
     serviceType = json['serviceType'] != null
@@ -160,6 +205,7 @@ class ServiceModel {
     data['duration'] = duration;
     data['description'] = description;
     data['createdAt'] = createdAt;
+    data['imageUrl'] = imageUrl;
     data['price'] = price;
     data['rating'] = rating;
     data['serviceType'] = serviceType!.toJson();

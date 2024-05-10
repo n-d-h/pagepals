@@ -200,10 +200,11 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                       child: Container(
                         width: double.infinity,
                         height: 200,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           image: DecorationImage(
                             image: NetworkImage(
+                              reader?.profile?.account?.reader?.thumbnailUrl ??
                               'https://th.bing.com/th/id/OIP.JBpgUJhTt8cI2V05-Uf53AHaG1?rs=1&pid=ImgDetMain',
                             ),
                             fit: BoxFit.cover,
@@ -220,17 +221,14 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                     ),
                     ProfileInfoLine(reader: reader),
                     if (bookModel != null)
-                      ProfileBookCollection(
-                          books: bookModel!.list!
-                              .map((e) => e.book ?? Book(id: ''))
-                              .toList()),
+                      ProfileBookCollection(books: bookModel?.list ?? []),
                     ProfileReviewWidget(reader: reader, comment: commentModel),
-                    if (bookModel!.list!.isNotEmpty &&
-                        bookModel!.list!.first.book != null)
-                      ProfileBookingButton(
-                        reader: reader,
-                        bookModel: bookModel!,
-                      ),
+                    // if (bookModel!.list!.isNotEmpty &&
+                    //     bookModel!.list!.first.book != null)
+                    //   ProfileBookingButton(
+                    //     reader: reader,
+                    //     bookModel: bookModel!,
+                    //   ),
                   ],
                 ),
         ),

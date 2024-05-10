@@ -11,6 +11,7 @@ import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/google_signin_provider.dart';
 import 'package:pagepals/providers/locale_provider.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intro/signin_home.dart';
+import 'package:pagepals/screens/screens_authorization/signin_screen/signin_main/signin_screen.dart';
 import 'package:pagepals/screens/screens_customer/customer_profile/customer_profile_screen.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/customer_wallet_screen.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/recording_screen.dart';
@@ -61,8 +62,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-    String photoUrl = user?.photoURL ??
-        'https://via.placeholder.com/150';
+    String photoUrl = user?.photoURL ?? 'https://via.placeholder.com/150';
     String displayName = user?.displayName ?? 'Anonymous';
     String email = user?.email ?? 'anonymous@gmail.com';
     String accountState = account?.accountState?.name ?? 'Anonymous';
@@ -75,70 +75,111 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
         padding: EdgeInsets.zero,
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text(
-              account?.fullName ?? displayName,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            accountEmail: Text(
-              // '@${email.substring(0, email.indexOf('@'))}',
-              '@${account?.username!}',
-              style: const TextStyle(fontSize: 12),
-            ),
-            currentAccountPicture: CircleAvatar(
-              radius: 60,
-              backgroundImage:
-                  NetworkImage(account?.customer?.imageUrl ?? photoUrl),
-            ),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.6), BlendMode.darken),
-                image: const AssetImage('assets/reading_book.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.token_sharp,
-              color: Colors.deepPurpleAccent.withOpacity(0.7),
-            ),
-            title: Text("Token: ${account?.wallet?.tokenAmount ?? 0} pals"),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                PageTransition(
-                  child: CustomerWalletScreen(account: account),
-                  type: PageTransitionType.rightToLeft,
-                  duration: const Duration(milliseconds: 300),
+          account == null
+              ? UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.6),
+                        BlendMode.darken,
+                      ),
+                      image: const AssetImage('assets/reading_book.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  accountName: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          child: const SigninScreen(),
+                          type: PageTransitionType.bottomToTop,
+                          duration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: ColorHelper.getColor(ColorHelper.green),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        'Sign in',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  accountEmail: null,
+                )
+              : UserAccountsDrawerHeader(
+                  accountName: Text(
+                    account?.fullName ?? displayName,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  accountEmail: Text(
+                    // '@${email.substring(0, email.indexOf('@'))}',
+                    '@${account?.username!}',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  currentAccountPicture: CircleAvatar(
+                    radius: 60,
+                    backgroundImage:
+                        NetworkImage(account?.customer?.imageUrl ?? photoUrl),
+                  ),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.6), BlendMode.darken),
+                      image: const AssetImage('assets/reading_book.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              CustomIcons.user,
-              color: ColorHelper.getColor(ColorHelper.green).withOpacity(0.7),
+          if(account != null)
+            ListTile(
+              leading: Icon(
+                Icons.token_sharp,
+                color: Colors.deepPurpleAccent.withOpacity(0.7),
+              ),
+              title: Text("Token: ${account?.wallet?.tokenAmount ?? 0} pals"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: CustomerWalletScreen(account: account),
+                    type: PageTransitionType.rightToLeft,
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                );
+              },
             ),
-            title: Text(AppLocalizations.of(context)!.appProfile),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                PageTransition(
-                  child: const CustomerProfileScreen(),
-                  type: PageTransitionType.rightToLeft,
-                  duration: const Duration(milliseconds: 300),
-                ),
-              );
-            },
-          ),
-          const Divider(),
+          if(account != null)
+            ListTile(
+              leading: Icon(
+                CustomIcons.user,
+                color: ColorHelper.getColor(ColorHelper.green).withOpacity(0.7),
+              ),
+              title: Text(AppLocalizations.of(context)!.appProfile),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: const CustomerProfileScreen(),
+                    type: PageTransitionType.rightToLeft,
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                );
+              },
+            ),
           ListTile(
             title: Text(
               AppLocalizations.of(context)!.appSetting,
@@ -196,109 +237,109 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               }).toList(),
             ),
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.fiber_manual_record,
-              color: Colors.red,
-            ),
-            title: Text('Recording'),
-            onTap: () {
-              Navigator.push(
-                context,
-                PageTransition(
-                  child: RecordingScreen(),
-                  type: PageTransitionType.rightToLeft,
-                  duration: const Duration(milliseconds: 300),
-                ),
-              );
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(
-              UniconsLine.icons,
-              color: Colors.deepPurple,
-            ),
-            title: account?.reader?.id == null
-                ? Text(AppLocalizations.of(context)!.appRequestToBeReader)
-                : account?.accountState?.name == "READER_PENDING"
-                    ? Text('Reader Pending')
-                    : Text('Reader Profile'),
-            onTap: () {
-              Navigator.pop(context);
-              if (account?.accountState?.name == "READER_PENDING") {
+          if(account != null)
+            ListTile(
+              leading: const Icon(
+                Icons.fiber_manual_record,
+                color: Colors.red,
+              ),
+              title: Text('Recording'),
+              onTap: () {
                 Navigator.push(
                   context,
                   PageTransition(
-                    child: ReaderPendingScreen(
-                      readerId: account?.reader?.id
-                    ),
+                    child: RecordingScreen(),
                     type: PageTransitionType.rightToLeft,
                     duration: const Duration(milliseconds: 300),
                   ),
                 );
-              } else if (account?.reader?.id != null) {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    child: ReaderMainScreen(
-                      accountModel: account!,
-                    ),
-                    type: PageTransitionType.rightToLeft,
-                    duration: const Duration(milliseconds: 300),
-                  ),
-                );
-              } else {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    child: const ReaderRequestIntroScreen(),
-                    type: PageTransitionType.rightToLeft,
-                    duration: const Duration(milliseconds: 300),
-                  ),
-                );
-              }
-            },
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.logout,
-              color: Colors.red,
+              },
             ),
-            title: Text(AppLocalizations.of(context)!.appLogout),
-            onTap: () async {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(
-                      color: Colors.greenAccent,
-                      size: 60,
+          if(account != null)
+            ListTile(
+              leading: const Icon(
+                UniconsLine.icons,
+                color: Colors.deepPurple,
+              ),
+              title: account?.reader?.id == null
+                  ? Text(AppLocalizations.of(context)!.appRequestToBeReader)
+                  : account?.accountState?.name == "READER_PENDING"
+                      ? Text('Reader Pending')
+                      : Text('Reader Profile'),
+              onTap: () {
+                Navigator.pop(context);
+                if (account?.accountState?.name == "READER_PENDING") {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      child: ReaderPendingScreen(readerId: account?.reader?.id),
+                      type: PageTransitionType.rightToLeft,
+                      duration: const Duration(milliseconds: 300),
                     ),
                   );
-                },
-              );
-
-              GoogleSignInProvider googleSignInProvider =
-                  GoogleSignInProvider();
-              await googleSignInProvider.googleLogout();
-
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.clear();
-
-              Future.delayed(const Duration(milliseconds: 0), () {
-                Navigator.pop(context);
-                Navigator.of(context).pushAndRemoveUntil(
-                  PageTransition(
-                    child: const SigninHomeScreen(),
-                    type: PageTransitionType.fade,
-                  ),
-                  (route) => false,
+                } else if (account?.reader?.id != null) {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      child: ReaderMainScreen(
+                        accountModel: account!,
+                      ),
+                      type: PageTransitionType.rightToLeft,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      child: const ReaderRequestIntroScreen(),
+                      type: PageTransitionType.rightToLeft,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                  );
+                }
+              },
+            ),
+          if(account != null)
+            ListTile(
+              leading: const Icon(
+                Icons.logout,
+                color: Colors.red,
+              ),
+              title: Text(AppLocalizations.of(context)!.appLogout),
+              onTap: () async {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.greenAccent,
+                        size: 60,
+                      ),
+                    );
+                  },
                 );
-              });
-            },
-          ),
+
+                GoogleSignInProvider googleSignInProvider =
+                    GoogleSignInProvider();
+                await googleSignInProvider.googleLogout();
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.clear();
+
+                Future.delayed(const Duration(milliseconds: 0), () {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    PageTransition(
+                      child: const SigninHomeScreen(),
+                      type: PageTransitionType.fade,
+                    ),
+                    (route) => false,
+                  );
+                });
+              },
+            ),
         ],
       ),
     );

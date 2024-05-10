@@ -8,8 +8,8 @@ class SignInAccLeadingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: RichText(
-      text: TextSpan(
+      child: RichText(
+        text: TextSpan(
           text: 'or sign in with ',
           style: TextStyle(
             fontSize: SpaceHelper.fontSize16,
@@ -33,7 +33,9 @@ class SignInAccLeadingText extends StatelessWidget {
                 color: ColorHelper.getColor(ColorHelper.black),
               ),
             )
-          ]),
-    ));
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -6,10 +6,10 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
-import 'package:pagepals/models/seminar_model.dart';
+import 'package:pagepals/models/event_model.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
 import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_item.dart';
-import 'package:pagepals/services/seminar_service.dart';
+import 'package:pagepals/services/event_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
@@ -22,8 +22,8 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen> {
   final ScrollController _scrollController = ScrollController();
-  SeminarModel? seminarModel;
-  List<SeminarItem> list = [];
+  EventModel? eventModel;
+  List<EventItemModel> list = [];
   int currentPage = 0;
   bool isLoadingNextPage = false;
   bool hasMorePages = true;
@@ -32,7 +32,7 @@ class _PostScreenState extends State<PostScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    _fetchAllSeminar();
+    _fetchAllEvent();
   }
 
   @override
@@ -45,59 +45,101 @@ class _PostScreenState extends State<PostScreen> {
   void _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      _fetchNextSeminar();
+      _fetchNextEvent();
     }
   }
 
-  Future<void> _fetchAllSeminar() async {
+  Future<void> _fetchAllEvent() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String accountString = prefs.getString('account') ?? '';
-    AccountModel accountModel = AccountModel.fromJson(jsonDecode(accountString));
-    String customerId = accountModel.customer?.id ?? '';
-
-    var data = await SeminarService.getAllSeminarsNotJoinedByCustomer(
-        currentPage, 10, customerId);
-    setState(() {
-      seminarModel = data;
-      list.addAll(data.list!);
-      currentPage++;
-      if (data.list!.isEmpty) {
-        hasMorePages = false;
-      }
-    });
+    String? accountString = prefs.getString('account');
+    if (accountString == null) {
+      var data = await EventService.getAllEvent(currentPage, 10);
+      setState(() {
+        eventModel = data;
+        list.addAll(data.list!);
+        currentPage++;
+        if (data.list!.isEmpty) {
+          hasMorePages = false;
+        }
+      });
+    } else {
+      AccountModel accountModel =
+          AccountModel.fromJson(jsonDecode(accountString));
+      String customerId = accountModel.customer?.id ?? '';
+      var data = await EventService.getEventNotJoinByCustomer(
+          currentPage, 10, customerId);
+      setState(() {
+        eventModel = data;
+        list.addAll(data.list!);
+        currentPage++;
+        if (data.list!.isEmpty) {
+          hasMorePages = false;
+        }
+      });
+    }
   }
 
-  Future<void> _fetchNextSeminar() async {
+  Future<void> _fetchNextEvent() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String accountString = prefs.getString('account') ?? '';
-    AccountModel accountModel = AccountModel.fromJson(jsonDecode(accountString));
-    String customerId = accountModel.customer?.id ?? '';
-
-    if (!isLoadingNextPage && hasMorePages) {
-      setState(() {
-        isLoadingNextPage = true;
-      });
-      try {
-        var data = await SeminarService.getAllSeminarsNotJoinedByCustomer(
-            currentPage, 10, customerId);
-        if (data.list!.isEmpty) {
+    String? accountString = prefs.getString('account');
+    if (accountString == null) {
+      if (!isLoadingNextPage && hasMorePages) {
+        setState(() {
+          isLoadingNextPage = true;
+        });
+        try {
+          var data = await EventService.getAllEvent(currentPage, 10);
+          if (data.list!.isEmpty) {
+            setState(() {
+              hasMorePages = false;
+              isLoadingNextPage = false;
+            });
+          } else {
+            setState(() {
+              list.addAll(data.list!);
+              currentPage++;
+              isLoadingNextPage = false;
+            });
+          }
+        } catch (e) {
+          print(e);
+        } finally {
           setState(() {
-            hasMorePages = false;
-            isLoadingNextPage = false;
-          });
-        } else {
-          setState(() {
-            list.addAll(data.list!);
-            currentPage++;
             isLoadingNextPage = false;
           });
         }
-      } catch (e) {
-        print(e);
-      } finally {
+      }
+    } else {
+      AccountModel accountModel =
+          AccountModel.fromJson(jsonDecode(accountString));
+      String customerId = accountModel.customer?.id ?? '';
+
+      if (!isLoadingNextPage && hasMorePages) {
         setState(() {
-          isLoadingNextPage = false;
+          isLoadingNextPage = true;
         });
+        try {
+          var data = await EventService.getEventNotJoinByCustomer(
+              currentPage, 10, customerId);
+          if (data.list!.isEmpty) {
+            setState(() {
+              hasMorePages = false;
+              isLoadingNextPage = false;
+            });
+          } else {
+            setState(() {
+              list.addAll(data.list!);
+              currentPage++;
+              isLoadingNextPage = false;
+            });
+          }
+        } catch (e) {
+          print(e);
+        } finally {
+          setState(() {
+            isLoadingNextPage = false;
+          });
+        }
       }
     }
   }
@@ -110,13 +152,13 @@ class _PostScreenState extends State<PostScreen> {
       onRefresh: () async {
         Future.delayed(const Duration(seconds: 7));
         setState(() {
-          seminarModel = null;
+          eventModel = null;
           list.clear();
           currentPage = 0;
           hasMorePages = true;
           isLoadingNextPage = false;
         });
-        _fetchAllSeminar();
+        _fetchAllEvent();
       },
       indicatorBuilder: (context, controller) {
         return const Icon(
@@ -142,7 +184,7 @@ class _PostScreenState extends State<PostScreen> {
           elevation: 0,
           automaticallyImplyLeading: false,
         ),
-        body: seminarModel == null
+        body: eventModel == null
             ? Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
@@ -153,7 +195,7 @@ class _PostScreenState extends State<PostScreen> {
                   ),
                 ),
               )
-            : seminarModel!.list!.isEmpty
+            : eventModel!.list!.isEmpty
                 ? Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
@@ -173,58 +215,61 @@ class _PostScreenState extends State<PostScreen> {
                       controller: _scrollController,
                       itemCount: list.length,
                       itemBuilder: (context, index) {
-                        var seminarItem = list[index];
-                        String date = seminarItem.startTime!.split(' ')[0];
-                        String time = seminarItem.startTime!.split(' ')[1];
+                        var eventItem = list[index];
+                        String date = eventItem.startAt!.split(' ')[0];
+                        String time = eventItem.startAt!.split(' ')[1];
                         return InkWell(
                           onTap: () {
                             Navigator.push(
                               context,
                               PageTransition(
-                                child: SeminarPostDetailScreen(
-                                  seminarId: seminarItem.id ?? '',
-                                  hostName: seminarItem.reader?.nickname ?? '',
-                                  seminarTitle: seminarItem.title ?? '',
+                                child: EventPostDetailScreen(
+                                  eventId: eventItem.id ?? '',
+                                  hostName:
+                                      eventItem.seminar?.reader?.nickname ?? '',
+                                  seminarTitle: eventItem.seminar?.title ?? '',
                                   date: date,
                                   time: time,
-                                  description: seminarItem.description ?? '',
+                                  description:
+                                      eventItem.seminar?.description ?? '',
                                   hostAvatarUrl:
-                                      seminarItem.reader?.avatarUrl ??
+                                      eventItem.seminar?.reader?.avatarUrl ??
                                           'https://via.placeholder.com/150',
-                                  bannerImageUrl: seminarItem.imageUrl ??
+                                  bannerImageUrl: eventItem.seminar?.imageUrl ??
                                       'https://via.placeholder.com/150',
-                                  activeSlot: seminarItem.activeSlot ?? 0,
-                                  limitCustomer: seminarItem.limitCustomer ?? 0,
-                                  price: seminarItem.price ?? 0,
+                                  activeSlot: eventItem.activeSlot ?? 0,
+                                  limitCustomer: eventItem.limitCustomer ?? 0,
+                                  price: eventItem.price ?? 0,
                                 ),
                                 type: PageTransitionType.rightToLeft,
                               ),
                             );
                           },
-                          child: SeminarPostItem(
-                            seminarId: seminarItem.id ?? '',
-                            hostName: seminarItem.reader?.nickname ?? '',
-                            seminarTitle: seminarItem.title ?? '',
+                          child: EventPostItem(
+                            seminarId: eventItem.id ?? '',
+                            hostName: eventItem.seminar?.reader?.nickname ?? '',
+                            seminarTitle: eventItem.seminar?.title ?? '',
                             date: date,
                             time: time,
-                            description: seminarItem.description ?? '',
-                            hostAvatarUrl: seminarItem.reader?.avatarUrl ??
+                            description: eventItem.seminar?.description ?? '',
+                            hostAvatarUrl:
+                                eventItem.seminar?.reader?.avatarUrl ??
+                                    'https://via.placeholder.com/150',
+                            bannerImageUrl: eventItem.seminar?.imageUrl ??
                                 'https://via.placeholder.com/150',
-                            bannerImageUrl: seminarItem.imageUrl ??
-                                'https://via.placeholder.com/150',
-                            activeSlot: seminarItem.activeSlot ?? 0,
-                            limitCustomer: seminarItem.limitCustomer ?? 0,
-                            price: seminarItem.price ?? 0,
+                            activeSlot: eventItem.activeSlot ?? 0,
+                            limitCustomer: eventItem.limitCustomer ?? 0,
+                            price: eventItem.price ?? 0,
                             onSeminarJoinedDone: (bool result) {
-                              if(result) {
+                              if (result) {
                                 setState(() {
-                                  seminarModel = null;
+                                  eventModel = null;
                                   list.clear();
                                   currentPage = 0;
                                   hasMorePages = true;
                                   isLoadingNextPage = false;
                                 });
-                                _fetchAllSeminar();
+                                _fetchAllEvent();
                               }
                             },
                           ),

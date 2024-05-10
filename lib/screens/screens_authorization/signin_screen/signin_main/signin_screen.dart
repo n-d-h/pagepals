@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
@@ -108,8 +109,9 @@ class _SigninScreenState extends State<SigninScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: ColorHelper.getColor(ColorHelper.green),
-                            width: 2),
+                          color: ColorHelper.getColor(ColorHelper.green),
+                          width: 2,
+                        ),
                         // Customize the focused border color if needed
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -308,7 +310,32 @@ class _SigninScreenState extends State<SigninScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const ForgotPasswordButton()
+                  const ForgotPasswordButton(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        PageTransition(
+                          child: const MenuItemScreen(),
+                          type: PageTransitionType.bottomToTop,
+                          duration: const Duration(milliseconds: 400),
+                        ),
+                        (route) => false,
+                      );
+                    },
+                    child: Center(
+                      child: Text(
+                        'Skip',
+                        style: TextStyle(
+                          fontSize: SpaceHelper.fontSize16,
+                          fontWeight: FontWeight.w600,
+                          color: ColorHelper.getColor(ColorHelper.green),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

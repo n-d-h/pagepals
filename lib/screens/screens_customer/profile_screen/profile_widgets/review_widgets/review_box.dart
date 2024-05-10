@@ -78,7 +78,9 @@ class ProfileReviewBox extends StatelessWidget {
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 3),
+                            horizontal: 16,
+                            vertical: 3,
+                          ),
                           child: Text(
                             commentItem.review ?? 'No comment',
                             textAlign: TextAlign.start,

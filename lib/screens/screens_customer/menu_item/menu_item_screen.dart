@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/custom_icons.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/providers/notification_provider.dart';
+import 'package:pagepals/screens/screens_authorization/signin_screen/signin_main/signin_screen.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/bottom_tab_bar.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
@@ -30,6 +31,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   int _currentIndex = 0;
   bool _isDrawerOpen = false;
   int? unreadCount;
+  AccountModel? account;
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     _currentIndex = widget.index ?? 0;
     _fetchNotificationByAccountId();
     _initZoom();
+    getAccount();
   }
 
   Future<void> _initZoom() async {
@@ -47,6 +50,9 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
   Future<void> _fetchNotificationByAccountId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var account = prefs.getString('account');
+    if(account == null) {
+      return;
+    }
     AccountModel accountModel = AccountModel.fromJson(json.decode(account!));
 
     var result = await NotificationService.getAllNotificationByAccountId(
@@ -55,6 +61,23 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
       unreadCount = result.total;
     });
     context.read<NotificationProvider>().setCount(unreadCount!);
+  }
+
+  Future<void> getAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accountString = prefs.getString('account');
+    if (accountString == null) {
+      print('No account data found in SharedPreferences');
+      return;
+    }
+    try {
+      Map<String, dynamic> accountMap = json.decode(accountString);
+      setState(() {
+        account = AccountModel.fromJson(accountMap);
+      });
+    } catch (e) {
+      print('Error decoding account data: $e');
+    }
   }
 
   void _handleDrawerChange(bool isOpen) {
@@ -96,7 +119,7 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
       BottomNavigationBarItem(
         icon: Badge(
           backgroundColor: Colors.orange,
-          isLabelVisible: visible,
+          isLabelVisible: visible && account != null,
           alignment: Alignment.topRight,
           largeSize: 20,
           padding: const EdgeInsets.symmetric(horizontal: 7),
