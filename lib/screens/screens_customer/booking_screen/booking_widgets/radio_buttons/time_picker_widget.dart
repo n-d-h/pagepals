@@ -25,12 +25,6 @@ class _TimeSlotPickerState extends State<TimePickerWidget> {
   List<TimeSlots> timeSlots = [];
   TimeSlots? selectedTimeSlot;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   void initializeDate() {
     // flag to check if there is no work date for the selected date
     bool noWorkDateForSelectedDate = true;

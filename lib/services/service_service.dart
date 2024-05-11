@@ -5,6 +5,8 @@ import 'package:pagepals/models/service_models/book_service_model.dart';
 import 'package:pagepals/models/service_models/service_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/book_models/book_model.dart';
+
 class ServiceService {
   static GraphQLClient graphQLClient = client!.value;
 
@@ -415,6 +417,8 @@ class ServiceService {
             nickname
             avatarUrl
             countryAccent
+            rating
+            totalOfReviews
           }
           book {
             id
@@ -436,6 +440,17 @@ class ServiceService {
             id
             name
             description
+          }
+          bookings {
+            id
+            review
+            createAt
+            rating
+            customer {
+              id
+              fullName
+              imageUrl
+            }
           }
         }
       }

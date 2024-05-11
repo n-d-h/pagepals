@@ -52,7 +52,7 @@ class BookingSuccessScreen extends StatelessWidget {
                       text: 'You have successfully booked an appointment with ',
                     ),
                     TextSpan(
-                      text: '@${reader!.profile!.account!.username!}',
+                      text: reader?.profile?.nickname ?? '',
                       style: GoogleFonts.lexend(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,

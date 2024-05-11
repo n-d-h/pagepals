@@ -80,7 +80,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                     ),
                     Center(
                       child: Text(
-                        widget.booking.meeting?.reader?.nickname ??
+                        widget.booking.service?.reader?.nickname ??
                             'reader name',
                         style: const TextStyle(
                           fontSize: 24,
@@ -92,7 +92,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                     const SizedBox(height: 3),
                     Center(
                       child: Text(
-                        '@${widget.booking.meeting?.reader?.account?.username ?? '@username'}',
+                        '@${widget.booking.service?.reader?.account?.username ?? '@username'}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -228,7 +228,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                 radius: 65,
                 backgroundColor: Colors.white, // Change color as needed
                 backgroundImage: NetworkImage(
-                  widget.booking.meeting?.reader?.avatarUrl ??
+                  widget.booking.service?.reader?.avatarUrl ??
                       'https://via.placeholder.com/150',
                 ), // Add your image here
               ),

@@ -98,22 +98,26 @@ class _ProfileServiceCollectionState extends State<ProfileServiceCollection> {
                       ),
                     );
                   },
-                  child: ServiceWidget(
-                    service: BookServices(
-                      id: serviceItem.id,
-                      description: serviceItem.description,
-                      price: serviceItem.price,
-                      duration: serviceItem.duration,
-                      rating: serviceItem.rating,
-                      totalOfReview: serviceItem.totalOfReview,
-                      totalOfBooking: serviceItem.totalOfBooking,
-                      imageUrl: serviceItem.imageUrl,
-                      reader: Reader(
-                        avatarUrl: widget.reader.profile?.avatarUrl!,
-                        nickname: widget.reader.profile?.nickname!,
-                      ),
-                      serviceType: ServiceType(
-                        name: serviceItem.serviceType?.name ?? '',
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 18),
+                    height: 400,
+                    child: ServiceWidget(
+                      service: BookServices(
+                        id: serviceItem.id,
+                        description: serviceItem.description,
+                        price: serviceItem.price,
+                        duration: serviceItem.duration,
+                        rating: serviceItem.rating,
+                        totalOfReview: serviceItem.totalOfReview,
+                        totalOfBooking: serviceItem.totalOfBooking,
+                        imageUrl: serviceItem.imageUrl,
+                        reader: Reader(
+                          avatarUrl: widget.reader.profile?.avatarUrl!,
+                          nickname: widget.reader.profile?.nickname!,
+                        ),
+                        serviceType: ServiceType(
+                          name: serviceItem.serviceType?.name ?? '',
+                        ),
                       ),
                     ),
                   ),

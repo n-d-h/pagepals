@@ -157,11 +157,9 @@ class _CompletedTabState extends State<CompletedTab> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(8)),
                                 border: Border.all(
-                                    width: 0.3,
-                                    color: Colors.black.withOpacity(0.4)),
-                                // boxShadow: [
-                                //   BoxShadow(color: Colors.black12, spreadRadius: 2, blurRadius: 3),
-                                // ],
+                                  width: 0.3,
+                                  color: Colors.black.withOpacity(0.4),
+                                ),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black12.withOpacity(0.2),

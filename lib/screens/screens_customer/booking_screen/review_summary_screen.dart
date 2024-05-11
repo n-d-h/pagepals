@@ -30,7 +30,6 @@ class ReviewSummaryScreen extends StatefulWidget {
   final Book? book;
   final Services? service;
 
-  // final String? chapter;
   final ServiceType? serviceType;
 
   const ReviewSummaryScreen({
@@ -85,10 +84,11 @@ class _ReviewSummaryScreenState extends State<ReviewSummaryScreen> {
         surfaceTintColor: Colors.white,
         title: const Text('Booking Detail'),
         centerTitle: true,
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.w700,
-          color: Colors.black,
-          fontSize: 24,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
       body: SingleChildScrollView(

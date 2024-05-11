@@ -45,7 +45,7 @@ class BookingAppointment extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               ReaderInfoWidget(
-                readerInfo: booking!.meeting!.reader!,
+                readerInfo: booking!.service?.reader!,
               ),
               TimeRowWidget(
                 time: DateTime.parse(booking?.startAt ?? '2021-2-1 12:00:00'),
@@ -53,13 +53,13 @@ class BookingAppointment extends StatelessWidget {
               SpaceBetweenRowWidget(
                 start: 'Duration',
                 end: booking?.service != null
-                    ? '${booking!.service!.duration!.toInt()} minutes'
-                    : '${booking!.seminar!.duration!.toInt()} minutes',
+                    ? '${booking?.service?.duration?.toInt()} minutes'
+                    : '${booking?.event?.seminar?.duration!.toInt()} minutes',
               ),
               BookRowWidget(
                 book: booking?.service != null
                     ? booking?.service?.book?.title ?? 'Unknown'
-                    : booking?.seminar?.book?.title ?? 'Unknown',
+                    : booking?.event?.seminar?.book?.title ?? 'Unknown',
               ),
               booking?.service != null
                   ? ServiceRowWidget(
@@ -68,7 +68,7 @@ class BookingAppointment extends StatelessWidget {
                     )
                   : ServiceRowWidget(
                       serviceType: "",
-                      service: booking!.seminar!.description!,
+                      service: booking!.event!.seminar!.description!,
                     ),
               const SizedBox(height: 16),
               Container(
@@ -81,16 +81,8 @@ class BookingAppointment extends StatelessWidget {
                 start: 'Amount',
                 end: booking?.service != null
                     ? '${booking!.service!.price!.toInt()} pals'
-                    : '${booking!.seminar!.price!.toInt()} pals',
+                    : '${booking!.event!.price!.toInt()} pals',
               ),
-              // SpaceBetweenRowWidget(
-              //   start: 'Promotion',
-              //   end: '0 %',
-              // ),
-              // SpaceBetweenRowWidget(
-              //   start: 'Total',
-              //   end: '${booking?.service?.price?.toInt() ?? 0} pals',
-              // ),
               if (booking!.state!.name == 'CANCEL')
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

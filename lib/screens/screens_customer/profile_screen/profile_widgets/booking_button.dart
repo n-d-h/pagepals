@@ -24,16 +24,16 @@ class ProfileBookingButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).push(
-              PageTransition(
-                child: BookingTimeScreen(
-                  reader: reader,
-                  bookModel: bookModel,
-                ),
-                type: PageTransitionType.rightToLeft,
-                duration: const Duration(milliseconds: 300),
-              ),
-            );
+            // Navigator.of(context).push(
+            //   PageTransition(
+            //     child: BookingTimeScreen(
+            //       reader: reader,
+            //       bookModel: bookModel,
+            //     ),
+            //     type: PageTransitionType.rightToLeft,
+            //     duration: const Duration(milliseconds: 300),
+            //   ),
+            // );
           },
           style: ElevatedButton.styleFrom(
             foregroundColor: ColorHelper.getColor(ColorHelper.white),

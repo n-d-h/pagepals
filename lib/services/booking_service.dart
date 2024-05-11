@@ -91,24 +91,8 @@ class BookingService {
           rating
           review
           meeting {
-            reader {
-              id
-              nickname
-              avatarUrl
-              countryAccent
-              language
-              rating
-              totalOfReviews
-              account {
-                customer {
-                  imageUrl
-                }
-                username
-              }
-            }
             meetingCode
             password
-            limitOfPerson
             id
           }
           service {
@@ -126,6 +110,21 @@ class BookingService {
               id
               name
               description
+            }
+            reader {
+              id
+              nickname
+              avatarUrl
+              countryAccent
+              language
+              rating
+              totalOfReviews
+              account {
+                customer {
+                  imageUrl
+                }
+                username
+              }
             }
           }
           startAt
@@ -145,24 +144,37 @@ class BookingService {
           state {
             name
           }
-          seminar {
+          event {
             id
-            imageUrl
+            isFeatured
             limitCustomer
-            duration
-            description
-            createdAt
             price
-            book {
+            startAt
+            activeSlot
+            seminar {
+              createdAt
+              description
+              duration
               id
-              smallThumbnailUrl
-              thumbnailUrl
+              imageUrl
               title
+              book {
+                id
+                title
+                publisher
+                language
+                authors {
+                  name
+                }
+                categories {
+                  name
+                }
+                description
+                pageCount
+                smallThumbnailUrl
+                thumbnailUrl
+              }
             }
-            startTime
-            status
-            title
-            updatedAt
           }
         }
         pagination {
@@ -223,24 +235,8 @@ class BookingService {
           rating
           review
           meeting {
-            reader {
-              id
-              nickname
-              avatarUrl
-              countryAccent
-              language
-              rating
-              totalOfReviews
-              account {
-                customer {
-                  imageUrl
-                }
-                username
-              }
-            }
             meetingCode
             password
-            limitOfPerson
             id
           }
           service {

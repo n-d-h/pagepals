@@ -49,38 +49,6 @@ class ServiceRowWidget extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(
-          height: 15,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 113,
-              child: Text(
-                'Service',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black87.withOpacity(0.5),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                service,
-                textAlign: TextAlign.end,
-                style: const TextStyle(
-                  overflow: TextOverflow.clip,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
       ],
     );
   }

@@ -12,6 +12,7 @@ class ServiceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 250,
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),

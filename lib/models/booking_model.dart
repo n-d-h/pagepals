@@ -1,3 +1,5 @@
+import 'book_models/book_model.dart';
+
 class BookingModel {
   List<Booking>? list;
   Pagination? pagination;
@@ -34,12 +36,12 @@ class Booking {
   String? review;
   Meeting? meeting;
   Service? service;
-  Seminar? seminar;
   String? startAt;
   String? createAt;
   CustomerBooked? customer;
   String? cancelReason;
   BookingState? state;
+  Event? event;
 
   Booking({
     this.id,
@@ -52,6 +54,7 @@ class Booking {
     this.customer,
     this.cancelReason,
     this.state,
+    this.event,
   });
 
   Booking.fromJson(Map<String, dynamic> json) {
@@ -62,16 +65,15 @@ class Booking {
         json['meeting'] != null ? new Meeting.fromJson(json['meeting']) : null;
     service =
         json['service'] != null ? new Service.fromJson(json['service']) : null;
-    seminar =
-        json['seminar'] != null ? new Seminar.fromJson(json['seminar']) : null;
     startAt = json['startAt'];
-    createAt = json['createdAt'];
+    createAt = json['createAt'];
     customer = json['customer'] != null
         ? new CustomerBooked.fromJson(json['customer'])
         : null;
     cancelReason = json['cancelReason'];
     state =
         json['state'] != null ? new BookingState.fromJson(json['state']) : null;
+    event = json['event'] != null ? new Event.fromJson(json['event']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -85,15 +87,107 @@ class Booking {
     if (this.service != null) {
       data['service'] = this.service!.toJson();
     }
-    if (this.seminar != null) {
-      data['seminar'] = this.seminar!.toJson();
-    }
     data['startAt'] = this.startAt;
-    data['createdAt'] = this.createAt;
+    data['createAt'] = this.createAt;
     if (this.customer != null) {
       data['customer'] = this.customer!.toJson();
     }
     data['cancelReason'] = this.cancelReason;
+    if (this.state != null) {
+      data['state'] = this.state!.toJson();
+    }
+    if (this.event != null) {
+      data['event'] = this.event!.toJson();
+    }
+    return data;
+  }
+}
+
+class Event {
+  String? id;
+  bool? isFeatured;
+  int? limitCustomer;
+  int? price;
+  String? startAt;
+  int? activeSlot;
+  Seminar? seminar;
+
+  Event({
+    this.id,
+    this.isFeatured,
+    this.limitCustomer,
+    this.price,
+    this.startAt,
+    this.activeSlot,
+    this.seminar,
+  });
+
+  Event.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    isFeatured = json['isFeatured'];
+    limitCustomer = json['limitCustomer'];
+    price = json['price'];
+    startAt = json['startAt'];
+    activeSlot = json['activeSlot'];
+    seminar =
+        json['seminar'] != null ? new Seminar.fromJson(json['seminar']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['isFeatured'] = this.isFeatured;
+    data['limitCustomer'] = this.limitCustomer;
+    data['price'] = this.price;
+    data['startAt'] = this.startAt;
+    data['activeSlot'] = this.activeSlot;
+    if (this.seminar != null) {
+      data['seminar'] = this.seminar!.toJson();
+    }
+    return data;
+  }
+}
+
+class Seminar {
+  String? createdAt;
+  String? description;
+  int? duration;
+  String? id;
+  String? imageUrl;
+  String? title;
+  Book? book;
+
+  Seminar({
+    this.createdAt,
+    this.description,
+    this.duration,
+    this.id,
+    this.imageUrl,
+    this.title,
+    this.book,
+  });
+
+  Seminar.fromJson(Map<String, dynamic> json) {
+    createdAt = json['createdAt'];
+    description = json['description'];
+    duration = json['duration'];
+    id = json['id'];
+    imageUrl = json['imageUrl'];
+    title = json['title'];
+    book = json['book'] != null ? new Book.fromJson(json['book']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['createdAt'] = this.createdAt;
+    data['description'] = this.description;
+    data['duration'] = this.duration;
+    data['id'] = this.id;
+    data['imageUrl'] = this.imageUrl;
+    data['title'] = this.title;
+    if (this.book != null) {
+      data['book'] = this.book!.toJson();
+    }
     return data;
   }
 }
@@ -115,37 +209,26 @@ class BookingState {
 }
 
 class Meeting {
-  Reader? reader;
   String? meetingCode;
   String? password;
-  int? limitOfPerson;
   String? id;
 
   Meeting({
-    this.reader,
     this.meetingCode,
     this.password,
-    this.limitOfPerson,
     this.id,
   });
 
   Meeting.fromJson(Map<String, dynamic> json) {
-    reader =
-        json['reader'] != null ? new Reader.fromJson(json['reader']) : null;
     meetingCode = json['meetingCode'];
     password = json['password'];
-    limitOfPerson = json['limitOfPerson'];
     id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.reader != null) {
-      data['reader'] = this.reader!.toJson();
-    }
     data['meetingCode'] = this.meetingCode;
     data['password'] = this.password;
-    data['limitOfPerson'] = this.limitOfPerson;
     data['id'] = this.id;
     return data;
   }
@@ -237,8 +320,16 @@ class Service {
   String? id;
   int? price;
   ServiceType? serviceType;
+  Reader? reader;
 
-  Service({this.book, this.duration, this.description, this.id, this.price});
+  Service({
+    this.book,
+    this.duration,
+    this.description,
+    this.id,
+    this.price,
+    this.reader,
+  });
 
   Service.fromJson(Map<String, dynamic> json) {
     book = json['book'] != null ? new Book.fromJson(json['book']) : null;
@@ -249,6 +340,7 @@ class Service {
     serviceType = json['serviceType'] != null
         ? new ServiceType.fromJson(json['serviceType'])
         : null;
+    reader = json['reader'] != null ? new Reader.fromJson(json['reader']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -263,115 +355,9 @@ class Service {
     if (this.serviceType != null) {
       data['serviceType'] = this.serviceType!.toJson();
     }
-    return data;
-  }
-}
-
-class Seminar {
-  String? id;
-  String? imageUrl;
-  int? limitCustomer;
-  int? duration;
-  String? description;
-  String? createdAt;
-  int? price;
-  Book? book;
-  String? startTime;
-  String? status;
-  String? title;
-  String? updatedAt;
-
-  Seminar({
-    this.id,
-    this.imageUrl,
-    this.limitCustomer,
-    this.duration,
-    this.description,
-    this.createdAt,
-    this.price,
-    this.book,
-    this.startTime,
-    this.status,
-    this.title,
-    this.updatedAt,
-  });
-
-  Seminar.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    imageUrl = json['imageUrl'];
-    limitCustomer = json['limitCustomer'];
-    duration = json['duration'];
-    description = json['description'];
-    createdAt = json['createdAt'];
-    price = json['price'];
-    book = json['book'] != null ? Book?.fromJson(json['book']) : null;
-    startTime = json['startTime'];
-    status = json['status'];
-    title = json['title'];
-    updatedAt = json['updatedAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
-    data['imageUrl'] = imageUrl;
-    data['limitCustomer'] = limitCustomer;
-    data['duration'] = duration;
-    data['description'] = description;
-    data['createdAt'] = createdAt;
-    data['price'] = price;
-    data['book'] = book!.toJson();
-    data['startTime'] = startTime;
-    data['status'] = status;
-    data['title'] = title;
-    data['updatedAt'] = updatedAt;
-    return data;
-  }
-}
-
-class ServiceType {
-  String? id;
-  String? name;
-  String? description;
-
-  ServiceType({this.id, this.name, this.description});
-
-  ServiceType.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    description = json['description'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    return data;
-  }
-}
-
-class Book {
-  String? title;
-  String? smallThumbnailUrl;
-  String? thumbnailUrl;
-  String? id;
-
-  Book({this.title, this.smallThumbnailUrl, this.thumbnailUrl, this.id});
-
-  Book.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    smallThumbnailUrl = json['smallThumbnailUrl'];
-    thumbnailUrl = json['thumbnailUrl'];
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title'] = this.title;
-    data['smallThumbnailUrl'] = this.smallThumbnailUrl;
-    data['thumbnailUrl'] = this.thumbnailUrl;
-    data['id'] = this.id;
+    if (this.reader != null) {
+      data['reader'] = this.reader!.toJson();
+    }
     return data;
   }
 }
@@ -438,12 +424,13 @@ class Pagination {
   int? totalOfElements;
   int? totalOfPages;
 
-  Pagination(
-      {this.currentPage,
-      this.pageSize,
-      this.sort,
-      this.totalOfElements,
-      this.totalOfPages});
+  Pagination({
+    this.currentPage,
+    this.pageSize,
+    this.sort,
+    this.totalOfElements,
+    this.totalOfPages,
+  });
 
   Pagination.fromJson(Map<String, dynamic> json) {
     currentPage = json['currentPage'];

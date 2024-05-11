@@ -1,115 +1,5 @@
-class Author {
-  String? id;
-  String? name;
-
-  Author({this.id, this.name});
-
-  Author.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
-    data['name'] = name;
-    return data;
-  }
-}
-
-class Book {
-  List<Category?>? categories;
-  List<Author?>? authors;
-  String? id;
-  String? externalId;
-  String? description;
-  String? language;
-  int? pageCount;
-  String? publishedDate;
-  String? publisher;
-  String? smallThumbnailUrl;
-  String? thumbnailUrl;
-  String? title;
-
-  Book({
-    this.categories,
-    this.authors,
-    this.id,
-    this.externalId,
-    this.description,
-    this.language,
-    this.pageCount,
-    this.publishedDate,
-    this.publisher,
-    this.smallThumbnailUrl,
-    this.thumbnailUrl,
-    this.title,
-  });
-
-  Book.fromJson(Map<String, dynamic> json) {
-    if (json['categories'] != null) {
-      categories = <Category>[];
-      json['categories'].forEach((v) {
-        categories!.add(Category.fromJson(v));
-      });
-    }
-    if (json['authors'] != null) {
-      authors = <Author>[];
-      json['authors'].forEach((v) {
-        authors!.add(Author.fromJson(v));
-      });
-    }
-    id = json['id'];
-    externalId = json['externalId'];
-    description = json['description'];
-    language = json['language'];
-    pageCount = json['pageCount'];
-    publishedDate = json['publishedDate'];
-    publisher = json['publisher'];
-    smallThumbnailUrl = json['smallThumbnailUrl'];
-    thumbnailUrl = json['thumbnailUrl'];
-    title = json['title'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['categories'] = categories != null
-        ? categories!.map((v) => v?.toJson()).toList()
-        : null;
-    data['authors'] =
-        authors != null ? authors!.map((v) => v?.toJson()).toList() : null;
-    data['id'] = id;
-    data['externalId'] = externalId;
-    data['description'] = description;
-    data['language'] = language;
-    data['pageCount'] = pageCount;
-    data['publishedDate'] = publishedDate;
-    data['publisher'] = publisher;
-    data['smallThumbnailUrl'] = smallThumbnailUrl;
-    data['thumbnailUrl'] = thumbnailUrl;
-    data['title'] = title;
-    return data;
-  }
-}
-
-class Category {
-  String? id;
-  String? name;
-
-  Category({this.id, this.name});
-
-  Category.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
-    data['name'] = name;
-    return data;
-  }
-}
+import 'package:pagepals/models/booking_model.dart';
+import '../book_models/book_model.dart';
 
 class Reader {
   String? id;
@@ -118,6 +8,8 @@ class Reader {
   String? nickname;
   String? avatarUrl;
   String? countryAccent;
+  int? rating;
+  int? totalOfReviews;
 
   Reader({
     this.id,
@@ -126,6 +18,8 @@ class Reader {
     this.nickname,
     this.avatarUrl,
     this.countryAccent,
+    this.rating,
+    this.totalOfReviews,
   });
 
   Reader.fromJson(Map<String, dynamic> json) {
@@ -135,6 +29,8 @@ class Reader {
     nickname = json['nickname'];
     avatarUrl = json['avatarUrl'];
     countryAccent = json['countryAccent'];
+    rating = json['rating'];
+    totalOfReviews = json['totalOfReviews'];
   }
 
   Map<String, dynamic> toJson() {
@@ -145,6 +41,8 @@ class Reader {
     data['nickname'] = nickname;
     data['avatarUrl'] = avatarUrl;
     data['countryAccent'] = countryAccent;
+    data['rating'] = rating;
+    data['totalOfReviews'] = totalOfReviews;
     return data;
   }
 }
@@ -163,6 +61,7 @@ class ServiceModel {
   String? status;
   int? totalOfBooking;
   int? totalOfReview;
+  List<Booking>? bookings;
 
   ServiceModel({
     this.book,
@@ -178,6 +77,7 @@ class ServiceModel {
     this.status,
     this.totalOfBooking,
     this.totalOfReview,
+    this.bookings,
   });
 
   ServiceModel.fromJson(Map<String, dynamic> json) {
@@ -196,6 +96,12 @@ class ServiceModel {
     status = json['status'];
     totalOfBooking = json['totalOfBooking'];
     totalOfReview = json['totalOfReview'];
+    if (json['bookings'] != null) {
+      bookings = <Booking>[];
+      json['bookings'].forEach((v) {
+        bookings!.add(Booking.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -212,28 +118,7 @@ class ServiceModel {
     data['status'] = status;
     data['totalOfBooking'] = totalOfBooking;
     data['totalOfReview'] = totalOfReview;
-    return data;
-  }
-}
-
-class ServiceType {
-  String? id;
-  String? name;
-  String? description;
-
-  ServiceType({this.id, this.name, this.description});
-
-  ServiceType.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    description = json['description'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
-    data['name'] = name;
-    data['description'] = description;
+    data['bookings'] = bookings!.map((v) => v.toJson()).toList();
     return data;
   }
 }

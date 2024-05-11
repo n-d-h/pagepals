@@ -1,13 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/book_models/book_model.dart' as book_model;
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/service_models/service_model.dart';
 import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_description.dart';
 import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_image_widget.dart';
 import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_info_widget.dart';
+import 'package:pagepals/screens/screens_customer/booking_screen/booking_time_screen.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/info_line.dart';
+import 'package:pagepals/screens/screens_customer/service_screen/service_comment_widget.dart';
 import 'package:pagepals/screens/screens_customer/service_screen/show_html_widget.dart';
 import 'package:pagepals/services/service_service.dart';
 
@@ -54,9 +57,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
         ),
       );
     } else {
-      Book book = serviceModel!.book!;
+      book_model.Book book = serviceModel!.book!;
       String? authors = book.authors?.map((e) => e?.name ?? '').join(', ');
-      String? categories = book.categories?.map((e) => e?.name ?? '').join(', ');
+      String? categories =
+          book.categories?.map((e) => e?.name ?? '').join(', ');
       return Scaffold(
         appBar: AppBar(
           title: const Text('Service Detail'),
@@ -70,8 +74,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
           ),
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          controller: ScrollController(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -247,6 +249,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
               const SizedBox(
                 height: 10,
               ),
+              Visibility(
+                visible: (serviceModel?.bookings?.length ?? 0) > 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ServiceCommentWidget(
+                    bookings: serviceModel?.bookings,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -260,7 +271,43 @@ class _ServiceScreenState extends State<ServiceScreen> {
             ),
             child: Center(
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    PageTransition(
+                      child: BookingTimeScreen(
+                        reader: ReaderProfile(
+                          profile: Profile(
+                            id: serviceModel?.reader?.id ?? '',
+                            avatarUrl: serviceModel?.reader?.avatarUrl ?? '',
+                            countryAccent:
+                                serviceModel?.reader?.countryAccent ?? '',
+                            nickname: serviceModel?.reader?.nickname ?? '',
+                            rating: serviceModel?.reader?.rating ?? 0,
+                            totalOfReviews:
+                                serviceModel?.reader?.totalOfReviews ?? 0,
+                          ),
+                        ),
+                        book: serviceModel?.book ?? book_model.Book(),
+                        serviceType: serviceModel!.serviceType ??
+                            book_model.ServiceType(),
+                        service: book_model.Services(
+                          id: serviceModel?.id ?? '',
+                          description: serviceModel?.description ?? '',
+                          duration: serviceModel?.duration ?? 0,
+                          price: serviceModel?.price ?? 0,
+                          rating: serviceModel?.rating ?? 0,
+                          totalOfBooking: serviceModel?.totalOfBooking ?? 0,
+                          totalOfReview: serviceModel?.totalOfReview ?? 0,
+                          imageUrl: serviceModel?.imageUrl ?? '',
+                          serviceType: serviceModel!.serviceType ??
+                              book_model.ServiceType(),
+                        ),
+                      ),
+                      type: PageTransitionType.rightToLeft,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                  );
+                },
                 child: const Text(
                   'Book Now',
                   style: TextStyle(

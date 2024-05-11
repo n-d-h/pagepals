@@ -143,7 +143,7 @@ class UpcomingBottom extends StatelessWidget {
                 } else {
                   double? duration = booking.service != null
                       ? booking.service!.duration!
-                      : booking.seminar!.duration!.toDouble();
+                      : booking.event!.seminar!.duration!.toDouble();
                   // duration = duration + 30;
                   if (DateTime.now().isAfter(
                       startTime.add(Duration(minutes: duration.toInt())))) {

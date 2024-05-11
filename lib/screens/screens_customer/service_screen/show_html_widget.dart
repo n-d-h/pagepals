@@ -34,7 +34,7 @@ class _ShowMoreHtmlWidgetState extends State<ShowMoreHtmlWidget> {
             });
           },
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20),
             child: HtmlWidget(
               isExpand ? widget.htmlContent : trimmedContent,
               textStyle: TextStyle(

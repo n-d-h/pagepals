@@ -4,6 +4,8 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/service_models/service_model.dart';
 import 'package:pagepals/services/service_service.dart';
 
+import '../../../../models/book_models/book_model.dart';
+
 class ServiceTypeDropdown extends StatefulWidget {
   final Function(String?)? onChanged;
   final String? value;
@@ -27,7 +29,6 @@ class _State extends State<ServiceTypeDropdown> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getServiceTypes();
   }

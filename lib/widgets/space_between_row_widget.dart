@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SpaceBetweenRowWidget extends StatelessWidget {
@@ -6,8 +5,12 @@ class SpaceBetweenRowWidget extends StatelessWidget {
   final String end;
   final double width;
 
-  const SpaceBetweenRowWidget(
-      {super.key, required this.start, required this.end, this.width = 113});
+  const SpaceBetweenRowWidget({
+    super.key,
+    required this.start,
+    required this.end,
+    this.width = 113,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class SpaceBetweenRowWidget extends StatelessWidget {
               child: Text(
                 start,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.black87.withOpacity(0.5),
                 ),
@@ -39,7 +42,7 @@ class SpaceBetweenRowWidget extends StatelessWidget {
                 textAlign: TextAlign.end,
                 end,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.black,
                 ),

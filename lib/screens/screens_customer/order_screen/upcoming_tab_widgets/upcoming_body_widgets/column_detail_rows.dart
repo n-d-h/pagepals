@@ -12,12 +12,12 @@ class ColumnDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     String title = booking.service != null
         ? booking.service?.book?.title ?? 'Unknown'
-        : booking.seminar?.book?.title ?? 'Unknown';
-    String service = booking.service?.description ?? 'Unknown';
-    String seminar = booking.seminar?.description ?? 'Unknown';
+        : booking.event?.seminar?.book?.title ?? 'Unknown';
+    String service = booking.service?.serviceType?.name ?? 'Unknown';
+    String seminar = booking.event?.seminar?.description ?? 'Unknown';
     String meetingCode = "#${booking.meeting!.meetingCode!}";
     String duration =
-        '${booking.seminar?.duration != null ? booking.seminar!.duration!.toInt() : booking.service?.duration != null ? booking.service!.duration!.toInt() : '60'} minutes';
+        '${booking.event?.seminar?.duration != null ? booking.event?.seminar!.duration!.toInt() : booking.service?.duration != null ? booking.service!.duration!.toInt() : '60'} minutes';
     Color? color = booking.service == null ? Colors.blueAccent : null;
     return Container(
       margin: const EdgeInsets.only(top: 10),
@@ -35,7 +35,7 @@ class ColumnDetail extends StatelessWidget {
           booking.service != null
               ? DetailRow(
                   icon: UniconsLine.pen,
-                  text: 'Service: $service',
+                  text: 'Service Type: $service',
                   color: color,
                 )
               : DetailRow(
