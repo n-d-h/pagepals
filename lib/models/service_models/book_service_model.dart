@@ -1,16 +1,16 @@
 import 'package:pagepals/models/book_models/book_model.dart';
 
 class BookServiceModel {
-  List<Services>? services;
+  List<BookServices>? services;
   Paging? paging;
 
   BookServiceModel({this.services, this.paging});
 
   BookServiceModel.fromJson(Map<String, dynamic> json) {
     if (json['services'] != null) {
-      services = <Services>[];
+      services = <BookServices>[];
       json['services'].forEach((v) {
-        services!.add(new Services.fromJson(v));
+        services!.add(new BookServices.fromJson(v));
       });
     }
     paging =
@@ -29,7 +29,7 @@ class BookServiceModel {
   }
 }
 
-class Services {
+class BookServices {
   String? id;
   String? description;
   double? duration;
@@ -42,7 +42,7 @@ class Services {
   Book? book;
   ServiceType? serviceType;
 
-  Services({
+  BookServices({
     this.id,
     this.description,
     this.duration,
@@ -56,7 +56,7 @@ class Services {
     this.serviceType,
   });
 
-  Services.fromJson(Map<String, dynamic> json) {
+  BookServices.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     description = json['description'];
     duration = json['duration'];

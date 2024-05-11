@@ -42,19 +42,20 @@ class Book {
   String? thumbnailUrl;
   String? title;
 
-  Book(
-      {this.authors,
-        this.categories,
-        this.description,
-        this.externalId,
-        this.id,
-        this.language,
-        this.pageCount,
-        this.publishedDate,
-        this.publisher,
-        this.smallThumbnailUrl,
-        this.thumbnailUrl,
-        this.title});
+  Book({
+    this.authors,
+    this.categories,
+    this.description,
+    this.externalId,
+    this.id,
+    this.language,
+    this.pageCount,
+    this.publishedDate,
+    this.publisher,
+    this.smallThumbnailUrl,
+    this.thumbnailUrl,
+    this.title,
+  });
 
   Book.fromJson(Map<String, dynamic> json) {
     if (json['authors'] != null) {
@@ -150,10 +151,10 @@ class Pagination {
 
   Pagination(
       {this.currentPage,
-        this.pageSize,
-        this.sort,
-        this.totalOfElements,
-        this.totalOfPages});
+      this.pageSize,
+      this.sort,
+      this.totalOfElements,
+      this.totalOfPages});
 
   Pagination.fromJson(Map<String, dynamic> json) {
     currentPage = json['currentPage'];

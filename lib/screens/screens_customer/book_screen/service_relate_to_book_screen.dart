@@ -3,7 +3,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/service_models/book_service_model.dart';
-import 'package:pagepals/screens/screens_customer/profile_screen/overview_screen.dart';
+import 'package:pagepals/screens/screens_customer/service_screen/service_screen.dart';
+import 'package:pagepals/screens/screens_customer/service_screen/service_widget.dart';
 import 'package:pagepals/services/service_service.dart';
 
 class ServiceRelateToBookScreen extends StatefulWidget {
@@ -18,221 +19,139 @@ class ServiceRelateToBookScreen extends StatefulWidget {
 
 class _ServiceRelateToBookScreenState extends State<ServiceRelateToBookScreen> {
   BookServiceModel? bookService;
+  int currentPage = 0;
+  bool isLoadingNextPage = false;
+  bool hasMorePages = true;
+  List<BookServices> list = [];
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+    if (widget.bookId != null) _fetchBookService();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _fetchNextPage();
+    }
+  }
 
   Future<void> _fetchBookService() async {
-    var result =
-        await ServiceService.getBookService(widget.bookId!, "", 10, 0, "sort");
+    var result = await ServiceService.getBookService(
+        widget.bookId!, "", 10, currentPage, "desc");
     setState(() {
       bookService = result;
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.bookId != null) _fetchBookService();
+  Future<void> _fetchNextPage() async {
+    if (!isLoadingNextPage && hasMorePages) {
+      setState(() {
+        isLoadingNextPage = true;
+      });
+      try {
+        var result = await ServiceService.getBookService(
+            widget.bookId!, "", 10, currentPage, "desc");
+        if (result.services!.isEmpty) {
+          setState(() {
+            hasMorePages = false;
+            isLoadingNextPage = false;
+          });
+        } else {
+          setState(() {
+            list.addAll(result.services!);
+            currentPage++;
+            isLoadingNextPage = false;
+          });
+        }
+      } catch (error) {
+        print("Error fetching next page: $error");
+        setState(() {
+          isLoadingNextPage = false;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return bookService == null
-        ? Scaffold(
-            body: Center(
-              child: LoadingAnimationWidget.staggeredDotsWave(
-                color: ColorHelper.getColor(ColorHelper.green),
-                size: 60,
-              ),
+    if (bookService == null) {
+      return Scaffold(
+        body: Center(
+          child: LoadingAnimationWidget.staggeredDotsWave(
+            color: ColorHelper.getColor(ColorHelper.green),
+            size: 60,
+          ),
+        ),
+      );
+    } else if (bookService!.services!.isEmpty) {
+      return Scaffold(
+        body: Center(
+          child: Text(
+            'No service found',
+            style: TextStyle(
+              color: ColorHelper.getColor(ColorHelper.grey),
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
-          )
-        : Scaffold(
-            appBar: AppBar(
-              title: Text('Service'),
-              centerTitle: true,
-              surfaceTintColor: Colors.white,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            body: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: bookService?.services?.length ?? 0,
-              itemBuilder: (BuildContext context, int index) {
-                var service = bookService?.services?[index];
-                return Container(
-                  width: 300,
-                  height: 200,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 0,
-                    vertical: 15,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black45,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      )
-                    ],
-                  ),
-                  child: InkWell(
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Services'),
+          centerTitle: true,
+          surfaceTintColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: SingleChildScrollView(
+          controller: ScrollController(),
+          physics: const BouncingScrollPhysics(),
+          child: Container(
+            alignment: Alignment.center,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ...bookService!.services!.map((serviceItem) {
+                  return InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
                         PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: ProfileOverviewScreen(
-                            readerId: service?.reader?.id ?? "",
+                          child: ServiceScreen(
+                            serviceId: serviceItem.id ?? '',
+                            closeIcon: Icons.arrow_back_ios,
                           ),
+                          type: PageTransitionType.bottomToTop,
                         ),
                       );
                     },
-                    child: Stack(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          left: 16,
-                                          right: 8,
-                                        ),
-                                        width: 35,
-                                        height: 35,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                service?.reader?.avatarUrl ??
-                                                    'https://via.placeholder.com/150',
-                                              ),
-                                              fit: BoxFit.fill),
-                                        ),
-                                      ),
-                                      Text(
-                                        service?.reader?.nickname ??
-                                            'reader name',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 16),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.access_time_rounded,
-                                          color: Colors.black54,
-                                          size: 16,
-                                        ),
-                                        const SizedBox(width: 2),
-                                        Text(
-                                          '${service?.duration?.toInt() ?? '0'} mins',
-                                          style: const TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 3),
-                                child: Text(
-                                  service?.description ??
-                                      'Service description',
-                                  textAlign: TextAlign.start,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    // wordSpacing: 1,
-                                    height: 2.2,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.star_rounded,
-                                    color: ColorHelper.getColor('#FFA800'),
-                                    size: 16,
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 2),
-                                    child: Text(
-                                      '${service?.rating?.toString() ?? '0'}.0',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 2),
-                                    child: Text(
-                                      '(${service?.totalOfReview?.toString() ?? '0'})',
-                                      style: const TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Text(
-                                '${service?.price?.toString() ?? '0'} pals',
-                                style: const TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 350,
+                      child: ServiceWidget(
+                        service: serviceItem,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                }).toList(),
+              ],
             ),
-          );
+          ),
+        ),
+      );
+    }
   }
 }

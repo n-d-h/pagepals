@@ -1,15 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
+import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/service_collection.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProfileBookCollection extends StatefulWidget {
   final List<Books> books;
+  final ReaderProfile reader;
 
-  const ProfileBookCollection({super.key, required this.books});
+  const ProfileBookCollection({
+    super.key,
+    required this.books,
+    required this.reader,
+  });
 
   @override
   State<ProfileBookCollection> createState() => _ProfileBookCollectionState();
@@ -30,7 +34,7 @@ class _ProfileBookCollectionState extends State<ProfileBookCollection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.books.first.services!.length > 0 ? 460 : 230,
+      height: widget.books.first.services!.length > 0 ? 630 : 230,
       decoration: const BoxDecoration(color: Colors.white),
       padding: const EdgeInsets.fromLTRB(25, 1, 0, 0),
       margin: const EdgeInsets.only(bottom: 10),
@@ -117,7 +121,8 @@ class _ProfileBookCollectionState extends State<ProfileBookCollection> {
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                              color: currentBookIndex == index && listServices.isNotEmpty
+                              color: currentBookIndex == index &&
+                                      listServices.isNotEmpty
                                   ? ColorHelper.getColor(ColorHelper.green)
                                   : Colors.white,
                               borderRadius:
@@ -144,7 +149,11 @@ class _ProfileBookCollectionState extends State<ProfileBookCollection> {
                 ),
                 Visibility(
                   visible: listServices.isNotEmpty,
-                  child: ProfileServiceCollection(services: listServices),
+                  child: ProfileServiceCollection(
+                    services: listServices,
+                    book: widget.books[currentBookIndex].book ?? Book(),
+                    reader: widget.reader,
+                  ),
                 ),
               ],
             )

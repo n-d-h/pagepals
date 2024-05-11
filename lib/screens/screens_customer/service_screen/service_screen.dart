@@ -102,7 +102,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 child: Text(
                   serviceModel?.serviceType?.name ?? '',
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -251,27 +251,25 @@ class _ServiceScreenState extends State<ServiceScreen> {
           ),
         ),
         bottomNavigationBar: BottomAppBar(
+          surfaceTintColor: Colors.white,
           child: Container(
-            height: 40,
+            height: 30,
             decoration: BoxDecoration(
               color: ColorHelper.getColor(ColorHelper.green),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Book Now',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+            child: Center(
+              child: TextButton(
+                onPressed: () {},
+                child: const Text(
+                  'Book Now',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widget
 import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_info_widget.dart';
 import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_service_box.dart';
 import 'package:unicons/unicons.dart';
+import 'package:pagepals/models/book_models/book_model.dart' as book_model;
 
 class BookDetailScreen extends StatelessWidget {
   final Book book;
@@ -116,7 +117,9 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  BookServiceBox(bookId: book.id),
+                  BookServiceBox(
+                    bookId: book.id,
+                  ),
                 ],
               ),
             ),
