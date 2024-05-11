@@ -17,7 +17,7 @@ class ShowMoreHtmlWidget extends StatefulWidget {
 }
 
 class _ShowMoreHtmlWidgetState extends State<ShowMoreHtmlWidget> {
-  bool showMore = false;
+  bool isExpand = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +30,13 @@ class _ShowMoreHtmlWidgetState extends State<ShowMoreHtmlWidget> {
         GestureDetector(
           onTap: () {
             setState(() {
-              showMore = !showMore;
+              isExpand = !isExpand;
             });
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: HtmlWidget(
-              showMore ? widget.htmlContent : trimmedContent,
+              isExpand ? widget.htmlContent : trimmedContent,
               textStyle: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
@@ -56,22 +56,22 @@ class _ShowMoreHtmlWidgetState extends State<ShowMoreHtmlWidget> {
           ),
         ),
         if (trimmedContent != widget.htmlContent)
-          InkWell(
-            radius: 10,
-            onTap: () {
-              setState(() {
-                showMore = !showMore;
-              });
-            },
-            child: Align(
-              alignment: Alignment.center,
-              child: Container(
-                margin: const EdgeInsets.only(right: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: InkWell(
+                radius: 10,
+                onTap: () {
+                  setState(() {
+                    isExpand = !isExpand;
+                  });
+                },
                 child: Text(
-                  showMore ? 'Show less' : 'Show more',
+                  isExpand ? 'Read less' : 'Read more',
                   style: TextStyle(
-                    color: ColorHelper.getColor(ColorHelper.green),
-                    decoration: TextDecoration.underline,
+                    fontSize: 14,
+                    color: Colors.blue,
                   ),
                 ),
               ),
@@ -95,6 +95,6 @@ class _ShowMoreHtmlWidgetState extends State<ShowMoreHtmlWidget> {
         trimmedContent += widget.htmlContent[i];
       }
     }
-    return '$trimmedContent.....';
+    return '$trimmedContent...';
   }
 }

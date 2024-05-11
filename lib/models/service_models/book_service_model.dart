@@ -1,3 +1,5 @@
+import 'package:pagepals/models/book_models/book_model.dart';
+
 class BookServiceModel {
   List<Services>? services;
   Paging? paging;
@@ -33,19 +35,26 @@ class Services {
   double? duration;
   int? price;
   int? rating;
-  Reader? reader;
   int? totalOfBooking;
   int? totalOfReview;
+  String? imageUrl;
+  Reader? reader;
+  Book? book;
+  ServiceType? serviceType;
 
-  Services(
-      {this.id,
-      this.description,
-      this.duration,
-      this.price,
-      this.rating,
-      this.reader,
-      this.totalOfBooking,
-      this.totalOfReview});
+  Services({
+    this.id,
+    this.description,
+    this.duration,
+    this.price,
+    this.rating,
+    this.totalOfBooking,
+    this.totalOfReview,
+    this.imageUrl,
+    this.reader,
+    this.book,
+    this.serviceType,
+  });
 
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -53,10 +62,15 @@ class Services {
     duration = json['duration'];
     price = json['price'];
     rating = json['rating'];
-    reader =
-        json['reader'] != null ? new Reader.fromJson(json['reader']) : null;
     totalOfBooking = json['totalOfBooking'];
     totalOfReview = json['totalOfReview'];
+    imageUrl = json['imageUrl'];
+    reader =
+        json['reader'] != null ? new Reader.fromJson(json['reader']) : null;
+    book = json['book'] != null ? new Book.fromJson(json['book']) : null;
+    serviceType = json['serviceType'] != null
+        ? new ServiceType.fromJson(json['serviceType'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -66,11 +80,18 @@ class Services {
     data['duration'] = this.duration;
     data['price'] = this.price;
     data['rating'] = this.rating;
+    data['totalOfBooking'] = this.totalOfBooking;
+    data['totalOfReview'] = this.totalOfReview;
+    data['imageUrl'] = this.imageUrl;
     if (this.reader != null) {
       data['reader'] = this.reader!.toJson();
     }
-    data['totalOfBooking'] = this.totalOfBooking;
-    data['totalOfReview'] = this.totalOfReview;
+    if (this.book != null) {
+      data['book'] = this.book!.toJson();
+    }
+    if (this.serviceType != null) {
+      data['serviceType'] = this.serviceType!.toJson();
+    }
     return data;
   }
 }
@@ -80,14 +101,22 @@ class Reader {
   String? nickname;
   String? avatarUrl;
   String? language;
+  String? countryAccent;
 
-  Reader({this.id, this.nickname, this.avatarUrl, this.language});
+  Reader({
+    this.id,
+    this.nickname,
+    this.avatarUrl,
+    this.language,
+    this.countryAccent,
+  });
 
   Reader.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nickname = json['nickname'];
     avatarUrl = json['avatarUrl'];
     language = json['language'];
+    countryAccent = json['countryAccent'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,6 +125,7 @@ class Reader {
     data['nickname'] = this.nickname;
     data['avatarUrl'] = this.avatarUrl;
     data['language'] = this.language;
+    data['countryAccent'] = this.countryAccent;
     return data;
   }
 }
@@ -107,12 +137,13 @@ class Paging {
   int? totalOfElements;
   int? totalOfPages;
 
-  Paging(
-      {this.currentPage,
-      this.pageSize,
-      this.sort,
-      this.totalOfElements,
-      this.totalOfPages});
+  Paging({
+    this.currentPage,
+    this.pageSize,
+    this.sort,
+    this.totalOfElements,
+    this.totalOfPages,
+  });
 
   Paging.fromJson(Map<String, dynamic> json) {
     currentPage = json['currentPage'];

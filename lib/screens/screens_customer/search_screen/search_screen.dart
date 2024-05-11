@@ -162,9 +162,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 onTap: (index) {
                   if(index == tabIndex) return; // Do nothing if the same tab is selected
                   setState(() {
-                    // searchController.clear();
-                    // search = "";
-                    // isSearching = false;
                     tabIndex =
                         index; // Update the tab index when a tab is selected
                   });

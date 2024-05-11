@@ -4,6 +4,7 @@ import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/service_models/book_service_model.dart';
 import 'package:pagepals/screens/screens_customer/book_screen/service_relate_to_book_screen.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/overview_screen.dart';
+import 'package:pagepals/screens/screens_customer/service_screen/service_screen.dart';
 import 'package:pagepals/services/service_service.dart';
 
 class BookServiceBox extends StatefulWidget {
@@ -37,10 +38,12 @@ class _BookServiceBoxState extends State<BookServiceBox> {
     return Column(
       children: [
         SizedBox(
-          height: 200,
+          height: 266,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: bookService?.services?.length ?? 0,
+            itemCount: (bookService?.services?.length ?? 0) > 5
+                ? 5
+                : bookService?.services?.length,
             itemBuilder: (BuildContext context, int index) {
               var service = bookService?.services?[index];
               return Container(
@@ -48,7 +51,7 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                 margin: const EdgeInsets.fromLTRB(2, 10, 25, 10),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 0,
-                  vertical: 15,
+                  vertical: 18,
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -66,9 +69,11 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                     Navigator.push(
                       context,
                       PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: ProfileOverviewScreen(
-                          readerId: service?.reader?.id ?? "",
+                        type: PageTransitionType.bottomToTop,
+                        duration: const Duration(milliseconds: 300),
+                        child: ServiceScreen(
+                          serviceId: service?.id ?? '',
+                          closeIcon: Icons.close,
                         ),
                       ),
                     );
@@ -93,15 +98,16 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                                         right: 8,
                                       ),
                                       width: 35,
-                                      height: 35,
+                                      height: 30,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
-                                            image: NetworkImage(
-                                              service?.reader?.avatarUrl ??
-                                                  'https://via.placeholder.com/150',
-                                            ),
-                                            fit: BoxFit.fill),
+                                          image: NetworkImage(
+                                            service?.reader?.avatarUrl ??
+                                                'https://via.placeholder.com/150',
+                                          ),
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -139,20 +145,44 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                             ),
                             Container(
                               margin: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 3),
-                              child: Text(
-                                service?.description ?? 'Service description',
-                                textAlign: TextAlign.start,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  // wordSpacing: 1,
-                                  height: 2.2,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.normal,
-                                ),
+                                horizontal: 10,
                               ),
-                            )
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 5,
+                                        vertical: 10,
+                                      ),
+                                      child: Image.network(
+                                        service?.imageUrl ??
+                                            'https://via.placeholder.com/150',
+                                        width: 160,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 2),
+                                  Container(
+                                    width: 100,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                      vertical: 10,
+                                    ),
+                                    child: Text(
+                                      service?.serviceType?.name ?? 'Service name',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -194,9 +224,10 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                             Text(
                               '${service?.price?.toString() ?? '0'} pals',
                               style: const TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300),
+                                color: Colors.black54,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
                             )
                           ],
                         ),

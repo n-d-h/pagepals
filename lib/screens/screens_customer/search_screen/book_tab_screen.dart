@@ -31,7 +31,6 @@ class _BookTabScreenState extends State<BookTabScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController.addListener(_scrollListener);
     _fetchCustomerBooks();
@@ -39,7 +38,6 @@ class _BookTabScreenState extends State<BookTabScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
@@ -175,8 +173,9 @@ class _BookTabScreenState extends State<BookTabScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                        book.smallThumbnailUrl ??
-                                            "https://via.placeholder.com/150"),
+                                      book.smallThumbnailUrl ??
+                                          "https://via.placeholder.com/150",
+                                    ),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -220,8 +219,9 @@ class _BookTabScreenState extends State<BookTabScreen> {
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 3),
+                                                  horizontal: 8,
+                                                  vertical: 3,
+                                                ),
                                                 child: Text(
                                                   category.name ?? '',
                                                   style: GoogleFonts.openSans(
@@ -249,129 +249,3 @@ class _BookTabScreenState extends State<BookTabScreen> {
               );
   }
 }
-
-/*
-FutureBuilder<CustomerBook>(
-      future: getBookModel(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: LoadingAnimationWidget.staggeredDotsWave(
-                color: ColorHelper.getColor(ColorHelper.green),
-                size: 60,
-              ),
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: Text('Error: ${snapshot.error}'),
-            ),
-          );
-        } else if (snapshot.hasData) {
-          final bookModel = snapshot.data!;
-          return Scaffold(
-            backgroundColor: Colors.grey[200]!,
-            body: ListView.builder(
-              itemCount: bookModel.list!.length,
-              itemBuilder: (context, index) {
-                final book = bookModel.list![index];
-                return Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.only(bottom: 2),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 140,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image: NetworkImage(book.smallThumbnailUrl ??
-                                "https://via.placeholder.com/150"),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              book.title ?? '',
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 3,
-                              softWrap: false,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-
-                            // want  to map categories here and put them in a wrap
-                            Container(
-                              margin: const EdgeInsets.only(top: 5),
-                              child: Wrap(
-                                alignment: WrapAlignment.start,
-                                crossAxisAlignment: WrapCrossAlignment.start,
-                                spacing: 6.0,
-                                // gap between adjacent chips
-                                runSpacing: 6.0,
-                                // gap between lines
-                                children: book.categories!
-                                    .map(
-                                      (category) => Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          border: Border.all(
-                                            color: ColorHelper.getColor(
-                                                ColorHelper.green),
-                                          ),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 3),
-                                        child: Text(
-                                          category.name ?? '',
-                                          style: GoogleFonts.openSans(
-                                            color: ColorHelper.getColor(
-                                                ColorHelper.green),
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        } else {
-          return const Center(
-            child: Text('No data'),
-          );
-        }
-      },
-    )
-* */

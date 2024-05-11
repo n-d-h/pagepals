@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/models/service_models/service_model.dart';
+import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_description.dart';
+import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_image_widget.dart';
+import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widgets/book_info_widget.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/info_line.dart';
 import 'package:pagepals/screens/screens_customer/service_screen/show_html_widget.dart';
 import 'package:pagepals/services/service_service.dart';
@@ -52,6 +54,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
         ),
       );
     } else {
+      Book book = serviceModel!.book!;
+      String? authors = book.authors?.map((e) => e?.name ?? '').join(', ');
+      String? categories = book.categories?.map((e) => e?.name ?? '').join(', ');
       return Scaffold(
         appBar: AppBar(
           title: const Text('Service Detail'),
@@ -118,15 +123,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: Column(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Price',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                            const Icon(
+                              Icons.monetization_on,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 5,
                             ),
                             Text(
                               '${serviceModel?.price ?? ''} pals',
@@ -148,15 +153,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: Column(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Duration',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                            const Icon(
+                              Icons.access_time_filled,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 5,
                             ),
                             Text(
                               '${serviceModel?.duration ?? ''} mins',
@@ -176,10 +181,62 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
+                  'Book Detail',
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 10),
+                    BookImage(url: book.thumbnailUrl),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              book.title ?? 'Book title',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          BookInfo(title: 'Authors: ', info: authors),
+                          const SizedBox(height: 20),
+                          BookInfo(title: 'Categories: ', info: categories),
+                          const SizedBox(height: 20),
+                          BookDescription(description: book.description),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
                   'Description',
                   style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),
@@ -195,7 +252,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
         ),
         bottomNavigationBar: BottomAppBar(
           child: Container(
-            height: 50,
+            height: 40,
             decoration: BoxDecoration(
               color: ColorHelper.getColor(ColorHelper.green),
               borderRadius: BorderRadius.circular(10),

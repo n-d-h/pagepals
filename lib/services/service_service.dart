@@ -340,9 +340,32 @@ class ServiceService {
               nickname
               avatarUrl
               language
+              countryAccent
             }
             totalOfBooking
             totalOfReview
+            imageUrl
+            book {
+              id
+              title
+              publisher
+              language
+              authors {
+                name
+              }
+              categories {
+                name
+              }
+              description
+              pageCount
+              smallThumbnailUrl
+              thumbnailUrl
+            }
+            serviceType {
+              description
+              id
+              name
+            }
           }
           paging {
             currentPage

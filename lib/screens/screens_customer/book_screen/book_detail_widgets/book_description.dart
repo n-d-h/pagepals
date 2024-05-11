@@ -35,24 +35,24 @@ class _BookDescriptionState extends State<BookDescription> {
         ),
         const SizedBox(height: 5),
         if(widget.description != null && widget.description!.length > 150)
-        Align(
-          alignment: Alignment.centerRight,
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                isExpanded = !isExpanded;
-              });
-            },
-            child: Text(
-              isExpanded ? 'Read less' : 'Read more',
-              style: GoogleFonts.roboto(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: Colors.blue,
+          Align(
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              radius: 10,
+              onTap: () {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+              },
+              child: Text(
+                isExpanded ? 'Read less' : 'Read more',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

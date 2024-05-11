@@ -116,6 +116,7 @@ class BookService {
                 serviceType {
                   id
                   name
+                  description
                 }
               }
             }
