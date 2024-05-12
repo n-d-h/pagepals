@@ -13,8 +13,11 @@ class SearchReaderBooks extends StatefulWidget {
   final String readerId;
   final Function(String) onSelected;
 
-  const SearchReaderBooks(
-      {super.key, required this.readerId, required this.onSelected});
+  const SearchReaderBooks({
+    super.key,
+    required this.readerId,
+    required this.onSelected,
+  });
 
   @override
   State<SearchReaderBooks> createState() => _SearchReaderBooksState();

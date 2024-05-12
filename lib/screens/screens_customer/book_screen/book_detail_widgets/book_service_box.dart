@@ -75,8 +75,11 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                           ),
                         );
                       },
-                      child: ServiceWidget(
-                        service: service,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 18),
+                        child: ServiceWidget(
+                          service: service,
+                        ),
                       ),
                     );
                   },

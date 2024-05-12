@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/canceled_screen.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/video_conference_page.dart';
 import 'package:pagepals/services/video_conference_service.dart';
 
 class UpcomingBottom extends StatelessWidget {
@@ -28,174 +26,135 @@ class UpcomingBottom extends StatelessWidget {
         children: [
           if (booking.service != null && isReader == false)
             Expanded(
-              child: OutlinedButton(
-                onPressed: () {
-                  if (booking.startAt != null &&
-                      DateTime.now().isBefore(
-                        DateTime.parse(booking.startAt!).subtract(
-                          const Duration(
-                            days: 1,
-                          ),
-                        ),
-                      )) {
-                    Navigator.of(context).push(
-                      PageTransition(
-                        child: CanceledScreen(
-                          isReader: isReader,
-                          bookingId: booking.id!,
-                          onValueChanged: (value) {
-                            print(value);
-                          },
-                        ),
-                        type: PageTransitionType.rightToLeftWithFade,
-                        duration: const Duration(milliseconds: 300),
+              child: isCancelDisableButton()
+                  ? Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.transparent),
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    );
-                  } else if (booking.startAt != null &&
-                      DateTime.now().isAfter(
-                        DateTime.parse(booking.startAt!).add(
-                          const Duration(
-                            minutes: 60,
+                      child: Center(
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
                           ),
                         ),
-                      )) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text("Meeting expired"),
-                            content: const Text(
-                              "The meeting has expired. You can't cancel it now.",
+                      ),
+                    )
+                  : OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          PageTransition(
+                            child: CanceledScreen(
+                              isReader: isReader,
+                              bookingId: booking.id!,
+                              onValueChanged: (value) {
+                                print(value);
+                              },
                             ),
-                            actions: <Widget>[
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        });
-                  } else {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text("Meeting scheduled"),
-                            content: const Text(
-                              "The meeting is almost starting. You can't cancel it now.",
-                            ),
-                            actions: <Widget>[
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        });
-                  }
-                },
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: ColorHelper.getColor('#C6F4DE'),
-                  side: const BorderSide(color: Colors.transparent),
-                  // fixedSize: const Size.fromWidth(148),
-                ),
-                child: Text(
-                  'Cancel',
-                  style: GoogleFonts.lexend(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: ColorHelper.getColor(ColorHelper.green),
-                  ),
-                ),
-              ),
+                            type: PageTransitionType.rightToLeftWithFade,
+                            duration: const Duration(milliseconds: 300),
+                          ),
+                        );
+                      },
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: ColorHelper.getColor('#C6F4DE'),
+                        side: const BorderSide(color: Colors.transparent),
+                      ),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: ColorHelper.getColor(ColorHelper.green),
+                        ),
+                      ),
+                    ),
             ),
           if (booking.service != null && isReader == false)
             const SizedBox(width: 10), // Add this line
           Expanded(
-            child: OutlinedButton(
-              onPressed: () async {
-                DateTime startTime = DateTime.parse(booking.startAt!);
-                if (DateTime.now().isBefore(startTime)) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        surfaceTintColor: Colors.white,
-                        title: const Text("Meeting\nNot Occurred"),
-                        content: const Text(
-                          "The meeting has not yet occurred. Please come back at the right time.",
+            child: isJoinMeetDisableButton()
+                ? Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.transparent),
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        booking.service != null ? 'Join meet' : 'Join seminar',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
                         ),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
+                      ),
+                    ),
+                  )
+                : OutlinedButton(
+                    onPressed: () async {
+                      String userName =
+                          await VideoConferenceService.getCustomerAccount()
+                              .then((value) => value.username ?? 'Anonymous');
+                      await VideoConferenceService.joinMeeting(
+                          booking.meeting!.meetingCode!,
+                          booking.meeting!.password!,
+                          userName);
                     },
-                  );
-                } else {
-                  double? duration = booking.service != null
-                      ? booking.service!.duration!
-                      : booking.event!.seminar!.duration!.toDouble();
-                  // duration = duration + 30;
-                  if (DateTime.now().isAfter(
-                      startTime.add(Duration(minutes: duration.toInt())))) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          surfaceTintColor: Colors.white,
-                          title: const Text("Meeting Expired"),
-                          content: const Text(
-                            "The meeting has expired. You can't join this meeting now.",
-                          ),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else {
-                    String userName =
-                        await VideoConferenceService.getCustomerAccount()
-                            .then((value) => value.username ?? 'Anonymous');
-                    await VideoConferenceService.joinMeeting(
-                        booking.meeting!.meetingCode!,
-                        booking.meeting!.password!,
-                        userName);
-                  }
-                }
-              },
-              style: OutlinedButton.styleFrom(
-                backgroundColor: booking.service != null
-                    ? ColorHelper.getColor(ColorHelper.green)
-                    : Colors.blueAccent,
-                side: const BorderSide(color: Colors.transparent),
-              ),
-              child: Text(
-                booking.service != null ? 'Join meet' : 'Join seminar',
-                style: GoogleFonts.lexend(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: booking.service != null
+                          ? ColorHelper.getColor(ColorHelper.green)
+                          : Colors.blueAccent,
+                      side: const BorderSide(color: Colors.transparent),
+                    ),
+                    child: Text(
+                      booking.service != null ? 'Join meet' : 'Join seminar',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),
     );
+  }
+
+  bool isJoinMeetDisableButton() {
+    if (booking.startAt == null) {
+      return false;
+    }
+    DateTime startTime = DateTime.parse(booking.startAt!);
+    double? duration = booking.service != null
+        ? booking.service?.duration?.toDouble() ?? 60
+        : booking.event?.seminar?.duration?.toDouble() ?? 60;
+    if (DateTime.now().isBefore(startTime)) {
+      return true;
+    } else if (DateTime.now()
+        .isAfter(startTime.add(Duration(minutes: duration.toInt())))) {
+      return true;
+    }
+    return false;
+  }
+
+  bool isCancelDisableButton() {
+    if (booking.startAt == null) {
+      return false;
+    }
+    DateTime startTime = DateTime.parse(booking.startAt!);
+    if (DateTime.now().isBefore(startTime.subtract(
+      const Duration(days: 1),
+    ))) {
+      return false;
+    }
+    return true;
   }
 }

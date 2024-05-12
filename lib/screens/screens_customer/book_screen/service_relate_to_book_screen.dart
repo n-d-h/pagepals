@@ -42,9 +42,14 @@ class _ServiceRelateToBookScreenState extends State<ServiceRelateToBookScreen> {
 
   Future<void> _fetchBookService() async {
     var result = await ServiceService.getBookService(
-        widget.bookId!, "", 10, currentPage, "desc");
+        widget.bookId!, "", 5, currentPage, "desc");
     setState(() {
       bookService = result;
+      list.addAll(result.services!);
+      currentPage++;
+      if(result.services!.isEmpty) {
+        hasMorePages = false;
+      }
     });
   }
 
@@ -55,7 +60,7 @@ class _ServiceRelateToBookScreenState extends State<ServiceRelateToBookScreen> {
       });
       try {
         var result = await ServiceService.getBookService(
-            widget.bookId!, "", 10, currentPage, "desc");
+            widget.bookId!, "", 5, currentPage, "desc");
         if (result.services!.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -115,7 +120,7 @@ class _ServiceRelateToBookScreenState extends State<ServiceRelateToBookScreen> {
           ),
         ),
         body: SingleChildScrollView(
-          controller: ScrollController(),
+          controller: _scrollController,
           physics: const BouncingScrollPhysics(),
           child: Container(
             alignment: Alignment.center,
@@ -124,7 +129,7 @@ class _ServiceRelateToBookScreenState extends State<ServiceRelateToBookScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ...bookService!.services!.map((serviceItem) {
+                ...list.map((serviceItem) {
                   return InkWell(
                     onTap: () {
                       Navigator.push(
@@ -147,6 +152,13 @@ class _ServiceRelateToBookScreenState extends State<ServiceRelateToBookScreen> {
                     ),
                   );
                 }).toList(),
+                if (isLoadingNextPage)
+                  Center(
+                    child: LoadingAnimationWidget.prograssiveDots(
+                      color: ColorHelper.getColor(ColorHelper.green),
+                      size: 50,
+                    ),
+                  ),
               ],
             ),
           ),

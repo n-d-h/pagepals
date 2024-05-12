@@ -138,51 +138,62 @@ class _UpcomingTabState extends State<UpcomingTab> {
                       padding: const EdgeInsets.only(bottom: 27),
                       child: Column(
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: BookingAppointment(booking: booking),
-                                  duration: const Duration(milliseconds: 300),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(18),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(
-                                  width: 0.3,
-                                  color: Colors.black.withOpacity(0.4),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black12.withOpacity(0.2),
-                                    // spreadRadius: 2,
-                                    blurRadius: 3,
-                                    offset: const Offset(0, 5),
-                                  )
-                                ],
+                          Container(
+                            padding: const EdgeInsets.all(18),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(
+                                width: 0.3,
+                                color: Colors.black.withOpacity(0.4),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  UpcomingLeading(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12.withOpacity(0.2),
+                                  // spreadRadius: 2,
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 5),
+                                )
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: BookingAppointment(booking: booking),
+                                        duration: const Duration(milliseconds: 300),
+                                      ),
+                                    );
+                                  },
+                                  child: UpcomingLeading(
                                     booking: booking,
                                   ),
-                                  BookingBody(
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: BookingAppointment(booking: booking),
+                                        duration: const Duration(milliseconds: 300),
+                                      ),
+                                    );
+                                  },
+                                  child: BookingBody(
                                     booking: booking,
                                   ),
-                                  UpcomingBottom(
-                                    booking: booking,
-                                    isReader: false,
-                                  ),
-                                ],
-                              ),
+                                ),
+                                UpcomingBottom(
+                                  booking: booking,
+                                  isReader: false,
+                                ),
+                              ],
                             ),
                           ),
                         ],

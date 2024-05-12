@@ -224,12 +224,6 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                         reader: reader ?? ReaderProfile(),
                       ),
                     ProfileReviewWidget(reader: reader, comment: commentModel),
-                    if (bookModel!.list!.isNotEmpty &&
-                        bookModel!.list!.first.book != null)
-                      ProfileBookingButton(
-                        reader: reader,
-                        bookModel: bookModel!,
-                      ),
                   ],
                 ),
         ),

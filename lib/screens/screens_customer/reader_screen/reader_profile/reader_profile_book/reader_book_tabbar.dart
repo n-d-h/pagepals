@@ -25,7 +25,6 @@ class _ReaderBookTabbarState extends State<ReaderBookTabbar> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController.addListener(_scrollListener);
     _fetchReaderBooks();
@@ -33,7 +32,6 @@ class _ReaderBookTabbarState extends State<ReaderBookTabbar> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
