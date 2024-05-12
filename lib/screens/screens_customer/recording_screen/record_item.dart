@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/models/meeting_model.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/recording_video_screen.dart';
 
 class RecordItem extends StatelessWidget {
-  const RecordItem({super.key});
+  const RecordItem({
+    super.key,
+    this.meetingItem,
+    this.recordingFile,
+    this.meetingModel,
+  });
+
+  final MeetingItem? meetingItem;
+  final RecordingFile? recordingFile;
+  final MeetingModel? meetingModel;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +22,12 @@ class RecordItem extends StatelessWidget {
         Navigator.push(
           context,
           PageTransition(
-            child: RecordingVideoScreen(),
+            child: RecordingVideoScreen(
+              recordingUrl: meetingItem?.shareUrl ?? '',
+              fromDate: meetingModel?.from ?? '',
+              toDate: meetingModel?.to ?? '',
+              topic: meetingItem?.topic ?? '',
+            ),
             type: PageTransitionType.bottomToTop,
             duration: const Duration(milliseconds: 300),
           ),
@@ -40,21 +55,21 @@ class RecordItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Record Video',
+                meetingItem?.topic ?? '',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                'From date to date',
+                meetingItem?.startTime ?? '',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
               Text(
-                'Click to record',
+                '${meetingModel?.from ?? ''} - ${meetingModel?.to ?? ''}',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,

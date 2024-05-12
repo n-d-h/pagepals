@@ -1,16 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:pagepals/helpers/color_helper.dart';
+import 'package:pagepals/models/booking_model.dart';
+import 'package:pagepals/models/meeting_model.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/record_item.dart';
+import 'package:pagepals/services/meeting_service.dart';
 
 class RecordingScreen extends StatefulWidget {
-  const RecordingScreen({super.key});
+  const RecordingScreen({super.key, this.booking});
+
+  final Booking? booking;
 
   @override
   State<RecordingScreen> createState() => _RecordingScreenState();
 }
 
 class _RecordingScreenState extends State<RecordingScreen> {
+  MeetingModel? meetingModel;
+
+  Future<void> getMeetingRecordings(String id) async {
+    var res = await MeetingService.getMeetingRecordings(id);
+    setState(() {
+      meetingModel = res;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMeetingRecordings(widget.booking?.meeting?.id ?? '');
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (meetingModel == null) {
+      return Scaffold(
+        body: Center(
+          child: LoadingAnimationWidget.staggeredDotsWave(
+            color: ColorHelper.getColor(ColorHelper.green),
+            size: 60,
+          ),
+        ),
+      );
+    } else if (meetingModel?.meetings == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Recording Screen'),
+          surfaceTintColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Text('No Recordings'),
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Recording Screen'),
@@ -28,12 +77,21 @@ class _RecordingScreenState extends State<RecordingScreen> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            RecordItem(),
-            RecordItem(),
-            RecordItem(),
-            RecordItem(),
-            RecordItem(),
-            RecordItem(),
+            ...meetingModel!.meetings!.map(
+              (meetingItem) {
+                List<RecordingFile> recordings = meetingItem.recordingFiles!;
+                if (recordings.isEmpty) {
+                  return Container();
+                }
+                var recordingFile =
+                    recordings.where((element) => element.fileType == 'MP4');
+                return RecordItem(
+                  recordingFile: recordingFile.first,
+                  meetingItem: meetingItem,
+                  meetingModel: meetingModel,
+                );
+              },
+            ),
           ],
         ),
       ),

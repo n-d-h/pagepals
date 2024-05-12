@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/book_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/service_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/time_row.dart';
+import 'package:pagepals/screens/screens_customer/recording_screen/recording_screen.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
-import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 
 class BookingAppointment extends StatelessWidget {
   final Booking? booking;
@@ -17,24 +19,23 @@ class BookingAppointment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        title: const Text('Booking Detail'),
-        centerTitle: true,
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.w700,
-          color: Colors.black,
-          fontSize: 24,
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
+          surfaceTintColor: Colors.white,
+          title: const Text('Booking Detail'),
+          centerTitle: true,
+          titleTextStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
             color: Colors.black,
+            fontSize: 24,
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        )
-      ),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )),
       body: SingleChildScrollView(
         controller: ScrollController(),
         physics: const BouncingScrollPhysics(),
@@ -83,8 +84,37 @@ class BookingAppointment extends StatelessWidget {
                     ? '${booking!.service!.price!.toInt()} pals'
                     : '${booking!.event!.price!.toInt()} pals',
               ),
-              if (booking!.state!.name == 'CANCEL')
-                Column(
+              Visibility(
+                visible: DateTime.now().isAfter(
+                  DateTime.parse(booking?.startAt ?? '2021-2-1 12:00:00'),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        type: PageTransitionType.fade,
+                        duration: const Duration(milliseconds: 300),
+                        child: RecordingScreen(
+                          booking: booking,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    child: Text(
+                      'View Recording',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: booking!.state!.name == 'CANCEL',
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
@@ -125,7 +155,8 @@ class BookingAppointment extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
+              )
             ],
           ),
         ),

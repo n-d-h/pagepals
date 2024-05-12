@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class RecordingVideoScreen extends StatefulWidget {
-  const RecordingVideoScreen({super.key});
+  const RecordingVideoScreen({
+    super.key,
+    required this.recordingUrl,
+    required this.fromDate,
+    required this.toDate,
+    required this.topic,
+  });
+
+  final String recordingUrl;
+  final String fromDate;
+  final String toDate;
+  final String topic;
 
   @override
   State<RecordingVideoScreen> createState() => _RecordingVideoScreenState();
@@ -11,20 +23,26 @@ class RecordingVideoScreen extends StatefulWidget {
 
 class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
   WebViewController? controller;
-  int _progress = 0;
+  double _progress = 0.0;
+  bool isLoaded = true;
 
   @override
   void initState() {
     super.initState();
-
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
+      ..setBackgroundColor(Colors.white)
+      ..enableZoom(false)
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
             setState(() {
-              _progress = progress;
+              _progress = progress / 100;
+              if (progress == 100) {
+                setState(() {
+                  isLoaded = false;
+                });
+              }
             });
           },
           onPageStarted: (String url) {},
@@ -38,15 +56,13 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
           },
         ),
       )
-      ..loadRequest(
-        Uri.parse(
-            'https://us06web.zoom.us/rec/play/IZiMjAkS85gM7Z2IPUKb6wkS8WI5DvTJeX3fBk6PnAYudF_N_rJ59nuQ2GpidZw687mytD_2ZLSrhEMq.NmhfaOu5o3yWSqeQ'),
-      );
+      ..loadRequest(Uri.parse(widget.recordingUrl));
   }
 
   @override
   void dispose() {
     super.dispose();
+    controller?.clearCache();
   }
 
   @override
@@ -54,26 +70,36 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Recording Screen'),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () async {
+              await controller?.reload();
+            },
+          ),
+        ],
       ),
-      body: _progress < 100
+      body: _progress < 1 && isLoaded
           ? Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: (_progress / 100) * MediaQuery.of(context).size.width,
-                  height: 2,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
+                isLoaded
+                    ? LinearProgressIndicator(
+                        value: _progress,
+                        color: ColorHelper.getColor(ColorHelper.green),
+                      )
+                    : LinearProgressIndicator(
+                        value: 1,
+                        color: ColorHelper.getColor(ColorHelper.green),
+                      ),
                 Container(
                   width: double.infinity,
                   height: 400,
@@ -96,7 +122,6 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
               children: [
                 Container(
                   width: double.infinity,
-                  height: 400,
                   child: WebViewWidget(
                     controller: controller ?? WebViewController(),
                   ),
@@ -107,13 +132,27 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
                   right: 0,
                   child: Container(
                     height: 50,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.white,
                     ),
-                    child: Center(
-                      child: Text(
-                        'Recording Screen of Booking 2024-01-01 12:00:00',
-                      ),
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.topic,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          '${widget.fromDate} - ${widget.toDate}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
