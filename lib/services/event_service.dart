@@ -35,6 +35,22 @@ class EventService {
               imageUrl
               createdAt
               updatedAt
+              book {
+                id
+                title
+                publisher
+                language
+                authors {
+                  name
+                }
+                categories {
+                  name
+                }
+                description
+                pageCount
+                smallThumbnailUrl
+                thumbnailUrl
+              }
             }
           }
           pagination {
@@ -99,6 +115,22 @@ class EventService {
               imageUrl
               createdAt
               updatedAt
+              book {
+                id
+                title
+                publisher
+                language
+                authors {
+                  name
+                }
+                categories {
+                  name
+                }
+                description
+                pageCount
+                smallThumbnailUrl
+                thumbnailUrl
+              }
             }
           }
           pagination {
@@ -129,5 +161,33 @@ class EventService {
     }
 
     return EventModel.fromJson(data);
+  }
+
+  static Future<bool> bookEvent(String customerId, String eventId) async {
+    String mutation = '''
+      mutation MyMutation {
+        bookEvent(customerId: "$customerId", eventId: "$eventId") {
+          booking {
+            id
+          }
+          event {
+            id
+          }
+        }
+      }
+    ''';
+
+    QueryResult queryResult = await graphQLClient.mutate(
+      MutationOptions(
+        document: gql(mutation),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (queryResult.hasException) {
+      throw Exception(queryResult.exception.toString());
+    }
+
+    return queryResult.data!['bookEvent']['booking']['id'] != null;
   }
 }

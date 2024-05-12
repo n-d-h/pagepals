@@ -202,7 +202,7 @@ class BookingService {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to get booking');
+      throw Exception('Error: ${result.exception}');
     }
 
     return BookingModel.fromJson(result.data!['getListBookingByCustomer']);

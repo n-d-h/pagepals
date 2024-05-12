@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
-import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
+import 'package:pagepals/screens/screens_customer/post_screen/event_widgets/event_detail.dart';
+import 'package:pagepals/screens/screens_customer/post_screen/event_widgets/show_html_widget.dart';
 import 'package:pagepals/services/authen_service.dart';
-import 'package:pagepals/services/seminar_service.dart';
+import 'package:pagepals/services/event_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventPostItem extends StatefulWidget {
-  final String seminarId;
+  final String eventId;
   final String hostName;
   final String seminarTitle;
   final String date;
@@ -23,11 +24,12 @@ class EventPostItem extends StatefulWidget {
   final int price;
   final int limitCustomer;
   final int activeSlot;
-  final Function(bool) onSeminarJoinedDone;
+  final Book book;
+  final Function(bool) onEventBookedDone;
 
   const EventPostItem({
     Key? key,
-    required this.seminarId,
+    required this.eventId,
     required this.hostName,
     required this.seminarTitle,
     required this.time,
@@ -38,7 +40,8 @@ class EventPostItem extends StatefulWidget {
     required this.price,
     required this.limitCustomer,
     required this.activeSlot,
-    required this.onSeminarJoinedDone,
+    required this.book,
+    required this.onEventBookedDone,
   }) : super(key: key);
 
   @override
@@ -56,9 +59,10 @@ class _EventPostItemState extends State<EventPostItem> {
       AccountModel? accountModel = AccountModel.fromJson(jsonDecode(account!));
       String customerId = accountModel.customer?.id ?? '';
 
-      bool results = await SeminarService.joinSeminar(customerId, widget.seminarId);
+      bool results =
+          await EventService.bookEvent(customerId, widget.eventId);
       if (results) {
-        widget.onSeminarJoinedDone(true);
+        widget.onEventBookedDone(true);
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String? accountString = prefs.getString('account');
@@ -68,10 +72,12 @@ class _EventPostItemState extends State<EventPostItem> {
           return;
         }
         try {
-          AccountModel account = AccountModel.fromJson(json.decoder.convert(accountString));
+          AccountModel account =
+              AccountModel.fromJson(json.decoder.convert(accountString));
           String userName = account.username!;
 
-          AccountModel updatedAccount = await AuthenService.getAccount(userName, accessToken);
+          AccountModel updatedAccount =
+              await AuthenService.getAccount(userName, accessToken);
           prefs.remove('account');
           print('account: ${json.encode(updatedAccount)}');
           prefs.setString('account', json.encode(updatedAccount));
@@ -92,7 +98,7 @@ class _EventPostItemState extends State<EventPostItem> {
         );
       }
     } catch (e) {
-      if(e.toString().contains('Not enough money')) {
+      if (e.toString().contains('Not enough money')) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Not enough money'),
@@ -215,53 +221,38 @@ class _EventPostItemState extends State<EventPostItem> {
             ],
           ),
           const SizedBox(height: 8.0),
-          Text(
-            widget.description,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            style: const TextStyle(
-              fontSize: 16.0,
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                PageTransition(
+                  child: EventPostDetailScreen(
+                    eventId: widget.eventId,
+                    hostName: widget.hostName,
+                    seminarTitle: widget.seminarTitle,
+                    date: widget.date,
+                    time: widget.time,
+                    description: widget.description,
+                    hostAvatarUrl: widget.hostAvatarUrl,
+                    bannerImageUrl: widget.bannerImageUrl,
+                    activeSlot: widget.activeSlot,
+                    limitCustomer: widget.limitCustomer,
+                    price: widget.price,
+                    book: widget.book,
+                    onEventBookedDone: (bool isBooked) {
+                      widget.onEventBookedDone(isBooked);
+                    },
+                  ),
+                  type: PageTransitionType.fade,
+                  duration: const Duration(milliseconds: 300),
+                ),
+              );
+            },
+            child: ShowMoreHtmlWidget(
+              htmlContent: widget.description,
+              maxLines: 2,
+              isShowShortText: true,
             ),
           ),
-          const SizedBox(height: 5.0),
-          if (widget.description.length > 100)
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  PageTransition(
-                    child: EventPostDetailScreen(
-                      eventId: widget.seminarId,
-                      hostName: widget.hostName,
-                      seminarTitle: widget.seminarTitle,
-                      date: widget.date,
-                      time: widget.time,
-                      description: widget.description,
-                      hostAvatarUrl: widget.hostAvatarUrl,
-                      bannerImageUrl: widget.bannerImageUrl,
-                      activeSlot: widget.activeSlot,
-                      limitCustomer: widget.limitCustomer,
-                      price: widget.price,
-                    ),
-                    type: PageTransitionType.fade,
-                    duration: const Duration(milliseconds: 300),
-                  ),
-                );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.appReadMore,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           const SizedBox(height: 8.0),
           Image.network(
             widget.bannerImageUrl,
@@ -275,63 +266,7 @@ class _EventPostItemState extends State<EventPostItem> {
             children: [
               InkWell(
                 onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                            'Join Seminar',
-                            textAlign: TextAlign.center,
-                          ),
-                          surfaceTintColor: Colors.white,
-                          content: Container(
-                            height: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Are you sure you want to join this seminar?',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                                const SizedBox(height: 8.0),
-                                Text(
-                                  'Price: \$${widget.price}',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 8.0),
-                                Text(
-                                  'Available: ${widget.activeSlot}/${widget.limitCustomer}',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('No'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                await joinSeminar();
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Yes'),
-                            ),
-                          ],
-                        );
-                      });
+                  handleJoinSeminar();
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8.0),
@@ -340,7 +275,7 @@ class _EventPostItemState extends State<EventPostItem> {
                       Icon(Icons.add),
                       SizedBox(width: 4.0),
                       Text(
-                        'Join Seminar',
+                        'Join Event',
                         style: TextStyle(
                           fontSize: 14.0,
                         ),
@@ -353,6 +288,67 @@ class _EventPostItemState extends State<EventPostItem> {
           ),
         ],
       ),
+    );
+  }
+
+  void handleJoinSeminar() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Join Event',
+            textAlign: TextAlign.center,
+          ),
+          surfaceTintColor: Colors.white,
+          content: Container(
+            height: 150,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Are you sure you want to join this event?',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  'Price: \$${widget.price}',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  'Available: ${widget.activeSlot}/${widget.limitCustomer}',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await joinSeminar();
+                Navigator.of(context).pop();
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

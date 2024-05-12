@@ -1,3 +1,5 @@
+import 'book_models/book_model.dart';
+
 class EventItemModel {
   int? activeSlot;
   String? createdAt;
@@ -109,6 +111,7 @@ class Reader {
 
 class Seminar {
   Reader? reader;
+  Book? book;
   String? title;
   String? description;
   int? duration;
@@ -117,6 +120,7 @@ class Seminar {
 
   Seminar({
     this.reader,
+    this.book,
     this.title,
     this.description,
     this.duration,
@@ -126,6 +130,7 @@ class Seminar {
 
   Seminar.fromJson(Map<String, dynamic> json) {
     reader = json['reader'] != null ? Reader?.fromJson(json['reader']) : null;
+    book = json['book'] != null ? Book?.fromJson(json['book']) : null;
     title = json['title'];
     description = json['description'];
     duration = json['duration'];
@@ -136,6 +141,7 @@ class Seminar {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['reader'] = reader!.toJson();
+    data['book'] = book!.toJson();
     data['title'] = title;
     data['description'] = description;
     data['duration'] = duration;

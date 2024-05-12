@@ -10,7 +10,7 @@ import 'package:pagepals/screens/screens_customer/home_screen/home_screen.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/bottom_tab_bar.dart';
 import 'package:pagepals/screens/screens_customer/notification_screen/notification_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/order_screen.dart';
-import 'package:pagepals/screens/screens_customer/post_screen/post_screen.dart';
+import 'package:pagepals/screens/screens_customer/post_screen/event_screen.dart';
 import 'package:pagepals/screens/screens_customer/search_screen/search_screen.dart';
 import 'package:pagepals/services/notification_service.dart';
 import 'package:pagepals/services/video_conference_service.dart';

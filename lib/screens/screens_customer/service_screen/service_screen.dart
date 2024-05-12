@@ -183,7 +183,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Book Detail',
+                  'Book information',
                   style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -234,7 +234,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Description',
+                  'Service information',
                   style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,

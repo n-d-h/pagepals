@@ -6,9 +6,10 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
+import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/event_model.dart';
-import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_detail.dart';
-import 'package:pagepals/screens/screens_customer/post_screen/seminar_widgets/seminar_post_item.dart';
+import 'package:pagepals/screens/screens_customer/post_screen/event_widgets/event_detail.dart';
+import 'package:pagepals/screens/screens_customer/post_screen/event_widgets/event_item.dart';
 import 'package:pagepals/services/event_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
@@ -240,13 +241,26 @@ class _PostScreenState extends State<PostScreen> {
                                   activeSlot: eventItem.activeSlot ?? 0,
                                   limitCustomer: eventItem.limitCustomer ?? 0,
                                   price: eventItem.price ?? 0,
+                                  book: eventItem.seminar?.book ?? Book(),
+                                  onEventBookedDone: (bool result) {
+                                    if (result) {
+                                      setState(() {
+                                        eventModel = null;
+                                        list.clear();
+                                        currentPage = 0;
+                                        hasMorePages = true;
+                                        isLoadingNextPage = false;
+                                      });
+                                      _fetchAllEvent();
+                                    }
+                                  },
                                 ),
                                 type: PageTransitionType.rightToLeft,
                               ),
                             );
                           },
                           child: EventPostItem(
-                            seminarId: eventItem.id ?? '',
+                            eventId: eventItem.id ?? '',
                             hostName: eventItem.seminar?.reader?.nickname ?? '',
                             seminarTitle: eventItem.seminar?.title ?? '',
                             date: date,
@@ -260,7 +274,8 @@ class _PostScreenState extends State<PostScreen> {
                             activeSlot: eventItem.activeSlot ?? 0,
                             limitCustomer: eventItem.limitCustomer ?? 0,
                             price: eventItem.price ?? 0,
-                            onSeminarJoinedDone: (bool result) {
+                            book: eventItem.seminar?.book ?? Book(),
+                            onEventBookedDone: (bool result) {
                               if (result) {
                                 setState(() {
                                   eventModel = null;

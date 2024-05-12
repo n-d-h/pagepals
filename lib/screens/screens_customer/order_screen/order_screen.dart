@@ -11,6 +11,7 @@ import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_main/signin_screen.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/canceled_tab_widgets/cancel_tab.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/completed_tab.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/processing_tab_widgets/processing_tab.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_tab.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,7 @@ class _OrderScreenState extends State<OrderScreen> {
   BookingModel? pendingBooking;
   BookingModel? completedBooking;
   BookingModel? canceledBooking;
+  BookingModel? processingBooking;
 
   AccountModel? account;
 
@@ -56,6 +58,16 @@ class _OrderScreenState extends State<OrderScreen> {
     setState(() {
       canceledBooking = cancel;
       if (canceledBooking != null) {
+        isLoading = false;
+      }
+    });
+  }
+
+  Future<void> getProcessingBooking() async {
+    var cancel = await BookingService.getBooking(0, 10, 'PROCESSING');
+    setState(() {
+      processingBooking = cancel;
+      if (processingBooking != null) {
         isLoading = false;
       }
     });
@@ -137,7 +149,7 @@ class _OrderScreenState extends State<OrderScreen> {
           )
         : DefaultTabController(
             initialIndex: 0,
-            length: 3,
+            length: 4,
             child: Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
@@ -184,6 +196,15 @@ class _OrderScreenState extends State<OrderScreen> {
                           getCancelBooking();
                           break;
                         }
+                      case 3:
+                        {
+                          setState(() {
+                            isLoading = true;
+                            canceledBooking = null;
+                          });
+                          getProcessingBooking();
+                          break;
+                        }
                     }
                   },
                   isScrollable: false,
@@ -199,17 +220,9 @@ class _OrderScreenState extends State<OrderScreen> {
                     Tab(text: AppLocalizations.of(context)!.appUpcoming),
                     Tab(text: AppLocalizations.of(context)!.appCompleted),
                     Tab(text: AppLocalizations.of(context)!.appCanceled),
+                    Tab(text: 'Processing'),
                   ],
                 ),
-                // actions: [
-                //   IconButton(
-                //     onPressed: () {},
-                //     icon: const Icon(
-                //       UniconsLine.search,
-                //       color: Colors.black,
-                //     ),
-                //   ),
-                // ],
               ),
               body: isLoading
                   ? Scaffold(
@@ -227,6 +240,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         UpcomingTab(bookingModel: pendingBooking),
                         CompletedTab(bookingModel: completedBooking),
                         CanceledTab(bookingModel: canceledBooking),
+                        ProcessingTab(bookingModel: processingBooking),
                       ],
                     ),
             ),

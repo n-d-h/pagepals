@@ -5,22 +5,22 @@ import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/booking_appointment.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/complete_bottom.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/completed_tab_widgets/completed_leading.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booking_body.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_bottom.dart';
+import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_leading.dart';
 import 'package:pagepals/services/booking_service.dart';
 
-class CompletedTab extends StatefulWidget {
+class ProcessingTab extends StatefulWidget {
   final BookingModel? bookingModel;
 
-  const CompletedTab({super.key, this.bookingModel});
+  const ProcessingTab({super.key, this.bookingModel});
 
   @override
-  State<CompletedTab> createState() => _CompletedTabState();
+  State<ProcessingTab> createState() => _ProcessingTabState();
 }
 
-class _CompletedTabState extends State<CompletedTab> {
+class _ProcessingTabState extends State<ProcessingTab> {
   int nextPage = 1;
   bool isLoadingNextPage = false;
   bool hasMorePages = true;
@@ -32,7 +32,7 @@ class _CompletedTabState extends State<CompletedTab> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    bookings.addAll(widget.bookingModel?.list ?? []);
+    bookings.addAll(widget.bookingModel!.list!);
   }
 
   @override
@@ -56,7 +56,7 @@ class _CompletedTabState extends State<CompletedTab> {
         isLoadingNextPage = true;
       });
       try {
-        var result = await BookingService.getBooking(nextPage, 10, 'COMPLETE');
+        var result = await BookingService.getBooking(nextPage, 10, 'PROCESSING');
         if (result.list!.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -171,9 +171,16 @@ class _CompletedTabState extends State<CompletedTab> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  CompletedLeading(booking: booking),
-                                  BookingBody(booking: booking),
-                                  CompletedBottom(booking: booking),
+                                  UpcomingLeading(
+                                    booking: booking,
+                                  ),
+                                  BookingBody(
+                                    booking: booking,
+                                  ),
+                                  UpcomingBottom(
+                                    booking: booking,
+                                    isReader: false,
+                                  ),
                                 ],
                               ),
                             ),

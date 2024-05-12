@@ -27,8 +27,8 @@ class _BookDescriptionState extends State<BookDescription> {
             widget.description ?? 'Book description',
             maxLines: isExpanded ? null : 5,
             overflow: isExpanded ? TextOverflow.clip : TextOverflow.ellipsis,
-            style: GoogleFonts.roboto(
-              fontSize: 14,
+            style: TextStyle(
+              fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
           ),

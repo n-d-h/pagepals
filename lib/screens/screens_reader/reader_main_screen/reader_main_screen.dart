@@ -19,7 +19,6 @@ import 'package:pagepals/screens/screens_reader/feature_screen/reader_comment_sc
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
-import 'package:pagepals/screens/screens_reader/reader_seminars/reader_seminar_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
 import 'package:pagepals/screens/screens_reader/report_screen/report_screen.dart';
 import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
@@ -774,14 +773,14 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                   const SizedBox(width: 10),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          child: ReaderSeminarScreen(
-                                              accountModel: account),
-                                        ),
-                                      );
+                                      // Navigator.push(
+                                      //   context,
+                                      //   PageTransition(
+                                      //     type: PageTransitionType.rightToLeft,
+                                      //     child: ReaderSeminarScreen(
+                                      //         accountModel: account),
+                                      //   ),
+                                      // );
                                     },
                                     borderRadius: BorderRadius.circular(10),
                                     child: Container(

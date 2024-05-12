@@ -12,7 +12,7 @@ class BookInfo extends StatelessWidget {
     return RichText(
       text: TextSpan(
         text: title,
-        style: GoogleFonts.roboto(
+        style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           color: Colors.grey,
@@ -20,8 +20,8 @@ class BookInfo extends StatelessWidget {
         children: [
           TextSpan(
             text: info ?? 'Info',
-            style: GoogleFonts.roboto(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: 15,
               fontWeight: FontWeight.w400,
               color: Colors.black,
             ),
