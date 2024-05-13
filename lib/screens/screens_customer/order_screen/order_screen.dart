@@ -155,17 +155,15 @@ class _OrderScreenState extends State<OrderScreen> {
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
-                title: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Text(
-                    'My Booking',
-                    style: GoogleFonts.lexend(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
+                title: Text(
+                  'My Booking',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
                 ),
+                centerTitle: true,
                 bottom: TabBar(
                   onTap: (index) {
                     switch (index) {
@@ -207,19 +205,20 @@ class _OrderScreenState extends State<OrderScreen> {
                         }
                     }
                   },
-                  isScrollable: false,
+                  isScrollable: true,
                   indicatorColor: ColorHelper.getColor(ColorHelper.green),
                   indicatorSize: TabBarIndicatorSize.tab,
+                  tabAlignment: TabAlignment.center,
                   labelColor: ColorHelper.getColor(ColorHelper.green),
-                  labelStyle: GoogleFonts.lexend(
+                  labelStyle: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontSize: 17,
                   ),
                   unselectedLabelColor: Colors.grey.shade400,
                   tabs: [
-                    Tab(text: AppLocalizations.of(context)!.appUpcoming),
-                    Tab(text: AppLocalizations.of(context)!.appCompleted),
-                    Tab(text: AppLocalizations.of(context)!.appCanceled),
+                    Tab(text: 'Upcoming'),
+                    Tab(text: 'Completed'),
+                    Tab(text: 'Canceled'),
                     Tab(text: 'Processing'),
                   ],
                 ),

@@ -105,7 +105,6 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
     getBooking(readerId);
     getReaderProfile(readerId);
     getAccount();
-    _fetchNotificationByAccountId();
   }
 
   @override

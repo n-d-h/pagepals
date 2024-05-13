@@ -8,10 +8,12 @@ class ReportDialogWidget extends StatefulWidget {
     this.readerId,
     this.accountModel,
     this.listReportReasons,
+    this.bookingId,
     required this.type,
   });
 
   final String? readerId;
+  final String? bookingId;
   final AccountModel? accountModel;
   final List<String>? listReportReasons;
   final String type;
@@ -96,12 +98,22 @@ class _ReportDialogWidgetState extends State<ReportDialogWidget> {
         TextButton(
           child: const Text('Submit'),
           onPressed: () async {
-            bool result = await ReportService.createReport(
-              widget.accountModel?.customer?.id ?? '',
-              reportReason,
-              widget.readerId!,
-              widget.type,
-            );
+            bool result = false;
+            if(widget.type == "READER") {
+              result = await ReportService.createReport(
+                widget.accountModel?.customer?.id ?? '',
+                reportReason,
+                widget.readerId!,
+                widget.type,
+              );
+            } else if(widget.type == "BOOKING") {
+              result = await ReportService.createReport(
+                widget.accountModel?.customer?.id ?? '',
+                reportReason,
+                widget.bookingId!,
+                widget.type,
+              );
+            }
 
             if (result) {
               Navigator.of(context).pop();

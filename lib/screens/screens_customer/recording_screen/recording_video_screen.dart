@@ -81,6 +81,10 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () async {
+              setState(() {
+                isLoaded = true;
+                _progress = 0.0;
+              });
               await controller?.reload();
             },
           ),

@@ -14,6 +14,7 @@ import 'package:pagepals/screens/screens_authorization/signin_screen/signin_intr
 import 'package:pagepals/screens/screens_authorization/signin_screen/signin_main/signin_screen.dart';
 import 'package:pagepals/screens/screens_customer/customer_profile/customer_profile_screen.dart';
 import 'package:pagepals/screens/screens_customer/customer_wallet_screen/customer_wallet_screen.dart';
+import 'package:pagepals/screens/screens_customer/request_screen/request_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_pending_screen/reader_pending_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_request/reader_request_intro_screen.dart';
@@ -141,7 +142,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                     ),
                   ),
                 ),
-          if(account != null)
+          if (account != null)
             ListTile(
               leading: Icon(
                 Icons.token_sharp,
@@ -160,7 +161,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 );
               },
             ),
-          if(account != null)
+          if (account != null)
             ListTile(
               leading: Icon(
                 CustomIcons.user,
@@ -236,7 +237,7 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
               }).toList(),
             ),
           ),
-          if(account != null)
+          if (account != null)
             ListTile(
               leading: const Icon(
                 UniconsLine.icons,
@@ -281,7 +282,28 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
                 }
               },
             ),
-          if(account != null)
+          if (account != null)
+            ListTile(
+              leading: const Icon(
+                Icons.paste_outlined,
+                color: Colors.blue,
+              ),
+              title: Text("List Request"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: RequestScreen(
+                      readerId: account?.reader?.id ?? '',
+                    ),
+                    type: PageTransitionType.rightToLeft,
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                );
+              },
+            ),
+          if (account != null)
             ListTile(
               leading: const Icon(
                 Icons.logout,

@@ -255,6 +255,21 @@ class BookingService {
               name
               description
             }
+            reader {
+              id
+              nickname
+              avatarUrl
+              countryAccent
+              language
+              rating
+              totalOfReviews
+              account {
+                customer {
+                  imageUrl
+                }
+                username
+              }
+            }
           }
           startAt
           createAt
@@ -273,24 +288,37 @@ class BookingService {
           state {
             name
           }
-          seminar {
+          event {
             id
-            imageUrl
+            isFeatured
             limitCustomer
-            duration
-            description
-            createdAt
             price
-            book {
+            startAt
+            activeSlot
+            seminar {
+              createdAt
+              description
+              duration
               id
-              smallThumbnailUrl
-              thumbnailUrl
+              imageUrl
               title
+              book {
+                id
+                title
+                publisher
+                language
+                authors {
+                  name
+                }
+                categories {
+                  name
+                }
+                description
+                pageCount
+                smallThumbnailUrl
+                thumbnailUrl
+              }
             }
-            startTime
-            status
-            title
-            updatedAt
           }
         }
         pagination {

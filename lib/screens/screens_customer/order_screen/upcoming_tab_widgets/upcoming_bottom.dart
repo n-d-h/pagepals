@@ -47,19 +47,21 @@ class UpcomingBottom extends StatelessWidget {
                     )
                   : OutlinedButton(
                       onPressed: () {
-                        Navigator.of(context).push(
-                          PageTransition(
-                            child: CanceledScreen(
-                              isReader: isReader,
-                              bookingId: booking.id!,
-                              onValueChanged: (value) {
-                                print(value);
-                              },
+                        if(!isCancelDisableButton()) {
+                          Navigator.of(context).push(
+                            PageTransition(
+                              child: CanceledScreen(
+                                isReader: isReader,
+                                bookingId: booking.id!,
+                                onValueChanged: (value) {
+                                  print(value);
+                                },
+                              ),
+                              type: PageTransitionType.rightToLeftWithFade,
+                              duration: const Duration(milliseconds: 300),
                             ),
-                            type: PageTransitionType.rightToLeftWithFade,
-                            duration: const Duration(milliseconds: 300),
-                          ),
-                        );
+                          );
+                        }
                       },
                       style: OutlinedButton.styleFrom(
                         backgroundColor: ColorHelper.getColor('#C6F4DE'),
@@ -99,13 +101,15 @@ class UpcomingBottom extends StatelessWidget {
                   )
                 : OutlinedButton(
                     onPressed: () async {
-                      String userName =
-                          await VideoConferenceService.getCustomerAccount()
-                              .then((value) => value.username ?? 'Anonymous');
-                      await VideoConferenceService.joinMeeting(
-                          booking.meeting!.meetingCode!,
-                          booking.meeting!.password!,
-                          userName);
+                      if(!isJoinMeetDisableButton()) {
+                        String userName =
+                            await VideoConferenceService.getCustomerAccount()
+                                .then((value) => value.username ?? 'Anonymous');
+                        await VideoConferenceService.joinMeeting(
+                            booking.meeting!.meetingCode!,
+                            booking.meeting!.password!,
+                            userName);
+                      }
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: booking.service != null
@@ -151,7 +155,7 @@ class UpcomingBottom extends StatelessWidget {
     }
     DateTime startTime = DateTime.parse(booking.startAt!);
     if (DateTime.now().isBefore(startTime.subtract(
-      const Duration(days: 1),
+      const Duration(hours: 1),
     ))) {
       return false;
     }

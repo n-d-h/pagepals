@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/report_reson_helper.dart';
+import 'package:pagepals/models/authen_models/account_model.dart'
+    as account_model;
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/book_row.dart';
@@ -8,6 +11,7 @@ import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/time_row.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/recording_screen.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
+import 'package:pagepals/widgets/report_dialog.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
 
 class BookingAppointment extends StatelessWidget {
@@ -19,23 +23,24 @@ class BookingAppointment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          surfaceTintColor: Colors.white,
-          title: const Text('Booking Detail'),
-          centerTitle: true,
-          titleTextStyle: const TextStyle(
-            fontWeight: FontWeight.w700,
+        surfaceTintColor: Colors.white,
+        title: const Text('Booking Detail'),
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.w700,
+          color: Colors.black,
+          fontSize: 24,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
             color: Colors.black,
-            fontSize: 24,
           ),
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          )),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         controller: ScrollController(),
         physics: const BouncingScrollPhysics(),
@@ -101,6 +106,7 @@ class BookingAppointment extends StatelessWidget {
                     );
                   },
                   child: Container(
+                    margin: const EdgeInsets.only(top: 20),
                     child: Text(
                       'View Recording',
                       style: TextStyle(
@@ -156,7 +162,52 @@ class BookingAppointment extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
+              Visibility(
+                visible: DateTime.now().isAfter(
+                  DateTime.parse(booking?.startAt ?? '2021-2-1 12:00:00'),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ReportDialogWidget(
+                          bookingId: booking?.id,
+                          accountModel: account_model.AccountModel(
+                            customer: account_model.Customer(
+                              id: booking?.customer?.id,
+                            ),
+                          ),
+                          listReportReasons: reportBookingReasons,
+                          type: "BOOKING",
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Report Booking',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
