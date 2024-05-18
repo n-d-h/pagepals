@@ -156,6 +156,7 @@ class Seminar {
   String? imageUrl;
   String? title;
   Book? book;
+  Reader? reader;
 
   Seminar({
     this.createdAt,
@@ -165,6 +166,7 @@ class Seminar {
     this.imageUrl,
     this.title,
     this.book,
+    this.reader,
   });
 
   Seminar.fromJson(Map<String, dynamic> json) {
@@ -175,6 +177,7 @@ class Seminar {
     imageUrl = json['imageUrl'];
     title = json['title'];
     book = json['book'] != null ? new Book.fromJson(json['book']) : null;
+    reader = json['reader'] != null ? new Reader.fromJson(json['reader']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -187,6 +190,9 @@ class Seminar {
     data['title'] = this.title;
     if (this.book != null) {
       data['book'] = this.book!.toJson();
+    }
+    if (this.reader != null) {
+      data['reader'] = this.reader!.toJson();
     }
     return data;
   }

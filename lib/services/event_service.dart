@@ -147,7 +147,7 @@ class EventService {
     QueryResult queryResult = await graphQLClient.query(
       QueryOptions(
         document: gql(query),
-        fetchPolicy: FetchPolicy.networkOnly,
+        fetchPolicy: FetchPolicy.noCache,
       ),
     );
 

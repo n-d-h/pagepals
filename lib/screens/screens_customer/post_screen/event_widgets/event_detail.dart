@@ -83,13 +83,13 @@ class EventPostDetailScreen extends StatelessWidget {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Join seminar successfully'),
+            content: Text('Join event successfully'),
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Join seminar failed'),
+            content: Text('Join event failed'),
           ),
         );
       }

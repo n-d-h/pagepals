@@ -90,7 +90,7 @@ class UpcomingBottom extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        booking.service != null ? 'Join meet' : 'Join seminar',
+                        booking.service != null ? 'Join meet' : 'Join event',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -118,7 +118,7 @@ class UpcomingBottom extends StatelessWidget {
                       side: const BorderSide(color: Colors.transparent),
                     ),
                     child: Text(
-                      booking.service != null ? 'Join meet' : 'Join seminar',
+                      booking.service != null ? 'Join meet' : 'Join event',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,

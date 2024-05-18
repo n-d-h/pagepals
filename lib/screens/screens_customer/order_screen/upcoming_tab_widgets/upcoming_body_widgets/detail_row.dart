@@ -44,7 +44,8 @@ class DetailRow extends StatelessWidget {
               fontWeight: FontWeight.w300,
               color: color ??
                   ColorHelper.getColor(
-                      ColorHelper.green), // Part 2: Rest of the text in green
+                    ColorHelper.green,
+                  ), // Part 2: Rest of the text in green
             ),
           ),
         ),

@@ -17,8 +17,12 @@ class BookingBody extends StatelessWidget {
             'https://via.placeholder.com/300'
         : booking.event?.seminar?.book?.smallThumbnailUrl ??
             'https://via.placeholder.com/300';
-    String readerNickname = booking.service?.reader?.nickname ?? 'Unknown';
-    String readerUsername = '@${booking.service?.reader?.account?.username ?? 'Unknown'}';
+    String readerNickname = booking.service != null
+        ? booking.service?.reader?.nickname ?? 'Unknown'
+        : booking.event?.seminar?.reader?.nickname ?? 'Unknown';
+    String readerUsername = booking.service != null
+        ? '@${booking.service?.reader?.account?.username ?? 'Unknown'}'
+        : '@${booking.event?.seminar?.reader?.account?.username ?? 'Unknown'}';
 
     String customerName = booking.customer!.fullName!;
     String customerUsername = '@${booking.customer!.account!.username!}';

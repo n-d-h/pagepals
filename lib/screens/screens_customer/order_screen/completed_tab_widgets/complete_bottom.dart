@@ -32,24 +32,25 @@ class _CompletedBottomState extends State<CompletedBottom> {
       child: widget.booking.rating != null || isReviewSubmitted
           ? Row(
               children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: ColorHelper.getColor('#C6F4DE'),
-                      side: const BorderSide(color: Colors.transparent),
-                      // fixedSize: const Size.fromWidth(148),
-                    ),
-                    child: Text(
-                      'Re-book',
-                      style: GoogleFonts.lexend(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: ColorHelper.getColor(ColorHelper.green),
+                if(widget.booking.service != null)
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: ColorHelper.getColor('#C6F4DE'),
+                        side: const BorderSide(color: Colors.transparent),
+                        // fixedSize: const Size.fromWidth(148),
+                      ),
+                      child: Text(
+                        'Re-book',
+                        style: GoogleFonts.lexend(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: ColorHelper.getColor(ColorHelper.green),
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             )
           : Row(

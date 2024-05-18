@@ -174,6 +174,21 @@ class BookingService {
                 smallThumbnailUrl
                 thumbnailUrl
               }
+              reader {
+                id
+                nickname
+                avatarUrl
+                countryAccent
+                language
+                rating
+                totalOfReviews
+                account {
+                  customer {
+                    imageUrl
+                  }
+                  username
+                }
+              }
             }
           }
         }

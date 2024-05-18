@@ -14,7 +14,7 @@ class ColumnDetail extends StatelessWidget {
         ? booking.service?.book?.title ?? 'Unknown'
         : booking.event?.seminar?.book?.title ?? 'Unknown';
     String service = booking.service?.serviceType?.name ?? 'Unknown';
-    String seminar = booking.event?.seminar?.description ?? 'Unknown';
+    String event = booking.event?.seminar?.title ?? 'Unknown';
     String meetingCode = "#${booking.meeting!.meetingCode!}";
     String duration =
         '${booking.event?.seminar?.duration != null ? booking.event?.seminar!.duration!.toInt() : booking.service?.duration != null ? booking.service!.duration!.toInt() : '60'} minutes';
@@ -40,7 +40,7 @@ class ColumnDetail extends StatelessWidget {
                 )
               : DetailRow(
                   icon: UniconsLine.pen,
-                  text: 'Seminar: $seminar',
+                  text: 'Event: $event',
                   color: color,
                 ),
           SizedBox(height: 2),

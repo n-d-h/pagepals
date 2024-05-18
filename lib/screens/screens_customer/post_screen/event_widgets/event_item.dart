@@ -87,13 +87,13 @@ class _EventPostItemState extends State<EventPostItem> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Join seminar successfully'),
+            content: Text('Join event successfully'),
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Join seminar failed'),
+            content: Text('Join event failed'),
           ),
         );
       }
@@ -341,7 +341,26 @@ class _EventPostItemState extends State<EventPostItem> {
             ),
             TextButton(
               onPressed: () async {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: Text('Joining event...'),
+                      content: Container(
+                        height: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            const SizedBox(height: 8.0),
+                            Text('Please wait...'),
+                          ],
+                        ),
+                      ),
+                    ),
+                );
                 await joinSeminar();
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
               child: Text('Yes'),
