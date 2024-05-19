@@ -143,7 +143,10 @@ class _CompletedTabState extends State<CompletedTab> {
                               Navigator.of(context).push(
                                 PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  child: BookingAppointment(booking: booking),
+                                  child: BookingAppointment(
+                                    booking: booking,
+                                    isVisible: true,
+                                  ),
                                   duration: const Duration(milliseconds: 300),
                                 ),
                               );

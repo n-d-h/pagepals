@@ -56,7 +56,8 @@ class _ProcessingTabState extends State<ProcessingTab> {
         isLoadingNextPage = true;
       });
       try {
-        var result = await BookingService.getBooking(nextPage, 10, 'PROCESSING');
+        var result =
+            await BookingService.getBooking(nextPage, 10, 'PROCESSING');
         if (result.list!.isEmpty) {
           setState(() {
             hasMorePages = false;
@@ -143,7 +144,10 @@ class _ProcessingTabState extends State<ProcessingTab> {
                               Navigator.of(context).push(
                                 PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  child: BookingAppointment(booking: booking),
+                                  child: BookingAppointment(
+                                    booking: booking,
+                                    isVisible: false,
+                                  ),
                                   duration: const Duration(milliseconds: 300),
                                 ),
                               );

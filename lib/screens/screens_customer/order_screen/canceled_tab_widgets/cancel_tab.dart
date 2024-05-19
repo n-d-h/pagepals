@@ -145,7 +145,10 @@ class _CanceledTabState extends State<CanceledTab> {
                               Navigator.of(context).push(
                                 PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  child: BookingAppointment(booking: booking),
+                                  child: BookingAppointment(
+                                    booking: booking,
+                                    isVisible: false,
+                                  ),
                                   duration: const Duration(milliseconds: 300),
                                 ),
                               );

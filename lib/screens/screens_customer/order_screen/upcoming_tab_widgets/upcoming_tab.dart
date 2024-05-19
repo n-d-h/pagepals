@@ -166,8 +166,12 @@ class _UpcomingTabState extends State<UpcomingTab> {
                                     Navigator.of(context).push(
                                       PageTransition(
                                         type: PageTransitionType.rightToLeft,
-                                        child: BookingAppointment(booking: booking),
-                                        duration: const Duration(milliseconds: 300),
+                                        child: BookingAppointment(
+                                          booking: booking,
+                                          isVisible: false,
+                                        ),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                       ),
                                     );
                                   },
@@ -180,8 +184,12 @@ class _UpcomingTabState extends State<UpcomingTab> {
                                     Navigator.of(context).push(
                                       PageTransition(
                                         type: PageTransitionType.rightToLeft,
-                                        child: BookingAppointment(booking: booking),
-                                        duration: const Duration(milliseconds: 300),
+                                        child: BookingAppointment(
+                                          booking: booking,
+                                          isVisible: false,
+                                        ),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                       ),
                                     );
                                   },

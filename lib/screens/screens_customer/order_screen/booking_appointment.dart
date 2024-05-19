@@ -16,8 +16,9 @@ import 'package:pagepals/widgets/space_between_row_widget.dart';
 
 class BookingAppointment extends StatelessWidget {
   final Booking? booking;
+  final bool isVisible;
 
-  const BookingAppointment({super.key, this.booking});
+  const BookingAppointment({super.key, this.booking, required this.isVisible});
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +91,7 @@ class BookingAppointment extends StatelessWidget {
                     : '${booking!.event!.price!.toInt()} pals',
               ),
               Visibility(
-                visible: DateTime.now().isAfter(
-                  DateTime.parse(booking?.startAt ?? '2021-2-1 12:00:00'),
-                ),
+                visible: isVisible!,
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(
