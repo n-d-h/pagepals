@@ -19,9 +19,7 @@ import 'package:pagepals/screens/screens_reader/feature_screen/reader_comment_sc
 import 'package:pagepals/screens/screens_reader/feature_screen/waiting_screen.dart';
 import 'package:pagepals/screens/screens_reader/finance_screen/finance_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_profile/reader_edit_profile_screen.dart';
-import 'package:pagepals/screens/screens_reader/reader_working_time/reader_working_time.dart';
 import 'package:pagepals/screens/screens_reader/report_screen/report_screen.dart';
-import 'package:pagepals/screens/screens_reader/services_screen/my_service_screen.dart';
 import 'package:pagepals/services/booking_service.dart';
 import 'package:pagepals/services/notification_service.dart';
 import 'package:pagepals/services/reader_service.dart';
@@ -153,34 +151,6 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                   );
                 },
               ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.bottomToTop,
-                        child: const NotificationScreen(role: "READER"),
-                      ),
-                    );
-                  },
-                  icon: Badge(
-                    backgroundColor: Colors.orange,
-                    isLabelVisible: visible,
-                    alignment: Alignment.topRight,
-                    largeSize: 20,
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    label: Text(
-                      notification.count.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                      ),
-                    ),
-                    child: const Icon(Icons.notifications),
-                  ),
-                ),
-              ],
             ),
             body: SingleChildScrollView(
               controller: ScrollController(),
@@ -571,58 +541,6 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: ReaderWorkingTime(
-                                            title: 'Working Time',
-                                            readerId: widget
-                                                    .accountModel?.reader?.id ??
-                                                '',
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      width: width / 3,
-                                      height: 100,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.blueAccent,
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                            ),
-                                            child: const Icon(
-                                              UniconsLine.clock,
-                                              color: Colors.white,
-                                              size: 25,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          const Text(
-                                            'Schedule',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.rightToLeft,
                                           child: FinanceScreen(
                                             accountModel: account,
                                           ),
@@ -705,109 +623,6 @@ class _ReaderMainScreenState extends State<ReaderMainScreen> {
                                           const SizedBox(height: 8),
                                           const Text(
                                             'Report',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 25),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          child: MyServiceScreen(
-                                            readerId: widget
-                                                .accountModel!.reader!.id!,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      width: width / 3,
-                                      height: 100,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.deepOrangeAccent,
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                            ),
-                                            child: const Icon(
-                                              UniconsLine.shopping_cart,
-                                              color: Colors.white,
-                                              size: 25,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          const Text(
-                                            'My Services',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  InkWell(
-                                    onTap: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   PageTransition(
-                                      //     type: PageTransitionType.rightToLeft,
-                                      //     child: ReaderSeminarScreen(
-                                      //         accountModel: account),
-                                      //   ),
-                                      // );
-                                    },
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      width: width / 3,
-                                      height: 100,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.amberAccent,
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                            ),
-                                            child: const Icon(
-                                              UniconsLine.meeting_board,
-                                              color: Colors.white,
-                                              size: 25,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          const Text(
-                                            'My Seminars',
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 13,

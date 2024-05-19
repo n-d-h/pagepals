@@ -12,7 +12,6 @@ import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/home_screen/video_player/video_intro_widget.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/book_collection.dart';
-import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/booking_button.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/info_line.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/review_widgets/review_widget.dart';
 import 'package:pagepals/services/book_service.dart';
@@ -55,14 +54,14 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
   }
 
   Future<void> getReaderBooks(String id) async {
-    var result = await BookService.getReaderBooks(id, '', 0, 10);
+    var result = await BookService.getReaderBooks(id, '', 0, 5);
     setState(() {
       bookModel = result;
     });
   }
 
   Future<void> getListReaderComment(String id) async {
-    var result = await ReaderService.getListReaderComment(id, 0, 10);
+    var result = await ReaderService.getListReaderComment(id, 0, 5);
     setState(() {
       commentModel = result;
     });

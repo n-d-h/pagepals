@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/comment_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/rating_line.dart';
+import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/review_widgets/list_review_screen.dart';
 import 'package:pagepals/screens/screens_customer/profile_screen/profile_widgets/review_widgets/review_box.dart';
 
 class ProfileReviewWidget extends StatelessWidget {
@@ -90,7 +92,16 @@ class ProfileReviewWidget extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        PageTransition(
+                          child: ListReviewScreen(
+                            reader: reader,
+                          ),
+                          type: PageTransitionType.rightToLeft,
+                        ),
+                      );
+                    },
                     child: Text(
                       'See All',
                       style: TextStyle(
