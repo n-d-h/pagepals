@@ -4,6 +4,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pagepals/main.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
+import 'package:pagepals/models/booking_meeting_record_model.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -442,5 +443,56 @@ class BookingService {
     }
 
     return result.data?['reviewBooking']?['rating'] != null;
+  }
+
+  static Future<BookingMeetingRecordModel> getBookingRecordingById(
+      String id) async {
+    String query = '''
+      query {
+        getBookingById(bookingId: "$id") {
+          id
+          meeting {
+            createAt
+            id
+            meetingCode
+            password
+            startAt
+            state
+            records {
+              duration
+              externalId
+              id
+              recordingCount
+              startTime
+              status
+              recordFiles {
+                downloadUrl
+                endAt
+                fileExtention
+                fileType
+                id
+                playUrl
+                recordingType
+                startAt
+                status
+              }
+            }
+          }
+        }
+      }
+    ''';
+
+    QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to get booking recording');
+    }
+
+    return BookingMeetingRecordModel.fromJson(result.data!['getBookingById']);
   }
 }

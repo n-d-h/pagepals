@@ -7,15 +7,13 @@ class RecordingVideoScreen extends StatefulWidget {
   const RecordingVideoScreen({
     super.key,
     required this.recordingUrl,
-    required this.fromDate,
-    required this.toDate,
-    required this.topic,
+    required this.recordingId,
+    required this.startTime,
   });
 
   final String recordingUrl;
-  final String fromDate;
-  final String toDate;
-  final String topic;
+  final int recordingId;
+  final String startTime;
 
   @override
   State<RecordingVideoScreen> createState() => _RecordingVideoScreenState();
@@ -143,14 +141,14 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
                     child: Column(
                       children: [
                         Text(
-                          widget.topic,
+                          'Recording ${widget.recordingId}',
                           style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.grey,
                           ),
                         ),
                         Text(
-                          '${widget.fromDate} - ${widget.toDate}',
+                          widget.startTime,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey,

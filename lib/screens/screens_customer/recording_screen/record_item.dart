@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/models/meeting_model.dart';
+import 'package:pagepals/models/booking_meeting_record_model.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/recording_video_screen.dart';
 
 class RecordItem extends StatelessWidget {
@@ -8,12 +8,12 @@ class RecordItem extends StatelessWidget {
     super.key,
     this.meetingItem,
     this.recordingFile,
-    this.meetingModel,
+    this.number,
   });
 
-  final MeetingItem? meetingItem;
-  final RecordingFile? recordingFile;
-  final MeetingModel? meetingModel;
+  final Record? meetingItem;
+  final RecordFile? recordingFile;
+  final int? number;
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +23,9 @@ class RecordItem extends StatelessWidget {
           context,
           PageTransition(
             child: RecordingVideoScreen(
-              recordingUrl: meetingItem?.shareUrl ?? '',
-              fromDate: meetingModel?.from ?? '',
-              toDate: meetingModel?.to ?? '',
-              topic: meetingItem?.topic ?? '',
+              recordingUrl: recordingFile?.playUrl ?? '',
+              recordingId: number ?? 0,
+              startTime: meetingItem?.startTime ?? '',
             ),
             type: PageTransitionType.bottomToTop,
             duration: const Duration(milliseconds: 300),
@@ -55,21 +54,32 @@ class RecordItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                meetingItem?.topic ?? '',
+                'Recording $number',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                meetingItem?.startTime ?? '',
+                (meetingItem?.startTime ?? '').split(' ').length > 0
+                    ? (meetingItem?.startTime ?? '').split(' ')[0]
+                    : '',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
               Text(
-                '${meetingModel?.from ?? ''} - ${meetingModel?.to ?? ''}',
+                (meetingItem?.startTime ?? '').split(' ').length > 1
+                    ? (meetingItem?.startTime ?? '').split(' ')[1]
+                    : '',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                '${meetingItem?.duration ?? ''} minutes',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
