@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -12,7 +11,6 @@ import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widget
 import 'package:pagepals/screens/screens_customer/post_screen/event_widgets/show_html_widget.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/event_service.dart';
-import 'package:pagepals/services/seminar_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
@@ -55,8 +53,7 @@ class EventPostDetailScreen extends StatelessWidget {
       AccountModel? accountModel = AccountModel.fromJson(jsonDecode(account!));
       String customerId = accountModel.customer?.id ?? '';
 
-      bool results =
-      await EventService.bookEvent(customerId, eventId);
+      bool results = await EventService.bookEvent(customerId, eventId);
       if (results) {
         onEventBookedDone(true);
 
@@ -69,11 +66,11 @@ class EventPostDetailScreen extends StatelessWidget {
         }
         try {
           AccountModel account =
-          AccountModel.fromJson(json.decoder.convert(accountString));
+              AccountModel.fromJson(json.decoder.convert(accountString));
           String userName = account.username!;
 
           AccountModel updatedAccount =
-          await AuthenService.getAccount(userName, accessToken);
+              await AuthenService.getAccount(userName, accessToken);
           prefs.remove('account');
           print('account: ${json.encode(updatedAccount)}');
           prefs.setString('account', json.encode(updatedAccount));
@@ -107,8 +104,7 @@ class EventPostDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? authors = book.authors?.map((e) => e.name ?? '').join(', ');
-    String? categories =
-    book.categories?.map((e) => e.name ?? '').join(', ');
+    String? categories = book.categories?.map((e) => e.name ?? '').join(', ');
 
     return Scaffold(
       appBar: AppBar(
@@ -420,7 +416,7 @@ class EventPostDetailScreen extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              'Join Event',
+              'Join Seminar',
               style: GoogleFonts.lexend(
                 fontSize: 16.0,
                 color: Colors.white,
@@ -439,7 +435,7 @@ class EventPostDetailScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'Join Event',
+            'Join Seminar',
             textAlign: TextAlign.center,
           ),
           surfaceTintColor: Colors.white,
@@ -450,7 +446,7 @@ class EventPostDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Are you sure you want to join this event?',
+                  'Are you sure you want to join this seminar?',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),

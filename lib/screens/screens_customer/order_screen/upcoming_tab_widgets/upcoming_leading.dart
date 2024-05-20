@@ -79,7 +79,7 @@ class _UpcomingLeadingState extends State<UpcomingLeading> {
                         ),
                         child: const Center(
                           child: Text(
-                            'Event',
+                            'Seminar',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 10,

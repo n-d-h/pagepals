@@ -70,7 +70,7 @@ class CompletedLeading extends StatelessWidget {
                         ),
                         child: const Center(
                           child: Text(
-                            'Event',
+                            'Seminar',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 10,

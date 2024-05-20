@@ -7,7 +7,6 @@ import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/booking_appointment.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/dashed_seperator.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/tab_widgets/booking_body.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_bottom.dart';
 import 'package:pagepals/screens/screens_customer/order_screen/upcoming_tab_widgets/upcoming_leading.dart';
 import 'package:pagepals/services/booking_service.dart';
 
@@ -180,10 +179,6 @@ class _ProcessingTabState extends State<ProcessingTab> {
                                   ),
                                   BookingBody(
                                     booking: booking,
-                                  ),
-                                  UpcomingBottom(
-                                    booking: booking,
-                                    isReader: false,
                                   ),
                                 ],
                               ),

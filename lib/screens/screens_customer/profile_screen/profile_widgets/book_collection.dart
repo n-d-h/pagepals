@@ -64,7 +64,7 @@ class _ProfileBookCollectionState extends State<ProfileBookCollection> {
                       fontSize: 14,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -116,7 +116,7 @@ class _ProfileBookCollectionState extends State<ProfileBookCollection> {
                         child: Container(
                           margin: const EdgeInsets.only(right: 23),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                           child: Container(
                             padding: const EdgeInsets.all(5),
@@ -126,7 +126,7 @@ class _ProfileBookCollectionState extends State<ProfileBookCollection> {
                                   ? ColorHelper.getColor(ColorHelper.green)
                                   : Colors.white,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
+                                  BorderRadius.all(Radius.circular(14)),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12),

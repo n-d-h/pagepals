@@ -29,11 +29,15 @@ class ServiceWidget extends StatelessWidget {
           Container(
             width: double.infinity,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
               child: Image.network(
                 service?.imageUrl ??
                     'https://via.placeholder.com/150',
-                width: 160,
+                height: 160,
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -48,6 +52,7 @@ class ServiceWidget extends StatelessWidget {
                     margin: const EdgeInsets.only(
                       left: 16,
                       right: 8,
+                      top: 8,
                     ),
                     width: 35,
                     height: 30,

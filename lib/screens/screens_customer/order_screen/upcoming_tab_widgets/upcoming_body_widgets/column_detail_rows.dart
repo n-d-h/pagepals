@@ -40,15 +40,9 @@ class ColumnDetail extends StatelessWidget {
                 )
               : DetailRow(
                   icon: UniconsLine.pen,
-                  text: 'Event: $event',
+                  text: 'Seminar: $event',
                   color: color,
                 ),
-          SizedBox(height: 2),
-          DetailRow(
-            icon: UniconsLine.rocket,
-            text: 'Meeting Code: $meetingCode',
-            color: color,
-          ),
           SizedBox(height: 2),
           DetailRow(
             icon: UniconsLine.clock,

@@ -1,18 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/providers/notification_provider.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/radio_buttons/radio_button.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
 import 'package:pagepals/screens/screens_reader/reader_main_screen/reader_main_screen.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/booking_service.dart';
-import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 
 class CanceledScreen extends StatefulWidget {

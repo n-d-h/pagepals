@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/reader_models/reader_profile_model.dart';
-import 'package:pagepals/screens/screens_customer/booking_screen/booking_time_screen.dart';
 
 class ProfileBookingButton extends StatelessWidget {
   final ReaderProfile? reader;

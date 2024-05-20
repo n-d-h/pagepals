@@ -275,7 +275,7 @@ class _EventPostItemState extends State<EventPostItem> {
                       Icon(Icons.add),
                       SizedBox(width: 4.0),
                       Text(
-                        'Join Event',
+                        'Join Seminar',
                         style: TextStyle(
                           fontSize: 14.0,
                         ),
@@ -297,7 +297,7 @@ class _EventPostItemState extends State<EventPostItem> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'Join Event',
+            'Join Seminar',
             textAlign: TextAlign.center,
           ),
           surfaceTintColor: Colors.white,

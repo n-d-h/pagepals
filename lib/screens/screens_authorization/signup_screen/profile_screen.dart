@@ -1,14 +1,9 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/space_helper.dart';
-import 'package:pagepals/models/authen_models/account_model.dart';
-import 'package:pagepals/models/authen_models/account_tokens.dart';
-import 'package:pagepals/screens/screens_authorization/signup_screen/signup_screen.dart';
 import 'package:pagepals/screens/screens_customer/menu_item/menu_item_screen.dart';
-import 'package:pagepals/screens/screens_customer/order_screen/video_conference_page.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:quickalert/quickalert.dart';
 

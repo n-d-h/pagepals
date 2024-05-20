@@ -99,7 +99,7 @@ class _ProfileServiceCollectionState extends State<ProfileServiceCollection> {
                     );
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(right: 20, left: 10),
+                    margin: const EdgeInsets.only(right: 20, left: 5),
                     height: 400,
                     child: ServiceWidget(
                       service: BookServices(

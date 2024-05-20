@@ -180,9 +180,9 @@ class _OrderScreenState extends State<OrderScreen> {
                         {
                           setState(() {
                             isLoading = true;
-                            completedBooking = null;
+                            processingBooking = null;
                           });
-                          getCompleteBooking();
+                          getProcessingBooking();
                           break;
                         }
                       case 2:
@@ -198,9 +198,9 @@ class _OrderScreenState extends State<OrderScreen> {
                         {
                           setState(() {
                             isLoading = true;
-                            canceledBooking = null;
+                            completedBooking = null;
                           });
-                          getProcessingBooking();
+                          getCompleteBooking();
                           break;
                         }
                     }
@@ -217,9 +217,9 @@ class _OrderScreenState extends State<OrderScreen> {
                   unselectedLabelColor: Colors.grey.shade400,
                   tabs: [
                     Tab(text: 'Upcoming'),
+                    Tab(text: 'Processing'),
                     Tab(text: 'Completed'),
                     Tab(text: 'Canceled'),
-                    Tab(text: 'Processing'),
                   ],
                 ),
               ),
@@ -237,9 +237,9 @@ class _OrderScreenState extends State<OrderScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         UpcomingTab(bookingModel: pendingBooking),
+                        ProcessingTab(bookingModel: processingBooking),
                         CompletedTab(bookingModel: completedBooking),
                         CanceledTab(bookingModel: canceledBooking),
-                        ProcessingTab(bookingModel: processingBooking),
                       ],
                     ),
             ),
