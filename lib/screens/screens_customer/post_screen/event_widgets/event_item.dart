@@ -302,20 +302,20 @@ class _EventPostItemState extends State<EventPostItem> {
           ),
           surfaceTintColor: Colors.white,
           content: Container(
-            height: 150,
+            height: 120,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Are you sure you want to join this event?',
+                  'Are you sure you want to join this seminar?',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),
                 ),
                 const SizedBox(height: 8.0),
                 Text(
-                  'Price: \$${widget.price}',
+                  'Price: ${widget.price} pals',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
@@ -323,7 +323,7 @@ class _EventPostItemState extends State<EventPostItem> {
                 ),
                 const SizedBox(height: 8.0),
                 Text(
-                  'Available: ${widget.activeSlot}/${widget.limitCustomer}',
+                  'Available: ${widget.activeSlot} slots',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,

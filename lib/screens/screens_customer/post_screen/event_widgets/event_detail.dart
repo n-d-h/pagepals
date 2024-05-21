@@ -359,7 +359,7 @@ class EventPostDetailScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    limitCustomer.toString(),
+                    '${limitCustomer} slots',
                     style: GoogleFonts.lexend(
                       fontSize: 16.0,
                     ),
@@ -391,7 +391,7 @@ class EventPostDetailScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    activeSlot.toString(),
+                    '${activeSlot} slots',
                     style: GoogleFonts.lexend(
                       fontSize: 16.0,
                     ),

@@ -1,27 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/helpers/report_reson_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart'
     as account_model;
+import 'package:pagepals/models/booking_meeting_record_model.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/booking_widgets/bottom_nav_button.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/book_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/service_row.dart';
 import 'package:pagepals/screens/screens_customer/booking_screen/summary_widgets/time_row.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/recording_screen.dart';
+import 'package:pagepals/services/booking_service.dart';
 import 'package:pagepals/widgets/reader_info_widget/reader_info.dart';
 import 'package:pagepals/widgets/report_dialog.dart';
 import 'package:pagepals/widgets/space_between_row_widget.dart';
 
-class BookingAppointment extends StatelessWidget {
+class BookingAppointment extends StatefulWidget {
   final Booking? booking;
   final bool isVisible;
 
   const BookingAppointment({super.key, this.booking, required this.isVisible});
 
   @override
+  State<BookingAppointment> createState() => _BookingAppointmentState();
+}
+
+class _BookingAppointmentState extends State<BookingAppointment> {
+  BookingMeetingRecordModel? bookingMeetingRecordModel;
+
+  Future<void> getBookingById(String id) async {
+    var res = await BookingService.isBookingReport(id);
+    setState(() {
+      bookingMeetingRecordModel = res;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBookingById(widget.booking!.id!);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (bookingMeetingRecordModel == null) {
+      return Scaffold(
+        body: Center(
+          child: LoadingAnimationWidget.staggeredDotsWave(
+              color: ColorHelper.getColor(ColorHelper.green), size: 60),
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -52,30 +84,31 @@ class BookingAppointment extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               ReaderInfoWidget(
-                readerInfo: booking!.service?.reader!,
+                readerInfo: widget.booking!.service?.reader!,
               ),
               TimeRowWidget(
-                time: DateTime.parse(booking?.startAt ?? '2021-2-1 12:00:00'),
+                time: DateTime.parse(
+                    widget.booking?.startAt ?? '2021-2-1 12:00:00'),
               ),
               SpaceBetweenRowWidget(
                 start: 'Duration',
-                end: booking?.service != null
-                    ? '${booking?.service?.duration?.toInt()} minutes'
-                    : '${booking?.event?.seminar?.duration!.toInt()} minutes',
+                end: widget.booking?.service != null
+                    ? '${widget.booking?.service?.duration?.toInt()} minutes'
+                    : '${widget.booking?.event?.seminar?.duration!.toInt()} minutes',
               ),
               BookRowWidget(
-                book: booking?.service != null
-                    ? booking?.service?.book?.title ?? 'Unknown'
-                    : booking?.event?.seminar?.book?.title ?? 'Unknown',
+                book: widget.booking?.service != null
+                    ? widget.booking?.service?.book?.title ?? 'Unknown'
+                    : widget.booking?.event?.seminar?.book?.title ?? 'Unknown',
               ),
-              booking?.service != null
+              widget.booking?.service != null
                   ? ServiceRowWidget(
-                      service: booking!.service!.description!,
-                      serviceType: booking!.service!.serviceType!.name!,
+                      service: widget.booking!.service!.description!,
+                      serviceType: widget.booking!.service!.serviceType!.name!,
                     )
                   : ServiceRowWidget(
                       serviceType: "",
-                      service: booking!.event!.seminar!.description!,
+                      service: widget.booking!.event!.seminar!.description!,
                     ),
               const SizedBox(height: 16),
               Container(
@@ -86,12 +119,12 @@ class BookingAppointment extends StatelessWidget {
               ),
               SpaceBetweenRowWidget(
                 start: 'Amount',
-                end: booking?.service != null
-                    ? '${booking!.service!.price!.toInt()} pals'
-                    : '${booking!.event!.price!.toInt()} pals',
+                end: widget.booking?.service != null
+                    ? '${widget.booking!.service!.price!.toInt()} pals'
+                    : '${widget.booking!.event!.price!.toInt()} pals',
               ),
               Visibility(
-                visible: isVisible!,
+                visible: widget.isVisible,
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -99,7 +132,7 @@ class BookingAppointment extends StatelessWidget {
                         type: PageTransitionType.fade,
                         duration: const Duration(milliseconds: 300),
                         child: RecordingScreen(
-                          booking: booking,
+                          booking: widget.booking,
                         ),
                       ),
                     );
@@ -118,7 +151,7 @@ class BookingAppointment extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: booking!.state!.name == 'CANCEL',
+                visible: widget.booking!.state!.name == 'CANCEL',
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -149,7 +182,7 @@ class BookingAppointment extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          booking?.cancelReason ?? '',
+                          widget.booking?.cancelReason ?? '',
                           overflow: TextOverflow.clip,
                           style: TextStyle(
                             fontSize: 18,
@@ -164,18 +197,20 @@ class BookingAppointment extends StatelessWidget {
               ),
               Visibility(
                 visible: DateTime.now().isAfter(
-                  DateTime.parse(booking?.startAt ?? '2021-2-1 12:00:00'),
-                ),
+                      DateTime.parse(
+                          widget.booking?.startAt ?? '2021-2-1 12:00:00'),
+                    ) &&
+                    (bookingMeetingRecordModel?.isReported ?? false) == false,
                 child: InkWell(
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return ReportDialogWidget(
-                          bookingId: booking?.id,
+                          bookingId: widget.booking?.id,
                           accountModel: account_model.AccountModel(
                             customer: account_model.Customer(
-                              id: booking?.customer?.id,
+                              id: widget.booking?.customer?.id,
                             ),
                           ),
                           listReportReasons: reportBookingReasons,

@@ -147,12 +147,14 @@ class RecordFile {
 
 class BookingMeetingRecordModel {
   String? id;
+  bool? isReported;
   Meeting? meeting;
 
-  BookingMeetingRecordModel({this.id, this.meeting});
+  BookingMeetingRecordModel({this.id, this.isReported, this.meeting});
 
   BookingMeetingRecordModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    isReported = json['isReported'];
     meeting =
         json['meeting'] != null ? Meeting?.fromJson(json['meeting']) : null;
   }
@@ -160,6 +162,7 @@ class BookingMeetingRecordModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = id;
+    data['isReported'] = isReported;
     data['meeting'] = meeting!.toJson();
     return data;
   }

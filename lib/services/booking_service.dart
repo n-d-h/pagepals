@@ -451,6 +451,7 @@ class BookingService {
       query {
         getBookingById(bookingId: "$id") {
           id
+          isReported
           meeting {
             createAt
             id
@@ -478,6 +479,30 @@ class BookingService {
               }
             }
           }
+        }
+      }
+    ''';
+
+    QueryResult result = await graphQLClient.query(
+      QueryOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception('Failed to get booking recording');
+    }
+
+    return BookingMeetingRecordModel.fromJson(result.data!['getBookingById']);
+  }
+
+  static Future<BookingMeetingRecordModel> isBookingReport(String id) async {
+    String query = '''
+      query {
+        getBookingById(bookingId: "$id") {
+          id
+          isReported
         }
       }
     ''';
