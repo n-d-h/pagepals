@@ -5,7 +5,6 @@ import 'package:pagepals/models/booking_meeting_record_model.dart';
 import 'package:pagepals/models/booking_model.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/record_item.dart';
 import 'package:pagepals/services/booking_service.dart';
-import 'package:unicons/unicons.dart';
 
 class RecordingScreen extends StatefulWidget {
   const RecordingScreen({super.key, this.booking});
@@ -63,10 +62,15 @@ class _RecordingScreenState extends State<RecordingScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
-                UniconsLine.truck_loading,
-                size: 100,
+                Icons.videocam_off_outlined,
+                size: 200,
               ),
-              Text('No Recordings'),
+              Text(
+                'No Recordings',
+                style: TextStyle(
+                  fontSize: 40,
+                ),
+              ),
             ],
           ),
         ),
@@ -90,10 +94,15 @@ class _RecordingScreenState extends State<RecordingScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
-                UniconsLine.truck_loading,
-                size: 100,
+                Icons.videocam_off_outlined,
+                size: 200,
               ),
-              Text('No Recordings'),
+              Text(
+                'No Recordings',
+                style: TextStyle(
+                  fontSize: 40,
+                ),
+              ),
             ],
           ),
         ),
@@ -132,7 +141,9 @@ class _RecordingScreenState extends State<RecordingScreen> {
                     .where((element) => element.fileType == 'MP4')
                     .toList();
                 return RecordItem(
-                  recordingFile: recordingFile.first,
+                  recordingFile: recordingFile.isNotEmpty
+                      ? recordingFile.first
+                      : null,
                   meetingItem: meetingItem,
                   number: number,
                 );

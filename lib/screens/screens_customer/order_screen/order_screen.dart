@@ -189,18 +189,18 @@ class _OrderScreenState extends State<OrderScreen> {
                         {
                           setState(() {
                             isLoading = true;
-                            canceledBooking = null;
+                            completedBooking = null;
                           });
-                          getCancelBooking();
+                          getCompleteBooking();
                           break;
                         }
                       case 3:
                         {
                           setState(() {
                             isLoading = true;
-                            completedBooking = null;
+                            canceledBooking = null;
                           });
-                          getCompleteBooking();
+                          getCancelBooking();
                           break;
                         }
                     }

@@ -123,29 +123,26 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                     ? '${widget.booking!.service!.price!.toInt()} pals'
                     : '${widget.booking!.event!.price!.toInt()} pals',
               ),
-              Visibility(
-                visible: widget.isVisible,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      PageTransition(
-                        type: PageTransitionType.fade,
-                        duration: const Duration(milliseconds: 300),
-                        child: RecordingScreen(
-                          booking: widget.booking,
-                        ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    PageTransition(
+                      type: PageTransitionType.fade,
+                      duration: const Duration(milliseconds: 300),
+                      child: RecordingScreen(
+                        booking: widget.booking,
                       ),
-                    );
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    child: Text(
-                      'View Recording',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    'View Recording',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
@@ -237,6 +234,31 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                           fontWeight: FontWeight.w400,
                           color: Colors.white,
                         ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible:
+                    (bookingMeetingRecordModel?.isReported ?? false) == true,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Reported',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
                       ),
                     ),
                   ),

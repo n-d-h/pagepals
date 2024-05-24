@@ -291,11 +291,21 @@ class EventPostDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8.0),
-            ShowMoreHtmlWidget(
-              htmlContent: description,
-              isShowShortText: false,
-              maxLines: 3,
-            ),
+            description.length < 100
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      description,
+                      style: GoogleFonts.lexend(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  )
+                : ShowMoreHtmlWidget(
+                    htmlContent: description,
+                    isShowShortText: false,
+                    maxLines: 3,
+                  ),
             const SizedBox(height: 8.0),
             Image.network(
               bannerImageUrl,

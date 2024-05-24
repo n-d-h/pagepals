@@ -27,34 +27,38 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
   @override
   void initState() {
     super.initState();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.white)
-      ..enableZoom(false)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            setState(() {
-              _progress = progress / 100;
-              if (progress == 100) {
-                setState(() {
-                  isLoaded = false;
-                });
+    if (widget.recordingUrl.isEmpty) {
+      controller = WebViewController();
+    } else {
+      controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(Colors.white)
+        ..enableZoom(false)
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              setState(() {
+                _progress = progress / 100;
+                if (progress == 100) {
+                  setState(() {
+                    isLoaded = false;
+                  });
+                }
+              });
+            },
+            onPageStarted: (String url) {},
+            onPageFinished: (String url) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                return NavigationDecision.prevent;
               }
-            });
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(widget.recordingUrl));
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse(widget.recordingUrl));
+    }
   }
 
   @override
@@ -65,6 +69,7 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('Recording URL: ${widget.recordingUrl}');
     return Scaffold(
       appBar: AppBar(
         title: Text('Recording Screen'),
@@ -88,78 +93,98 @@ class _RecordingVideoScreenState extends State<RecordingVideoScreen> {
           ),
         ],
       ),
-      body: _progress < 1 && isLoaded
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                isLoaded
-                    ? LinearProgressIndicator(
-                        value: _progress,
-                        color: ColorHelper.getColor(ColorHelper.green),
-                      )
-                    : LinearProgressIndicator(
-                        value: 1,
-                        color: ColorHelper.getColor(ColorHelper.green),
-                      ),
-                Container(
-                  width: double.infinity,
-                  height: 400,
-                  margin: const EdgeInsets.only(top: 50),
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(
-                      width: 300,
-                      height: 160,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                      ),
+      body: widget.recordingUrl.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.access_alarms_rounded,
+                    size: 200,
+                  ),
+                  Text(
+                    'Recording Processing',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 40,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             )
-          : Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  child: WebViewWidget(
-                    controller: controller ?? WebViewController(),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Recording ${widget.recordingId}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
+          : (_progress < 1 && isLoaded)
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    isLoaded
+                        ? LinearProgressIndicator(
+                            value: _progress,
+                            color: ColorHelper.getColor(ColorHelper.green),
+                          )
+                        : LinearProgressIndicator(
+                            value: 1,
+                            color: ColorHelper.getColor(ColorHelper.green),
+                          ),
+                    Container(
+                      width: double.infinity,
+                      height: 400,
+                      margin: const EdgeInsets.only(top: 50),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: 300,
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
                           ),
                         ),
-                        Text(
-                          widget.startTime,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
+                )
+              : Stack(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      child: WebViewWidget(
+                        controller: controller ?? WebViewController(),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Recording ${widget.recordingId}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Text(
+                              widget.startTime,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
     );
   }
 }

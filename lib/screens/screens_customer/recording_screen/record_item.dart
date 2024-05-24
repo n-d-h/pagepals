@@ -19,6 +19,8 @@ class RecordItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        print('Recording $number');
+        print('Recording URL: ${recordingFile?.playUrl ?? ''}');
         Navigator.push(
           context,
           PageTransition(
