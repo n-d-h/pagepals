@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/models/booking_meeting_record_model.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/recording_video_screen.dart';
@@ -17,10 +18,69 @@ class RecordItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String startAt = recordingFile?.startAt ?? '';
+    String endAt = recordingFile?.endAt ?? '';
+    Duration duration = Duration.zero;
+    if (startAt.isEmpty || endAt.isEmpty) {
+      duration = Duration.zero;
+    } else {
+      try {
+        if (startAt.contains('ICT') || endAt.contains('ICT')) {
+          startAt = startAt.replaceAll('ICT', '');
+          endAt = endAt.replaceAll('ICT', '');
+          DateFormat inputFormat = DateFormat('EEE MMM dd HH:mm:ss  yyyy');
+          DateTime startDateTime = inputFormat.parse(startAt);
+          DateTime endDateTime = inputFormat.parse(endAt);
+          duration = endDateTime.difference(startDateTime);
+        } else {
+          DateTime startDateTime = DateTime.parse(startAt);
+          DateTime endDateTime = DateTime.parse(endAt);
+          duration = endDateTime.difference(startDateTime);
+        }
+      } catch (e) {
+        duration = Duration.zero;
+      }
+    }
+
+    String startTime = meetingItem?.startTime ?? 'd';
+    String date = '';
+    String time = '';
+
+    try {
+      if (startTime.isEmpty) {
+        date = 'unknown';
+        time = 'unknown';
+      }
+      if (startTime.contains('ICT')) {
+        startTime = startTime.replaceAll('ICT', '');
+        DateFormat inputFormat = DateFormat('EEE MMM dd HH:mm:ss  yyyy');
+        DateTime startDateTime = inputFormat.parse(startTime);
+        startTime = startDateTime.toString();
+      }
+      List<String> dateTimeParts = startTime.split(' ');
+      if (dateTimeParts.isEmpty) {
+        date = 'unknown';
+        time = 'unknown';
+      }
+      date = dateTimeParts[0];
+      if (dateTimeParts.length > 1) {
+        List<String> timeParts = dateTimeParts[1].split('.');
+        if (timeParts.isNotEmpty) {
+          time = timeParts[0];
+        } else {
+          time = 'unknown';
+        }
+      } else {
+        time = 'unknown';
+        date = 'unknown';
+      }
+    } catch (e) {
+      date = 'unknown';
+      time = 'unknown';
+    }
+
     return InkWell(
       onTap: () {
-        print('Recording $number');
-        print('Recording URL: ${recordingFile?.playUrl ?? ''}');
         Navigator.push(
           context,
           PageTransition(
@@ -63,25 +123,21 @@ class RecordItem extends StatelessWidget {
                 ),
               ),
               Text(
-                (meetingItem?.startTime ?? '').split(' ').length > 0
-                    ? (meetingItem?.startTime ?? '').split(' ')[0]
-                    : '',
+                'Date: ${date} ',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
               Text(
-                (meetingItem?.startTime ?? '').split(' ').length > 1
-                    ? (meetingItem?.startTime ?? '').split(' ')[1]
-                    : '',
+                'Time: ${time}',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
               Text(
-                '${meetingItem?.duration ?? ''} minutes',
+                '${duration.toString().split('.')[0]} minutes',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
