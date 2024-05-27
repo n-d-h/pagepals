@@ -53,7 +53,7 @@ class _BookServiceBoxState extends State<BookServiceBox> {
         : Column(
             children: [
               SizedBox(
-                height: 300,
+                height: 320,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: (bookService?.services?.length ?? 0) > 5
@@ -76,6 +76,7 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                         );
                       },
                       child: Container(
+                        height: 400,
                         margin: const EdgeInsets.only(right: 18),
                         child: ServiceWidget(
                           service: service,
@@ -131,7 +132,7 @@ class _BookServiceBoxState extends State<BookServiceBox> {
                     ),
                     const SizedBox(height: 20),
                   ],
-                )
+                ),
             ],
           );
   }

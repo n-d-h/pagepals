@@ -161,6 +161,7 @@ class Services {
   double? duration;
   int? price;
   int? rating;
+  String? shortDescription;
   int? totalOfBooking;
   int? totalOfReview;
   String? imageUrl;
@@ -172,6 +173,7 @@ class Services {
     this.duration,
     this.price,
     this.rating,
+    this.shortDescription,
     this.totalOfBooking,
     this.totalOfReview,
     this.imageUrl,
@@ -184,6 +186,7 @@ class Services {
     duration = json['duration'];
     price = json['price'];
     rating = json['rating'];
+    shortDescription = json['shortDescription'];
     totalOfBooking = json['totalOfBooking'];
     totalOfReview = json['totalOfReview'];
     imageUrl = json['imageUrl'];
@@ -199,6 +202,7 @@ class Services {
     data['duration'] = this.duration;
     data['price'] = this.price;
     data['rating'] = this.rating;
+    data['shortDescription'] = this.shortDescription;
     data['totalOfBooking'] = this.totalOfBooking;
     data['totalOfReview'] = this.totalOfReview;
     data['imageUrl'] = this.imageUrl;

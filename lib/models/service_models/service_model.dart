@@ -57,6 +57,7 @@ class ServiceModel {
   String? imageUrl;
   int? price;
   int? rating;
+  String? shortDescription;
   ServiceType? serviceType;
   String? status;
   int? totalOfBooking;
@@ -73,6 +74,7 @@ class ServiceModel {
     this.imageUrl,
     this.price,
     this.rating,
+    this.shortDescription,
     this.serviceType,
     this.status,
     this.totalOfBooking,
@@ -90,6 +92,7 @@ class ServiceModel {
     imageUrl = json['imageUrl'];
     price = json['price'];
     rating = json['rating'];
+    shortDescription = json['shortDescription'];
     serviceType = json['serviceType'] != null
         ? ServiceType?.fromJson(json['serviceType'])
         : null;
@@ -114,6 +117,7 @@ class ServiceModel {
     data['imageUrl'] = imageUrl;
     data['price'] = price;
     data['rating'] = rating;
+    data['shortDescription'] = shortDescription;
     data['serviceType'] = serviceType!.toJson();
     data['status'] = status;
     data['totalOfBooking'] = totalOfBooking;

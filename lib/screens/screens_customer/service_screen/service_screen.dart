@@ -58,9 +58,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
       );
     } else {
       book_model.Book book = serviceModel!.book!;
-      String? authors = book.authors?.map((e) => e?.name ?? '').join(', ');
-      String? categories =
-          book.categories?.map((e) => e?.name ?? '').join(', ');
+      String? authors = book.authors?.map((e) => e.name ?? '').join(', ');
+      String? categories = book.categories?.map((e) => e.name ?? '').join(', ');
       return Scaffold(
         appBar: AppBar(
           title: const Text('Service Detail'),
@@ -109,8 +108,18 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 20.0,
+                  right: 20.0,
+                  bottom: 8.0,
+                ),
+                child: Text(
+                  serviceModel?.shortDescription ?? '',
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

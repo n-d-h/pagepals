@@ -61,6 +61,7 @@ class ServiceService {
             imageUrl
             price
             rating
+            sortDescription
             serviceType {
               id
               name
@@ -337,6 +338,7 @@ class ServiceService {
             duration
             price
             rating
+            shortDescription
             reader {
               id
               nickname
@@ -407,6 +409,7 @@ class ServiceService {
           id
           price
           rating
+          shortDescription
           status
           totalOfBooking
           totalOfReview

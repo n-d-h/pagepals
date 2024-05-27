@@ -29,7 +29,7 @@ class _ProfileServiceCollectionState extends State<ProfileServiceCollection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      height: 401,
       decoration: const BoxDecoration(color: Colors.white),
       padding: const EdgeInsets.fromLTRB(0, 1, 0, 10),
       margin: const EdgeInsets.only(bottom: 20, top: 10),
@@ -76,7 +76,7 @@ class _ProfileServiceCollectionState extends State<ProfileServiceCollection> {
             ),
           ),
           Container(
-            height: 300,
+            height: 320,
             margin: const EdgeInsets.only(top: 10),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -100,7 +100,7 @@ class _ProfileServiceCollectionState extends State<ProfileServiceCollection> {
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 20, left: 5),
-                    height: 400,
+                    height: 450,
                     child: ServiceWidget(
                       service: BookServices(
                         id: serviceItem.id,
@@ -108,6 +108,7 @@ class _ProfileServiceCollectionState extends State<ProfileServiceCollection> {
                         price: serviceItem.price,
                         duration: serviceItem.duration,
                         rating: serviceItem.rating,
+                        shortDescription: serviceItem.shortDescription,
                         totalOfReview: serviceItem.totalOfReview,
                         totalOfBooking: serviceItem.totalOfBooking,
                         imageUrl: serviceItem.imageUrl,

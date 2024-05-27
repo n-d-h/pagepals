@@ -34,8 +34,7 @@ class ServiceWidget extends StatelessWidget {
                 topRight: Radius.circular(12),
               ),
               child: Image.network(
-                service?.imageUrl ??
-                    'https://via.placeholder.com/150',
+                service?.imageUrl ?? 'https://via.placeholder.com/150',
                 height: 160,
                 fit: BoxFit.cover,
               ),
@@ -68,8 +67,7 @@ class ServiceWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    service?.reader?.nickname ??
-                        'reader name',
+                    service?.reader?.nickname ?? 'reader name',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -103,25 +101,38 @@ class ServiceWidget extends StatelessWidget {
           const SizedBox(height: 2),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
-            ),
+            padding: const EdgeInsets.only(left: 10, top: 5, bottom: 2),
             child: Text(
               service?.serviceType?.name ?? 'Service name',
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 5,
+            ),
+            child: Text(
+              service?.shortDescription ?? 'description',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                height: 1.7,
+                fontSize: 10,
+                color: Colors.grey,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ),
+          Container(
             alignment: Alignment.bottomCenter,
-            padding:
-            const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -136,8 +147,9 @@ class ServiceWidget extends StatelessWidget {
                       child: Text(
                         '${service?.rating?.toString() ?? '0'}.0',
                         style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                     Container(

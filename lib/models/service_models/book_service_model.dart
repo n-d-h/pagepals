@@ -35,6 +35,7 @@ class BookServices {
   double? duration;
   int? price;
   int? rating;
+  String? shortDescription;
   int? totalOfBooking;
   int? totalOfReview;
   String? imageUrl;
@@ -48,6 +49,7 @@ class BookServices {
     this.duration,
     this.price,
     this.rating,
+    this.shortDescription,
     this.totalOfBooking,
     this.totalOfReview,
     this.imageUrl,
@@ -62,6 +64,7 @@ class BookServices {
     duration = json['duration'];
     price = json['price'];
     rating = json['rating'];
+    shortDescription = json['shortDescription'];
     totalOfBooking = json['totalOfBooking'];
     totalOfReview = json['totalOfReview'];
     imageUrl = json['imageUrl'];

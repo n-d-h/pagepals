@@ -110,6 +110,7 @@ class BookService {
                 duration
                 price
                 rating
+                shortDescription
                 imageUrl
                 totalOfBooking
                 totalOfReview
