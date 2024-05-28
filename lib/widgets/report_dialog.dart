@@ -10,6 +10,7 @@ class ReportDialogWidget extends StatefulWidget {
     this.listReportReasons,
     this.bookingId,
     required this.type,
+    this.onLoading,
   });
 
   final String? readerId;
@@ -17,6 +18,7 @@ class ReportDialogWidget extends StatefulWidget {
   final AccountModel? accountModel;
   final List<String>? listReportReasons;
   final String type;
+  final Function(bool)? onLoading;
 
   @override
   State<ReportDialogWidget> createState() => _ReportDialogWidgetState();
@@ -98,36 +100,50 @@ class _ReportDialogWidgetState extends State<ReportDialogWidget> {
         TextButton(
           child: const Text('Submit'),
           onPressed: () async {
-            bool result = false;
-            if(widget.type == "READER") {
-              result = await ReportService.createReport(
-                widget.accountModel?.customer?.id ?? '',
-                reportReason,
-                widget.readerId!,
-                widget.type,
-              );
-            } else if(widget.type == "BOOKING") {
-              result = await ReportService.createReport(
-                widget.accountModel?.customer?.id ?? '',
-                reportReason,
-                widget.bookingId!,
-                widget.type,
-              );
-            }
+            try {
+              bool result = false;
+              if (widget.type == "READER") {
+                result = await ReportService.createReport(
+                  widget.accountModel?.customer?.id ?? '',
+                  reportReason,
+                  widget.readerId!,
+                  widget.type,
+                );
+              } else if (widget.type == "BOOKING") {
+                result = await ReportService.createReport(
+                  widget.accountModel?.customer?.id ?? '',
+                  reportReason,
+                  widget.bookingId!,
+                  widget.type,
+                );
 
-            if (result) {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Reported successfully'),
-                ),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Failed to report'),
-                ),
-              );
+                widget.onLoading!(result);
+              }
+
+              if (result) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Reported successfully'),
+                  ),
+                );
+              } else {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Failed to report'),
+                  ),
+                );
+              }
+            } catch (e) {
+              if (e.toString().contains("Reader has been reported")) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('You have already reported this reader'),
+                  ),
+                );
+              }
             }
           },
         ),

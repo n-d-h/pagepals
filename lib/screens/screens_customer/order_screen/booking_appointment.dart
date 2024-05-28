@@ -30,6 +30,7 @@ class BookingAppointment extends StatefulWidget {
 
 class _BookingAppointmentState extends State<BookingAppointment> {
   BookingMeetingRecordModel? bookingMeetingRecordModel;
+  bool isReported = false;
 
   Future<void> getBookingById(String id) async {
     var res = await BookingService.isBookingReport(id);
@@ -197,7 +198,8 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                       DateTime.parse(
                           widget.booking?.startAt ?? '2021-2-1 12:00:00'),
                     ) &&
-                    (bookingMeetingRecordModel?.isReported ?? false) == false,
+                    (bookingMeetingRecordModel?.isReported ?? false) == false &&
+                    isReported == false,
                 child: InkWell(
                   onTap: () {
                     showDialog(
@@ -212,6 +214,13 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                           ),
                           listReportReasons: reportBookingReasons,
                           type: "BOOKING",
+                          onLoading: (value) {
+                            if (value == true) {
+                              setState(() {
+                                isReported = true;
+                              });
+                            }
+                          },
                         );
                       },
                     );
@@ -241,7 +250,8 @@ class _BookingAppointmentState extends State<BookingAppointment> {
               ),
               Visibility(
                 visible:
-                    (bookingMeetingRecordModel?.isReported ?? false) == true,
+                    ((bookingMeetingRecordModel?.isReported ?? false) == true ||
+                        isReported),
                 child: Container(
                   margin: const EdgeInsets.only(top: 20),
                   padding: const EdgeInsets.symmetric(
