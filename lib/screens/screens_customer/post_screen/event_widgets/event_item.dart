@@ -302,7 +302,7 @@ class _EventPostItemState extends State<EventPostItem> {
           ),
           surfaceTintColor: Colors.white,
           content: Container(
-            height: 120,
+            height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,19 +314,49 @@ class _EventPostItemState extends State<EventPostItem> {
                   ),
                 ),
                 const SizedBox(height: 8.0),
-                Text(
-                  'Price: ${widget.price} pals',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      'Price: ',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    Text(
+                      '${widget.price} pals',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8.0),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Available: ',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    Text(
+                      '${widget.activeSlot} slots',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2.0),
                 Text(
-                  'Available: ${widget.activeSlot} slots',
+                  'Note: You can not cancel this seminar booking once confirmed.',
                   style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.red,
                   ),
                 ),
               ],

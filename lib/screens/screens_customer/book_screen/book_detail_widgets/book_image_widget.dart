@@ -12,7 +12,7 @@ class BookImage extends StatelessWidget {
         'https://via.placeholder.com/150';
     Uri originalUri = Uri.parse(thumbnailUrl);
     Map<String, String> queryParams = Map.from(originalUri.queryParameters);
-    queryParams['zoom'] = '3'; // Change the zoom parameter to 2
+    queryParams['zoom'] = '1'; // Change the zoom parameter to 2
     Uri modifiedUri = originalUri.replace(queryParameters: queryParams);
     String modifiedUrl = modifiedUri.toString();
 
