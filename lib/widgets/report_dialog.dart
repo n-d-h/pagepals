@@ -42,6 +42,7 @@ class _ReportDialogWidgetState extends State<ReportDialogWidget> {
         textAlign: TextAlign.center,
       ),
       surfaceTintColor: Colors.white,
+      backgroundColor: Colors.white,
       content: SingleChildScrollView(
         controller: ScrollController(),
         physics: const AlwaysScrollableScrollPhysics(),

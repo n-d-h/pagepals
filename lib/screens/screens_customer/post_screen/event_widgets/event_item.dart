@@ -301,6 +301,7 @@ class _EventPostItemState extends State<EventPostItem> {
             textAlign: TextAlign.center,
           ),
           surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
           content: Container(
             height: 150,
             child: Column(

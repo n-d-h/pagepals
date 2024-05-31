@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
@@ -251,6 +252,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   ),
                 ),
               ),
+              if ((serviceModel?.description?.length ?? 0) < 100)
+                HtmlWidget(
+                  serviceModel?.description ?? '',
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ShowMoreHtmlWidget(
                 htmlContent: serviceModel?.description ?? '',
                 maxLines: 3,

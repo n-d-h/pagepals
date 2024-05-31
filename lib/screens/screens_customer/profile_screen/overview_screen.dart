@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pagepals/helpers/color_helper.dart';
-import 'package:pagepals/helpers/report_reson_helper.dart';
+import 'package:pagepals/helpers/report_reason_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/models/book_models/book_model.dart';
 import 'package:pagepals/models/comment_model.dart';
@@ -124,7 +124,7 @@ class _ProfileOverviewScreenState extends State<ProfileOverviewScreen> {
                           return ReportDialogWidget(
                             readerId: widget.readerId,
                             accountModel: accountModel,
-                            listReportReasons: reportReasons,
+                            listReportReasons: reportReaderReasons,
                             type: 'READER',
                           );
                         },

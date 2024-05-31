@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
@@ -117,7 +118,7 @@ class EventPostDetailScreen extends StatelessWidget {
         surfaceTintColor: Colors.white,
         centerTitle: true,
         title: const Text(
-          'Event information',
+          'Seminar information',
           style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
@@ -294,10 +295,12 @@ class EventPostDetailScreen extends StatelessWidget {
             description.length < 100
                 ? Padding(
                     padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
+                    child: HtmlWidget(
                       description,
-                      style: GoogleFonts.lexend(
-                        fontSize: 16.0,
+                      textStyle: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   )
@@ -449,6 +452,7 @@ class EventPostDetailScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
           content: Container(
             height: 150,
             child: Column(
