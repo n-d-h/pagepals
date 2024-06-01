@@ -7,6 +7,8 @@ class ConfirmationDialog {
       builder: (context) {
         return AlertDialog(
           title: const Text('Confirm Read All'),
+          surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
           content:
               const Text('Are you sure you want to mark all messages as read?'),
           actions: [
@@ -21,7 +23,7 @@ class ConfirmationDialog {
                 onConfirm();
                 Navigator.pop(context);
               },
-              child: const Text('Yes, Read All'),
+              child: const Text('Yes'),
             ),
           ],
         );

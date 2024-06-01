@@ -59,8 +59,7 @@ class _EventPostItemState extends State<EventPostItem> {
       AccountModel? accountModel = AccountModel.fromJson(jsonDecode(account!));
       String customerId = accountModel.customer?.id ?? '';
 
-      bool results =
-          await EventService.bookEvent(customerId, widget.eventId);
+      bool results = await EventService.bookEvent(customerId, widget.eventId);
       if (results) {
         widget.onEventBookedDone(true);
 
@@ -269,15 +268,25 @@ class _EventPostItemState extends State<EventPostItem> {
                   handleJoinSeminar();
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12.0,
+                    vertical: 8.0,
+                  ),
+                  margin: const EdgeInsets.only(bottom: 8.0),
+                  decoration: BoxDecoration(
+                    color: ColorHelper.getColor(ColorHelper.green),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: const Row(
                     children: [
-                      Icon(Icons.add),
+                      Icon(Icons.add, color: Colors.white),
                       SizedBox(width: 4.0),
                       Text(
                         'Join Seminar',
                         style: TextStyle(
                           fontSize: 14.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -373,22 +382,22 @@ class _EventPostItemState extends State<EventPostItem> {
             TextButton(
               onPressed: () async {
                 showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: Text('Joining event...'),
-                      content: Container(
-                        height: 100,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(),
-                            const SizedBox(height: 8.0),
-                            Text('Please wait...'),
-                          ],
-                        ),
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text('Joining event...'),
+                    content: Container(
+                      height: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          const SizedBox(height: 8.0),
+                          Text('Please wait...'),
+                        ],
                       ),
                     ),
+                  ),
                 );
                 await joinSeminar();
                 Navigator.of(context).pop();

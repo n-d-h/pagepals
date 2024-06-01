@@ -107,6 +107,7 @@ class ServiceWidget extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
@@ -167,8 +168,8 @@ class ServiceWidget extends StatelessWidget {
                 ),
                 Text(
                   '${service?.price?.toString() ?? '0'} pals',
-                  style: const TextStyle(
-                    color: Colors.black54,
+                  style: TextStyle(
+                    color: ColorHelper.getColor(ColorHelper.green),
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),

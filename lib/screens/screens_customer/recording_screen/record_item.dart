@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/booking_meeting_record_model.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/recording_video_screen.dart';
 
@@ -107,8 +108,8 @@ class RecordItem extends StatelessWidget {
             child: Center(
               child: Icon(
                 Icons.play_circle_fill,
-                size: 90,
-                color: Colors.black,
+                size: 70,
+                color: Colors.redAccent,
               ),
             ),
           ),

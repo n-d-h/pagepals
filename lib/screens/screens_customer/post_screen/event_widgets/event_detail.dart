@@ -233,6 +233,8 @@ class EventPostDetailScreen extends StatelessWidget {
                 'Book information',
                 style: TextStyle(
                   fontSize: 25,
+                  color: Colors.grey,
+                  decorationColor: Colors.grey,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
                 ),
@@ -283,11 +285,13 @@ class EventPostDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: const Text(
-                'Event information',
+                'Seminar information',
                 style: TextStyle(
                   fontSize: 25,
+                  color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
+                  decorationColor: Colors.grey,
                 ),
               ),
             ),
@@ -424,14 +428,14 @@ class EventPostDetailScreen extends StatelessWidget {
           width: double.infinity,
           margin: const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(20),
             color: ColorHelper.getColor(ColorHelper.green),
           ),
           child: Center(
             child: Text(
               'Join Seminar',
               style: GoogleFonts.lexend(
-                fontSize: 16.0,
+                fontSize: 20,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),

@@ -196,8 +196,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   'Book information',
                   style: const TextStyle(
                     fontSize: 25,
+                    color: Colors.grey,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
+                    decorationColor: Colors.grey,
                   ),
                 ),
               ),
@@ -247,8 +249,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   'Service information',
                   style: const TextStyle(
                     fontSize: 25,
+                    color: Colors.grey,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
+                    decorationColor: Colors.grey,
                   ),
                 ),
               ),
@@ -282,56 +286,56 @@ class _ServiceScreenState extends State<ServiceScreen> {
         ),
         bottomNavigationBar: BottomAppBar(
           surfaceTintColor: Colors.white,
-          child: Container(
-            height: 30,
-            decoration: BoxDecoration(
-              color: ColorHelper.getColor(ColorHelper.green),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    PageTransition(
-                      child: BookingTimeScreen(
-                        reader: ReaderProfile(
-                          profile: Profile(
-                            id: serviceModel?.reader?.id ?? '',
-                            avatarUrl: serviceModel?.reader?.avatarUrl ?? '',
-                            countryAccent:
-                                serviceModel?.reader?.countryAccent ?? '',
-                            nickname: serviceModel?.reader?.nickname ?? '',
-                            rating: serviceModel?.reader?.rating ?? 0,
-                            totalOfReviews:
-                                serviceModel?.reader?.totalOfReviews ?? 0,
-                          ),
-                        ),
-                        book: serviceModel?.book ?? book_model.Book(),
-                        serviceType: serviceModel!.serviceType ??
-                            book_model.ServiceType(),
-                        service: book_model.Services(
-                          id: serviceModel?.id ?? '',
-                          description: serviceModel?.description ?? '',
-                          duration: serviceModel?.duration ?? 0,
-                          price: serviceModel?.price ?? 0,
-                          rating: serviceModel?.rating ?? 0,
-                          totalOfBooking: serviceModel?.totalOfBooking ?? 0,
-                          totalOfReview: serviceModel?.totalOfReview ?? 0,
-                          imageUrl: serviceModel?.imageUrl ?? '',
-                          serviceType: serviceModel!.serviceType ??
-                              book_model.ServiceType(),
-                        ),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                PageTransition(
+                  child: BookingTimeScreen(
+                    reader: ReaderProfile(
+                      profile: Profile(
+                        id: serviceModel?.reader?.id ?? '',
+                        avatarUrl: serviceModel?.reader?.avatarUrl ?? '',
+                        countryAccent:
+                            serviceModel?.reader?.countryAccent ?? '',
+                        nickname: serviceModel?.reader?.nickname ?? '',
+                        rating: serviceModel?.reader?.rating ?? 0,
+                        totalOfReviews:
+                            serviceModel?.reader?.totalOfReviews ?? 0,
                       ),
-                      type: PageTransitionType.rightToLeft,
-                      duration: const Duration(milliseconds: 300),
                     ),
-                  );
-                },
+                    book: serviceModel?.book ?? book_model.Book(),
+                    serviceType:
+                        serviceModel!.serviceType ?? book_model.ServiceType(),
+                    service: book_model.Services(
+                      id: serviceModel?.id ?? '',
+                      description: serviceModel?.description ?? '',
+                      duration: serviceModel?.duration ?? 0,
+                      price: serviceModel?.price ?? 0,
+                      rating: serviceModel?.rating ?? 0,
+                      totalOfBooking: serviceModel?.totalOfBooking ?? 0,
+                      totalOfReview: serviceModel?.totalOfReview ?? 0,
+                      imageUrl: serviceModel?.imageUrl ?? '',
+                      serviceType:
+                          serviceModel!.serviceType ?? book_model.ServiceType(),
+                    ),
+                  ),
+                  type: PageTransitionType.rightToLeft,
+                  duration: const Duration(milliseconds: 300),
+                ),
+              );
+            },
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                color: ColorHelper.getColor(ColorHelper.green),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
                 child: const Text(
                   'Book Now',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
