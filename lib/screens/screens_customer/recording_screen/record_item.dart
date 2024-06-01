@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pagepals/helpers/color_helper.dart';
 import 'package:pagepals/models/booking_meeting_record_model.dart';
 import 'package:pagepals/screens/screens_customer/recording_screen/recording_video_screen.dart';
 
@@ -19,6 +18,7 @@ class RecordItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String extention = "";
     String startAt = recordingFile?.startAt ?? '';
     String endAt = recordingFile?.endAt ?? '';
     Duration duration = Duration.zero;
@@ -41,6 +41,16 @@ class RecordItem extends StatelessWidget {
       } catch (e) {
         duration = Duration.zero;
       }
+    }
+
+    if(duration.inHours > 0) {
+      extention = 'hours';
+    } else if(duration.inMinutes > 0) {
+      extention = 'minutes';
+    } else if(duration.inSeconds > 0) {
+      extention = 'seconds';
+    } else {
+      extention = 'unknown';
     }
 
     String startTime = meetingItem?.startTime ?? 'd';
@@ -114,7 +124,8 @@ class RecordItem extends StatelessWidget {
             ),
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Recording $number',
@@ -124,21 +135,7 @@ class RecordItem extends StatelessWidget {
                 ),
               ),
               Text(
-                'Date: ${date} ',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
-              Text(
-                'Time: ${time}',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
-              Text(
-                '${duration.toString().split('.')[0]} minutes',
+                '${duration.toString().split('.')[0]} hours',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
