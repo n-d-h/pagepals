@@ -12,6 +12,8 @@ import 'package:pagepals/screens/screens_customer/book_screen/book_detail_widget
 import 'package:pagepals/screens/screens_customer/post_screen/event_widgets/show_html_widget.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/event_service.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
@@ -78,26 +80,44 @@ class EventPostDetailScreen extends StatelessWidget {
         } catch (e) {
           print('Error decoding account data: $e');
         }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Join event successfully'),
-          ),
-        );
+        Future.delayed(const Duration(milliseconds: 100), () {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Success',
+            text: 'Join event successfully',
+          );
+        });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Join event failed'),
-          ),
-        );
+        Future.delayed(const Duration(milliseconds: 100), () {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Error',
+            text: 'Join event failed',
+          );
+        });
       }
     } catch (e) {
       if (e.toString().contains('Not enough money')) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Not enough money'),
-          ),
-        );
+        Future.delayed(const Duration(milliseconds: 100), () {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Error',
+            text: 'Not enough money',
+          );
+        });
+      }
+      if (e.toString().contains('Cannot book your own event')) {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Error',
+            text: 'Cannot book your own event',
+          );
+        });
       }
     }
   }
@@ -527,7 +547,26 @@ class EventPostDetailScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text('Joining event...'),
+                    content: Container(
+                      height: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          const SizedBox(height: 8.0),
+                          Text('Please wait...'),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
                 await joinSeminar(context);
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
               child: Text('Yes'),

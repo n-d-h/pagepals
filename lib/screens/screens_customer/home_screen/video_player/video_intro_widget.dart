@@ -87,7 +87,7 @@ class _VideoIntroWidgetState extends State<VideoIntroWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Video Intro'),
         centerTitle: true,

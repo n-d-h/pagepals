@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pagepals/models/authen_models/account_model.dart';
 import 'package:pagepals/services/report_service.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 class ReportDialogWidget extends StatefulWidget {
   const ReportDialogWidget({
@@ -123,27 +125,36 @@ class _ReportDialogWidgetState extends State<ReportDialogWidget> {
 
               if (result) {
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Reported successfully'),
-                  ),
-                );
+                Future.delayed(const Duration(milliseconds: 100), () {
+                  QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.success,
+                    title: 'Success',
+                    text: 'Reported successfully',
+                  );
+                });
               } else {
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Failed to report'),
-                  ),
-                );
+                Future.delayed(const Duration(milliseconds: 100), () {
+                  QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.error,
+                    title: 'Failed',
+                    text: 'Failed to report',
+                  );
+                });
               }
             } catch (e) {
               if (e.toString().contains("Reader has been reported")) {
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('You have already reported this reader'),
-                  ),
-                );
+                Future.delayed(const Duration(milliseconds: 100), () {
+                  QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.error,
+                    title: 'Failed',
+                    text: 'Reader has been reported',
+                  );
+                });
               }
             }
           },

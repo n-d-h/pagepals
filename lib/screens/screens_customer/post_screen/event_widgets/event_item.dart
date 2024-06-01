@@ -10,6 +10,8 @@ import 'package:pagepals/screens/screens_customer/post_screen/event_widgets/even
 import 'package:pagepals/screens/screens_customer/post_screen/event_widgets/show_html_widget.dart';
 import 'package:pagepals/services/authen_service.dart';
 import 'package:pagepals/services/event_service.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventPostItem extends StatefulWidget {
@@ -84,25 +86,45 @@ class _EventPostItemState extends State<EventPostItem> {
           print('Error decoding account data: $e');
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Join event successfully'),
-          ),
-        );
+        Future.delayed(Duration(milliseconds: 100), () {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Success',
+            text: 'Join event successfully',
+          );
+        });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Join event failed'),
-          ),
-        );
+        Future.delayed(Duration(milliseconds: 100), () {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Failed',
+            text: 'Join event failed',
+          );
+        });
       }
     } catch (e) {
       if (e.toString().contains('Not enough money')) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Not enough money'),
-          ),
-        );
+        Future.delayed(Duration(milliseconds: 100), () {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Failed',
+            text: 'Not enough money',
+          );
+        });
+      }
+
+      if (e.toString().contains('Cannot book your own event')) {
+        Future.delayed(Duration(milliseconds: 100), () {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Failed',
+            text: 'Cannot book your own event',
+          );
+        });
       }
     }
   }
